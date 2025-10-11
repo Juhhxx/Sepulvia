@@ -2,8 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-[CreateAssetMenu(menuName= "New party Member")]
-public class PartyMemeberInfo : ScriptableObject
+[CreateAssetMenu(menuName = "New party Member")]
+public class PartyMemberInfo : ScriptableObject
 {
     public string MemberName;
     public int StartingLevel;
