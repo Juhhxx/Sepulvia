@@ -12,7 +12,6 @@ public class PartyManager : MonoBehaviour
     private static GameObject instance;
     private void Awake()
     {
-        AddMemberToPartyByname(defaultPartyMember.MemberName);
         if (instance != null) //check if the party manager is already included in the scene as when u go abck to the overworld after a battle, the dontdestroyonload() will cause a duplicate
         {
             Destroy(this.gameObject);
@@ -48,7 +47,16 @@ public class PartyManager : MonoBehaviour
 
     public List<PartyMember> GetCurrentParty()
     {
-        return currentParty;
+        List<PartyMember> aliveParty = new List<PartyMember>(); //in case we hae a party with more than one person, only bring the ones who have health != 0
+        aliveParty = currentParty; 
+        for (int i = 0; i < aliveParty.Count; i++)
+        {
+            if(aliveParty[i].CurrHealth <= 0)
+            {
+                aliveParty.RemoveAt(i);
+            }
+        }
+        return aliveParty;
     }
 
     public void SaveHealth(int partyMember, int health)

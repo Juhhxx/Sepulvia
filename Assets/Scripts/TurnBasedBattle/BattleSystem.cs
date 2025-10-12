@@ -68,7 +68,7 @@ public class BattleSystem : MonoBehaviour
         //do their appropriate action
         for (int i = 0; i < allBattlers.Count; i++)
         {
-            if (state == BattleState.Battle)
+            if (state == BattleState.Battle && allBattlers[i].CurrHealth > 0) //guarantee that a battle is occurring and that an enemy that is currently with 0 health, doesn t get a turn
             {
                 switch (allBattlers[i].BattleAction)  //a case for each possible action tot ake, add mroe as action are created
                 {
@@ -105,7 +105,7 @@ public class BattleSystem : MonoBehaviour
         if (allBattlers[i].IsPlayer == true) //confirm if it is players' turn
         {
             BattleEntities currAttacker = allBattlers[i];
-            if (allBattlers[currAttacker.Target].IsPlayer == true || currAttacker.Target <= allBattlers.Count) //if somehow we slip outside the bounds of the list we just pick a random enemy
+            if (allBattlers[currAttacker.Target].CurrHealth <= 0) //if we end up attacking an enemy that ahs 0 health we just cahnce target randomly
             {
                 currAttacker.SetTarget(GetRandomEnemy());
             }
@@ -164,10 +164,10 @@ public class BattleSystem : MonoBehaviour
         }
 
     }
-    
+
     private IEnumerator RunRoutine()
     {
-        if(state == BattleState.Battle)
+        if (state == BattleState.Battle)
         {
             if (Random.Range(1, 101) >= RUN_CHANCE)
             {
@@ -184,7 +184,7 @@ public class BattleSystem : MonoBehaviour
                 //we failed to run away and lost a turn
                 bottomText.text = "You have failed to run away"; //set our bottom to say we failed
                 yield return new WaitForSeconds(TURN_DURATION); //wait a few seconds
-                
+
             }
         }
     }
