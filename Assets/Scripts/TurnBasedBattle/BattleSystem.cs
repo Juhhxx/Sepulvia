@@ -21,6 +21,8 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private GameObject battleMenu;
     [SerializeField] private GameObject enemySelectionMenu;
     [SerializeField] private TextMeshProUGUI actionText;
+    [SerializeField] private GameObject bottomTextPopUp;
+    [SerializeField] private TextMeshProUGUI bottomText;
 
     private PartyManager partyManager;
     private EnemyManager enemyManager;
@@ -36,6 +38,7 @@ public class BattleSystem : MonoBehaviour
         CreatePartyEntities();
         CreateEnemyEntities();
         ShowBattleMenu();
+        AttackAction(allBattlers[0],allBattlers[1]);
     }
 
     private void CreatePartyEntities()
@@ -105,7 +108,7 @@ public class BattleSystem : MonoBehaviour
             enemySelectionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = enemyBattlers[i].Name;  //change the buttons text
         }
     }
-    
+
     public void SelectEnemy(int currentEnemy)
     {
         //setting the current members target
@@ -129,7 +132,21 @@ public class BattleSystem : MonoBehaviour
             //show the battle menu for the next player
             ShowBattleMenu();
         }
-            
+    }
+    
+    private void AttackAction(BattleEntities currAttacker, BattleEntities currTarget) //kind of a template for every single battle entity
+    {
+        //get damage
+        int damage = currAttacker.Strength; //can sue an algorithm to scale
+        //play the attack animation
+        //currAttacker.BattleVisuals.PlayAttackAnimation();
+        //dealing the damage
+        currTarget.CurrHealth -= damage;
+        //enemy play their hit animation
+        //currTarget.battleVisuals.PlayHitAnimation();
+        //update the UI
+        currTarget.UpdateUI(); //remmeber this is still incomplete
+        bottomText.text = string.Format("{0} attacks {1} for {2} damage", currAttacker.Name, currTarget.Name, damage);
     }
 }
 
@@ -162,5 +179,10 @@ public class BattleEntities //create another class that will umbrella anything t
     public void SetTarget(int target)
     {
         Target = target;
+    }
+
+    public void UpdateUI()
+    {
+        //battleVisuals.changeHealth(CurrHealth);
     }
 }
