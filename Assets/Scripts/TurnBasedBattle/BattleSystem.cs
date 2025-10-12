@@ -76,7 +76,9 @@ public class BattleSystem : MonoBehaviour
                         //do the attack
                         yield return StartCoroutine(AttackRoutine(i));
                         break;
-
+                    case BattleEntities.Action.Ability:
+                        yield return StartCoroutine(AbilityRoutine(i)); // new coroutine
+                        break;
                     case BattleEntities.Action.Run:
                         //Run
                         yield return StartCoroutine(RunRoutine());
@@ -165,6 +167,31 @@ public class BattleSystem : MonoBehaviour
 
     }
 
+    private IEnumerator AbilityRoutine(int i)
+    {
+        BattleEntities user = allBattlers[i];
+        BattleEntities target = allBattlers[user.Target];
+
+        // Actually perform the ability logic
+        UseAbility(user, target);
+
+        yield return new WaitForSeconds(TURN_DURATION);
+
+        // Check if target died (same as in attack routine)
+        if (target.CurrHealth <= 0)
+        {
+            bottomText.text = $"{user.Name} defeated {target.Name}";
+            yield return new WaitForSeconds(TURN_DURATION);
+
+            if (target.IsPlayer)
+                playerBattlers.Remove(target);
+            else
+                enemyBattlers.Remove(target);
+
+            allBattlers.Remove(target);
+        }
+    }
+
     private IEnumerator RunRoutine()
     {
         if (state == BattleState.Battle)
@@ -197,10 +224,24 @@ public class BattleSystem : MonoBehaviour
 
         for (int i = 0; i < currentParty.Count; i++)
         {
+            Ability[] resolvedAbilities = new Ability[4];
+            for (int j = 0; j < currentParty[i].CurrentAbilities.Length; j++)
+            {
+                if (currentParty[i].EquippedItem != null) //if an item is equipped
+                {
+                    resolvedAbilities[j] = currentParty[i].EquippedItem.GetModifiedAbility(currentParty[i].CurrentAbilities[j]); //check if that item is affetcing this j index ability
+                }
+                else //if not
+                {
+                    resolvedAbilities[j] = currentParty[i].CurrentAbilities[j]; //it stays as it is, neutral
+                }
+
+            }
+
             BattleEntities tempEntity = new BattleEntities(); //create battle entities for our party
 
             tempEntity.SetEntityValues(currentParty[i].MemberName, currentParty[i].CurrHealth, currentParty[i].MaxHealth, //assign the values
-            currentParty[i].Initiative, currentParty[i].Strength, currentParty[i].Level, true);
+            currentParty[i].Initiative, currentParty[i].Strength, currentParty[i].Level, true, resolvedAbilities);
 
             allBattlers.Add(tempEntity);
             playerBattlers.Add(tempEntity);
@@ -280,7 +321,23 @@ public class BattleSystem : MonoBehaviour
             ShowBattleMenu();
         }
     }
-
+    public void SelectAbility(int abilityIndex)
+    {
+        BattleEntities currentPlayerEntity = playerBattlers[currentPlayer];
+        currentPlayerEntity.BattleAction = (BattleEntities.Action)(2 + abilityIndex); // Ability1 = index 2
+        ShowEnemySelectionMenu();
+    }
+    public void UseAbility(BattleEntities user, BattleEntities target)
+    {
+        if (user.SelectedAbility != null)
+        {
+            user.SelectedAbility.Execute(user, target, this);
+        }
+        else
+        {
+            Debug.LogWarning($"{user.Name} tried to use an ability but none was selected!");
+        }
+    }
     private void AttackAction(BattleEntities currAttacker, BattleEntities currTarget) //kind of a template for every single battle entity
     {
         //get damage
@@ -340,7 +397,7 @@ public class BattleSystem : MonoBehaviour
     {
         allBattlers.Sort((bi1, bi2) => -bi1.Initiative.CompareTo(bi2.Initiative)); //sorts list by initiative in ascending order
     }
-    
+
     public void SelectRunAction()
     {
         state = BattleState.Selection;
@@ -373,7 +430,7 @@ public class BattleSystem : MonoBehaviour
 [System.Serializable]
 public class BattleEntities //create another class that will umbrella anything that enters our battle system
 {                           //keeps everything compartimentalized without any fear of overwritting any of the other data
-    public enum Action { Attack, Run } //add eventually other states over here associated with basic actions liek usign an item or even talk
+    public enum Action { Attack, Run, Ability } //add eventually other states over here associated with basic actions liek usign an item or even talk
     public Action BattleAction;
 
     public string Name;     //makes it easier to compare attributes - asking what battle entity turn it is than "has the partymember had his turn? No? then who took their last turn?" 
@@ -384,8 +441,10 @@ public class BattleEntities //create another class that will umbrella anything t
     public int Level;
     public bool IsPlayer;
     public int Target;
+    public Ability[] abilities = new Ability[4];
+    public Ability SelectedAbility; // Reference to which ability was chosen this turn
 
-    public void SetEntityValues(string name, int currHealth, int maxHealth, int initiative, int strength, int level, bool isPlayer)
+    public void SetEntityValues(string name, int currHealth, int maxHealth, int initiative, int strength, int level, bool isPlayer, Ability[] resolvedAbilities = null)
     {
         Name = name;
         CurrHealth = currHealth;
@@ -394,6 +453,10 @@ public class BattleEntities //create another class that will umbrella anything t
         Strength = strength;
         Level = level;
         IsPlayer = isPlayer;
+        if (resolvedAbilities != null)
+        {
+            abilities = resolvedAbilities;
+        }
     }
 
     public void SetTarget(int target)

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
+using UnityEngine.Accessibility;
 
 public class PartyManager : MonoBehaviour
 {
@@ -88,4 +89,7 @@ public class PartyMember
     public int MaxExp;
     public GameObject MemberBattleVisualPrefab;
     public GameObject MemberOverworldVisualPrefab;
+
+    public Ability[] CurrentAbilities = new Ability[4]; // The current form-adjusted abilities
+    public Item EquippedItem;                      // Currently equipped item (defines ability form)
 }

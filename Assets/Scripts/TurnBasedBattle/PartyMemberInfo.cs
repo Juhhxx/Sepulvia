@@ -12,4 +12,7 @@ public class PartyMemberInfo : ScriptableObject
     public int BaseInitiative;
     public GameObject MemberBattleVisualPrefab; //What will be displayed in battle
     public GameObject MemberOverworldVisualPrefab; //What will be displayed in the overworld scene
+
+    [Header("Base Ability Set")]
+    public Ability[] BaseAbilities = new Ability[4]; // Default 4 abilities (neutral versions)
 }
