@@ -5,12 +5,20 @@ public class EnemyManager : MonoBehaviour
 {
     [SerializeField] private EnemyInfo[] allEnemies;
     [SerializeField] private List<Enemy> currentEnemies;
-
+    private static GameObject instance;
     private const float LEVEL_MODIFIER = 0.5f;
 
     private void Awake()
     {
-        GenerateEnemyByName("TheLadyInHotPink", 1); //this is the function that egneratexs the enemy, ther random encounter egenrator should pick how many and their level
+        if (instance != null) //check if the enemy manager is already included in the scene as when u go abck to the overworld after a battle, the dontdestroyonload() will cause a duplicate
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this.gameObject;
+        }
+        DontDestroyOnLoad(gameObject);
     }
     private void GenerateEnemyByName(string enemyName, int level)
     {
@@ -39,6 +47,19 @@ public class EnemyManager : MonoBehaviour
     public List<Enemy> GetCurrentEnemies()
     {
         return currentEnemies;
+    }
+
+    public void generateEnemiesByEncounter(Encounter[] encounters, int maxNumEnemies)
+    {
+        currentEnemies.Clear();
+        int numEnemies = Random.Range(1, maxNumEnemies + 1);
+
+        for (int i = 0; i < numEnemies; i++)
+        {
+            Encounter tempEncounter = encounters[Random.Range(0, encounters.Length)];
+            int level = Random.Range(tempEncounter.levelMin, tempEncounter.LevelMax + 1);
+            GenerateEnemyByName(tempEncounter.Enemy.EnemyName, level);
+        }
     }
 }
 
