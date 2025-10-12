@@ -38,6 +38,7 @@ public class BattleSystem : MonoBehaviour
 
     private const string ACTION_MESSAGE = " 's Action:";
     private const int TURN_DURATION = 2;
+    private const int RUN_CHANCE = 50;
     private const string WIN_MESSAGE = "Your party won the battle";
     private const string LOSE_MESSAGE = "Your party lost the battle";
     private const string OVERWORLD_SCENE = "OverworldTestScene";
@@ -51,6 +52,7 @@ public class BattleSystem : MonoBehaviour
         CreatePartyEntities();
         CreateEnemyEntities();
         ShowBattleMenu();
+        DetermineBattleOrder();
     }
 
     private IEnumerator BattleRoutine()  //THIS SI THE MAIN BATTLE COROUTINE
@@ -77,6 +79,7 @@ public class BattleSystem : MonoBehaviour
 
                     case BattleEntities.Action.Run:
                         //Run
+                        yield return StartCoroutine(RunRoutine());
                         break;
 
                     default:
@@ -132,7 +135,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         //enemy's turn
-        if(allBattlers[i].IsPlayer == false)
+        if (i < allBattlers.Count && allBattlers[i].IsPlayer == false)
         {
             BattleEntities currAttacker = allBattlers[i];
             currAttacker.SetTarget(GetRandomPartyMember()); //this is the enemy picking a party member to atatck at random
@@ -141,7 +144,7 @@ public class BattleSystem : MonoBehaviour
 
             AttackAction(currAttacker, currTarget);//attack selected party member (attack action)
             yield return new WaitForSeconds(TURN_DURATION); //wait a few secs
-            if(currTarget.CurrHealth <= 0) //kill party member?
+            if (currTarget.CurrHealth <= 0) //kill party member?
             {
                 bottomText.text = string.Format("{0} defeated {1}", currAttacker.Name, currTarget.Name);
                 yield return new WaitForSeconds(TURN_DURATION); //wait a few secs
@@ -157,9 +160,33 @@ public class BattleSystem : MonoBehaviour
                     Debug.Log("Game Over");
                 }
             }
-            
+
         }
-        
+
+    }
+    
+    private IEnumerator RunRoutine()
+    {
+        if(state == BattleState.Battle)
+        {
+            if (Random.Range(1, 101) >= RUN_CHANCE)
+            {
+                //we have ran away
+                bottomText.text = "You managed to run away"; //set our bottom etxt to tell us we ran away
+                state = BattleState.Run; //set our battle state to run
+                allBattlers.Clear(); //clear all our allBattlers list
+                yield return new WaitForSeconds(TURN_DURATION); //wait a few seconds
+                SceneManager.LoadScene(OVERWORLD_SCENE); //load the overworld scene
+                yield break;
+            }
+            else
+            {
+                //we failed to run away and lost a turn
+                bottomText.text = "You have failed to run away"; //set our bottom to say we failed
+                yield return new WaitForSeconds(TURN_DURATION); //wait a few seconds
+                
+            }
+        }
     }
 
     private void CreatePartyEntities()
@@ -308,6 +335,39 @@ public class BattleSystem : MonoBehaviour
             partyManager.SaveHealth(i, playerBattlers[i].CurrHealth);  //save their current health
         }
     }
+
+    private void DetermineBattleOrder()
+    {
+        allBattlers.Sort((bi1, bi2) => -bi1.Initiative.CompareTo(bi2.Initiative)); //sorts list by initiative in ascending order
+    }
+    
+    public void SelectRunAction()
+    {
+        state = BattleState.Selection;
+        //setting the current members target
+        BattleEntities currentPlayerEntity = playerBattlers[currentPlayer];
+
+        //tell the battle system we intend to run
+        currentPlayerEntity.BattleAction = BattleEntities.Action.Run;
+
+        battleMenu.SetActive(false);
+        //increment through our party members
+        currentPlayer++;
+
+        //if all players have selected an action, we ll start the battle
+        if (currentPlayer >= playerBattlers.Count)
+        {
+            //StartBattle
+            StartCoroutine(BattleRoutine());
+        }
+        else
+        {
+            enemySelectionMenu.SetActive(false);
+            //show the battle menu for the next player
+            ShowBattleMenu();
+        }
+    }
+
 }
 
 [System.Serializable]
