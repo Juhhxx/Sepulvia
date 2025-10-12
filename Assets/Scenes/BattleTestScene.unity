@@ -1932,6 +1932,60 @@ Transform:
   - {fileID: 369892498}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1178204683
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1178204685}
+  - component: {fileID: 1178204684}
+  m_Layer: 0
+  m_Name: Pulling Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1178204684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1178204683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 167f3f9570a0ac44cac06eeb712474d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BarManager
+  canvas: {fileID: 0}
+  pullBar: {fileID: 121380560393371517, guid: 6cc0252a73eb1b04e91d957150862e6e, type: 3}
+  sectionBar: {fileID: 121380560393371517, guid: 6cc0252a73eb1b04e91d957150862e6e, type: 3}
+  barsTotalWidth: 1400
+  barY: -410
+  divNumb: 9
+  padding: 10
+  heart: {fileID: 6649263371902549339, guid: 6a2db4eb242664b44a1ee32dde88ca73, type: 3}
+  heartPositions: []
+  barSectionList: []
+--- !u!4 &1178204685
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1178204683}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 915.1694, y: 608.35333, z: -195.09924}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1226116815
 GameObject:
   m_ObjectHideFlags: 0
@@ -3550,3 +3604,4 @@ SceneRoots:
   - {fileID: 1226116819}
   - {fileID: 314538149}
   - {fileID: 1666702791}
+  - {fileID: 1178204685}
