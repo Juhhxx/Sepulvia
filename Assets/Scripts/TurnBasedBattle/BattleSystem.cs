@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
-
+using TMPro;
 public class BattleSystem : MonoBehaviour
 {
     [Header("Spawn Points")]
     [SerializeField] private Transform[] partySpawnPoints;
     [SerializeField] private Transform[] enemySpawnPoints;
-    
+
     [Header("Battlers")]
     [ReadOnly]
     [SerializeField] private List<BattleEntities> allBattlers = new List<BattleEntities>();
@@ -16,9 +16,17 @@ public class BattleSystem : MonoBehaviour
     [ReadOnly]
     [SerializeField] private List<BattleEntities> playerBattlers = new List<BattleEntities>();
 
+    [Header("UI")]
+    [SerializeField] private GameObject[] enemySelectionButtons;
+    [SerializeField] private GameObject battleMenu;
+    [SerializeField] private GameObject enemySelectionMenu;
+    [SerializeField] private TextMeshProUGUI actionText;
+
     private PartyManager partyManager;
     private EnemyManager enemyManager;
+    private int currentPlayer;
 
+    private const string ACTION_MESSAGE = " 's Action:";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,6 +35,7 @@ public class BattleSystem : MonoBehaviour
 
         CreatePartyEntities();
         CreateEnemyEntities();
+        ShowBattleMenu();
     }
 
     private void CreatePartyEntities()
@@ -64,11 +73,72 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    private void ShowBattleMenu()
+    {
+        //whos action it is
+        actionText.text = playerBattlers[currentPlayer].Name + ACTION_MESSAGE;
+        //enableing our battle menu
+        battleMenu.SetActive(true);
+    }
+
+    public void ShowEnemySelectionMenu()
+    {
+        //disable the battle menu
+        battleMenu.SetActive(false);
+        //set our enemy selection buttons
+        SetEnemySelectionButtons();
+        //enable our selection menu
+        enemySelectionMenu.SetActive(true);
+    }
+
+    private void SetEnemySelectionButtons()
+    {
+        //disable all of our buttons
+        for (int i = 0; i < enemySelectionButtons.Length; i++)
+        {
+            enemySelectionButtons[i].SetActive(false);
+        }
+
+        for (int i = 0; i < enemyBattlers.Count; i++)
+        {
+            enemySelectionButtons[i].SetActive(true); //enable buttons for each enemy
+            enemySelectionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = enemyBattlers[i].Name;  //change the buttons text
+        }
+    }
+    
+    public void SelectEnemy(int currentEnemy)
+    {
+        //setting the current members target
+        BattleEntities currentPlayerEntity = playerBattlers[currentPlayer];
+        currentPlayerEntity.SetTarget(allBattlers.IndexOf(enemyBattlers[currentEnemy]));
+
+        //tell the battle system this member intends to attack
+        currentPlayerEntity.BattleAction = BattleEntities.Action.Attack;
+        //increment through our party members
+        currentPlayer++;
+        //if all players have selected an actiong, we ll start the battle
+        if (currentPlayer >= playerBattlers.Count)
+        {
+            //StartBattle
+            Debug.Log("Start the battle!");
+            Debug.Log("We are attacking: " + allBattlers[currentPlayerEntity.Target].Name);
+        }
+        else
+        {
+            enemySelectionMenu.SetActive(false);
+            //show the battle menu for the next player
+            ShowBattleMenu();
+        }
+            
+    }
 }
 
 [System.Serializable]
 public class BattleEntities //create another class that will umbrella anything that enters our battle system
 {                           //keeps everything compartimentalized without any fear of overwritting any of the other data
+    public enum Action { Attack, Run} //add eventually other states over here associated with basic actions liek usign an item or even talk
+    public Action BattleAction;
+
     public string Name;     //makes it easier to compare attributes - asking what battle entity turn it is than "has the partymember had his turn? No? then who took their last turn?" 
     public int CurrHealth;  //this also makes it easier when it comes to group effects/group attacks
     public int MaxHealth;
@@ -76,6 +146,7 @@ public class BattleEntities //create another class that will umbrella anything t
     public int Strength;
     public int Level;
     public bool IsPlayer;
+    public int Target;
 
     public void SetEntityValues(string name, int currHealth, int maxHealth, int initiative, int strength, int level, bool isPlayer)
     {
@@ -86,5 +157,10 @@ public class BattleEntities //create another class that will umbrella anything t
         Strength = strength;
         Level = level;
         IsPlayer = isPlayer;
+    }
+
+    public void SetTarget(int target)
+    {
+        Target = target;
     }
 }
