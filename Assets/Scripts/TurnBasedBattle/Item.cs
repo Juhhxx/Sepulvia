@@ -13,8 +13,8 @@ public class Item : ScriptableObject
 
     public AbilitySwap[] abilitySwaps;
 
-    public Ability GetModifiedAbility(Ability baseAbility)  //Given a base ability, return the modified version (if one exists for this item)
-    {
+    public Ability GetModifiedAbility(Ability baseAbility)  //Given a base ability, return the modified version (if one exists for this item). To be called in the BattleSystem
+    {                                                        // When updating each characetr before battle
         foreach (AbilitySwap swap in abilitySwaps)
         {
             if (swap.BaseAbility == baseAbility)
