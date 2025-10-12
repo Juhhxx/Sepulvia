@@ -2,8 +2,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
 using TMPro;
+using System.Collections;
 public class BattleSystem : MonoBehaviour
 {
+    [SerializeField] private enum BattleState { Start, Selection, Battle, Won, Lost, Run }
+
+    [Header("Battle State")]
+    [ReadOnly]
+    [SerializeField] private BattleState state;
+
     [Header("Spawn Points")]
     [SerializeField] private Transform[] partySpawnPoints;
     [SerializeField] private Transform[] enemySpawnPoints;
@@ -38,9 +45,48 @@ public class BattleSystem : MonoBehaviour
         CreatePartyEntities();
         CreateEnemyEntities();
         ShowBattleMenu();
-        AttackAction(allBattlers[0],allBattlers[1]);
     }
 
+    private IEnumerator BattleRoutine()
+    {
+        //enemy selectionMenu disabled
+        enemySelectionMenu.SetActive(false);
+        //change our state to the battle state
+        state = BattleState.Battle;
+        //enable our bottom text
+        bottomTextPopUp.SetActive(true);
+
+        //loop through all our battlers
+        //do their appropriate action
+        for (int i = 0; i < allBattlers.Count; i++)
+        {
+            switch (allBattlers[i].BattleAction)
+            {
+                case BattleEntities.Action.Attack:
+                    //do the attack
+                    Debug.Log(allBattlers[i].Name + " is attacking: " + allBattlers[allBattlers[i].Target].Name);
+                    break;
+
+                case BattleEntities.Action.Run:
+                    //Run
+                    break;
+
+                default:
+                    Debug.Log("Error - Incorrect battle action");
+                    break;
+            }
+        }
+
+        //if we ahvent  won or lost repeat the loop by opening the battle menu
+        if (state == BattleState.Battle)
+        {
+            bottomTextPopUp.SetActive(false);
+            currentPlayer = 0;
+            ShowBattleMenu();
+        }
+
+        yield return null;
+    }
     private void CreatePartyEntities()
     {
         //get current party
@@ -123,8 +169,7 @@ public class BattleSystem : MonoBehaviour
         if (currentPlayer >= playerBattlers.Count)
         {
             //StartBattle
-            Debug.Log("Start the battle!");
-            Debug.Log("We are attacking: " + allBattlers[currentPlayerEntity.Target].Name);
+            StartCoroutine(BattleRoutine());
         }
         else
         {
@@ -133,7 +178,7 @@ public class BattleSystem : MonoBehaviour
             ShowBattleMenu();
         }
     }
-    
+
     private void AttackAction(BattleEntities currAttacker, BattleEntities currTarget) //kind of a template for every single battle entity
     {
         //get damage
@@ -153,7 +198,7 @@ public class BattleSystem : MonoBehaviour
 [System.Serializable]
 public class BattleEntities //create another class that will umbrella anything that enters our battle system
 {                           //keeps everything compartimentalized without any fear of overwritting any of the other data
-    public enum Action { Attack, Run} //add eventually other states over here associated with basic actions liek usign an item or even talk
+    public enum Action { Attack, Run } //add eventually other states over here associated with basic actions liek usign an item or even talk
     public Action BattleAction;
 
     public string Name;     //makes it easier to compare attributes - asking what battle entity turn it is than "has the partymember had his turn? No? then who took their last turn?" 
