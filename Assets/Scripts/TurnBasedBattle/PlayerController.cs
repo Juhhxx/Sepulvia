@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private bool movinInGrass;
     private float steptimer;
     private int stepsToEncounter;
+    private PartyManager partyManager;
 
     private const float TIME_PER_STEP = 0.5f;
     private const string BATTLE_SCENE = "BattleTestScene"; //Switch to whatever we consider the scene for battle
@@ -35,6 +36,12 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
+        partyManager = GameObject.FindAnyObjectByType<PartyManager>();
+        //if we have a position saved then we are going to move the player there
+        if(partyManager.GetPosition() != Vector3.zero)
+        {
+            transform.position = partyManager.GetPosition();
+        }
     }
     // Update is called once per frame
     void Update()
@@ -63,6 +70,7 @@ public class PlayerController : MonoBehaviour
 
                 if (stepsInGrass >= stepsToEncounter) //Check to see if we "reached an encounter"
                 {
+                    partyManager.SetPosition(transform.position); //save our overworld position before we chaneg into the battleScene
                     Debug.Log("Change Scene Now");
                     SceneManager.LoadScene(BATTLE_SCENE);
                 }
