@@ -36,6 +36,8 @@ public class BattleSystem : MonoBehaviour
     private int currentPlayer;
 
     private const string ACTION_MESSAGE = " 's Action:";
+    private const int TURN_DURATION = 2;
+    private const string WIN_MESSAGE = "Your party won the battle";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -47,7 +49,7 @@ public class BattleSystem : MonoBehaviour
         ShowBattleMenu();
     }
 
-    private IEnumerator BattleRoutine()
+    private IEnumerator BattleRoutine()  //THIS SI THE MAIN BATTLE COROUTINE
     {
         //enemy selectionMenu disabled
         enemySelectionMenu.SetActive(false);
@@ -60,11 +62,11 @@ public class BattleSystem : MonoBehaviour
         //do their appropriate action
         for (int i = 0; i < allBattlers.Count; i++)
         {
-            switch (allBattlers[i].BattleAction)
+            switch (allBattlers[i].BattleAction)  //a case for each possible action tot ake, add mroe as action are created
             {
                 case BattleEntities.Action.Attack:
                     //do the attack
-                    Debug.Log(allBattlers[i].Name + " is attacking: " + allBattlers[allBattlers[i].Target].Name);
+                    yield return StartCoroutine(AttackRoutine(i));
                     break;
 
                 case BattleEntities.Action.Run:
@@ -87,6 +89,42 @@ public class BattleSystem : MonoBehaviour
 
         yield return null;
     }
+
+    private IEnumerator AttackRoutine(int i)
+    {
+        if (allBattlers[i].IsPlayer == true) //confirm if it is players' turn
+        {
+            BattleEntities currAttacker = allBattlers[i];
+            BattleEntities currTarget = allBattlers[currAttacker.Target];
+ 
+            AttackAction(currAttacker, currTarget); //attack selected enemy (attack action)
+
+            yield return new WaitForSeconds(TURN_DURATION); //wait a few secs
+
+            //kil the enemy?
+            if (currTarget.CurrHealth <= 0)
+            {
+                bottomText.text = string.Format("{0} defeated {1}", currAttacker.Name, currTarget.Name);
+                enemyBattlers.Remove(currTarget);
+                allBattlers.Remove(currTarget);
+
+                if (enemyBattlers.Count ==0) //if no enemies remain we win the battle
+                {
+                    state = BattleState.Won;
+                    bottomText.text = WIN_MESSAGE;
+                }
+            }
+            
+        }
+
+        //enemy's turn
+        //attack selected party member (attack action)
+        //wait a few secs
+        //kill party emmeber
+
+        //if no party emmbers remain we lost the battle
+    }
+
     private void CreatePartyEntities()
     {
         //get current party
