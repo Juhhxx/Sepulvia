@@ -8,10 +8,21 @@ public class PartyManager : MonoBehaviour
     [ReadOnly]
     [SerializeField] private List<PartyMember> currentParty;
     [SerializeField] private PartyMemberInfo defaultPartyMember;
-
+    private Vector3 playerPosition;
+    private static GameObject instance;
     private void Awake()
     {
         AddMemberToPartyByname(defaultPartyMember.MemberName);
+        if (instance != null) //check if the party manager is already included in the scene as when u go abck to the overworld after a battle, the dontdestroyonload() will cause a duplicate
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this.gameObject;
+            AddMemberToPartyByname(defaultPartyMember.MemberName);
+        }
+        DontDestroyOnLoad(gameObject);
     }
 
     public void AddMemberToPartyByname(string memberName)
@@ -40,6 +51,20 @@ public class PartyManager : MonoBehaviour
         return currentParty;
     }
 
+    public void SaveHealth(int partyMember, int health)
+    {
+        currentParty[partyMember].CurrHealth = health;
+    }
+
+    public void SetPosition(Vector3 position)
+    {
+        playerPosition = position;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return playerPosition;
+    }
 }
 
 [System.Serializable]

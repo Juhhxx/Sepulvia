@@ -3,6 +3,7 @@ using UnityEngine;
 using NaughtyAttributes;
 using TMPro;
 using System.Collections;
+using UnityEngine.SceneManagement;
 public class BattleSystem : MonoBehaviour
 {
     [SerializeField] private enum BattleState { Start, Selection, Battle, Won, Lost, Run }
@@ -39,6 +40,7 @@ public class BattleSystem : MonoBehaviour
     private const int TURN_DURATION = 2;
     private const string WIN_MESSAGE = "Your party won the battle";
     private const string LOSE_MESSAGE = "Your party lost the battle";
+    private const string OVERWORLD_SCENE = "OverworldTestScene";
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -124,6 +126,7 @@ public class BattleSystem : MonoBehaviour
                     bottomText.text = WIN_MESSAGE;
                     yield return new WaitForSeconds(TURN_DURATION); //wait a few secs
                     Debug.Log("Go back to Overworld Scene"); //Switch scenes to overworld
+                    SceneManager.LoadScene(OVERWORLD_SCENE);
                 }
             }
         }
@@ -264,6 +267,7 @@ public class BattleSystem : MonoBehaviour
         //update the UI
         currTarget.UpdateUI(); //remmeber this is still incomplete
         bottomText.text = string.Format("{0} attacks {1} for {2} damage", currAttacker.Name, currTarget.Name, damage);
+        SaveHealth();
     }
 
     private int GetRandomPartyMember()
@@ -296,6 +300,13 @@ public class BattleSystem : MonoBehaviour
         }
         //return the random party emmber
         return enemies[Random.Range(0, enemies.Count)];
+    }
+    private void SaveHealth()
+    {
+        for (int i = 0; i < playerBattlers.Count; i++)  //run through all party members
+        {
+            partyManager.SaveHealth(i, playerBattlers[i].CurrHealth);  //save their current health
+        }
     }
 }
 
