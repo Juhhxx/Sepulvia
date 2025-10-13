@@ -46,8 +46,8 @@ public class BattleSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        partyManager = GameObject.FindAnyObjectByType<PartyManager>();
-        enemyManager = GameObject.FindAnyObjectByType<EnemyManager>();
+        partyManager = FindAnyObjectByType<PartyManager>();
+        enemyManager = FindAnyObjectByType<EnemyManager>();
 
         CreatePartyEntities();
         CreateEnemyEntities();
@@ -117,7 +117,7 @@ public class BattleSystem : MonoBehaviour
 
             yield return new WaitForSeconds(TURN_DURATION); //wait a few secs
 
-            //kil the enemy?
+            //kil the enemy?  --> Readapt into the stun system
             if (currTarget.CurrHealth <= 0)
             {
                 bottomText.text = string.Format("{0} defeated {1}", currAttacker.Name, currTarget.Name);
@@ -136,17 +136,20 @@ public class BattleSystem : MonoBehaviour
             }
         }
 
-        //enemy's turn
+        //enemy's turn 
         if (i < allBattlers.Count && allBattlers[i].IsPlayer == false)
         {
             BattleEntities currAttacker = allBattlers[i];
+            //-----------Adapt with juh's AI HERE---------------
             currAttacker.SetTarget(GetRandomPartyMember()); //this is the enemy picking a party member to atatck at random
             BattleEntities currTarget = allBattlers[currAttacker.Target];
             //get random party member (taregt)
 
             AttackAction(currAttacker, currTarget);//attack selected party member (attack action)
+            //------------------------------------------------------
+            
             yield return new WaitForSeconds(TURN_DURATION); //wait a few secs
-            if (currTarget.CurrHealth <= 0) //kill party member?
+            if (currTarget.CurrHealth <= 0) //kill party member? --> readapt into stun system
             {
                 bottomText.text = string.Format("{0} defeated {1}", currAttacker.Name, currTarget.Name);
                 yield return new WaitForSeconds(TURN_DURATION); //wait a few secs
@@ -443,6 +446,7 @@ public class BattleEntities //create another class that will umbrella anything t
     public int Target;
     public Ability[] abilities = new Ability[4];
     public Ability SelectedAbility; // Reference to which ability was chosen this turn
+    public bool IsStuned = false;
 
     public void SetEntityValues(string name, int currHealth, int maxHealth, int initiative, int strength, int level, bool isPlayer, Ability[] resolvedAbilities = null)
     {
