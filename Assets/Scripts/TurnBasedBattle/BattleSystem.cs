@@ -55,7 +55,7 @@ public class BattleSystem : MonoBehaviour
         DetermineBattleOrder();
     }
 
-    private IEnumerator BattleRoutine()  //THIS SI THE MAIN BATTLE COROUTINE
+    private IEnumerator BattleRoutine()  //THIS IS THE MAIN BATTLE COROUTINE, called upon the click of the enemyselection button in game
     {
         //enemy selectionMenu disabled
         enemySelectionMenu.SetActive(false);
@@ -88,6 +88,7 @@ public class BattleSystem : MonoBehaviour
                         Debug.Log("Error - Incorrect battle action");
                         break;
                 }
+                DetermineBattleOrder(); //reorganize battle order in light of speed changes and etc
             }
         }
 
