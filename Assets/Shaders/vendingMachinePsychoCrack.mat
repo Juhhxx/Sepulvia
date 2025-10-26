@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PixelatedWave
-  m_Shader: {fileID: -6465566751694194690, guid: 6d406abb5c146c24bab8b51133f80d60, type: 3}
+  m_Name: vendingMachinePsychoCrack
+  m_Shader: {fileID: -6465566751694194690, guid: e9b68bae82ab533498dad4566176b4d0, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Alpha_Mask:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 066cf9d7f2fe7e64e817d26da5f08c78, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Emission_Mask:
@@ -55,7 +55,7 @@ Material:
     m_Floats:
     - _Activate_Mask: 1
     - _Bit: 128
-    - _Bit_Rate: 97
+    - _Bit_Rate: 211
     - _ColorMask: 15
     - _Emissive: 0
     - _Stencil: 0
@@ -63,7 +63,7 @@ Material:
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
-    - _Swirling: 1
+    - _Swirling: 0
     - _Swirling_Speed: 0.14
     - _Texture_Intensity: 1
     - _UIMaskSoftnessX: 1
