@@ -9,10 +9,13 @@ public class PullingManager : MonoBehaviour
     [SerializeField, BoxGroup("Spawn Settings")] Canvas canvas;
     [SerializeField, BoxGroup("Spawn Settings")] Image pullBar;
     [SerializeField, BoxGroup("Spawn Settings")] Image sectionBar;
-    [SerializeField, BoxGroup("Spawn Settings"), Range(0, 1920)] float barsTotalWidth;
-    [SerializeField, BoxGroup("Spawn Settings"), Range(-540, 540)] float barY = -410f;
-    [SerializeField, BoxGroup("Spawn Settings")] int divNumb;
-    [SerializeField, BoxGroup("Spawn Settings")] int padding;
+    [SerializeField, BoxGroup("Spawn Settings"), Range(0, 1920), OnValueChanged("SpawnBarSections")] float barsTotalWidth;
+    [SerializeField, BoxGroup("Spawn Settings"), Range(-540, 540), OnValueChanged("SpawnBarSections")] float barY = -410f;
+    [SerializeField, BoxGroup("Spawn Settings"), OnValueChanged("SpawnBarSections")] int divNumb;
+    [SerializeField, BoxGroup("Spawn Settings"), OnValueChanged("SpawnBarSections")] int padding;
+
+    private List<GameObject> _spawnedObjects;
+
     [SerializeField] Image heart;
     private float heartHeightPadding = 100;
     public List<Vector3> heartPositions = new List<Vector3>();
@@ -89,8 +92,21 @@ public class PullingManager : MonoBehaviour
             }
         }
     }
+    [Button(enabledMode:EButtonEnableMode.Always)]
     private void SpawnBarSections()
     {
+        if (canvas == null || pullBar == null || sectionBar == null) return;
+
+        if (_spawnedObjects != null)
+        {
+            foreach (GameObject go in _spawnedObjects) DestroyImmediate(go);
+            _spawnedObjects.Clear();
+        }
+        else _spawnedObjects = new List<GameObject>();
+
+        heartPositions?.Clear();
+        barSectionList?.Clear();
+        
         if (divNumb <= 0) return;
 
         float sectionWidth;
@@ -125,10 +141,12 @@ public class PullingManager : MonoBehaviour
             heartPositions.Add(new Vector3(spawnedBar.rectTransform.anchoredPosition.x, spawnedBar.rectTransform.anchoredPosition.y + heartHeightPadding, 0));
             //Add the each of the new spwaned bars to a list so that your can give them attributes
             barSectionList.Add(spawnedBar);
+
+            _spawnedObjects.Add(spawnedBar.gameObject);
         }
     }
 
-    private void MoveHeart(int pushForce)
+    public void MoveHeart(int pushForce)
     {
         //update the index position of the heart
         currentHeartIndex += pushForce;

@@ -6,6 +6,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 public class BattleSystem : MonoBehaviour
 {
+    [SerializeField] private PullingManager _pullManager;
     [SerializeField] private enum BattleState { Start, Selection, Battle, Won, Lost, Run }
 
     [Header("Battle State")]
@@ -356,6 +357,9 @@ public class BattleSystem : MonoBehaviour
         currTarget.UpdateUI(); //remmeber this is still incomplete
         bottomText.text = string.Format("{0} attacks {1} for {2} damage", currAttacker.Name, currTarget.Name, damage);
         SaveHealth();
+
+        if (currAttacker.IsPlayer) _pullManager.MoveHeart(-damage);
+        else _pullManager.MoveHeart(damage);
     }
 
     private int GetRandomPartyMember()
