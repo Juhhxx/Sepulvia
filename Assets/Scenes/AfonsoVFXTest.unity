@@ -424,7 +424,7 @@ GameObject:
   - component: {fileID: 1118579764}
   - component: {fileID: 1118579763}
   m_Layer: 0
-  m_Name: Particle System (1)
+  m_Name: Speed Motion Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5419,7 +5419,7 @@ GameObject:
   - component: {fileID: 1893259541}
   - component: {fileID: 1893259540}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: Wavey background Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5466,7 +5466,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
+  - {fileID: 2100000, guid: d49b9edf4a1385d4ba363714ea0d17b6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5536,7 +5536,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
   looping: 1
-  prewarm: 0
+  prewarm: 1
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
