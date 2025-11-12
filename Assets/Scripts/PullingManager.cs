@@ -6,31 +6,31 @@ using System.Linq;
 
 public class PullingManager : MonoBehaviour
 {
-    [SerializeField, BoxGroup("Spawn Settings")] Canvas canvas;
-    [SerializeField, BoxGroup("Spawn Settings")] Image pullBar;
-    [SerializeField, BoxGroup("Spawn Settings")] Image sectionBar;
-    [SerializeField, BoxGroup("Spawn Settings"), Range(0, 1920), OnValueChanged("SpawnBarSections")] float barsTotalWidth;
-    [SerializeField, BoxGroup("Spawn Settings"), Range(-540, 540), OnValueChanged("SpawnBarSections")] float barY = -410f;
-    [SerializeField, BoxGroup("Spawn Settings"), OnValueChanged("SpawnBarSections")] int divNumb;
-    [SerializeField, BoxGroup("Spawn Settings"), OnValueChanged("SpawnBarSections")] int padding;
+    [SerializeField, BoxGroup("Spawn Settings")] Canvas _canvas;
+    [SerializeField, BoxGroup("Spawn Settings")] Image _pullBar;
+    [SerializeField, BoxGroup("Spawn Settings")] Image _sectionBar;
+    [SerializeField, BoxGroup("Spawn Settings"), Range(0, 1920), OnValueChanged("SpawnBarSections")] float _barsTotalWidth;
+    [SerializeField, BoxGroup("Spawn Settings"), Range(-540, 540), OnValueChanged("SpawnBarSections")] float _barY = -410f;
+    [SerializeField, BoxGroup("Spawn Settings"), OnValueChanged("SpawnBarSections")] int _divNumb;
+    [SerializeField, BoxGroup("Spawn Settings"), OnValueChanged("SpawnBarSections")] int _padding;
 
     private List<GameObject> _spawnedObjects;
 
-    [SerializeField] Image heart;
-    private float heartHeightPadding = 100;
-    public List<Vector3> heartPositions = new List<Vector3>();
-    public List<Image> barSectionList = new List<Image>();
-    private int currentHeartIndex;
-    private Image spawnedHeart;
+    [SerializeField] Image _heart;
+    private float _heartHeight_Padding = 100;
+    public List<Vector3> _heartPositions = new List<Vector3>();
+    public List<Image> _barSectionList = new List<Image>();
+    private int _currentHeartIndex;
+    private Image _spawnedHeart;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
         SpawnBarSections();
-        Spawnheart();
-        // foreach (Vector3 heartsy in heartPositions)
+        Spawn_heart();
+        // foreach (Vector3 _heartsy in _heartPositions)
         // {
-        //     Debug.Log(heartsy);
+        //     Debug.Log(_heartsy);
         // }
         
     }
@@ -40,62 +40,62 @@ public class PullingManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            MoveHeart(-2);
-            Debug.Log(currentHeartIndex);
+            Move_Heart(-2);
+            Debug.Log(_currentHeartIndex);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            MoveHeart(-1);
-            Debug.Log(currentHeartIndex);
+            Move_Heart(-1);
+            Debug.Log(_currentHeartIndex);
         }
         if (Input.GetKeyDown(KeyCode.T))
         {
-            MoveHeart(1);
-            Debug.Log(currentHeartIndex);
+            Move_Heart(1);
+            Debug.Log(_currentHeartIndex);
 
         }
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            MoveHeart(2);
-            Debug.Log(currentHeartIndex);
+            Move_Heart(2);
+            Debug.Log(_currentHeartIndex);
 
         }
         
     }
 
-    private void Spawnheart()
+    private void Spawn_heart()
     {
-        //Instantiate the heart Image prefab
-        spawnedHeart = Instantiate(heart, canvas.transform);
+        //Instantiate the _heart Image prefab
+        _spawnedHeart = Instantiate(_heart, _canvas.transform);
 
         //Check if the number of bar sections is even or not to know where to spwn it
 
-        if (heartPositions.Count() % 2 != 0) //it's not an even number of sections
+        if (_heartPositions.Count() % 2 != 0) //it's not an even number of sections
         {
             //as it's uneven, it just spawns above the anchor point of the center bar
-            currentHeartIndex = (int)Mathf.Ceil(heartPositions.Count() / 2);
-            spawnedHeart.rectTransform.anchoredPosition = new Vector3(0, barY + heartHeightPadding, 0);
+            _currentHeartIndex = (int)Mathf.Ceil(_heartPositions.Count() / 2);
+            _spawnedHeart.rectTransform.anchoredPosition = new Vector3(0, _barY + _heartHeight_Padding, 0);
         }
         else
         {
-            //if it's even then a coin toss is executed, spawning the heart on the bar either by the right or left of the center point
+            //if it's even then a coin toss is executed, spawning the _heart on the bar either by the right or left of the center point
             int coinToss = Random.Range(0, 2);
             if (coinToss == 0)
             {
-                currentHeartIndex = (int)Mathf.Ceil(heartPositions.Count() / 2) - 1;
-                spawnedHeart.rectTransform.anchoredPosition = new Vector3(heartPositions[currentHeartIndex].x, barY + heartHeightPadding, 0);
+                _currentHeartIndex = (int)Mathf.Ceil(_heartPositions.Count() / 2) - 1;
+                _spawnedHeart.rectTransform.anchoredPosition = new Vector3(_heartPositions[_currentHeartIndex].x, _barY + _heartHeight_Padding, 0);
             }
             else
             {
-                currentHeartIndex = (int)Mathf.Ceil(heartPositions.Count() / 2) + 1;
-                spawnedHeart.rectTransform.anchoredPosition = new Vector3(heartPositions[currentHeartIndex].x, barY + heartHeightPadding, 0);
+                _currentHeartIndex = (int)Mathf.Ceil(_heartPositions.Count() / 2) + 1;
+                _spawnedHeart.rectTransform.anchoredPosition = new Vector3(_heartPositions[_currentHeartIndex].x, _barY + _heartHeight_Padding, 0);
             }
         }
     }
     [Button(enabledMode:EButtonEnableMode.Always)]
     private void SpawnBarSections()
     {
-        if (canvas == null || pullBar == null || sectionBar == null) return;
+        if (_canvas == null || _pullBar == null || _sectionBar == null) return;
 
         if (_spawnedObjects != null)
         {
@@ -104,26 +104,26 @@ public class PullingManager : MonoBehaviour
         }
         else _spawnedObjects = new List<GameObject>();
 
-        heartPositions?.Clear();
-        barSectionList?.Clear();
+        _heartPositions?.Clear();
+        _barSectionList?.Clear();
         
-        if (divNumb <= 0) return;
+        if (_divNumb <= 0) return;
 
         float sectionWidth;
 
-        if (barsTotalWidth < padding)
+        if (_barsTotalWidth < _padding)
         {
-            padding = 0;
-            sectionWidth = (barsTotalWidth - (padding * (divNumb - 1))) / divNumb;
+            _padding = 0;
+            sectionWidth = (_barsTotalWidth - (_padding * (_divNumb - 1))) / _divNumb;
         }
         else
         {
-            sectionWidth = (barsTotalWidth - (padding * (divNumb - 1))) / divNumb;
+            sectionWidth = (_barsTotalWidth - (_padding * (_divNumb - 1))) / _divNumb;
         }
 
-        for (int i = 0; i < divNumb; i++)
+        for (int i = 0; i < _divNumb; i++)
         {
-            Image spawnedBar = Instantiate(sectionBar, canvas.transform);
+            Image spawnedBar = Instantiate(_sectionBar, _canvas.transform);
 
             // Resize each section
             spawnedBar.rectTransform.sizeDelta = new Vector2(sectionWidth, spawnedBar.rectTransform.sizeDelta.y);
@@ -134,23 +134,23 @@ public class PullingManager : MonoBehaviour
             spawnedBar.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
 
             // Calculate position
-            float x = -barsTotalWidth / 2f + (i * (sectionWidth + padding)) + (sectionWidth / 2f);
-            spawnedBar.rectTransform.anchoredPosition = new Vector2(x, barY);
+            float x = -_barsTotalWidth / 2f + (i * (sectionWidth + _padding)) + (sectionWidth / 2f);
+            spawnedBar.rectTransform.anchoredPosition = new Vector2(x, _barY);
 
-            //Add new bar position to a list that you can use as anchor points to move the heart around
-            heartPositions.Add(new Vector3(spawnedBar.rectTransform.anchoredPosition.x, spawnedBar.rectTransform.anchoredPosition.y + heartHeightPadding, 0));
+            //Add new bar position to a list that you can use as anchor points to move the _heart around
+            _heartPositions.Add(new Vector3(spawnedBar.rectTransform.anchoredPosition.x, spawnedBar.rectTransform.anchoredPosition.y + _heartHeight_Padding, 0));
             //Add the each of the new spwaned bars to a list so that your can give them attributes
-            barSectionList.Add(spawnedBar);
+            _barSectionList.Add(spawnedBar);
 
             _spawnedObjects.Add(spawnedBar.gameObject);
         }
     }
 
-    public void MoveHeart(int pushForce)
+    public void Move_Heart(int pushForce)
     {
-        //update the index position of the heart
-        currentHeartIndex += pushForce;
-        //visually move the heart to another anchor point
-        spawnedHeart.rectTransform.anchoredPosition = heartPositions[currentHeartIndex];
+        //update the index position of the _heart
+        _currentHeartIndex += pushForce;
+        //visually move the _heart to another anchor point
+        _spawnedHeart.rectTransform.anchoredPosition = _heartPositions[_currentHeartIndex];
     }
 }
