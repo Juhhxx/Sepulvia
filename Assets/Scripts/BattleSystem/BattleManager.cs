@@ -2,15 +2,8 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private BattleUIManager _uiManager;
+    [SerializeField] private PullingManager _pullManager;
+    [SerializeField] private PartyInfo _playerParty;
+    [SerializeField] private PartyInfo _enemyParty;
 }
