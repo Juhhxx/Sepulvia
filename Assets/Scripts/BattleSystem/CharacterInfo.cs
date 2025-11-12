@@ -5,8 +5,8 @@ using UnityEngine;
 public class CharacterInfo : ScriptableObject
 {
     [field: SerializeField] public string Name { get; private set; }
-    [field: SerializeField] public Sprite BattleSprite { get; private set; }
-    
+    [field: SerializeField] public GameObject BattlePrefab { get; private set; }
+
     [SerializeField] private int _baseStance;
     public int BaseStance => _baseStance;
 

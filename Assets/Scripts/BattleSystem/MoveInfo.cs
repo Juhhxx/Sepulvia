@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 [CreateAssetMenu(fileName = "Move", menuName = "Battle System/New Move")]
 public class MoveInfo : ScriptableObject
@@ -32,5 +33,5 @@ public class MoveInfo : ScriptableObject
     [field: Space(10)]
     [field: Header("Move Description")]
     [field: Space(5)]
-    [field: SerializeField, TextArea] public string Description;
+    [field: SerializeField, ResizableTextArea] public string Description { get; private set; }
 }
