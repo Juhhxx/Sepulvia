@@ -40,23 +40,23 @@ public class PullingManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Move_Heart(-2);
+            MoveHeart(-2);
             Debug.Log(_currentHeartIndex);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Move_Heart(-1);
+            MoveHeart(-1);
             Debug.Log(_currentHeartIndex);
         }
         if (Input.GetKeyDown(KeyCode.T))
         {
-            Move_Heart(1);
+            MoveHeart(1);
             Debug.Log(_currentHeartIndex);
 
         }
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            Move_Heart(2);
+            MoveHeart(2);
             Debug.Log(_currentHeartIndex);
 
         }
@@ -146,7 +146,7 @@ public class PullingManager : MonoBehaviour
         }
     }
 
-    public void Move_Heart(int pushForce)
+    public void MoveHeart(int pushForce)
     {
         //update the index position of the _heart
         _currentHeartIndex += pushForce;

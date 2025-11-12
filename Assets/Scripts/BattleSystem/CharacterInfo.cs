@@ -4,9 +4,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Character", menuName = "Battle System/New Character")]
 public class CharacterInfo : ScriptableObject
 {
+    [field: Header("Character Cosmetics")]
+    [field: Space(5)]
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public GameObject BattlePrefab { get; private set; }
 
+    [Space(10)]
+    [Header("Character Stats")]
+    [Space(5)]
     [SerializeField] private int _baseStance;
     public int BaseStance => _baseStance;
 
@@ -16,5 +21,8 @@ public class CharacterInfo : ScriptableObject
     [SerializeField] private int _baseStanceRecover;
     public int BaseStanceRecover => _baseStanceRecover;
 
+    [field: Space(10)]
+    [field: Header("Character Moves")]
+    [field: Space(5)]
     [field: SerializeField] public List<MoveInfo> MoveSet { get; private set; }
 }
