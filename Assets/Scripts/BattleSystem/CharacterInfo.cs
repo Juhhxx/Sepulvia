@@ -12,14 +12,17 @@ public class CharacterInfo : ScriptableObject
     [Space(10)]
     [Header("Character Stats")]
     [Space(5)]
+    [SerializeField] private int _baseSpeed;
+    public int Speed => _baseSpeed;
+
     [SerializeField] private int _baseStance;
-    public int BaseStance => _baseStance;
+    public int Stance => _baseStance;
 
     private int _currentStance;
     public int CurrentStance => _currentStance;
 
     [SerializeField] private int _baseStanceRecover;
-    public int BaseStanceRecover => _baseStanceRecover;
+    public int StanceRecover => _baseStanceRecover;
 
     [field: Space(10)]
     [field: Header("Character Moves")]
