@@ -20,7 +20,7 @@ public class CharacterInfo : ScriptableObject
     public int Stance => _baseStance;
 
     private int _currentStance;
-    public int CurrentStance => _currentStance;
+    public int CurrentStance { get => _currentStance; set => _currentStance = value; }
 
     [SerializeField] private int _baseStanceRecover;
     public int StanceRecover => _baseStanceRecover;

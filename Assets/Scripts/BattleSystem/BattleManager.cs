@@ -4,7 +4,7 @@ using NaughtyAttributes;
 using System.Collections.Generic;
 using System;
 
-public class BattleManager : MonoBehaviour
+public class BattleManager : MonoBehaviourSingleton<BattleManager>
 {
     [Header("Battle Managers")]
     [Space(5)]
@@ -73,8 +73,8 @@ public class BattleManager : MonoBehaviour
 
     public void StartBattle(PartyInfo playerParty, PartyInfo enemyParty)
     {
-        _playerParty = playerParty;
-        _enemyParty = enemyParty;
+        _playerParty = playerParty.Instantiate();
+        _enemyParty = enemyParty.Instantiate();
 
         _numberOfBattlers = playerParty.PartySize + enemyParty.PartySize;
 

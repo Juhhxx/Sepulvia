@@ -7,6 +7,12 @@ public class BattleResolver : MonoBehaviour
     public void DoMove(MoveInfo move, CharacterInfo user, CharacterInfo target)
     {
         Debug.Log($"{user.Name} USED {move.Name} AGAINST {target.Name}");
+
+        if (user.IsPlayer) _pullManager.MoveHeart(-move.PullStrength);
+        else _pullManager.MoveHeart(move.PullStrength);
+
+        user.CurrentStance -= move.StanceCost;
+        target.CurrentStance -= move.StanceDamage;
     }
 
     public void UseItem(ItemInfo item, CharacterInfo user)
