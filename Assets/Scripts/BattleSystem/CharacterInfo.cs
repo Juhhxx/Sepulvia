@@ -29,4 +29,9 @@ public class CharacterInfo : ScriptableObject
     [field: Header("Character Moves")]
     [field: Space(5)]
     [field: SerializeField, Expandable] public List<MoveInfo> MoveSet { get; private set; }
+
+    [field: Space(10)]
+    [field: Header("Character Cosmetics")]
+    [field: Space(5)]
+    [field: SerializeField] public bool IsPlayer { get; private set; }
 }

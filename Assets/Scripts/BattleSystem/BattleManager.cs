@@ -9,7 +9,6 @@ public class BattleManager : MonoBehaviour
     [Header("Battle Managers")]
     [Space(5)]
     [SerializeField] private BattleResolver _battleResolver;
-    [SerializeField] private PullingManager _pullManager;
     [SerializeField] private BattleUIManager _uiManager;
 
     [Space(10)]
@@ -58,6 +57,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    // Battle Turn Variables
     public event System.Action OnTurnPassed;
     private int _currentTurn;
     public int CurrentTurn
@@ -93,12 +93,42 @@ public class BattleManager : MonoBehaviour
             ExecuteAction(action);
         }
 
+        _actionList.Clear();
+
         CurrentTurn++;
     }
 
     private void ExecuteAction(Action action)
     {
-        
+        switch (action.Type)
+        {
+            case ActionType.Move:
+
+                var party = action.Character.IsPlayer ? _enemyParty : _playerParty;
+                var target = ChooseTarget(party);
+
+                _battleResolver.DoMove(action.Move, action.Character, target);
+                break;
+
+            case ActionType.Item:
+
+                _battleResolver.UseItem(action.Item, action.Character);
+                break;
+                
+            case ActionType.Empty:
+
+                break;
+        }
+    }
+
+    private CharacterInfo ChooseTarget(PartyInfo fromParty)
+    {
+        int rnd = UnityEngine.Random.Range(0, fromParty.PartySize);
+        CharacterInfo c = fromParty.PartyMembers[rnd];
+
+        Debug.Log($"TARGETING {c.Name}");
+
+        return c;
     }
 
     private void OrganizeActions()

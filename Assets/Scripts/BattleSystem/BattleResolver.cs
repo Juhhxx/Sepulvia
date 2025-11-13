@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class BattleResolver : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private PullingManager _pullManager;
+
+    public void DoMove(MoveInfo move, CharacterInfo user, CharacterInfo target)
     {
-        
+        Debug.Log($"{user.Name} USED {move.Name} AGAINST {target.Name}");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UseItem(ItemInfo item, CharacterInfo user)
     {
-        
+        Debug.Log($"{user.Name} USED {item.Name}");
     }
 }
