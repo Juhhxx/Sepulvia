@@ -34,4 +34,9 @@ public class MoveInfo : ScriptableObject
     [field: Header("Move Description")]
     [field: Space(5)]
     [field: SerializeField, ResizableTextArea] public string Description { get; private set; }
+
+    public MoveInfo Instantiate()
+    {
+        return Instantiate(this);
+    }
 }

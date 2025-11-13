@@ -34,4 +34,16 @@ public class CharacterInfo : ScriptableObject
     [field: Header("Character Cosmetics")]
     [field: Space(5)]
     [field: SerializeField] public bool IsPlayer { get; private set; }
+
+    public CharacterInfo Instantiate()
+    {
+        var c = Instantiate(this);
+
+        for (int i = 0; i < c.MoveSet.Count; i++)
+        {
+            c.MoveSet[i] = c.MoveSet[i].Instantiate();
+        }
+
+        return c;
+    }
 }
