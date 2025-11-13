@@ -20,19 +20,19 @@ public class BattleManager : MonoBehaviour
     private int _numberOfBattlers;
 
     // Battle Action Variables
-    [SerializeField, ReadOnly] private List<Action> _actionList;
+    [SerializeField, ReadOnly] private List<BattleAction> _actionList;
 
     public enum ActionType { Move, Item, Empty }
 
     [Serializable]
-    public struct Action
+    public struct BattleAction
     {
         public CharacterInfo Character { get; private set; }
         public ActionType Type { get; private set;}
         public MoveInfo Move { get; private set; }
         public ItemInfo Item { get; private set;}
 
-        public Action(CharacterInfo character, ActionType type, MoveInfo move)
+        public BattleAction(CharacterInfo character, ActionType type, MoveInfo move)
         {
             Character = character;
             Type = type;
@@ -40,7 +40,7 @@ public class BattleManager : MonoBehaviour
             Item = null;
         }
 
-        public Action(CharacterInfo character, ActionType type, ItemInfo item)
+        public BattleAction(CharacterInfo character, ActionType type, ItemInfo item)
         {
             Character = character;
             Type = type;
@@ -48,17 +48,17 @@ public class BattleManager : MonoBehaviour
             Item = item;
         }
 
-        public Action(CharacterInfo character, ActionType type)
+        public BattleAction(CharacterInfo character)
         {
             Character = character;
-            Type = type;
+            Type = ActionType.Empty;
             Move = null;
             Item = null;
         }
     }
 
     // Battle Turn Variables
-    public event System.Action OnTurnPassed;
+    public event Action OnTurnPassed;
     private int _currentTurn;
     public int CurrentTurn
     {
@@ -88,7 +88,7 @@ public class BattleManager : MonoBehaviour
 
         OrganizeActions();
 
-        foreach (Action action in _actionList)
+        foreach (BattleAction action in _actionList)
         {
             ExecuteAction(action);
         }
@@ -98,7 +98,23 @@ public class BattleManager : MonoBehaviour
         CurrentTurn++;
     }
 
-    private void ExecuteAction(Action action)
+    public void AddAction(CharacterInfo character)
+    {
+        var action = new BattleAction(character);
+        _actionList.Add(action);
+    }
+    public void AddAction(CharacterInfo character, MoveInfo move)
+    {
+        var action = new BattleAction(character, ActionType.Move, move);
+        _actionList.Add(action);
+    }
+    public void AddAction(CharacterInfo character, ItemInfo item)
+    {
+        var action = new BattleAction(character, ActionType.Item, item);
+        _actionList.Add(action);
+    }
+
+    private void ExecuteAction(BattleAction action)
     {
         switch (action.Type)
         {
@@ -114,23 +130,12 @@ public class BattleManager : MonoBehaviour
 
                 _battleResolver.UseItem(action.Item, action.Character);
                 break;
-                
+
             case ActionType.Empty:
 
                 break;
         }
     }
-
-    private CharacterInfo ChooseTarget(PartyInfo fromParty)
-    {
-        int rnd = UnityEngine.Random.Range(0, fromParty.PartySize);
-        CharacterInfo c = fromParty.PartyMembers[rnd];
-
-        Debug.Log($"TARGETING {c.Name}");
-
-        return c;
-    }
-
     private void OrganizeActions()
     {
         for (int i = 0; i < _actionList.Count - 1; i++)
@@ -143,5 +148,15 @@ public class BattleManager : MonoBehaviour
                 _actionList[i + 1] = tmp;
             }
         }
+    }
+
+    private CharacterInfo ChooseTarget(PartyInfo fromParty)
+    {
+        int rnd = UnityEngine.Random.Range(0, fromParty.PartySize);
+        CharacterInfo c = fromParty.PartyMembers[rnd];
+
+        Debug.Log($"TARGETING {c.Name}");
+
+        return c;
     }
 }
