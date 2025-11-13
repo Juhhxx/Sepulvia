@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Character", menuName = "Battle System/New Character")]
@@ -27,5 +28,5 @@ public class CharacterInfo : ScriptableObject
     [field: Space(10)]
     [field: Header("Character Moves")]
     [field: Space(5)]
-    [field: SerializeField] public List<MoveInfo> MoveSet { get; private set; }
+    [field: SerializeField, Expandable] public List<MoveInfo> MoveSet { get; private set; }
 }

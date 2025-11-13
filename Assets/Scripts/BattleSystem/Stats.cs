@@ -1,5 +1,7 @@
 public enum Stats
 {
     PullStrength,
-    Stance
+    Stance,
+    StanceGain,
+    Speed
 }
