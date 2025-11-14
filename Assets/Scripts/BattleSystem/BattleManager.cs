@@ -3,7 +3,6 @@ using UnityEngine;
 using NaughtyAttributes;
 using System.Collections.Generic;
 using System;
-using Unity.VisualScripting;
 
 public class BattleManager : MonoBehaviourSingleton<BattleManager>
 {
@@ -36,18 +35,18 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
         public MoveInfo Move { get; private set; }
         public ItemInfo Item { get; private set;}
 
-        public BattleAction(CharacterInfo character, ActionType type, MoveInfo move)
+        public BattleAction(CharacterInfo character, MoveInfo move)
         {
             Character = character;
-            Type = type;
+            Type = ActionType.Move;
             Move = move;
             Item = null;
         }
 
-        public BattleAction(CharacterInfo character, ActionType type, ItemInfo item)
+        public BattleAction(CharacterInfo character, ItemInfo item)
         {
             Character = character;
-            Type = type;
+            Type = ActionType.Item;
             Move = null;
             Item = item;
         }
@@ -243,12 +242,12 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
     }
     public void AddAction(CharacterInfo character, MoveInfo move)
     {
-        var action = new BattleAction(character, ActionType.Move, move);
+        var action = new BattleAction(character, move);
         _actionList.Add(action);
     }
     public void AddAction(CharacterInfo character, ItemInfo item)
     {
-        var action = new BattleAction(character, ActionType.Item, item);
+        var action = new BattleAction(character, item);
         _actionList.Add(action);
     }
 
