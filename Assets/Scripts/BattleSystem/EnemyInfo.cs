@@ -13,7 +13,7 @@ public class EnemyInfo : CharacterInfo
 
     public void SetUpAI()
     {
-        _battleAI = new EnemyBattleAI();
+        _battleAI = new EnemyBattleAI(this);
     }
 
 }

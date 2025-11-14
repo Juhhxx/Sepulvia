@@ -95,18 +95,6 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
 
         _numberOfBattlers = playerParty.PartySize + enemyParty.PartySize;
 
-        // Make Enemies Choose Action Every Turn
-        foreach (EnemyInfo enemy in _enemyParty.PartyMembers)
-        {
-            enemy.SetUpAI();
-            OnTurnPassed += () =>
-            {
-                int rnd = enemy.BattleAI.ChooseRandom(enemy.MoveSet.Count);
-                MoveInfo m = enemy.MoveSet[rnd];
-                AddAction(enemy, m);
-            };
-        }
-
         // Make Stance Recovering
         OnTurnPassed += () =>
         {
@@ -141,6 +129,17 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
                 foreach (MoveInfo m in c.MoveSet) m.TurnPassed();
             }
         };
+
+        // Make Enemies Choose Action Every Turn
+        foreach (EnemyInfo enemy in _enemyParty.PartyMembers)
+        {
+            enemy.SetUpAI();
+            OnTurnPassed += () =>
+            {
+                MoveInfo m = enemy.BattleAI.ChooseRandom();
+                AddAction(enemy, m);
+            };
+        }
 
         SetUpBattleUI();
 
