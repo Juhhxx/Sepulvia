@@ -40,10 +40,14 @@ public class BattleResolver : MonoBehaviour
     {
         if (user is PlayerInfo)
         {
-            _pullManager.MoveHeart(-move.PullStrength +
+            _pullManager.MoveHeart(-move.PullStrength -
             user.GetModifierBonus(Stats.PullStrength));
         }
-        else _pullManager.MoveHeart(move.PullStrength);
+        else
+        {
+            _pullManager.MoveHeart(move.PullStrength +
+            user.GetModifierBonus(Stats.PullStrength));
+        }
     }
 
     private void DoStatModifier(MoveInfo move, CharacterInfo target)
