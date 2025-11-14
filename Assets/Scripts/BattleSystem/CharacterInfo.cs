@@ -50,7 +50,7 @@ public class CharacterInfo : ScriptableObject
 
         _statModifiers.RemoveAll(m => m.CheckIfDone());
     }
-    private int GetModifierBonus(Stats stat)
+    public int GetModifierBonus(Stats stat)
     {
         if (_statModifiers.Count == 0) return 0;
 

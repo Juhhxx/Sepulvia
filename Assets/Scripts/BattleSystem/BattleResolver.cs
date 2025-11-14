@@ -38,7 +38,11 @@ public class BattleResolver : MonoBehaviour
 
     private void DoPull(MoveInfo move, CharacterInfo user)
     {
-        if (user is PlayerInfo) _pullManager.MoveHeart(-move.PullStrength);
+        if (user is PlayerInfo)
+        {
+            _pullManager.MoveHeart(-move.PullStrength +
+            user.GetModifierBonus(Stats.PullStrength));
+        }
         else _pullManager.MoveHeart(move.PullStrength);
     }
 
