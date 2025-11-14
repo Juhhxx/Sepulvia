@@ -16,6 +16,8 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
     [Space(5)]
     [SerializeField, Expandable] private PartyInfo _playerParty;
     [SerializeField, Expandable] private PartyInfo _enemyParty;
+
+    private CharacterInfo Player => _playerParty.PartyMembers[0];
     
     private int _numberOfBattlers;
 
@@ -25,7 +27,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
     public enum ActionType { Move, Item, Empty }
 
     [Serializable]
-    public struct BattleAction
+    public class BattleAction
     {
         public CharacterInfo Character { get; private set; }
         public ActionType Type { get; private set;}
@@ -71,31 +73,109 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
         }
     }
 
+    private void Start()
+    {
+#if UNITY_EDITOR
+        if (_playerParty != null && _enemyParty != null) StartBattle(_playerParty, _enemyParty);
+#endif
+    }
+
     public void StartBattle(PartyInfo playerParty, PartyInfo enemyParty)
     {
         _playerParty = playerParty.Instantiate();
         _enemyParty = enemyParty.Instantiate();
 
+        Debug.Log($"PLAYER : {Player.CurrentStance} ENEMY : {_enemyParty.PartyMembers[0].CurrentStance}");
+
         _numberOfBattlers = playerParty.PartySize + enemyParty.PartySize;
+
+        // Make Enemies Choose Action Every Turn
+        foreach (EnemyInfo enemy in _enemyParty.PartyMembers)
+        {
+            enemy.SetUpAI();
+            OnTurnPassed += () =>
+            {
+                int rnd = enemy.BattleAI.ChooseRandom(enemy.MoveSet.Count);
+                MoveInfo m = enemy.MoveSet[rnd];
+                AddAction(enemy, m);
+            };
+        }
+
+        // Make Stance Recovering
+        OnTurnPassed += () =>
+        {
+            Player.CurrentStance += Player.StanceRecover;
+
+            foreach (CharacterInfo e in _enemyParty.PartyMembers)
+            {
+                e.CurrentStance += e.StanceRecover;
+            }
+
+            _uiManager.UpdateStanceBars(_playerParty, _enemyParty);
+        };
+
+        // Make Modifier Checking
+        OnTurnPassed += () =>
+        {
+            Player.CheckModifier();
+
+            foreach (CharacterInfo e in _enemyParty.PartyMembers)
+            {
+                e.CheckModifier();
+            }
+        };
+
+        SetUpBattleUI();
 
         StopAllCoroutines();
         StartCoroutine(BattleLoopCR());
     }
 
+    private void SetUpBattleUI()
+    {
+        _uiManager.SetUpStanceBars(_playerParty, _enemyParty);
+
+        var moveButtons = _uiManager.GetMoveButtons();
+
+        for (int i = 0; i < moveButtons.Count; i++)
+        {
+            MoveInfo move = (i < Player.MoveSet.Count) ? Player.MoveSet?[i] : null;
+
+            if (move != null)
+            {
+                moveButtons[i].gameObject.SetActive(true);
+                moveButtons[i].onClick.AddListener(() => AddAction(Player, move));
+                _uiManager.SetUpButton(moveButtons[i], move.Name);
+            }
+            else moveButtons[i].gameObject.SetActive(false);
+        }
+    }
+
     private IEnumerator BattleLoopCR()
     {
-        yield return new WaitUntil(() => _actionList.Count == _numberOfBattlers);
-
-        OrganizeActions();
-
-        foreach (BattleAction action in _actionList)
+        while (true)
         {
-            ExecuteAction(action);
+            CurrentTurn++;
+
+            yield return new WaitUntil(() => _actionList.Count == _numberOfBattlers);
+
+            _uiManager.ToogleMoveButtons(false);
+
+            OrganizeActions();
+
+            foreach (BattleAction action in _actionList)
+            {
+                ExecuteAction(action);
+
+                _uiManager.UpdateStanceBars(_playerParty, _enemyParty);
+
+                yield return new WaitForSeconds(1);
+            }
+
+            // Clear Actions List
+            _actionList.Clear();
+            _uiManager.ToogleActionButtons(true);
         }
-
-        _actionList.Clear();
-
-        CurrentTurn++;
     }
 
     public void AddAction(CharacterInfo character)
@@ -120,7 +200,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
         {
             case ActionType.Move:
 
-                var party = action.Character.IsPlayer ? _enemyParty : _playerParty;
+                var party = action.Character is PlayerInfo ? _enemyParty : _playerParty;
                 var target = ChooseTarget(party);
 
                 _battleResolver.DoMove(action.Move, action.Character, target);

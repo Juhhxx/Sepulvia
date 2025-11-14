@@ -7,12 +7,44 @@ public class BattleResolver : MonoBehaviour
     public void DoMove(MoveInfo move, CharacterInfo user, CharacterInfo target)
     {
         Debug.Log($"{user.Name} USED {move.Name} AGAINST {target.Name}");
-
-        if (user.IsPlayer) _pullManager.MoveHeart(-move.PullStrength);
-        else _pullManager.MoveHeart(move.PullStrength);
+        Debug.Log($"{target.Name} TOOK {move.StanceDamage} DAMAGE");
 
         user.CurrentStance -= move.StanceCost;
         target.CurrentStance -= move.StanceDamage;
+
+        switch(move.Type)
+        {
+            case MoveTypes.Pull:
+
+                DoPull(move, user);
+                break;
+
+            case MoveTypes.Buff:
+
+                DoStatModifier(move, user);
+                break;
+
+            case MoveTypes.Nerf:
+
+                DoStatModifier(move, target);
+                break;
+
+            case MoveTypes.Modifier:
+
+                // NOT IMPLEMENTED
+                break;
+        }
+    }
+
+    private void DoPull(MoveInfo move, CharacterInfo user)
+    {
+        if (user is PlayerInfo) _pullManager.MoveHeart(-move.PullStrength);
+        else _pullManager.MoveHeart(move.PullStrength);
+    }
+
+    private void DoStatModifier(MoveInfo move, CharacterInfo target)
+    {
+        foreach (StatModifier sm in move.StatModifiers) target.AddModifier(sm);
     }
 
     public void UseItem(ItemInfo item, CharacterInfo user)

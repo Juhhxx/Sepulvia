@@ -28,7 +28,7 @@ public class MoveInfo : ScriptableObject
     [field: Header("Buff/Nerf Move Parameters")]
     [field: Space(5)]
     [field: ShowIf("IsEffect")]
-    [field: SerializeField] public List<StatModifier> Stats { get; private set; }
+    [field: SerializeField] public List<StatModifier> StatModifiers { get; private set; }
 
     [field: Space(10)]
     [field: Header("Move Description")]

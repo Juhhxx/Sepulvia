@@ -1,3 +1,4 @@
+using System.Collections;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class FillBar : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _barNameTMP;
     [SerializeField] private TextMeshProUGUI _barInfoTMP;
     [SerializeField] private Image _barFillImage;
+    [SerializeField] private float _updateSpeed = 0.5f;
 
     [OnValueChanged("UpdateBar")]
     [SerializeField, Range(0, 1)] private float _barFillAmout;
@@ -30,7 +32,28 @@ public class FillBar : MonoBehaviour
 
     public void UpdateFillAmout(int newAmount)
     {
-        _barInfoTMP.text = $"{_infoName} ({newAmount}/{_maxValue})";
-        _barFillAmout = _maxValue / newAmount;
+        Debug.Log($"CURRENT HP : {newAmount}");
+        StopAllCoroutines();
+        StartCoroutine(UpdateBarCR(newAmount / _maxValue));
+    }
+
+    private IEnumerator UpdateBarCR(float to)
+    {
+        float from = _barFillAmout;
+        float newValue = from;
+        float i = 0;
+
+        while (_barFillAmout != to)
+        {
+            newValue = Mathf.Lerp(from, to, i);
+
+            _barFillImage.fillAmount = newValue;
+            _barInfoTMP.text = $"{_infoName} ({(int)(_maxValue * newValue)}/{_maxValue})";
+            _barFillAmout = newValue;
+
+            i += Time.deltaTime * _updateSpeed;
+
+            yield return null;
+        }
     }
 }
