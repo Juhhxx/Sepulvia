@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Character", menuName = "Battle System/New Character")]
 public class CharacterInfo : ScriptableObject
 {
     [field: Header("Character Cosmetics")]
@@ -14,26 +13,61 @@ public class CharacterInfo : ScriptableObject
     [Header("Character Stats")]
     [Space(5)]
     [SerializeField] private int _baseSpeed;
-    public int Speed => _baseSpeed;
+    public int Speed => _baseSpeed + GetModifierBonus(Stats.Speed);
 
     [SerializeField] private int _baseStance;
-    public int Stance => _baseStance;
+    public int MaxStance => _baseStance + GetModifierBonus(Stats.Stance);
 
     private int _currentStance;
-    public int CurrentStance { get => _currentStance; set => _currentStance = value; }
+    public int CurrentStance
+    {
+        get => _currentStance;
+        set
+        {
+            if (value > MaxStance) _currentStance = MaxStance;
+            else _currentStance = value;
+        }
+    }
 
     [SerializeField] private int _baseStanceRecover;
-    public int StanceRecover => _baseStanceRecover;
+    public int StanceRecover => _baseStanceRecover + GetModifierBonus(Stats.StanceGain);
+
+    [Space(10)]
+    [Header("Character Stats Modifiers")]
+    [Space(5)]
+    [SerializeField, ReadOnly] private List<StatModifier> _statModifiers;
+
+    public void AddModifier(StatModifier modifier)
+    {
+        _statModifiers.Add(modifier);
+    }
+    public void CheckModifier()
+    {
+        foreach (StatModifier m in _statModifiers)
+        {
+            m.TurnPassed();
+        }
+
+        _statModifiers.RemoveAll(m => m.CheckIfDone());
+    }
+    private int GetModifierBonus(Stats stat)
+    {
+        if (_statModifiers.Count == 0) return 0;
+
+        int bonus = 0;
+
+        foreach (StatModifier m in _statModifiers)
+        {
+            if (m.StatAffected == stat) bonus += m.AmountAffected;
+        }
+
+        return bonus;
+    }
 
     [field: Space(10)]
     [field: Header("Character Moves")]
     [field: Space(5)]
     [field: SerializeField, Expandable] public List<MoveInfo> MoveSet { get; private set; }
-
-    [field: Space(10)]
-    [field: Header("Character Cosmetics")]
-    [field: Space(5)]
-    [field: SerializeField] public bool IsPlayer { get; private set; }
 
     public CharacterInfo Instantiate()
     {
@@ -43,6 +77,9 @@ public class CharacterInfo : ScriptableObject
         {
             c.MoveSet[i] = c.MoveSet[i].Instantiate();
         }
+
+        c.CurrentStance = c.MaxStance;
+        _statModifiers = new List<StatModifier>();
 
         return c;
     }
