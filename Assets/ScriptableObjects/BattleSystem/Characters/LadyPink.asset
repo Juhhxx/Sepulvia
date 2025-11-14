@@ -9,13 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 236d9e1f8a100f24592f328f1151e81a, type: 3}
+  m_Script: {fileID: 11500000, guid: 81cf7145c6105cd47ac554ceda5d8a59, type: 3}
   m_Name: LadyPink
-  m_EditorClassIdentifier: Assembly-CSharp::CharacterInfo
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyInfo
   <Name>k__BackingField: Lady in Hot Pink
   <BattlePrefab>k__BackingField: {fileID: 383824495953575252, guid: e383d3e911664434c9040d1f580fdf0e, type: 3}
+  _baseSpeed: 5
   _baseStance: 50
-  _baseStanceRecover: 1
+  _baseStanceRecover: 2
   <MoveSet>k__BackingField:
   - {fileID: 11400000, guid: 77ffd1ff502432a43a3ff6be1f89d8e2, type: 2}
   - {fileID: 11400000, guid: f0bc1c23b0725914f940e9c107a21833, type: 2}
+  <Inteligence>k__BackingField: 0
