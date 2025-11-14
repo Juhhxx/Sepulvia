@@ -9,10 +9,29 @@ public class MoveInfo : ScriptableObject
     [field: Header("Base Move Parameters")]
     [field: Space(5)]
     [field: SerializeField] public string Name { get; private set; }
+
     [field: SerializeField] public MoveTypes Type { get; private set; }
+
     [field: SerializeField] public int StanceCost { get; private set; }
+    public bool CheckStanceCost(CharacterInfo character) => character.CurrentStance >= StanceCost;
+
     [field: SerializeField] public int StanceDamage { get; private set; }
+
     [field: SerializeField] public int Cooldown { get; private set; }
+    [SerializeField, ReadOnly] private int _turnsPassed = 0;
+    [SerializeField, ReadOnly] private bool _inCooldown = false;
+
+    public void TurnPassed()
+    {
+        if (_inCooldown) _turnsPassed++;
+        if (_turnsPassed == Cooldown + 1) // Don't cout first turn
+        {
+            _inCooldown = false;
+            _turnsPassed = 0;
+        }
+    }
+    public void UsedMove() => _inCooldown = true;
+    public bool CheckIfCooldown() => _inCooldown;
 
     [Space(10)]
     [Header("Pull Move Parameters")]

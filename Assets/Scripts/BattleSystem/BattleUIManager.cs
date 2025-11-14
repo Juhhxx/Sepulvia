@@ -47,9 +47,23 @@ public class BattleUIManager : MonoBehaviour
     public List<Button> GetMoveButtons()
     => _moveButtons.transform.GetChild(0).GetComponentsInChildren<Button>().ToList();
 
-    public void SetUpButton(Button button, string name)
+    public void SetUpButton(Button button, string name, bool activated)
     {
         button.GetComponentInChildren<TextMeshProUGUI>().text = name;
+
+        if (activated)
+        {
+            button.enabled = true;
+            button.GetComponent<Image>().color = Color.white;
+        }
+        else
+        {
+            button.enabled = false;
+            Color transparent = Color.white;
+            transparent.a = 0.5f;
+
+            button.GetComponent<Image>().color = transparent;
+        }
     }
 
     public void SetUpStanceBars(PartyInfo playerParty, PartyInfo enemyParty)

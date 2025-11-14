@@ -132,6 +132,17 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
             }
         };
 
+        // Count Turns in Moves
+        OnTurnPassed += () =>
+        {
+            foreach (MoveInfo m in Player.MoveSet) m.TurnPassed();
+
+            foreach (CharacterInfo c in _enemyParty.PartyMembers)
+            {
+                foreach (MoveInfo m in c.MoveSet) m.TurnPassed();
+            }
+        };
+
         SetUpBattleUI();
 
         StopAllCoroutines();
@@ -142,6 +153,11 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
     {
         _uiManager.SetUpStanceBars(_playerParty, _enemyParty);
 
+        SetUpButtons();
+    }
+
+    private void SetUpButtons()
+    {
         var moveButtons = _uiManager.GetMoveButtons();
 
         for (int i = 0; i < moveButtons.Count; i++)
@@ -152,9 +168,31 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
             {
                 moveButtons[i].gameObject.SetActive(true);
                 moveButtons[i].onClick.AddListener(() => AddAction(Player, move));
-                _uiManager.SetUpButton(moveButtons[i], move.Name);
+                _uiManager.SetUpButton(moveButtons[i], move.Name,
+                !move.CheckIfCooldown() && move.CheckStanceCost(Player));
+
+                Debug.Log($"SET MOVE BUTON FOR {move.Name}");
             }
             else moveButtons[i].gameObject.SetActive(false);
+
+        }
+    }
+    
+    private void UpdateButtons()
+    {
+        var moveButtons = _uiManager.GetMoveButtons();
+
+        for (int i = 0; i < moveButtons.Count; i++)
+        {
+            MoveInfo move = (i < Player.MoveSet.Count) ? Player.MoveSet?[i] : null;
+
+            if (move != null)
+            {
+                _uiManager.SetUpButton(moveButtons[i], move.Name,
+                !move.CheckIfCooldown() && move.CheckStanceCost(Player));
+
+                Debug.Log($"UPDATE MOVE BUTON FOR {move.Name}");
+            }
         }
     }
 
@@ -169,8 +207,10 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
             {
                 if (e.CurrentStance == 0) AddAction(e);
             }
-            
+
             CurrentTurn++;
+
+            UpdateButtons();
 
             yield return new WaitUntil(() => _actionList.Count == _numberOfBattlers);
 
@@ -221,6 +261,8 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
                 var party = action.Character is PlayerInfo ? _enemyParty : _playerParty;
                 var target = ChooseTarget(party);
 
+                action.Move.UsedMove();
+
                 _battleResolver.DoMove(action.Move, action.Character, target);
 
                 _dialogueManager.AddDialogue($"{action.Character.Name} used {action.Move.Name}.");
@@ -234,7 +276,8 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
 
             case ActionType.Empty:
 
-                _dialogueManager.AddDialogue($"{action.Character.Name} lost their stance.");
+                action.Character.CurrentStance = action.Character.MaxStance;
+                _dialogueManager.AddDialogue($"{action.Character.Name} lost their stance and took a turn to recover their balance.");
                 break;
         }
     }
