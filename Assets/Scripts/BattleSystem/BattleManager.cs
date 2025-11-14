@@ -3,6 +3,7 @@ using UnityEngine;
 using NaughtyAttributes;
 using System.Collections.Generic;
 using System;
+using Unity.VisualScripting;
 
 public class BattleManager : MonoBehaviourSingleton<BattleManager>
 {
@@ -10,6 +11,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
     [Space(5)]
     [SerializeField] private BattleResolver _battleResolver;
     [SerializeField] private BattleUIManager _uiManager;
+    [SerializeField] private DialogueManager _dialogueManager;
 
     [Space(10)]
     [Header("Battlers Info")]
@@ -73,6 +75,8 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
         }
     }
 
+    private WaitForDialogueEnd _wfd;
+
     private void Start()
     {
 #if UNITY_EDITOR
@@ -85,7 +89,10 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
         _playerParty = playerParty.Instantiate();
         _enemyParty = enemyParty.Instantiate();
 
-        Debug.Log($"PLAYER : {Player.CurrentStance} ENEMY : {_enemyParty.PartyMembers[0].CurrentStance}");
+        _uiManager.InstantiateBattlePrefabs(_playerParty, _enemyParty);
+        _dialogueManager.SetUpDialogueManager();
+
+        _wfd = new WaitForDialogueEnd(_dialogueManager);
 
         _numberOfBattlers = playerParty.PartySize + enemyParty.PartySize;
 
@@ -155,11 +162,20 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
     {
         while (true)
         {
+            // If stance = 0, character loses turn
+            if (Player.CurrentStance == 0) AddAction(Player);
+
+            foreach (CharacterInfo e in _enemyParty.PartyMembers)
+            {
+                if (e.CurrentStance == 0) AddAction(e);
+            }
+            
             CurrentTurn++;
 
             yield return new WaitUntil(() => _actionList.Count == _numberOfBattlers);
 
             _uiManager.ToogleMoveButtons(false);
+            _uiManager.ToogleActionButtons(false);
 
             OrganizeActions();
 
@@ -168,8 +184,10 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
                 ExecuteAction(action);
 
                 _uiManager.UpdateStanceBars(_playerParty, _enemyParty);
+                _dialogueManager.StartDialogues();
 
-                yield return new WaitForSeconds(1);
+                yield return _wfd;
+                yield return new WaitForSeconds(0.5f);
             }
 
             // Clear Actions List
@@ -204,15 +222,19 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
                 var target = ChooseTarget(party);
 
                 _battleResolver.DoMove(action.Move, action.Character, target);
+
+                _dialogueManager.AddDialogue($"{action.Character.Name} used {action.Move.Name}.");
                 break;
 
             case ActionType.Item:
 
                 _battleResolver.UseItem(action.Item, action.Character);
+                _dialogueManager.AddDialogue($"{action.Character.Name} used {action.Item.Name}.");
                 break;
 
             case ActionType.Empty:
 
+                _dialogueManager.AddDialogue($"{action.Character.Name} lost their stance.");
                 break;
         }
     }

@@ -18,13 +18,14 @@ public class CharacterInfo : ScriptableObject
     [SerializeField] private int _baseStance;
     public int MaxStance => _baseStance + GetModifierBonus(Stats.Stance);
 
-    private int _currentStance;
+    [SerializeField, ReadOnly] private int _currentStance;
     public int CurrentStance
     {
         get => _currentStance;
         set
         {
             if (value > MaxStance) _currentStance = MaxStance;
+            else if (value <= 0) _currentStance = 0;
             else _currentStance = value;
         }
     }

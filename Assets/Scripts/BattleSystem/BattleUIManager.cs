@@ -6,11 +6,13 @@ using UnityEngine.UI;
 
 public class BattleUIManager : MonoBehaviour
 {
-    [SerializeField] private FillBar _playerFillBar;
-    [SerializeField] private FillBar _enemyFillBar;
+    [SerializeField] private FillBar _playerStanceBar;
+    [SerializeField] private GameObject _enemyStanceBarPrefab;
+    private List<FillBar> _enemyStanceBars;
 
     [SerializeField] private Transform _playerPivot;
     [SerializeField] private Transform _enemyPivot;
+    private List<GameObject> _characterModels;
 
     [SerializeField] private GameObject _actionButtons;
     [SerializeField] private GameObject _moveButtons;
@@ -19,6 +21,23 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _panelTitle;
     [SerializeField] private TextMeshProUGUI _panelDescription;
 
+    public void InstantiateBattlePrefabs(PartyInfo playerParty, PartyInfo enemyParty)
+    {
+        _characterModels = new List<GameObject>();
+
+        CharacterInfo player = playerParty.PartyMembers[0];
+
+        GameObject playerGO = Instantiate(player.BattlePrefab, _playerPivot.position, Quaternion.identity);
+
+        _characterModels.Add(playerGO);
+
+        foreach (CharacterInfo c in enemyParty.PartyMembers)
+        {
+            GameObject enemyGO = Instantiate(c.BattlePrefab, _enemyPivot.position, Quaternion.identity);
+            _characterModels.Add(enemyGO);
+        }
+    }
+    
     public void ToogleActionButtons(bool onOff) => _actionButtons.SetActive(onOff);
     public void ToogleMoveButtons(bool onOff) => _moveButtons.SetActive(onOff);
 
@@ -34,27 +53,34 @@ public class BattleUIManager : MonoBehaviour
     }
 
     public void SetUpStanceBars(PartyInfo playerParty, PartyInfo enemyParty)
-    {
+    {        
         CharacterInfo player = playerParty.PartyMembers[0];
 
-        _playerFillBar.SetUpBar(player.Name, "Stance", player.MaxStance);
+        _playerStanceBar.SetUpBar(player.Name, "Stance", player.MaxStance);
 
-        // CHANGE THIS TO ACCOMODATE MORE PARTY MEMBERS
-        CharacterInfo enemy = enemyParty.PartyMembers[0];
+        _enemyStanceBars = new List<FillBar>();
 
-        _enemyFillBar.SetUpBar(enemy.Name, "Stance", enemy.MaxStance);
+        foreach (CharacterInfo enemy in enemyParty.PartyMembers)
+        {
+            Vector3 pos = _characterModels[enemyParty.PartyMembers.IndexOf(enemy) + 1].transform.position;
 
+            GameObject bar = Instantiate(_enemyStanceBarPrefab, gameObject.transform);
+            FillBar enemyFillBar = bar.GetComponent<FillBar>();
+
+            _enemyStanceBars.Add(enemyFillBar);
+            enemyFillBar.SetUpBar(enemy.Name, "Stance", enemy.MaxStance);
+        }
     }
     
     public void UpdateStanceBars(PartyInfo playerParty, PartyInfo enemyParty)
     {
         CharacterInfo player = playerParty.PartyMembers[0];
 
-        _playerFillBar.UpdateFillAmout(player.CurrentStance);
+        _playerStanceBar.UpdateFillAmout(player.CurrentStance);
 
-        // CHANGE THIS TO ACCOMODATE MORE PARTY MEMBERS
-        CharacterInfo enemy = enemyParty.PartyMembers[0];
-
-        _enemyFillBar.UpdateFillAmout(enemy.CurrentStance);
+        for (int i = 0; i < enemyParty.PartySize; i++)
+        {
+            _enemyStanceBars[i].UpdateFillAmout(enemyParty.PartyMembers[i].CurrentStance);
+        }
     }
 }
