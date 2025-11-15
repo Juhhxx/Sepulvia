@@ -52,7 +52,7 @@ public class BattleResolver : MonoBehaviour
 
     private void DoStatModifier(MoveInfo move, CharacterInfo target)
     {
-        foreach (StatModifier sm in move.StatModifiers) target.AddModifier(sm);
+        foreach (StatModifier sm in move.StatModifiers) target.AddModifier(sm.Instantiate());
     }
 
     public void UseItem(ItemInfo item, CharacterInfo user)

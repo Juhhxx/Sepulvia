@@ -3,6 +3,7 @@ using UnityEngine;
 using NaughtyAttributes;
 using System.Collections.Generic;
 using System;
+using UnityEngine.EventSystems;
 
 public class BattleManager : MonoBehaviourSingleton<BattleManager>
 {
@@ -30,10 +31,10 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
     [Serializable]
     public class BattleAction
     {
-        public CharacterInfo Character { get; private set; }
-        public ActionType Type { get; private set;}
-        public MoveInfo Move { get; private set; }
-        public ItemInfo Item { get; private set;}
+        [field: SerializeField] public CharacterInfo Character { get; private set; }
+        [field: SerializeField] public ActionType Type { get; private set;}
+        [field: SerializeField] public MoveInfo Move { get; private set; }
+        [field: SerializeField] public ItemInfo Item { get; private set;}
 
         public BattleAction(CharacterInfo character, MoveInfo move)
         {
@@ -81,6 +82,10 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
 #if UNITY_EDITOR
         if (_playerParty != null && _enemyParty != null) StartBattle(_playerParty, _enemyParty);
 #endif
+    }
+    
+    private void Update()
+    {
     }
 
     public void StartBattle(PartyInfo playerParty, PartyInfo enemyParty)
@@ -171,8 +176,8 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
             {
                 moveButtons[i].gameObject.SetActive(true);
                 moveButtons[i].onClick.AddListener(() => AddAction(Player, move));
-                _uiManager.SetUpButton(moveButtons[i], move.Name,
-                !move.CheckIfCooldown() && move.CheckStanceCost(Player));
+
+                _uiManager.SetUpButton(moveButtons[i], move);
 
                 Debug.Log($"SET MOVE BUTON FOR {move.Name}");
             }
@@ -191,7 +196,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
 
             if (move != null)
             {
-                _uiManager.SetUpButton(moveButtons[i], move.Name,
+                _uiManager.UpdateButton(moveButtons[i],
                 !move.CheckIfCooldown() && move.CheckStanceCost(Player));
 
                 Debug.Log($"UPDATE MOVE BUTON FOR {move.Name}");
@@ -213,6 +218,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
 
             _uiManager.ToogleMoveButtons(false);
             _uiManager.ToogleActionButtons(false);
+            _uiManager.ToogleMoveInfo(false);
 
             OrganizeActions();
 

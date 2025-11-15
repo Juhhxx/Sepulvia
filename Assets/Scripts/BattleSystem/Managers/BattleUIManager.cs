@@ -17,7 +17,7 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private GameObject _actionButtons;
     [SerializeField] private GameObject _moveButtons;
 
-    [SerializeField] private GameObject _infoPanel;
+    [SerializeField] private GameObject _moveInfoPanel;
     [SerializeField] private TextMeshProUGUI _panelTitle;
     [SerializeField] private TextMeshProUGUI _panelDescription;
 
@@ -47,10 +47,15 @@ public class BattleUIManager : MonoBehaviour
     public List<Button> GetMoveButtons()
     => _moveButtons.transform.GetChild(0).GetComponentsInChildren<Button>().ToList();
 
-    public void SetUpButton(Button button, string name, bool activated)
+    public void SetUpButton(Button button, MoveInfo move)
     {
-        button.GetComponentInChildren<TextMeshProUGUI>().text = name;
+        button.GetComponentInChildren<TextMeshProUGUI>().text = move.Name;
 
+        button.GetComponent<MoveHoverInfo>().SetUpHover(move, this);
+    }
+
+    public void UpdateButton(Button button, bool activated)
+    {
         if (activated)
         {
             button.enabled = true;
@@ -85,7 +90,7 @@ public class BattleUIManager : MonoBehaviour
             enemyFillBar.SetUpBar(enemy.Name, "Stance", enemy.MaxStance);
         }
     }
-    
+
     public void UpdateStanceBars(PartyInfo playerParty, PartyInfo enemyParty)
     {
         CharacterInfo player = playerParty.PartyMembers[0];
@@ -96,5 +101,16 @@ public class BattleUIManager : MonoBehaviour
         {
             _enemyStanceBars[i].UpdateFillAmout(enemyParty.PartyMembers[i].CurrentStance);
         }
+    }
+    
+    public void ToogleMoveInfo(bool onOff, MoveInfo move = null)
+    {
+        if (onOff)
+        {
+            _panelTitle.text = $"{move.Name} ({move.Type})";
+            _panelDescription.text = move.Description;
+        }
+        
+        _moveInfoPanel.SetActive(onOff);
     }
 }
