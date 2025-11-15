@@ -95,6 +95,16 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
 
         _numberOfBattlers = playerParty.PartySize + enemyParty.PartySize;
 
+        SetUpNewTurnEvents();
+
+        SetUpBattleUI();
+
+        StopAllCoroutines();
+        StartCoroutine(BattleLoopCR());
+    }
+
+    private void SetUpNewTurnEvents()
+    {
         // Make Stance Recovering
         OnTurnPassed += () =>
         {
@@ -108,7 +118,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
             _uiManager.UpdateStanceBars(_playerParty, _enemyParty);
         };
 
-        // Make Modifier Checking
+        // Count Turns in Moves and Check Them
         OnTurnPassed += () =>
         {
             Player.CheckModifier();
@@ -140,11 +150,6 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
                 AddAction(enemy, m);
             };
         }
-
-        SetUpBattleUI();
-
-        StopAllCoroutines();
-        StartCoroutine(BattleLoopCR());
     }
 
     private void SetUpBattleUI()
@@ -198,13 +203,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
     {
         while (true)
         {
-            // If stance = 0, character loses turn
-            if (Player.CurrentStance == 0) AddAction(Player);
-
-            foreach (CharacterInfo e in _enemyParty.PartyMembers)
-            {
-                if (e.CurrentStance == 0) AddAction(e);
-            }
+            VerifyTurnLosses();
 
             CurrentTurn++;
 
@@ -231,6 +230,17 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
             // Clear Actions List
             _actionList.Clear();
             _uiManager.ToogleActionButtons(true);
+        }
+    }
+    
+    private void VerifyTurnLosses()
+    {
+        // If stance = 0, character loses turn
+        if (Player.CurrentStance == 0) AddAction(Player);
+
+        foreach (CharacterInfo e in _enemyParty.PartyMembers)
+        {
+            if (e.CurrentStance == 0) AddAction(e);
         }
     }
 
