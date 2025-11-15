@@ -40,7 +40,6 @@ public class MoveInfo : ScriptableObject
     [SerializeField] private int _pullStrength;
     public int PullStrength => _pullStrength;
 
-
     private bool IsEffect => Type == MoveTypes.Buff || Type == MoveTypes.Nerf;
 
     [field: Space(10)]
@@ -48,6 +47,12 @@ public class MoveInfo : ScriptableObject
     [field: Space(5)]
     [field: ShowIf("IsEffect")]
     [field: SerializeField] public List<StatModifier> StatModifiers { get; private set; }
+
+    [field: Space(10)]
+    [field: Header("Modifier Move Parameters")]
+    [field: Space(5)]
+    [field: ShowIf("Type", MoveTypes.Modifier)]
+    [field: SerializeField] public BarModifier Modifier { get; private set; }
 
     [field: Space(10)]
     [field: Header("Move Description")]

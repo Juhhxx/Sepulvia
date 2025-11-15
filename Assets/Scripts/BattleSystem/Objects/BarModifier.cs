@@ -2,11 +2,11 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class StatModifier
+public class BarModifier
 {
-    [field: SerializeField] public Stats StatAffected { get; private set; }
+    [field: SerializeField] public BarModifierTypes Type { get; private set; }
 
-    [field: SerializeField] public int AmountAffected { get; private set; }
+    [field: SerializeField] public Color Color { get; private set; }
 
     [field: SerializeField] public int TurnDuration { get; private set; }
 

@@ -17,9 +17,18 @@ MonoBehaviour:
   <StanceCost>k__BackingField: 5
   <StanceDamage>k__BackingField: 0
   <Cooldown>k__BackingField: 3
+  _turnsPassed: 0
+  _inCooldown: 0
   _pullStrength: 0
   <StatModifiers>k__BackingField:
   - <StatAffected>k__BackingField: 0
     <AmountAffected>k__BackingField: 2
     <TurnDuration>k__BackingField: 3
-  <Description>k__BackingField: Boosts all pull moves by 2 spaces. Lasts 3 turns.
+  <Modifier>k__BackingField:
+    <Type>k__BackingField: 0
+    <Color>k__BackingField: {r: 0, g: 0, b: 0, a: 0}
+    <TurnDuration>k__BackingField: 0
+  <Description>k__BackingField: 'Boosts all pull moves by 2 spaces.
+
+    Lasts 3
+    turns.'
