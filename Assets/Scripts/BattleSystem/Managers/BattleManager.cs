@@ -11,6 +11,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
     [Space(5)]
     [SerializeField] private BattleResolver _battleResolver;
     [SerializeField] private BattleUIManager _uiManager;
+    [SerializeField] private InventoryManager _inventoryManager;
     [SerializeField] private DialogueManager _dialogueManager;
 
     [Space(10)]
@@ -185,7 +186,6 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
 
         }
     }
-    
     private void UpdateButtons()
     {
         var moveButtons = _uiManager.GetMoveButtons();
@@ -204,6 +204,32 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
         }
     }
 
+    public void SetUpInventoryButtons()
+    {
+        _inventoryManager.ShowInventory(Player.Inventory);
+
+        var invButtons = _inventoryManager.GetInventoryButtons();
+
+        for (int i = 0; i < invButtons.Count; i++)
+        {
+            ItemStack stack = (i < Player.Inventory.ItemSlots.Count) ? Player.Inventory.ItemSlots[i] : null;
+
+            if (stack != null)
+            {
+                if (stack.Item.CanBeUsedInBattle)
+                {
+                    invButtons[i].enabled = true;
+                    invButtons[i].onClick.AddListener(() =>
+                    {
+                        AddAction(Player, stack.Item);
+                        stack.RemoveItem();
+                    });
+                }
+            }
+                else invButtons[i].enabled = false;
+        }
+    }
+
     private IEnumerator BattleLoopCR()
     {
         while (true)
@@ -219,6 +245,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
             _uiManager.ToogleMoveButtons(false);
             _uiManager.ToogleActionButtons(false);
             _uiManager.ToogleMoveInfo(false);
+            _inventoryManager.HideInventory();
 
             OrganizeActions();
 

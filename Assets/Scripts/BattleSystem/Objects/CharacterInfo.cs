@@ -87,6 +87,8 @@ public class CharacterInfo : ScriptableObject
         c.CurrentStance = c.MaxStance;
         _statModifiers = new List<StatModifier>();
 
+        c.Inventory = c.Inventory?.Instantiate();
+
         return c;
     }
 }
