@@ -70,6 +70,11 @@ public class CharacterInfo : ScriptableObject
     [field: Space(5)]
     [field: SerializeField, Expandable] public List<MoveInfo> MoveSet { get; private set; }
 
+    [field: Space(10)]
+    [field: Header("Character Inventory")]
+    [field: Space(5)]
+    [field: SerializeField, Expandable] public InventoryInfo Inventory { get; private set; }
+
     public CharacterInfo Instantiate()
     {
         var c = Instantiate(this);
