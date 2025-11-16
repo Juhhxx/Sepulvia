@@ -10,10 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b3849e9688085e241940703948ee8e3e, type: 3}
-  m_Name: Potion
+  m_Name: StanceRecover
   m_EditorClassIdentifier: Assembly-CSharp::ItemInfo
-  <Name>k__BackingField: Potion
+  <Name>k__BackingField: Stance Recover
   <Sprite>k__BackingField: {fileID: 21300000, guid: faaf2fd31d6462c4cb858b49a4432184, type: 3}
   <StackMaximum>k__BackingField: 10
   <CanBeUsedInBattle>k__BackingField: 1
-  <Description>k__BackingField: Potion that heals stance.
+  <Type>k__BackingField: 0
+  <Stat>k__BackingField: 1
+  <Amount>k__BackingField: 5
+  <Modifier>k__BackingField:
+    <StatAffected>k__BackingField: 0
+    <AmountAffected>k__BackingField: 0
+    <TurnDuration>k__BackingField: 0
+    _turnsPassed: 0
+  <Description>k__BackingField: Recovers 5 stance to the user.

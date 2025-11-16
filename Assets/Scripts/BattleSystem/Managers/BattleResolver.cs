@@ -58,5 +58,33 @@ public class BattleResolver : MonoBehaviour
     public void UseItem(ItemInfo item, CharacterInfo user)
     {
         Debug.Log($"{user.Name} USED {item.Name}");
+
+        switch (item.Type)
+        {
+            case ItemTypes.Immediate:
+
+                ApplyItemEffect(item, user);
+                break;
+            
+            case ItemTypes.LongTerm:
+
+                user.AddModifier(item.Modifier.Instantiate());
+                break;
+        }
+    }
+
+    private void ApplyItemEffect (ItemInfo item, CharacterInfo user)
+    {
+        switch (item.Stat)
+        {
+            case Stats.Stance:
+
+                user.CurrentStance += item.Amount;
+                break;
+            
+            default:
+                
+                break;
+        }
     }
 }

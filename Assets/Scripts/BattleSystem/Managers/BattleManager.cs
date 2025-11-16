@@ -220,7 +220,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
                 invButtons[i].onClick.AddListener(() =>
                 {
                     AddAction(Player, stack.Item);
-                    stack.RemoveItem();
+                    Player.Inventory.RemoveItem(stack);
                 });
 
                 invButtons[i]?.GetComponent<ItemHoverInfo>().SetUpHover(stack.Item, _inventoryManager);
@@ -323,15 +323,14 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
     }
     private void OrganizeActions()
     {
-        for (int i = 0; i < _actionList.Count - 1; i++)
-        {
-            if (_actionList[i].Character.Speed < _actionList[i + i].Character.Speed)
-            {
-                var tmp = _actionList[i];
+        Debug.Log($"PLAYER SPEED: {Player.Speed} ENEMY SPEED: {_enemyParty.PartyMembers[0].Speed}");
 
-                _actionList[i] = _actionList[i + 1];
-                _actionList[i + 1] = tmp;
-            }
+        _actionList.Sort((a, b) => b.Character.Speed.CompareTo(a.Character.Speed));
+
+        Debug.Log("ACTION ORDER");
+        for (int i = 0; i < _actionList.Count; i++)
+        {
+            Debug.Log($"{_actionList[i].Character.Name}");
         }
     }
 

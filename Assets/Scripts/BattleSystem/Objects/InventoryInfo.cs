@@ -81,6 +81,19 @@ public class InventoryInfo : ScriptableObject
         }
     }
 
+    // Remove Item from Specific Stack
+    public void RemoveItem(ItemStack stack)
+    {
+        if (!ItemSlots.Contains(stack)) return;
+
+        stack.RemoveItem();
+
+        if (stack.Amount == 0)
+        {
+            ItemSlots.Remove(stack);
+        }
+    }
+
     public InventoryInfo Instantiate()
     {
         InventoryInfo inv = Instantiate(this);
