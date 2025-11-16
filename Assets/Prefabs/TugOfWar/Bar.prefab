@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4088649363034299480}
   - component: {fileID: 121380560393371517}
   - component: {fileID: 4094265495489551407}
+  - component: {fileID: 233260829335589921}
   m_Layer: 5
   m_Name: Bar
   m_TagString: Untagged
@@ -120,3 +121,24 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &233260829335589921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4491539405369718068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9324a52a3bfbd64db2982eb12c9cd86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BarSection
+  <BarModifier>k__BackingField:
+    <Type>k__BackingField: 0
+    <Color>k__BackingField: {r: 0, g: 0, b: 0, a: 0}
+    <TurnDuration>k__BackingField: 0
+  <ConnectRight>k__BackingField: {fileID: 0}
+  <ConnectLeft>k__BackingField: {fileID: 0}
+  <HasHeart>k__BackingField: 0
+  <HearthPosition>k__BackingField: {x: 0, y: 0, z: 0}
+  <RectTransform>k__BackingField: {fileID: 0}
