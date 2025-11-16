@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8434052335997674150}
   - component: {fileID: 2812234284289950346}
   - component: {fileID: 3407152875923783904}
+  - component: {fileID: 2430158109679604705}
   m_Layer: 0
   m_Name: Inventory Slot
   m_TagString: Untagged
@@ -122,6 +123,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2430158109679604705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3725253527899684491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6292364a1b6cc2843860ed0e1aaabf50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemHoverInfo
 --- !u!1 &4574147259143660677
 GameObject:
   m_ObjectHideFlags: 0

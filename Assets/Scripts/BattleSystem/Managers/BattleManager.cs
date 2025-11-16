@@ -214,19 +214,18 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
         {
             ItemStack stack = (i < Player.Inventory.ItemSlots.Count) ? Player.Inventory.ItemSlots[i] : null;
 
-            if (stack != null)
+            if (stack != null && stack.Item.CanBeUsedInBattle)
             {
-                if (stack.Item.CanBeUsedInBattle)
+                invButtons[i].enabled = true;
+                invButtons[i].onClick.AddListener(() =>
                 {
-                    invButtons[i].enabled = true;
-                    invButtons[i].onClick.AddListener(() =>
-                    {
-                        AddAction(Player, stack.Item);
-                        stack.RemoveItem();
-                    });
-                }
+                    AddAction(Player, stack.Item);
+                    stack.RemoveItem();
+                });
+
+                invButtons[i]?.GetComponent<ItemHoverInfo>().SetUpHover(stack.Item, _inventoryManager);
             }
-                else invButtons[i].enabled = false;
+            else invButtons[i].enabled = false;
         }
     }
 

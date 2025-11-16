@@ -108,7 +108,7 @@ public class BattleUIManager : MonoBehaviour
         if (onOff)
         {
             _panelTitle.text = $"{move.Name} ({move.Type})";
-            _panelDescription.text = move.Description;
+            _panelDescription.text = $"Cost: {move.StanceCost} stance\nCooldown: {move.Cooldown} turn(s)\n\n{move.Description}";
         }
         
         _moveInfoPanel.SetActive(onOff);

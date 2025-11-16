@@ -11,11 +11,19 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject _inventoryCanvas;
     [SerializeField] private GameObject _inventorySlots;
 
+    [SerializeField] private GameObject _itemInfoPanel;
+    [SerializeField] private TextMeshProUGUI _panelTitle;
+    [SerializeField] private TextMeshProUGUI _panelDescription;
+
     private List<GameObject> _createdObjects;
 
     private List<Button> _buttons;
     public List<Button> GetInventoryButtons() => _buttons;
 
+    private void Update()
+    {
+        FollowMouse();
+    }
 
     public void ShowInventory(InventoryInfo inventory)
     {
@@ -52,11 +60,32 @@ public class InventoryManager : MonoBehaviour
         _inventoryCanvas.SetActive(true);
     }
 
-    public void HideInventory() => _inventoryCanvas.SetActive(false);
+    public void HideInventory()
+    {
+        _inventoryCanvas.SetActive(false);
+        _itemInfoPanel.SetActive(false);
+    }
 
     private void ClearSlots()
     {
         foreach(GameObject go in _createdObjects) DestroyImmediate(go);
         _createdObjects.Clear();
+    }
+
+    public void ToogleItemInfo(bool onOff, ItemInfo item = null)
+    {
+        if (onOff)
+        {
+            _panelTitle.text = $"{item.Name}";
+            _panelDescription.text = $"{item.Description}";
+        }
+        
+        _itemInfoPanel.SetActive(onOff);
+    }
+
+    private void FollowMouse()
+    {
+        Vector3 pos = Input.mousePosition;
+        _itemInfoPanel.transform.position = pos;
     }
 }
