@@ -1,7 +1,7 @@
 using UnityEngine;
 using NaughtyAttributes;
 
-[CreateAssetMenu(fileName = "ItemInfo", menuName = "Scriptable Objects/ItemInfo")]
+[CreateAssetMenu(fileName = "ItemInfo", menuName = "Inventory/New Item")]
 public class ItemInfo : ScriptableObject
 {
     [field: Header(" Base Item Parameters")]

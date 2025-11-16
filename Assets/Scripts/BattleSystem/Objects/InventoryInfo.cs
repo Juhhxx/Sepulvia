@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "InventoryInfo", menuName = "Scriptable Objects/InventoryInfo")]
+[CreateAssetMenu(fileName = "InventoryInfo", menuName = "Inventory/New Inventory")]
 public class InventoryInfo : ScriptableObject
 {
     [field: Space(10)]
