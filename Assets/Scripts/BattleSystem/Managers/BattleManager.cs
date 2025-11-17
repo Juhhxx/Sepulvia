@@ -270,6 +270,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
                 ExecuteAction(action);
 
                 _uiManager.UpdateStanceBars(_playerParty, _enemyParty);
+                _uiManager.UpdateStatModifierDisplay(Player.StatModifiers);
                 _dialogueManager.StartDialogues();
 
                 yield return _wfd;

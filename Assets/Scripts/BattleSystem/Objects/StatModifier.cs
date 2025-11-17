@@ -14,6 +14,9 @@ public class StatModifier
     [AllowNesting]
     [SerializeField, ReadOnly] private int _turnsPassed = 0;
 
+    [field: SerializeField] public Sprite Sprite { get; private set; }
+
+
     public void TurnPassed() => _turnsPassed++;
     public bool CheckIfDone() => _turnsPassed == TurnDuration + 1; // Don't count the first turn
 

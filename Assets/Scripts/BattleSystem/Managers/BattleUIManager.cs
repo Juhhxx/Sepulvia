@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class BattleUIManager : MonoBehaviour
 {
     [SerializeField] private FillBar _playerStanceBar;
+    [SerializeField] private StatModifierDisplay _statModifierDisplay;
     [SerializeField] private GameObject _enemyStanceBarPrefab;
     private List<FillBar> _enemyStanceBars;
 
@@ -62,8 +63,8 @@ public class BattleUIManager : MonoBehaviour
         // Two points = vertical line up/down from pivot
         if (count == 2)
         {
-            points.Add(GetPos(Vector3.forward * radius, pivot));
-            points.Add(GetPos(Vector3.back * radius, pivot));
+            points.Add(GetPos(Vector3.right * radius, pivot));
+            points.Add(GetPos(Vector3.left * radius, pivot));
             return points;
         }
 
@@ -142,7 +143,6 @@ public class BattleUIManager : MonoBehaviour
             enemyFillBar.SetUpBar(enemy.Name, "Stance", enemy.MaxStance);
         }
     }
-
     public void UpdateStanceBars(PartyInfo playerParty, PartyInfo enemyParty)
     {
         CharacterInfo player = playerParty.PartyMembers[0];
@@ -155,6 +155,11 @@ public class BattleUIManager : MonoBehaviour
         }
     }
     
+    public void UpdateStatModifierDisplay(List<StatModifier> statModifiers)
+    {
+        _statModifierDisplay.UpdateDisplay(statModifiers);
+    }
+
     public void ToggleMoveInfo(bool onOff, MoveInfo move = null)
     {
         if (onOff)

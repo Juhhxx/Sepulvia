@@ -37,6 +37,7 @@ public class CharacterInfo : ScriptableObject
     [Header("Character Stats Modifiers")]
     [Space(5)]
     [SerializeField, ReadOnly] private List<StatModifier> _statModifiers;
+    public List<StatModifier> StatModifiers => _statModifiers;
 
     public void AddModifier(StatModifier modifier)
     {
