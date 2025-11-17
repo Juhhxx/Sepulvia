@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.EventSystems;
 
-public class BattleManager : MonoBehaviourSingleton<BattleManager>
+public class BattleManager : MonoBehaviour
 {
     [Header("Battle Managers")]
     [Space(5)]
@@ -273,8 +273,8 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
                 _uiManager.UpdateStatModifierDisplay(Player.StatModifiers);
                 _dialogueManager.StartDialogues();
 
-                yield return _wfd;
                 yield return new WaitUntil(() => !_pullManager.IsMoving);
+                yield return _wfd;
                 yield return new WaitForSeconds(0.5f);
             }
 
@@ -324,21 +324,20 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
 
                 action.Move.UsedMove();
 
-                _battleResolver.DoMove(action.Move, action.Character, target);
-
                 _dialogueManager.AddDialogue($"{action.Character.Name} used {action.Move.Name}.");
+                _battleResolver.DoMove(action.Move, action.Character, target);
                 break;
 
             case ActionType.Item:
 
-                _battleResolver.UseItem(action.Item, action.Character);
                 _dialogueManager.AddDialogue($"{action.Character.Name} used {action.Item.Name}.");
+                _battleResolver.UseItem(action.Item, action.Character);
                 break;
 
             case ActionType.Empty:
 
-                action.Character.CurrentStance = action.Character.MaxStance;
                 _dialogueManager.AddDialogue($"{action.Character.Name} lost their stance and took a turn to recover their balance.");
+                action.Character.CurrentStance = action.Character.MaxStance;
                 break;
         }
     }

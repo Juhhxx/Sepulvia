@@ -187,6 +187,8 @@ public class PullingManager : MonoBehaviour
                 break;
         }
 
+        DialogueManager.Instance.AddDialogue($"{section.BarModifier.Type} was activated.");
+        
         if (section.BarModifier.DestroyOnUse) section.RemoveBarModifier();
     }
 

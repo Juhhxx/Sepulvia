@@ -5,7 +5,7 @@ using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 
-public class DialogueManager : MonoBehaviour
+public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 {
     [SerializeField] private GameObject _dialogueBox;
     [SerializeField] private TextMeshProUGUI _dialogueTextBox;
@@ -17,6 +17,11 @@ public class DialogueManager : MonoBehaviour
     private YieldInstruction _wff;
     private WaitForKeyDown _wfk;
     private bool _dialoguePlaying;
+
+    public void Awake()
+    {
+        base.SingletonCheck(this);
+    }
 
     public void SetUpDialogueManager()
     {

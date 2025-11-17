@@ -39,6 +39,8 @@ public class BattleResolver : MonoBehaviour
 
     private void DoPull(MoveInfo move, CharacterInfo user)
     {
+        DialogueManager.Instance.AddDialogue($"{user.Name} pushed the Soul to their side by {move.PullStrength}.");
+        
         if (user is PlayerInfo)
         {
             _pullManager.MoveHeart(-move.PullStrength -
@@ -53,7 +55,20 @@ public class BattleResolver : MonoBehaviour
 
     private void DoStatModifier(MoveInfo move, CharacterInfo target)
     {
-        foreach (StatModifier sm in move.StatModifiers) target.AddModifier(sm.Instantiate());
+        foreach (StatModifier sm in move.StatModifiers)
+        {
+            target.AddModifier(sm.Instantiate());
+            if (move.Type == MoveTypes.Buff)
+            {
+                DialogueManager.Instance.AddDialogue(
+                $"{target.Name} {sm.StatAffected} Rose.");
+            }
+            else if (move.Type == MoveTypes.Nerf)
+            {
+                DialogueManager.Instance.AddDialogue(
+                $"{target.Name} {sm.StatAffected} Fell.");
+            }
+        }
     }
 
     private void ApplyBarModifier(MoveInfo move)
@@ -86,6 +101,7 @@ public class BattleResolver : MonoBehaviour
             case Stats.Stance:
 
                 user.CurrentStance += item.Amount;
+                DialogueManager.Instance.AddDialogue($"{user.Name} recovered {item.Amount} stance.");
                 break;
             
             default:
