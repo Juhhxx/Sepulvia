@@ -33,11 +33,60 @@ public class BattleUIManager : MonoBehaviour
 
         _characterModels.Add(playerGO);
 
-        foreach (CharacterInfo c in enemyParty.PartyMembers)
+        List<Vector3> positions = GetSpawnPoints(enemyParty.PartySize, _enemyPivot);
+
+        for (int i = 0; i < enemyParty.PartySize; i++)
         {
-            GameObject enemyGO = Instantiate(c.BattlePrefab, _enemyPivot.position, Quaternion.identity);
+            CharacterInfo c = enemyParty.PartyMembers[i];
+
+            GameObject enemyGO = Instantiate(c.BattlePrefab, positions[i], Quaternion.identity);
             _characterModels.Add(enemyGO);
         }
+    }
+
+    private float radius = 2.5f;
+    public List<Vector3> GetSpawnPoints(int count, Transform pivot)
+    {
+        List<Vector3> points = new List<Vector3>();
+
+        if (count <= 0)
+            return points;
+
+        // Single point = just the pivot
+        if (count == 1)
+        {
+            points.Add(GetPos(Vector3.zero, pivot));
+            return points;
+        }
+
+        // Two points = vertical line up/down from pivot
+        if (count == 2)
+        {
+            points.Add(GetPos(Vector3.forward * radius, pivot));
+            points.Add(GetPos(Vector3.back * radius, pivot));
+            return points;
+        }
+
+        // 3+ = semi-circle facing forward (+Z)
+        float angleStep = 180f / (count - 1);
+
+        for (int i = 0; i < count; i++)
+        {
+            float angle = -90f + (angleStep * i); // from -90° to +90°
+
+            // Rotation on Y axis
+            Vector3 dir = Quaternion.Euler(0, angle, 0) * Vector3.forward;
+
+            points.Add(GetPos(dir * radius, pivot));
+        }
+
+        return points;
+    }
+
+    private bool useLocalSpace;
+    private Vector3 GetPos(Vector3 offset, Transform pivot)
+    {
+        return useLocalSpace ? pivot.TransformPoint(offset) : pivot.position + offset;
     }
     
     public void ToggleActionButtons(bool onOff) => _actionButtons.SetActive(onOff);
