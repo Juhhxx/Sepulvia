@@ -9,6 +9,7 @@ public class BarModifier
     [field: SerializeField] public Color Color { get; private set; }
 
     [field: SerializeField] public int TurnDuration { get; private set; }
+    [field: SerializeField] public bool DestroyOnUse { get; private set; }
 
     private int _turnsPassed = 0;
 

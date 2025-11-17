@@ -4,6 +4,7 @@ using NaughtyAttributes;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Collections;
 
 public class PullingManager : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class PullingManager : MonoBehaviour
     }
 
     public event Action OnSelectBar;
+
+    public bool IsMoving { get; private set; }
 
     void Start()
     {
@@ -162,12 +165,66 @@ public class PullingManager : MonoBehaviour
             else section.Button.enabled = false;
         }
     }
+
+    public void CheckBarModifiers()
+    {
+        foreach (BarSection section in _barSectionList)
+        {
+            if (!section.HasModifier) continue;
+
+            section.BarModifier.TurnPassed();
+
+            if (section.BarModifier.CheckIfDone()) section.RemoveBarModifier();
+        }
+    }
+    public void DoBarModifier(BarSection section)
+    {
+        switch (section.BarModifier.Type)
+        {
+            case BarModifierTypes.Barrier:
+
+                StopMovement();
+                break;
+        }
+
+        if (section.BarModifier.DestroyOnUse) section.RemoveBarModifier();
+    }
+
     public void MoveHeart(int pushForce)
     {
-        _barSectionList[_currentHeartIndex].SetHasHeart(false);
-        _currentHeartIndex += pushForce;
+        StartCoroutine(MoveHeartCR(Mathf.Abs(pushForce), (pushForce > 0)));
+    }
+    private IEnumerator MoveHeartCR(int pushForce, bool positive)
+    {
+        IsMoving = true;
 
-        _spawnedHeart.GetComponent<RectTransform>().anchoredPosition = _barSectionList[_currentHeartIndex].HeartPosition;
-        _barSectionList[_currentHeartIndex].SetHasHeart(true);
+        for (int i = 0; i < pushForce; i++)
+        {
+            _barSectionList[_currentHeartIndex].SetHasHeart(false);
+
+            if (positive) _currentHeartIndex++;
+            else _currentHeartIndex--;
+
+            BarSection section = _barSectionList[_currentHeartIndex];
+
+            _spawnedHeart.GetComponent<RectTransform>().anchoredPosition = section.HeartPosition;
+            section.SetHasHeart(true);
+
+            if (section.HasModifier)
+            {
+                DoBarModifier(section);
+            }
+
+
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        IsMoving = false;
+    }
+
+    public void StopMovement()
+    {
+        StopAllCoroutines();
+        IsMoving = false;
     }
 }

@@ -135,6 +135,9 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
             }
         };
 
+        // Check Bar Modifiers
+        OnTurnPassed += _pullManager.CheckBarModifiers;
+
         // Count Turns in Moves
         OnTurnPassed += () =>
         {
@@ -270,6 +273,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
                 _dialogueManager.StartDialogues();
 
                 yield return _wfd;
+                yield return new WaitUntil(() => !_pullManager.IsMoving);
                 yield return new WaitForSeconds(0.5f);
             }
 
