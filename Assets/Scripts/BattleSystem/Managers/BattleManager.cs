@@ -12,6 +12,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
     [SerializeField] private BattleResolver _battleResolver;
     [SerializeField] private BattleUIManager _uiManager;
     [SerializeField] private InventoryManager _inventoryManager;
+    [SerializeField] private PullingManager _pullManager;
     [SerializeField] private DialogueManager _dialogueManager;
 
     [Space(10)]
@@ -78,15 +79,13 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
 
     private WaitForDialogueEnd _wfd;
 
+    private bool _selectingBar;
+
     private void Start()
     {
 #if UNITY_EDITOR
         if (_playerParty != null && _enemyParty != null) StartBattle(_playerParty, _enemyParty);
 #endif
-    }
-    
-    private void Update()
-    {
     }
 
     public void StartBattle(PartyInfo playerParty, PartyInfo enemyParty)
@@ -96,6 +95,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
 
         _uiManager.InstantiateBattlePrefabs(_playerParty, _enemyParty);
         _dialogueManager.SetUpDialogueManager();
+        _pullManager.OnSelectBar += () => _selectingBar = false;
 
         _wfd = new WaitForDialogueEnd(_dialogueManager);
 
@@ -158,6 +158,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
         }
     }
 
+    // Battle UI
     private void SetUpBattleUI()
     {
         _uiManager.SetUpStanceBars(_playerParty, _enemyParty);
@@ -204,6 +205,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
         }
     }
 
+    // Inventory UI
     public void SetUpInventoryButtons()
     {
         _inventoryManager.ShowInventory(Player.Inventory);
@@ -229,6 +231,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
         }
     }
 
+    // Battle Loop
     private IEnumerator BattleLoopCR()
     {
         while (true)
@@ -241,9 +244,20 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
 
             yield return new WaitUntil(() => _actionList.Count == _numberOfBattlers);
 
-            _uiManager.ToogleMoveButtons(false);
-            _uiManager.ToogleActionButtons(false);
-            _uiManager.ToogleMoveInfo(false);
+            if (_selectingBar)
+            {
+                _uiManager.ToggleSelecBar(true);
+                _pullManager.ToggleBarButtons(true);
+
+                yield return new WaitUntil(() => !_selectingBar);
+
+                _uiManager.ToggleSelecBar(false);
+                _pullManager.ToggleBarButtons(false);
+            }
+
+            _uiManager.ToggleMoveButtons(false);
+            _uiManager.ToggleActionButtons(false);
+            _uiManager.ToggleMoveInfo(false);
             _inventoryManager.HideInventory();
 
             OrganizeActions();
@@ -261,7 +275,7 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
 
             // Clear Actions List
             _actionList.Clear();
-            _uiManager.ToogleActionButtons(true);
+            _uiManager.ToggleActionButtons(true);
         }
     }
     
@@ -285,6 +299,8 @@ public class BattleManager : MonoBehaviourSingleton<BattleManager>
     {
         var action = new BattleAction(character, move);
         _actionList.Add(action);
+
+        if (character is PlayerInfo && move.Type == MoveTypes.Modifier) _selectingBar = true;
     }
     public void AddAction(CharacterInfo character, ItemInfo item)
     {

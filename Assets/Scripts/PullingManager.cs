@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using NaughtyAttributes;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class PullingManager : MonoBehaviour
 {
@@ -18,43 +19,24 @@ public class PullingManager : MonoBehaviour
 
     [SerializeField] GameObject _heart;
     private float _heartHeightPadding = 100;
-    [SerializeField] private List<BarSection> _barSectionList = new List<BarSection>();
+    [SerializeField, ReadOnly] private List<BarSection> _barSectionList = new List<BarSection>();
+    public List<BarSection> BarSections => _barSectionList;
+
     private int _currentHeartIndex;
     private GameObject _spawnedHeart;
+    [field: SerializeField, ReadOnly] public int SelectedIndex { get; private set; }
+    public void SetSelectedIndex(int index)
+    {
+        SelectedIndex = index;
+        OnSelectBar?.Invoke();
+    }
+
+    public event Action OnSelectBar;
 
     void Start()
     {
-        
         SpawnBarSections();
         SpawnHeart();
-        
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            MoveHeart(-2);
-            Debug.Log(_currentHeartIndex);
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            MoveHeart(-1);
-            Debug.Log(_currentHeartIndex);
-        }
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            MoveHeart(1);
-            Debug.Log(_currentHeartIndex);
-
-        }
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            MoveHeart(2);
-            Debug.Log(_currentHeartIndex);
-
-        }
-        
     }
 
     private void SpawnHeart()
@@ -75,7 +57,7 @@ public class PullingManager : MonoBehaviour
         else
         {
             //if it's even then a coin toss is executed, spawning the _heart on the bar either by the right or left of the center point
-            int coinToss = Random.Range(0, 2);
+            int coinToss =  UnityEngine.Random.Range(0, 2);
             if (coinToss == 0)
             {
                 _currentHeartIndex = (int)Mathf.Ceil(_barSectionList.Count() / 2) - 1;
@@ -90,6 +72,9 @@ public class PullingManager : MonoBehaviour
 
         _barSectionList[_currentHeartIndex].SetHasHeart(true);
     }
+
+    private BarSection _lastBar = null;
+
     [Button(enabledMode:EButtonEnableMode.Always)]
     private void SpawnBarSections()
     {
@@ -123,6 +108,21 @@ public class PullingManager : MonoBehaviour
             GameObject spawnedBar = Instantiate(_sectionBar, _canvas.transform);
 
             Image image = spawnedBar.GetComponent<Image>();
+            Button button = spawnedBar.GetComponent<Button>();
+            BarSection section = spawnedBar.GetComponent<BarSection>();
+
+            if (_lastBar != null)
+            {
+                section.ConnectRight = _lastBar;
+                _lastBar.ConnectLeft = section;
+            }
+
+            _lastBar = section;
+            
+
+            int idx = i;
+            button.onClick.AddListener(() => SetSelectedIndex(idx));
+            button.enabled = false;
 
             // Resize each section
             image.rectTransform.sizeDelta = new Vector2(sectionWidth, image.rectTransform.sizeDelta.y);
@@ -136,7 +136,7 @@ public class PullingManager : MonoBehaviour
             float x = -_barsTotalWidth / 2f + (i * (sectionWidth + _padding)) + (sectionWidth / 2f);
             image.rectTransform.anchoredPosition = new Vector2(x, _barY);
 
-            BarSection section = spawnedBar.GetComponent<BarSection>();
+            
             section.SetTransform(image.rectTransform);
 
             //Add new bar position to a list that you can use as anchor points to move the _heart around
@@ -146,8 +146,22 @@ public class PullingManager : MonoBehaviour
 
             _spawnedObjects.Add(spawnedBar.gameObject);
         }
+
+
     }
 
+    public void ToggleBarButtons(bool onOff)
+    {
+        foreach (BarSection section in _barSectionList)
+        {
+            if (onOff)
+            {
+                if (!section.HasModifier) section.Button.enabled = true;
+                else section.Button.enabled = false;
+            }
+            else section.Button.enabled = false;
+        }
+    }
     public void MoveHeart(int pushForce)
     {
         _barSectionList[_currentHeartIndex].SetHasHeart(false);

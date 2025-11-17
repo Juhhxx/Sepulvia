@@ -17,6 +17,8 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private GameObject _actionButtons;
     [SerializeField] private GameObject _moveButtons;
 
+    [SerializeField] private GameObject _seletBarCanvas;
+
     [SerializeField] private GameObject _moveInfoPanel;
     [SerializeField] private TextMeshProUGUI _panelTitle;
     [SerializeField] private TextMeshProUGUI _panelDescription;
@@ -38,8 +40,9 @@ public class BattleUIManager : MonoBehaviour
         }
     }
     
-    public void ToogleActionButtons(bool onOff) => _actionButtons.SetActive(onOff);
-    public void ToogleMoveButtons(bool onOff) => _moveButtons.SetActive(onOff);
+    public void ToggleActionButtons(bool onOff) => _actionButtons.SetActive(onOff);
+    public void ToggleMoveButtons(bool onOff) => _moveButtons.SetActive(onOff);
+    public void ToggleSelecBar(bool onOff) => _seletBarCanvas.SetActive(onOff);
 
     public List<Button> GetActionButtons()
     => _actionButtons.GetComponentsInChildren<Button>().ToList();
@@ -103,7 +106,7 @@ public class BattleUIManager : MonoBehaviour
         }
     }
     
-    public void ToogleMoveInfo(bool onOff, MoveInfo move = null)
+    public void ToggleMoveInfo(bool onOff, MoveInfo move = null)
     {
         if (onOff)
         {

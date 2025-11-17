@@ -72,7 +72,7 @@ public class InventoryManager : MonoBehaviour
         _createdObjects.Clear();
     }
 
-    public void ToogleItemInfo(bool onOff, ItemInfo item = null)
+    public void ToggleItemInfo(bool onOff, ItemInfo item = null)
     {
         if (onOff)
         {

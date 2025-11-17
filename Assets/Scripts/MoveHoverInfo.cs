@@ -19,10 +19,10 @@ public class MoveHoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (!_button.enabled) return;
         
-        _uiManager.ToogleMoveInfo(true, _move);
+        _uiManager.ToggleMoveInfo(true, _move);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        _uiManager.ToogleMoveInfo(false);
+        _uiManager.ToggleMoveInfo(false);
     }
 }

@@ -22,11 +22,11 @@ public class ItemHoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (!_active) return;
         if (!_button.enabled) return;
         
-        _inventoryManager?.ToogleItemInfo(true, _item);
+        _inventoryManager?.ToggleItemInfo(true, _item);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         if (!_active) return;
-        _inventoryManager?.ToogleItemInfo(false);
+        _inventoryManager?.ToggleItemInfo(false);
     }
 }

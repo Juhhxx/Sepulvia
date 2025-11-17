@@ -4,10 +4,11 @@ public class BattleResolver : MonoBehaviour
 {
     [SerializeField] private PullingManager _pullManager;
 
+    private int SelectedBar => _pullManager.SelectedIndex;
+
     public void DoMove(MoveInfo move, CharacterInfo user, CharacterInfo target)
     {
         Debug.Log($"{user.Name} USED {move.Name} AGAINST {target.Name}");
-        Debug.Log($"{target.Name} TOOK {move.StanceDamage} DAMAGE");
 
         user.CurrentStance -= move.StanceCost;
         target.CurrentStance -= move.StanceDamage;
@@ -31,7 +32,7 @@ public class BattleResolver : MonoBehaviour
 
             case MoveTypes.Modifier:
 
-                // NOT IMPLEMENTED
+                ApplyBarModifier(move);
                 break;
         }
     }
@@ -53,6 +54,11 @@ public class BattleResolver : MonoBehaviour
     private void DoStatModifier(MoveInfo move, CharacterInfo target)
     {
         foreach (StatModifier sm in move.StatModifiers) target.AddModifier(sm.Instantiate());
+    }
+
+    private void ApplyBarModifier(MoveInfo move)
+    {
+        _pullManager.BarSections[SelectedBar].AddBarModifier(move.Modifier);
     }
 
     public void UseItem(ItemInfo item, CharacterInfo user)
