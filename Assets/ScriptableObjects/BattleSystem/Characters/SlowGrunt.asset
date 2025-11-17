@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cf7145c6105cd47ac554ceda5d8a59, type: 3}
+  m_Name: SlowGrunt
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyInfo
+  <Name>k__BackingField: SlowGrunt
+  <BattlePrefab>k__BackingField: {fileID: 383824495953575252, guid: d7cceeab355a14e47ab343d450b982e9, type: 3}
+  _baseSpeed: 1
+  _baseStance: 20
+  _currentStance: 0
+  _baseStanceRecover: 1
+  _statModifiers: []
+  <MoveSet>k__BackingField:
+  - {fileID: 11400000, guid: 77ffd1ff502432a43a3ff6be1f89d8e2, type: 2}
+  - {fileID: 11400000, guid: dde47148967b9324c823aafbd9a7288f, type: 2}
+  <Inventory>k__BackingField: {fileID: 0}
+  <Inteligence>k__BackingField: 0
