@@ -11,9 +11,6 @@ public class FillBar : MonoBehaviour
     [SerializeField] private Image _barFillImage;
     [SerializeField] private float _updateSpeed = 0.5f;
 
-    [OnValueChanged("UpdateBar")]
-    [SerializeField, Range(0, 1)] private float _barFillAmout;
-
     private string _infoName;
     private float _maxValue;
 
@@ -21,14 +18,11 @@ public class FillBar : MonoBehaviour
     {
         _barNameTMP.text = name;
         _barInfoTMP.text = $"{info} ({maxValue}/{maxValue})";
-        _barFillAmout = 1f;
         _barFillImage.fillAmount = 1f;
 
         _infoName = info;
         _maxValue = maxValue;
     }
-
-    public void UpdateBar() => _barFillImage.fillAmount = _barFillAmout;
 
     public void UpdateFillAmout(int newAmount)
     {
@@ -39,21 +33,32 @@ public class FillBar : MonoBehaviour
 
     private IEnumerator UpdateBarCR(float to)
     {
-        float from = _barFillAmout;
+        float from = _barFillImage.fillAmount;
         float newValue = from;
         float i = 0;
 
-        while (_barFillAmout != to)
+        while (i <= 1)
         {
-            newValue = Mathf.Lerp(from, to, i);
-
-            _barFillImage.fillAmount = newValue;
-            _barInfoTMP.text = $"{_infoName} ({(int)(_maxValue * newValue)}/{_maxValue})";
-            _barFillAmout = newValue;
-
             i += Time.deltaTime * _updateSpeed;
+
+            float t = Mathf.Clamp01(i);
+
+            newValue = Mathf.Lerp(from, to, t);
+
+            UpdateUI(newValue);
 
             yield return null;
         }
+
+        UpdateUI(to);        
+    }
+
+    private void UpdateUI(float to)
+    {
+        _barFillImage.fillAmount = to;
+
+        int displayValue = Mathf.RoundToInt(_maxValue * to);
+        
+        _barInfoTMP.text = $"{_infoName} ({displayValue}/{_maxValue})";
     }
 }
