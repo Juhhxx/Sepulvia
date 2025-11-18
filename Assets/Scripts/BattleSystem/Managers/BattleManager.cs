@@ -95,6 +95,8 @@ public class BattleManager : MonoBehaviour
         _playerParty = playerParty.Instantiate();
         _enemyParty = enemyParty.Instantiate();
 
+        _hasWinner = false;
+
         _uiManager.ClearCreatedObjects();
 
         _uiManager.InstantiateBattlePrefabs(_playerParty, _enemyParty);
@@ -131,6 +133,7 @@ public class BattleManager : MonoBehaviour
 
     public IEnumerator RunCR()
     {
+        _uiManager.ToggleActionButtons(false);
         _dialogueManager.StartDialogues($"{Player.Name} ran.");
 
         yield return _wfd;
@@ -322,7 +325,14 @@ public class BattleManager : MonoBehaviour
                 yield return _wfd;
                 yield return new WaitForSeconds(0.5f);
 
-                if (_hasWinner) ShowEnd();
+                Debug.Log("FINISHED TURN");
+
+                if (_hasWinner)
+                {
+                    Debug.Log("END BATTLE");
+                    ShowEnd();
+                    yield break;
+                }
             }
 
             // Clear Actions List
@@ -333,14 +343,14 @@ public class BattleManager : MonoBehaviour
 
     private void Win(bool playerWon)
     {
+        Debug.Log($"WINNER IS PLAYER? {playerWon}");
         _playerWon = playerWon;
         _hasWinner = true;
     }
 
     private void ShowEnd()
     {
-        StopAllCoroutines();
-
+        Debug.Log("END BATTLE NOW");
         _uiManager.ToggleMoveButtons(false);
         _uiManager.ToggleActionButtons(false);
         _uiManager.ToggleMoveInfo(false);

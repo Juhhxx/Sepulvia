@@ -9,7 +9,7 @@ public class BarSection : MonoBehaviour
     public bool HasModifier { get; private set; }
     public void AddBarModifier(BarModifier barModifier)
     {
-        BarModifier = barModifier;
+        BarModifier = barModifier.Instantiate();
         _image.color = barModifier.Color;
         HasModifier = true;
         

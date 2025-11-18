@@ -157,7 +157,6 @@ public class PullingManager : MonoBehaviour
             _spawnedObjects.Add(spawnedBar.gameObject);
         }
 
-
     }
 
     public void ToggleBarButtons(bool onOff)
@@ -184,19 +183,23 @@ public class PullingManager : MonoBehaviour
             if (section.BarModifier.CheckIfDone()) section.RemoveBarModifier();
         }
     }
-    public void DoBarModifier(BarSection section)
+    public bool DoBarModifier(BarSection section)
     {
+        bool stopMovement = false;
+
         switch (section.BarModifier.Type)
         {
             case BarModifierTypes.Barrier:
 
-                StopMovement();
+                stopMovement = true;
                 break;
         }
 
         DialogueManager.Instance.AddDialogue($"{section.BarModifier.Type} was activated.");
 
         if (section.BarModifier.DestroyOnUse) section.RemoveBarModifier();
+
+        return stopMovement;
     }
 
     public void MoveHeart(int pushForce)
@@ -209,32 +212,54 @@ public class PullingManager : MonoBehaviour
 
         for (int i = 0; i < pushForce; i++)
         {
-            _barSectionList[_currentHeartIndex].SetHasHeart(false);
+            BarSection section = _barSectionList[_currentHeartIndex];
+
+            if (section.HasModifier)
+            {
+                if (DoBarModifier(section)) 
+                {
+                    IsMoving = false;
+                    yield break;
+                }
+            }
+
+            section.SetHasHeart(false);
 
             if (positive) _currentHeartIndex++;
             else _currentHeartIndex--;
 
+            float sectionWidth = section.Image.rectTransform.sizeDelta.x;
+
             if (_currentHeartIndex < 0)
             {
+                _spawnedHeart.GetComponent<RectTransform>().anchoredPosition = section.HeartPosition + (Vector3.left * sectionWidth);
                 OnHeartEnd?.Invoke(true);
-                StopAllCoroutines();
+                IsMoving = false;
+                yield break;
             }
             else if (_currentHeartIndex >= _barSectionList.Count)
             {
+                _spawnedHeart.GetComponent<RectTransform>().anchoredPosition = section.HeartPosition + (Vector3.right * sectionWidth);;
                 OnHeartEnd?.Invoke(false);
-                StopAllCoroutines();
+                IsMoving = false;
+                yield break;
             }
-
-            BarSection section = _barSectionList[_currentHeartIndex];
-
-            _spawnedHeart.GetComponent<RectTransform>().anchoredPosition = section.HeartPosition;
-            section.SetHasHeart(true);
-
-            if (section.HasModifier)
+            else
             {
-                DoBarModifier(section);
-            }
+                section = _barSectionList[_currentHeartIndex];
 
+                _spawnedHeart.GetComponent<RectTransform>().anchoredPosition = section.HeartPosition;
+                section.SetHasHeart(true);
+
+                if (section.HasModifier)
+                {
+                    if (DoBarModifier(section)) 
+                    {
+                        IsMoving = false;
+                        yield break;
+                    }
+                }
+            }
 
             yield return new WaitForSeconds(0.2f);
         }
