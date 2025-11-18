@@ -34,19 +34,26 @@ public class PullingManager : MonoBehaviour
 
     public event Action OnSelectBar;
 
-    public bool IsMoving { get; private set; }
+    public event Action<bool> OnHeartEnd;
 
-    void Start()
+    public void ResetEvents()
     {
-        SpawnBarSections();
-        SpawnHeart();
+        OnSelectBar = null;
+        OnHeartEnd = null;
     }
 
-    private void SpawnHeart()
+    public bool IsMoving { get; private set; }
+
+    public void SpawnHeart()
     {
+        if (_spawnedHeart != null) return;
+
         //Instantiate the heart Image prefab
         _spawnedHeart = Instantiate(_heart, _canvas.transform);
+    }
 
+    public void SetHeartInMiddle()
+    {
         Image hearthImage = _spawnedHeart.GetComponent<Image>();
 
         //Check if the number of bar sections is even or not to know where to spwn it
@@ -72,14 +79,12 @@ public class PullingManager : MonoBehaviour
                 hearthImage.rectTransform.anchoredPosition = new Vector3(_barSectionList[_currentHeartIndex].HeartPosition.x, _barY + _heartHeightPadding, 0);
             }
         }
-
-        _barSectionList[_currentHeartIndex].SetHasHeart(true);
     }
 
     private BarSection _lastBar = null;
 
     [Button(enabledMode:EButtonEnableMode.Always)]
-    private void SpawnBarSections()
+    public void SpawnBarSections(int sectionsNumber)
     {
         if (_canvas == null || _pullBar == null || _sectionBar == null) return;
 
@@ -93,6 +98,8 @@ public class PullingManager : MonoBehaviour
         _barSectionList?.Clear();
         
         if (_divNumb <= 0) return;
+
+        _divNumb = sectionsNumber;
 
         float sectionWidth;
 
@@ -165,11 +172,11 @@ public class PullingManager : MonoBehaviour
             else section.Button.enabled = false;
         }
     }
-
     public void CheckBarModifiers()
     {
         foreach (BarSection section in _barSectionList)
         {
+            if (section == null) continue;
             if (!section.HasModifier) continue;
 
             section.BarModifier.TurnPassed();
@@ -188,7 +195,7 @@ public class PullingManager : MonoBehaviour
         }
 
         DialogueManager.Instance.AddDialogue($"{section.BarModifier.Type} was activated.");
-        
+
         if (section.BarModifier.DestroyOnUse) section.RemoveBarModifier();
     }
 
@@ -206,6 +213,17 @@ public class PullingManager : MonoBehaviour
 
             if (positive) _currentHeartIndex++;
             else _currentHeartIndex--;
+
+            if (_currentHeartIndex < 0)
+            {
+                OnHeartEnd?.Invoke(true);
+                StopAllCoroutines();
+            }
+            else if (_currentHeartIndex >= _barSectionList.Count)
+            {
+                OnHeartEnd?.Invoke(false);
+                StopAllCoroutines();
+            }
 
             BarSection section = _barSectionList[_currentHeartIndex];
 

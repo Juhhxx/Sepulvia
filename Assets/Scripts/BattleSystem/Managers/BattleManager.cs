@@ -80,12 +80,14 @@ public class BattleManager : MonoBehaviour
     private WaitForDialogueEnd _wfd;
 
     private bool _selectingBar;
+    private bool _hasWinner = false;
+    private bool _playerWon;
 
     private void Start()
     {
-#if UNITY_EDITOR
-        if (_playerParty != null && _enemyParty != null) StartBattle(_playerParty, _enemyParty);
-#endif
+// #if UNITY_EDITOR
+//         if (_playerParty != null && _enemyParty != null) StartBattle(_playerParty, _enemyParty);
+// #endif
     }
 
     public void StartBattle(PartyInfo playerParty, PartyInfo enemyParty)
@@ -93,13 +95,29 @@ public class BattleManager : MonoBehaviour
         _playerParty = playerParty.Instantiate();
         _enemyParty = enemyParty.Instantiate();
 
+        _uiManager.ClearCreatedObjects();
+
         _uiManager.InstantiateBattlePrefabs(_playerParty, _enemyParty);
         _dialogueManager.SetUpDialogueManager();
+
+        _pullManager.SpawnHeart();
+        _pullManager.SpawnBarSections((_enemyParty.PartySize * 5) + 5);
+        _pullManager.SetHeartInMiddle();
+        _pullManager.ResetEvents();
+
         _pullManager.OnSelectBar += () => _selectingBar = false;
+        _pullManager.OnHeartEnd += Win;
 
         _wfd = new WaitForDialogueEnd(_dialogueManager);
+        _actionList = new List<BattleAction>();
 
         _numberOfBattlers = playerParty.PartySize + enemyParty.PartySize;
+
+        _uiManager.ToggleMoveButtons(false);
+        _uiManager.ToggleActionButtons(true);
+        _uiManager.ToggleMoveInfo(false);
+        _dialogueManager.HideDialogue();
+        _inventoryManager.HideInventory();
 
         SetUpNewTurnEvents();
 
@@ -109,22 +127,38 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(BattleLoopCR());
     }
 
+    public void Run() => StartCoroutine(RunCR());
+
+    public IEnumerator RunCR()
+    {
+        _dialogueManager.StartDialogues($"{Player.Name} ran.");
+
+        yield return _wfd;
+        yield return new WaitForSeconds(0.5f);
+
+        BattleTest.Instance.StartBattle();
+    }
+
     private void SetUpNewTurnEvents()
     {
+        // Clear Previous Subscribers
+        OnTurnPassed = null;
+
         // Make Stance Recovering
         OnTurnPassed += () =>
         {
-            Player.CurrentStance += Player.StanceRecover;
+            if (Player.CurrentStance > 0) Player.CurrentStance += Player.StanceRecover;
 
             foreach (CharacterInfo e in _enemyParty.PartyMembers)
             {
-                e.CurrentStance += e.StanceRecover;
+                if (e.CurrentStance > 0) e.CurrentStance += e.StanceRecover;
             }
 
             _uiManager.UpdateStanceBars(_playerParty, _enemyParty);
+            Debug.Log("DID STANCE RECOVER");
         };
 
-        // Count Turns in Moves and Check Them
+        // Count Turns in Modifiers and Check Them
         OnTurnPassed += () =>
         {
             Player.CheckModifier();
@@ -133,6 +167,7 @@ public class BattleManager : MonoBehaviour
             {
                 e.CheckModifier();
             }
+            Debug.Log("DID MODIFIERS COUNT");
         };
 
         // Check Bar Modifiers
@@ -147,6 +182,7 @@ public class BattleManager : MonoBehaviour
             {
                 foreach (MoveInfo m in c.MoveSet) m.TurnPassed();
             }
+            Debug.Log("DID MOVE COUNT");
         };
 
         // Make Enemies Choose Action Every Turn
@@ -155,8 +191,12 @@ public class BattleManager : MonoBehaviour
             enemy.SetUpAI();
             OnTurnPassed += () =>
             {
-                MoveInfo m = enemy.BattleAI.ChooseRandom();
-                AddAction(enemy, m);
+                if (enemy.CurrentStance > 0)
+                {
+                    MoveInfo m = enemy.BattleAI.ChooseRandom();
+                    AddAction(enemy, m);
+                }
+                Debug.Log("DID ENEMY AI");
             };
         }
     }
@@ -180,6 +220,8 @@ public class BattleManager : MonoBehaviour
             if (move != null)
             {
                 moveButtons[i].gameObject.SetActive(true);
+                moveButtons[i].onClick.RemoveAllListeners();
+
                 moveButtons[i].onClick.AddListener(() => AddAction(Player, move));
 
                 _uiManager.SetUpButton(moveButtons[i], move);
@@ -222,6 +264,7 @@ public class BattleManager : MonoBehaviour
             if (stack != null && stack.Item.CanBeUsedInBattle)
             {
                 invButtons[i].enabled = true;
+                invButtons[i].onClick.RemoveAllListeners();
                 invButtons[i].onClick.AddListener(() =>
                 {
                     AddAction(Player, stack.Item);
@@ -244,6 +287,8 @@ public class BattleManager : MonoBehaviour
             CurrentTurn++;
 
             UpdateButtons();
+            _uiManager.UpdateStatModifierDisplay(Player.StatModifiers);
+
 
             yield return new WaitUntil(() => _actionList.Count == _numberOfBattlers);
 
@@ -276,12 +321,33 @@ public class BattleManager : MonoBehaviour
                 yield return new WaitUntil(() => !_pullManager.IsMoving);
                 yield return _wfd;
                 yield return new WaitForSeconds(0.5f);
+
+                if (_hasWinner) ShowEnd();
             }
 
             // Clear Actions List
             _actionList.Clear();
             _uiManager.ToggleActionButtons(true);
         }
+    }
+
+    private void Win(bool playerWon)
+    {
+        _playerWon = playerWon;
+        _hasWinner = true;
+    }
+
+    private void ShowEnd()
+    {
+        StopAllCoroutines();
+
+        _uiManager.ToggleMoveButtons(false);
+        _uiManager.ToggleActionButtons(false);
+        _uiManager.ToggleMoveInfo(false);
+        _dialogueManager.HideDialogue();
+        _inventoryManager.HideInventory();
+
+        _uiManager.ShowEndScreen(_playerWon);
     }
     
     private void VerifyTurnLosses()
@@ -320,12 +386,12 @@ public class BattleManager : MonoBehaviour
             case ActionType.Move:
 
                 var party = action.Character is PlayerInfo ? _enemyParty : _playerParty;
-                var target = ChooseTarget(party);
+                // var target = ChooseTarget(party);
 
                 action.Move.UsedMove();
 
                 _dialogueManager.AddDialogue($"{action.Character.Name} used {action.Move.Name}.");
-                _battleResolver.DoMove(action.Move, action.Character, target);
+                _battleResolver.DoMove(action.Move, action.Character, party);
                 break;
 
             case ActionType.Item:

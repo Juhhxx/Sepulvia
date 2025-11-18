@@ -59,6 +59,13 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
         return !_dialoguePlaying;
     }
 
+    public void HideDialogue()
+    {
+        StopAllCoroutines();
+        _dialogueBox.SetActive(false);
+        _dialoguePlaying = false;
+    }
+
     private IEnumerator PlayDialogues()
     {
         _dialogueBox.SetActive(true);

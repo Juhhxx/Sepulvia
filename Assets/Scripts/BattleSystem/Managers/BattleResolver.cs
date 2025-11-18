@@ -6,12 +6,16 @@ public class BattleResolver : MonoBehaviour
 
     private int SelectedBar => _pullManager.SelectedIndex;
 
-    public void DoMove(MoveInfo move, CharacterInfo user, CharacterInfo target)
+    public void DoMove(MoveInfo move, CharacterInfo user, PartyInfo target)
     {
-        Debug.Log($"{user.Name} USED {move.Name} AGAINST {target.Name}");
+        Debug.Log($"{user.Name} USED {move.Name} AGAINST {target.PartyName}");
 
         user.CurrentStance -= move.StanceCost;
-        target.CurrentStance -= move.StanceDamage;
+
+        foreach (CharacterInfo c in target.PartyMembers)
+        {
+            c.CurrentStance -= move.StanceDamage;
+        }
 
         switch(move.Type)
         {
@@ -27,7 +31,7 @@ public class BattleResolver : MonoBehaviour
 
             case MoveTypes.Nerf:
 
-                DoStatModifier(move, target);
+                DoStatModifier(move, ChooseTarget(target));
                 break;
 
             case MoveTypes.Modifier:
@@ -37,9 +41,20 @@ public class BattleResolver : MonoBehaviour
         }
     }
 
+    private CharacterInfo ChooseTarget(PartyInfo fromParty)
+    {
+        int rnd = UnityEngine.Random.Range(0, fromParty.PartySize);
+        CharacterInfo c = fromParty.PartyMembers[rnd];
+
+        Debug.Log($"TARGETING {c.Name}");
+
+        return c;
+    }
+
     private void DoPull(MoveInfo move, CharacterInfo user)
     {
-        DialogueManager.Instance.AddDialogue($"{user.Name} pushed the Soul to their side by {move.PullStrength}.");
+        DialogueManager.Instance.AddDialogue(
+        $"{user.Name} pushed the Soul to their side by {move.PullStrength + user.GetModifierBonus(Stats.PullStrength)}.");
         
         if (user is PlayerInfo)
         {

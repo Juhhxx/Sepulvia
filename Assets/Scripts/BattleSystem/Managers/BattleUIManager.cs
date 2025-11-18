@@ -24,6 +24,24 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _panelTitle;
     [SerializeField] private TextMeshProUGUI _panelDescription;
 
+    [SerializeField] private GameObject _endBattleScreen;
+    [SerializeField] private TextMeshProUGUI _endBattleText;
+
+    public void ClearCreatedObjects()
+    {
+        if (_characterModels != null)
+        {
+            foreach (GameObject go in _characterModels) Destroy(go);
+            _characterModels.Clear();
+        }
+       
+        if (_enemyStanceBars != null)
+        {
+            foreach (FillBar f in _enemyStanceBars) Destroy(f.gameObject);
+            _enemyStanceBars.Clear();
+        }
+    }
+
     public void InstantiateBattlePrefabs(PartyInfo playerParty, PartyInfo enemyParty)
     {
         _characterModels = new List<GameObject>();
@@ -45,7 +63,7 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    private float radius = 2.5f;
+    private float radius = 4f;
     public List<Vector3> GetSpawnPoints(int count, Transform pivot)
     {
         List<Vector3> points = new List<Vector3>();
@@ -94,6 +112,14 @@ public class BattleUIManager : MonoBehaviour
     public void ToggleMoveButtons(bool onOff) => _moveButtons.SetActive(onOff);
     public void ToggleSelecBar(bool onOff) => _seletBarCanvas.SetActive(onOff);
 
+    public void ShowEndScreen(bool won)
+    {
+        if (won) _endBattleText.text = "WOU WON!";
+        else _endBattleText.text = "YOU LOST!";
+
+        _endBattleScreen.SetActive(true);
+    }
+
     public List<Button> GetActionButtons()
     => _actionButtons.GetComponentsInChildren<Button>().ToList();
 
@@ -136,7 +162,7 @@ public class BattleUIManager : MonoBehaviour
         {
             Vector3 pos = _characterModels[enemyParty.PartyMembers.IndexOf(enemy) + 1].transform.position;
 
-            GameObject bar = Instantiate(_enemyStanceBarPrefab, gameObject.transform);
+            GameObject bar = Instantiate(_enemyStanceBarPrefab, pos + (Vector3.up * 7), Quaternion.identity);
             FillBar enemyFillBar = bar.GetComponent<FillBar>();
 
             _enemyStanceBars.Add(enemyFillBar);
