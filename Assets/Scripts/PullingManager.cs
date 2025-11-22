@@ -19,6 +19,7 @@ public class PullingManager : MonoBehaviour
     private List<GameObject> _spawnedObjects;
 
     [SerializeField] GameObject _heart;
+    [SerializeField] private float _pullSpeed = 0.2f;
     private float _heartHeightPadding = 100;
     [SerializeField, ReadOnly] private List<BarSection> _barSectionList = new List<BarSection>();
     public List<BarSection> BarSections => _barSectionList;
@@ -82,8 +83,7 @@ public class PullingManager : MonoBehaviour
     }
 
     private BarSection _lastBar = null;
-
-    [Button(enabledMode:EButtonEnableMode.Always)]
+    
     public void SpawnBarSections(int sectionsNumber)
     {
         if (_canvas == null || _pullBar == null || _sectionBar == null) return;
@@ -261,7 +261,7 @@ public class PullingManager : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(_pullSpeed);
         }
 
         IsMoving = false;
