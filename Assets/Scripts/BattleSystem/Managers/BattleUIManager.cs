@@ -143,7 +143,7 @@ public class BattleUIManager : MonoBehaviour
         else
         {
             button.enabled = false;
-            Color transparent = Color.white;
+            Color transparent = Color.red;
             transparent.a = 0.5f;
 
             button.GetComponent<Image>().color = transparent;
@@ -190,8 +190,10 @@ public class BattleUIManager : MonoBehaviour
     {
         if (onOff)
         {
-            _panelTitle.text = $"{move.Name} ({move.Type})";
+            _panelTitle.text = $"{move.Name}";
             _panelDescription.text = $"Cost: {move.StanceCost} stance\nCooldown: {move.Cooldown} turn(s)\n\n{move.Description}";
+
+            if (move.CheckIfCooldown()) _panelTitle.text += $" (cooldown)";
         }
         
         _moveInfoPanel.SetActive(onOff);

@@ -8,6 +8,7 @@ using UnityEngine;
 public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 {
     [SerializeField] private GameObject _dialogueBox;
+    [SerializeField] private GameObject _nextArrow;
     [SerializeField] private TextMeshProUGUI _dialogueTextBox;
     [SerializeField] private float _textSpeed;
     [SerializeField][InputAxis] private string _jumpKey;
@@ -68,7 +69,7 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 
     private IEnumerator PlayDialogues()
     {
-        _dialogueBox.SetActive(true);
+        _dialogueBox?.SetActive(true);
         _dialoguePlaying = true;
 
         int size = _dialogueQueue.Count;
@@ -76,6 +77,8 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 
         while (i < size)
         {
+            _nextArrow?.SetActive(false);
+
             (string dialogue, Action action) = _dialogueQueue.Dequeue().GetValues();
 
             action?.Invoke();
@@ -96,7 +99,9 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 
                 yield return _wfs;
             }
-
+            
+            _nextArrow?.SetActive(true);
+            
             yield return _wff;
             yield return _wfk;
             yield return _wff;
@@ -105,6 +110,6 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
         }
 
         _dialoguePlaying = false;
-        _dialogueBox.SetActive(false);
+        _dialogueBox?.SetActive(false);
     }
 }

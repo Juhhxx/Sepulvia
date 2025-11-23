@@ -4,6 +4,7 @@ using NaughtyAttributes;
 using System.Collections.Generic;
 using System;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
@@ -263,20 +264,30 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < invButtons.Count; i++)
         {
             ItemStack stack = (i < Player.Inventory.ItemSlots.Count) ? Player.Inventory.ItemSlots[i] : null;
-
-            if (stack != null && stack.Item.CanBeUsedInBattle)
+            
+            if (stack != null)
             {
-                invButtons[i].enabled = true;
-                invButtons[i].onClick.RemoveAllListeners();
-                invButtons[i].onClick.AddListener(() =>
+                if (stack.Item.CanBeUsedInBattle)
                 {
-                    AddAction(Player, stack.Item);
-                    Player.Inventory.RemoveItem(stack);
-                });
-
-                invButtons[i]?.GetComponent<ItemHoverInfo>().SetUpHover(stack.Item, _inventoryManager);
+                    invButtons[i].enabled = true;
+                    invButtons[i].onClick.RemoveAllListeners();
+                    invButtons[i].onClick.AddListener(() =>
+                    {
+                        AddAction(Player, stack.Item);
+                        Player.Inventory.RemoveItem(stack);
+                    });
+                }
+                else
+                {
+                    invButtons[i].enabled = false;
+                    Color c = Color.white;
+                    c.a = 0.35f;
+                    invButtons[i].transform.GetChild(0).GetComponent<Image>().color = c;
+                }
+            
+                invButtons[i]?.GetComponent<ItemHoverInfo>()
+                .SetUpHover(stack.Item, _inventoryManager);
             }
-            else invButtons[i].enabled = false;
         }
     }
 
