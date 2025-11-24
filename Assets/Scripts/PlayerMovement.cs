@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
         _velocity.z = forwardAxis;
         _velocity.x = strafeAxis;
 
-        _velocity = Vector3.Normalize(_velocity * _maxSpeed);
+        _velocity = Vector3.Normalize(_velocity) * _maxSpeed;
     }
     private void UpdatePosition()
     {
