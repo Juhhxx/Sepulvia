@@ -15,6 +15,11 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _panelTitle;
     [SerializeField] private TextMeshProUGUI _panelDescription;
 
+    [SerializeField] private Camera _uiCamera;
+    [SerializeField] private RectTransform _itemInfoPanelRect;
+    [SerializeField] private Vector2 _mouseOffset = new Vector2(25f, -25f);
+    [SerializeField] private Canvas _canvas;
+
     private List<GameObject> _createdObjects;
 
     private List<Button> _buttons;
@@ -85,8 +90,23 @@ public class InventoryManager : MonoBehaviour
 
     private void FollowMouse()
     {
-        Vector3 pos = Input.mousePosition;
-
-        _itemInfoPanel.transform.position = pos; 
+        Vector2 canvasPos = ScreenToCanvas(Input.mousePosition);
+        canvasPos += _mouseOffset; 
+        _itemInfoPanelRect.anchoredPosition = canvasPos;
     }
+
+    private Vector2 ScreenToCanvas(Vector2 screenPos)
+    {
+        RectTransform canvasRect = _canvas.GetComponent<RectTransform>();
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            screenPos,
+            _uiCamera, 
+            out Vector2 localPoint
+        );
+
+        return localPoint;
+    }
+
 }
