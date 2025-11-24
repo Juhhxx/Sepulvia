@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TravellingBackground_Material_Noisy
+  m_Shader: {fileID: -6465566751694194690, guid: a654b7c6097a5954486f8cd7a96f376c, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _SampleTexture2D_2eb0cde050644578b3bcd85982f81564_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 910410e7dbb3b38479a2154b4f6015a3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_78cf3e65b96743bfa84ef7609602f0c1_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 65ded412a275c3340bf7458002006594, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_7f7d05baae054c1f986f40e51dc3aa77_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 910410e7dbb3b38479a2154b4f6015a3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_8f0c95693fda42d4b29be0814fbd3cc9_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: de820bf2a1e7e0b45bec5b1e40a2e123, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_acefe34580d74be4b23919ce23bbf12a_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: de820bf2a1e7e0b45bec5b1e40a2e123, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_ad6175a5581d4b3798e48cbe23fde7af_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 910410e7dbb3b38479a2154b4f6015a3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_b387eabf71534c8c800b12868f686504_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 1346c780c36426d499b896c3a0ef9f4b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_b9c1fd404d5f472d8fe1afb5d62f0221_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 3d5d766a1bbb31048a08b84f8ec578ce, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_deb154d6b389448798e8dc10ef492290_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 910410e7dbb3b38479a2154b4f6015a3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_ec5845f3270a418fb5ef6ec421917731_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 7c0abe5ebf0af3f478a0cc5d72708017, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_f9335393920445c1beacc571369fd636_Texture_1_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Background_Noise_Speed: 1
+    - _Bit_Rate: 258
+    - _Center_Rotation_Speed: -0.2
+    - _Light_Rail_Speed: -0.2
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _Secondary_Corona_Rotation_Speed: -0.1
+    - _Terciary_Corona_Rotation_Speed: 0.15
+    - _Tunnel_Light_Rotation_Speed: -5
+    - _Tunnel_Light_Speed: 0.2
+    - _terciary_Corona_Rotation_Speed: 0.15
+    m_Colors:
+    - _Background_Color: {r: 766.9961, g: 84.67647, b: 0, a: 0}
+    - _Corona_Color: {r: 2.9960785, g: 0.043666083, b: 0, a: 1}
+    - _Frame_Color: {r: 11.984314, g: 0, b: 7.420993, a: 1}
+    - _Rail_Color: {r: 383.49805, g: 0, b: 29.9158, a: 1}
+    - _Secondary_Corona_Color: {r: 7.999999, g: 0.45554966, b: 0, a: 1}
+    - _Terciary_Corona_Color: {r: 2, g: 0.84293246, b: 0, a: 0}
+    - _Tunnel_Light_Color: {r: 11.984314, g: 0.34495467, b: 0, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!114 &5110226466918162573
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Editor::UnityEditor.Rendering.Universal.AssetVersion
+  version: 10
