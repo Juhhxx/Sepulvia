@@ -86,6 +86,7 @@ public class InventoryManager : MonoBehaviour
     private void FollowMouse()
     {
         Vector3 pos = Input.mousePosition;
-        _itemInfoPanel.transform.position = pos;
+
+        _itemInfoPanel.transform.position = pos; 
     }
 }
