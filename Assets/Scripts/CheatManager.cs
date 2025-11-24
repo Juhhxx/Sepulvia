@@ -15,4 +15,20 @@ public class CheatManager : MonoBehaviour
     }
 
     [SerializeField, ReorderableList] private List<CheatCode> _cheatCodes;
+
+    private void Update()
+    {
+        DoCheats();
+    }
+    
+    private void DoCheats()
+    {
+        foreach (CheatCode cheat in _cheatCodes)
+        {
+            if (Input.GetKey(cheat.FirstKey) && Input.GetKeyDown(cheat.SecondKey))
+            {
+                cheat.Cheat?.Invoke();
+            }
+        }
+    }
 }
