@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SectionBar
+  m_Name: BackButton
   m_Shader: {fileID: 4800000, guid: 0406db5a14f94604a8c57ccfbc9f3b46, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -30,7 +30,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 1d71f7bf338808342a06f043d894b010, type: 3}
+        m_Texture: {fileID: 2800000, guid: ad02e88963002824f83534e96c0fe80b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -50,7 +50,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: 1d71f7bf338808342a06f043d894b010, type: 3}
+        m_Texture: {fileID: 2800000, guid: ad02e88963002824f83534e96c0fe80b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -135,16 +135,16 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 1, g: 0, b: 0.8209486, a: 1}
-    - _BaseColorAddSubDiff: {r: 1, g: 0, b: 0, a: 0}
+    - _BaseColor: {r: 1, g: 0, b: 0.39061022, a: 1}
+    - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 1, g: 0, b: 0.8209486, a: 1}
-    - _EmissionColor: {r: 0.6320754, g: 0.6320754, b: 0.6320754, a: 1}
+    - _Color: {r: 1, g: 0, b: 0.3906102, a: 1}
+    - _EmissionColor: {r: 2, g: 0, b: 0.15635586, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &2410451376083821805
+--- !u!114 &1754136613317049653
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
