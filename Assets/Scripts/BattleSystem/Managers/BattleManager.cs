@@ -322,6 +322,9 @@ public class BattleManager : MonoBehaviour
             _uiManager.ToggleMoveInfo(false);
             _inventoryManager.HideInventory();
 
+            // Little Delay Before Battle Starts
+            yield return new WaitForSeconds(0.5f);
+
             OrganizeActions();
 
             foreach (BattleAction action in _actionList)
