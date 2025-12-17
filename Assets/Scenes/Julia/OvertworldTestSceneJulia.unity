@@ -189,7 +189,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 330585545}
-  m_PlaneDistance: 0.5
+  m_PlaneDistance: 0
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -1410,7 +1410,7 @@ Transform:
   m_GameObject: {fileID: 675174406}
   serializedVersion: 2
   m_LocalRotation: {x: 0.27395913, y: 0, z: 0, w: 0.9617413}
-  m_LocalPosition: {x: 0, y: 2.55, z: -2.63}
+  m_LocalPosition: {x: 0, y: 1.55, z: -2.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1596,7 +1596,7 @@ GameObject:
   - component: {fileID: 797952532}
   - component: {fileID: 797952531}
   - component: {fileID: 797952530}
-  - component: {fileID: 797952529}
+  - component: {fileID: 797952533}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -1604,19 +1604,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &797952529
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 797952528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6e18a2c385793d43829dae845048f50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EncounterManager
-  _battleScene: BattleUITest
 --- !u!136 &797952530
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1684,6 +1671,19 @@ Transform:
   - {fileID: 1657965375}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
+--- !u!114 &797952533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797952528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1db4acfd00e34f4da33cdf9450e363e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EncounterEntity
+  _party: {fileID: 11400000, guid: ace545fec2da1bd4c8bde31f55c4b654, type: 2}
 --- !u!1 &967545988
 GameObject:
   m_ObjectHideFlags: 0
@@ -2193,6 +2193,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1305414083}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1351174678
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1351174680}
+  - component: {fileID: 1351174679}
+  m_Layer: 0
+  m_Name: Encounter Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1351174679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351174678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6e18a2c385793d43829dae845048f50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EncounterManager
+  _battleScene: OvertworldTestSceneJulia
+--- !u!4 &1351174680
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351174678}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 948.5805, y: 99.60815, z: -17.57435}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1359902361
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3205,6 +3250,7 @@ SceneRoots:
   - {fileID: 333018396}
   - {fileID: 1359902361}
   - {fileID: 1696941670}
+  - {fileID: 1351174680}
   - {fileID: 1016081185}
   - {fileID: 797952532}
   - {fileID: 1859934699}
