@@ -17,8 +17,9 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
     private YieldInstruction _wfs;
     private YieldInstruction _wff;
     private WaitForKeyDown _wfk;
-    private bool _skipDialogue;
+    private bool _skipDialogue = false;
     private bool _dialoguePlaying;
+    private bool _fillingDialogue = false;
 
     public void Awake()
     {
@@ -29,14 +30,6 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
     {
         CheckDialogEnd();
         CheckForSkip();
-    }
-
-    private void CheckForSkip()
-    {
-        if (Input.GetButtonDown(_jumpKey))
-        {
-            _skipDialogue = true;
-        }
     }
 
     public void SetUpDialogueManager()
@@ -82,6 +75,14 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
         _dialoguePlaying = false;
     }
 
+    private void CheckForSkip()
+    {
+        if (Input.GetButtonDown(_jumpKey) && _fillingDialogue)
+        {
+            _skipDialogue = true;
+        }
+    }
+
     private IEnumerator PlayDialogues()
     {
         _dialogueBox?.SetActive(true);
@@ -103,8 +104,10 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
             // Reset Text Box
             _dialogueTextBox.text = "";
 
+            _fillingDialogue = true;
+
             foreach (char c in dialogue)
-            {                
+            {
                 if (_skipDialogue)
                 {
                     _skipDialogue = false;
@@ -117,6 +120,9 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
                 // Add letter
                 _dialogueTextBox.text += c;
             }
+
+            _fillingDialogue = false;
+            _skipDialogue = false;
             
             // Show next dialogue arrow
             _nextArrow?.SetActive(true);
