@@ -7,14 +7,15 @@ public class EncounterEntity : MonoBehaviour
 
     public event Action<PartyInfo> OnEncounterPlayer;
 
-    private void OnEnable()
+    private void Start()
     {
         EncounterManager.Instance.RegsiterEncounterable(this);
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
-        EncounterManager.Instance.UnregsiterEncounterable(this);
+        if (EncounterManager.Instance != null)
+            EncounterManager.Instance.UnregsiterEncounterable(this);
     }
 
     private void OnTriggerEnter(Collider other)

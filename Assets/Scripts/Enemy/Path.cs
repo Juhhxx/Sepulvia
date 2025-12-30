@@ -134,7 +134,7 @@ public class Path : MonoBehaviour
             for (int i = 0; i < _waypoints.Count; i++)
             {
                 Gizmos.color = Color.green;
-                Gizmos.DrawSphere(_waypoints[i].position, 0.15f);
+                Gizmos.DrawSphere(_waypoints[i].position, 0.05f);
 
                 if (i != _waypoints.Count - 1)
                 {

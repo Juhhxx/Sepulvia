@@ -1,10 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Splines;
 
-public class EnemyPatrolMovement : MonoBehaviour
+public class EnemyPatrolMovement : MonoBehaviour, IMovementType
 {
     [OnValueChanged("SetInPath")]
     [SerializeField] private Path _path;
@@ -40,6 +41,7 @@ public class EnemyPatrolMovement : MonoBehaviour
         _path = path;
     }
 
+    [Button(enabledMode: EButtonEnableMode.Always)]
     private void SetInPath()
     {
         if (_path == null) return;
@@ -47,7 +49,57 @@ public class EnemyPatrolMovement : MonoBehaviour
         transform.position = _path.GetCurrentWaypoint();
     }
 
+    [SerializeField] private bool _stopAtWaypoints = false;
+    [SerializeField, ShowIf("_stopAtWaypoints")] private float _stopTime;
+
+    [SerializeField] private float _speed = 1f;
+
+    private Vector3 _direction = Vector3.zero;
+    private Vector3 _motion = Vector3.zero;
+    private Rigidbody _rb;
+
+    public Vector3 Direction => _direction;
+    public float Speed => _rb.linearVelocity.magnitude;
+
     private void Start()
     {
+        _rb = GetComponent<Rigidbody>();
+
+        SetInPath();
+    }
+
+    private void Update()
+    {
+        CheckIfReached();
+        UpdateMovement();
+    }
+
+    private void CheckIfReached()
+    {
+        if (Vector3.Distance(transform.position, _path.GetCurrentWaypoint()) <= 0.1f)
+        {
+            UpdateDirection();
+
+            _motion = Vector3.zero;
+        }
+    }
+    private void UpdateDirection()
+    {
+        Vector3 dir = _path.GetNextWaypoint() - transform.position;
+        
+        dir = dir.normalized;
+
+        _direction = dir;
+
+        Debug.Log($"Enemy {name} : Changed Direction to {_direction}");
+    }
+
+    private void UpdateMovement()
+    {
+        _motion = _direction * _speed;
+    }
+    public void Move()
+    {
+        _rb.linearVelocity = _motion;
     }
 }
