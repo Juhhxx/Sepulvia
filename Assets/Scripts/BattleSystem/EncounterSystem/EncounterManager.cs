@@ -8,7 +8,7 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
 
     private void Awake()
     {
-        base.SingletonCheck(this);
+        base.SingletonCheck(this, true);
     }
 
     public void RegsiterEncounterable(EncounterEntity entity)

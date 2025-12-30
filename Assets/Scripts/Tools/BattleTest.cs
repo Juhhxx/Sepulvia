@@ -9,7 +9,7 @@ public class BattleTest : MonoBehaviourSingleton<BattleTest>
 
     private void Start()
     {
-        base.SingletonCheck(this);
+        base.SingletonCheck(this, false);
         StartBattle();
     }
     public void StartBattle()

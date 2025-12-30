@@ -23,7 +23,7 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 
     public void Awake()
     {
-        base.SingletonCheck(this);
+        base.SingletonCheck(this, false);
     }
 
     private void Update()
