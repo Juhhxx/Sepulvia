@@ -76,7 +76,7 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
 
     private void CheckIfReached()
     {
-        if (Vector3.Distance(transform.position, _path.GetCurrentWaypoint()) <= 0.1f)
+        if (Vector3.Distance(transform.position, _path.GetCurrentWaypoint()) <= 0.15f)
         {
             UpdateDirection();
 
@@ -101,5 +101,10 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
     public void Move()
     {
         _rb.linearVelocity = _motion;
+    }
+
+    public void ResetMovement()
+    {
+        _rb.linearVelocity = Vector3.zero;
     }
 }

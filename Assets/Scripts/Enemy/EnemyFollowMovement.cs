@@ -21,6 +21,11 @@ public class EnemyFollowMovement : MonoBehaviour, IMovementType
         _agent.stoppingDistance = 0.5f;
     }
 
+    public void ResetMovement()
+    {
+        _agent.destination = transform.position;
+    }
+
     public void Move()
     {
         _agent.destination = _target.position;

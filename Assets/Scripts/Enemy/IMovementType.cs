@@ -7,4 +7,5 @@ public interface IMovementType
     public float Speed { get; }
 
     public void Move();
+    public void ResetMovement();
 }
