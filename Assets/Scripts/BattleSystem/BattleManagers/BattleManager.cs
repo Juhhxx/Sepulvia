@@ -84,6 +84,8 @@ public class BattleManager : MonoBehaviour
     private bool _hasWinner = false;
     private bool _playerWon;
 
+    public event Action OnBattleEnd;
+
     private void Start()
     {
 // #if UNITY_EDITOR

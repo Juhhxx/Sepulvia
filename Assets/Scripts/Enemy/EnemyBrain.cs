@@ -35,7 +35,7 @@ public class EnemyBrain : MonoBehaviour
 
     public enum MovementType { Patrolling, Following }
 
-    private MovementType _movementeState = MovementType.Patrolling;
+    [SerializeField, ReadOnly] private MovementType _movementeState = MovementType.Patrolling;
 
     [SerializeField] private bool _doFollow = true;
     [SerializeField, ShowIf("_doFollow")] private float _detectionRadius = 2;

@@ -427,7 +427,7 @@ Transform:
   m_GameObject: {fileID: 285962524}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.5, y: 0, z: 0}
+  m_LocalPosition: {x: 4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -790,8 +790,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 388208173}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.63, y: 0, z: -1.11}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.73, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1152,7 +1152,7 @@ Transform:
   m_GameObject: {fileID: 520042293}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.5, y: 0, z: 2.5}
+  m_LocalPosition: {x: 4, y: 0, z: 2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1870,7 +1870,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 0.25
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
@@ -1910,7 +1910,7 @@ Transform:
   m_GameObject: {fileID: 797952528}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 1.63, y: 0, z: -1.11}
+  m_LocalPosition: {x: 0.73, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1994,6 +1994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38612091bd6fe0e41b3e8b386fb97598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
+  _movementeState: 0
   _doFollow: 1
   _detectionRadius: 2
 --- !u!1 &967545988
@@ -2048,6 +2049,7 @@ GameObject:
   - component: {fileID: 1016081186}
   - component: {fileID: 1016081187}
   - component: {fileID: 1016081188}
+  - component: {fileID: 1016081189}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2064,7 +2066,7 @@ Transform:
   m_GameObject: {fileID: 1016081183}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0.6, y: 0, z: -1.65}
+  m_LocalPosition: {x: 6.14, y: 0, z: 2.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2137,6 +2139,19 @@ MonoBehaviour:
   _maxSpeed: 2.5
   _horizontalAxis: Horizontal
   _verticalAxis: Vertical
+--- !u!114 &1016081189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016081183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4723de4a1ca9fe428d94ae39de30bdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  <PlayerParty>k__BackingField: {fileID: 11400000, guid: 89d2679380e72fe4d8e5112223a8279c, type: 2}
 --- !u!1 &1126837494
 GameObject:
   m_ObjectHideFlags: 0
