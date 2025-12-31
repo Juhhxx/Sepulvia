@@ -9,6 +9,7 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
     [SerializeField, Scene] private string _battleScene;
 
     PartyInfo _playerParty;
+    BattleManager _battleManager;
 
     private void Awake()
     {
@@ -31,28 +32,23 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
     {
         Debug.Log($"Doing encounter with {party.PartyName}");
 
-        _ = DoEncounterAsync(party);
-    }
-
-    private async Task DoEncounterAsync(PartyInfo party)
-    {
-        await SceneManager.LoadSceneAsync(_battleScene, LoadSceneMode.Additive);
-
-        Scene s = SceneManager.GetSceneByName(_battleScene);
-
-        SceneManager.SetActiveScene(s);
-
-        BattleManager bm = FindAnyObjectByType<BattleManager>();
-
-        bm.StartBattle(_playerParty, party);
-
-        bm.OnBattleEnd += async () =>
+        _ = GameSceneManager.Instance.LoadNewSceneAsync(_battleScene, true,
+        () =>
         {
-            Scene s = SceneManager.GetSceneByName(_overworldScene);
+            _battleManager = FindAnyObjectByType<BattleManager>();
 
-            SceneManager.SetActiveScene(s);
+            _battleManager.StartBattle(_playerParty, party);
 
-            await SceneManager.UnloadSceneAsync(_battleScene);
-        };
+            _battleManager.OnBattleEnd += GoBackToOverworld;
+        });
     }
+
+    private void GoBackToOverworld()
+    {
+        GameSceneManager.Instance.ActivateScene(_overworldScene);
+        GameSceneManager.Instance.ActivateScene(_battleScene);
+
+        _battleManager.OnBattleEnd -= GoBackToOverworld;
+    }
+
 }
