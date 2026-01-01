@@ -22,13 +22,18 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
 
     public void Quit() => Application.Quit();
 
-    public void LoadScene(string scene) => SceneManager.LoadScene(scene);
+    public void LoadScene(string scene)
+    {
+        _ = GameSceneManager.Instance.LoadNewSceneAsync(scene, true);
+    }
 
     public void ResetSelection() => EventSystem.current.SetSelectedGameObject(null);
 
     private void CheckPause()
     {
-        if (_noPauseScenes.Contains(SceneManager.GetActiveScene().name)) return;
+        if (_noPauseScenes.Contains(GameSceneManager.Instance.CurrentActiveScene.name)) return;
+
+        if (_pauseMenu == null) return;
 
         if (_pauseMenu.activeInHierarchy) return;
 

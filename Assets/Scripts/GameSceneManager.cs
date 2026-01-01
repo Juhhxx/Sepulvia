@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
 {
-    [SerializeField, ReadOnly] private List<Scene> _loadedScenes;
+    [SerializeField, ReadOnly] private List<Scene> _loadedScenes = new List<Scene>();
 
     public Scene CurrentActiveScene => _loadedScenes[0];
 
@@ -17,7 +17,7 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
     {
         base.SingletonCheck(this, true);
 
-        _loadedScenes[0] = SceneManager.GetActiveScene();
+        _loadedScenes.Add(SceneManager.GetActiveScene());
     }
 
     public async Task LoadNewSceneAsync(string sceneName, bool activate = false, Action onSceneActive = null)
