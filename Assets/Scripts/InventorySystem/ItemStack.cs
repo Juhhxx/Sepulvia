@@ -30,5 +30,7 @@ public class ItemStack
         // Item = item.Instantiate();
         Item = item;
         Amount = amount;
+
+        if (amount > item.StackMaximum) Amount = item.StackMaximum;
     }
 }

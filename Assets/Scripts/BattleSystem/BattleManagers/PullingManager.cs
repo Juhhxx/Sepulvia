@@ -192,7 +192,7 @@ public class PullingManager : MonoBehaviour
             case BarModifierTypes.Barrier:
 
                 stopMovement = true;
-                DialogueManager.Instance.AddDialogue($"A Barrier Stoped the Movement.");
+                DialogueManager.Instance.AddDialogue($"A Barrier Stopped the Movement.");
                 break;
         }
 

@@ -16,8 +16,10 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
     private Queue<DialogueEvent> _dialogueQueue;
     private YieldInstruction _wfs;
     private YieldInstruction _wff;
-    private WaitForKeyDown _wfk;
+    private WaitForKeyDown _wfkd;
+    private WaitForKeyUp _wfku;
     private bool _skipDialogue = false;
+    private bool _skippedDialogue = false;
     private bool _dialoguePlaying;
     private bool _fillingDialogue = false;
 
@@ -37,8 +39,10 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
         _dialogueQueue = new Queue<DialogueEvent>();
         _wfs = new WaitForSeconds(_textSpeed);
         _wff = new WaitForEndOfFrame();
-        _wfk = new WaitForKeyDown(_jumpKey);
+        _wfkd = new WaitForKeyDown(_jumpKey);
+        _wfku = new WaitForKeyUp(_jumpKey);
         _dialogueBox.SetActive(false);
+
     }
 
     public void AddDialogue(string dialogue, Action action = null)
@@ -111,6 +115,7 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
                 if (_skipDialogue)
                 {
                     _skipDialogue = false;
+                    _skippedDialogue = true;
                     _dialogueTextBox.text = dialogue;
                     break;
                 }
@@ -127,9 +132,12 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
             // Show next dialogue arrow
             _nextArrow?.SetActive(true);
             
+            if (_skippedDialogue) yield return _wfku; // Wait For Key Released
+            
+            yield return _wfkd; // Wait For Key Pressed
             yield return _wff; // Wait For End of Frame
-            yield return _wfk; // Wait For Key Pressed
-            yield return _wff; // Wait For End of Frame
+
+            _skippedDialogue = false;
 
             i++;
         }

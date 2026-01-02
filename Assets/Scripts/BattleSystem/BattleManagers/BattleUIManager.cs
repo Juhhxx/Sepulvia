@@ -114,7 +114,7 @@ public class BattleUIManager : MonoBehaviour
 
     public void ShowEndScreen(bool won)
     {
-        if (won) _endBattleText.text = "WOU WON!";
+        if (won) _endBattleText.text = "YOU WON!";
         else _endBattleText.text = "YOU LOST!";
 
         _endBattleScreen.SetActive(true);

@@ -46,7 +46,7 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
     private void GoBackToOverworld()
     {
         GameSceneManager.Instance.ActivateScene(_overworldScene);
-        GameSceneManager.Instance.ActivateScene(_battleScene);
+        _ = GameSceneManager.Instance.UnloadNewSceneAsync(_battleScene);
 
         _battleManager.OnBattleEnd -= GoBackToOverworld;
     }

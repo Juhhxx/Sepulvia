@@ -6,10 +6,9 @@ using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _inventorySlotPrefab;
-
     [SerializeField] private GameObject _inventoryCanvas;
     [SerializeField] private GameObject _inventorySlots;
+    [SerializeField] private GameObject _equipmentSlots;
 
     [SerializeField] private GameObject _itemInfoPanel;
     [SerializeField] private TextMeshProUGUI _panelTitle;
@@ -22,7 +21,10 @@ public class InventoryManager : MonoBehaviour
     private List<GameObject> _createdObjects;
 
     private List<Button> _buttons;
-    public List<Button> GetInventoryButtons() => _buttons;
+    public List<Button> GetItemButtons() => _buttons.GetRange(0, _inventory.MaxInventorySpaces);
+    public List<Button> GetEquipmentButtons() => _buttons.GetRange(_inventory.MaxInventorySpaces, _inventory.MaxEquipmentSpaces);
+
+    private InventoryInfo _inventory;
 
     private void Update()
     {
@@ -31,18 +33,32 @@ public class InventoryManager : MonoBehaviour
 
     public void ShowInventory(InventoryInfo inventory)
     {
+        _inventory = inventory;
+
         if (_createdObjects != null) ClearSlots();
         else _createdObjects = new List<GameObject>();
 
         _buttons = new List<Button>();
 
+        ShowItemSpaces(inventory);
+        ShowEquipmentSpaces(inventory);
+
+        _inventoryCanvas.SetActive(true);
+    }
+
+    private void ShowItemSpaces(InventoryInfo inventory)
+    {
+        GameObject inventorySlotPrefab = _inventorySlots.transform.GetChild(0).gameObject;
+
         for (int i = 0; i < inventory.MaxInventorySpaces; i++)
         {
             ItemStack stack = (i < inventory.ItemSlots.Count) ? inventory.ItemSlots[i] : null;
 
-            GameObject slot = Instantiate(_inventorySlotPrefab, _inventorySlots.transform);
+            GameObject slot = Instantiate(inventorySlotPrefab, _inventorySlots.transform);
             Image image = slot.transform.GetChild(0).GetComponent<Image>();
             TextMeshProUGUI tmp = slot.GetComponentInChildren<TextMeshProUGUI>();
+
+            slot.SetActive(true);
 
             if (stack != null)
             {
@@ -60,8 +76,34 @@ public class InventoryManager : MonoBehaviour
             _createdObjects.Add(slot);
             _buttons.Add(slot.GetComponent<Button>());
         }
+    }
 
-        _inventoryCanvas.SetActive(true);
+    private void ShowEquipmentSpaces(InventoryInfo inventory)
+    {
+        GameObject equipmentSlotPrefab = _equipmentSlots.transform.GetChild(0).gameObject;
+        
+        for (int i = 0; i < inventory.MaxEquipmentSpaces; i++)
+        {
+            ItemInfo item = (i < inventory.EquipmentSlots.Count) ? inventory.EquipmentSlots[i] : null;
+
+            GameObject slot = Instantiate(equipmentSlotPrefab, _equipmentSlots.transform);
+            Image image = slot.transform.GetChild(0).GetComponent<Image>();
+
+            slot.SetActive(true);
+
+            if (item != null)
+            {
+                image.sprite = item.Sprite;
+                image.color = Color.white;
+            }
+            else
+            {
+                image.color = new Color(1f , 1f, 1f, 0f);
+            }
+            
+            _createdObjects.Add(slot);
+            _buttons.Add(slot.GetComponent<Button>());
+        }
     }
 
     public void HideInventory()

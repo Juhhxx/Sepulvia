@@ -5,6 +5,8 @@ public class EncounterEntity : MonoBehaviour
 {
     [SerializeField] private PartyInfo _party;
 
+    private bool _didEncounter = false;
+
     public event Action<PartyInfo> OnEncounterPlayer;
 
     private void Start()
@@ -22,9 +24,12 @@ public class EncounterEntity : MonoBehaviour
     {
         PlayerMovement p = other.GetComponent<PlayerMovement>();
 
-        if (p != null)
+        if (p != null && !_didEncounter)
         {
             OnEncounterPlayer?.Invoke(_party);
+            gameObject.SetActive(false);
+
+            _didEncounter = true;
         }
     }
 }

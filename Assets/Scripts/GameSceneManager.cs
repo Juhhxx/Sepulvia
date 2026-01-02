@@ -22,7 +22,7 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
 
     public async Task LoadNewSceneAsync(string sceneName, bool activate = false, Action onSceneActive = null)
     {
-        Debug.Log($"[Game Scene Manager] Loading Scene {sceneName}");
+        Debug.Log($"[Game Scene Manager] Loading Scene {sceneName}", this);
 
         Scene scene = SceneManager.GetSceneByName(sceneName);
 
@@ -30,14 +30,14 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
 
         _loadedScenes.Add(scene);
 
-        Debug.Log($"[Game Scene Manager] Loaded Scene {sceneName}");
+        Debug.Log($"[Game Scene Manager] Loaded Scene {sceneName}", this);
 
         if (activate) ActivateScene(sceneName, onSceneActive);
     }
 
     public async Task UnloadNewSceneAsync(string sceneName)
     {
-        Debug.Log($"[Game Scene Manager] Unloading Scene {sceneName}");
+        Debug.Log($"[Game Scene Manager] Unloading Scene {sceneName}", this);
 
         Scene scene = SceneManager.GetSceneByName(sceneName);
 
@@ -45,12 +45,12 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
 
         _loadedScenes.Remove(scene);
 
-        Debug.Log($"[Game Scene Manager] Unloaded Scene {sceneName}");
+        Debug.Log($"[Game Scene Manager] Unloaded Scene {sceneName}", this);
     }
 
     public void ActivateScene(string sceneName, Action onSceneActive = null)
     {
-        Debug.Log($"[Game Scene Manager] Setting Scene {sceneName} as Active Scene");
+        Debug.Log($"[Game Scene Manager] Setting Scene {sceneName} as Active Scene", this);
 
         Scene scene = SceneManager.GetSceneByName(sceneName);
 
@@ -62,7 +62,7 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
         OnSceneChanged?.Invoke(scene);
         onSceneActive?.Invoke();
 
-        Debug.Log($"[Game Scene Manager] Set Scene {sceneName} as Active Scene");
+        Debug.Log($"[Game Scene Manager] Set Scene {sceneName} as Active Scene", this);
 
 
     }

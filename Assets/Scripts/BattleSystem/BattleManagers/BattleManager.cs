@@ -86,6 +86,9 @@ public class BattleManager : MonoBehaviour
 
     public event Action OnBattleEnd;
 
+    [Button(enabledMode: EButtonEnableMode.Playmode)]
+    private void EndBattle() => OnBattleEnd?.Invoke();
+
     private void Start()
     {
 // #if UNITY_EDITOR
@@ -261,7 +264,7 @@ public class BattleManager : MonoBehaviour
     {
         _inventoryManager.ShowInventory(Player.Inventory);
 
-        var invButtons = _inventoryManager.GetInventoryButtons();
+        var invButtons = _inventoryManager.GetItemButtons();
 
         for (int i = 0; i < invButtons.Count; i++)
         {
@@ -290,7 +293,28 @@ public class BattleManager : MonoBehaviour
                 invButtons[i]?.GetComponent<ItemHoverInfo>()
                 .SetUpHover(stack.Item, _inventoryManager);
             }
+
         }
+
+        invButtons = _inventoryManager.GetEquipmentButtons();
+
+        for (int i = 0; i < invButtons.Count; i++)
+        {
+            ItemInfo item = (i < Player.Inventory.EquipmentSlots.Count) ? Player.Inventory.EquipmentSlots[i] : null;
+            
+            if (item != null)
+            {
+                invButtons[i].enabled = false;
+                Color c = Color.white;
+                c.a = 0.35f;
+                invButtons[i].transform.GetChild(0).GetComponent<Image>().color = c;
+            
+                invButtons[i]?.GetComponent<ItemHoverInfo>()
+                .SetUpHover(item, _inventoryManager);
+            }
+
+        }
+
     }
 
     // Battle Loop

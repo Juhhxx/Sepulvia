@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50c90ebc66c11ee419fb831ef9789213, type: 3}
   m_Name: PlayerInventoryTest
   m_EditorClassIdentifier: Assembly-CSharp::InventoryInfo
-  <MaxInventorySpaces>k__BackingField: 10
+  <MaxInventorySpaces>k__BackingField: 12
   <ItemSlots>k__BackingField:
   - <Item>k__BackingField: {fileID: 11400000, guid: 3aca23ee82e5edb4ba35df96b54e492d, type: 2}
     <Amount>k__BackingField: 10
@@ -26,3 +26,6 @@ MonoBehaviour:
     <Amount>k__BackingField: 2
   - <Item>k__BackingField: {fileID: 11400000, guid: baa9146ff311aa04797b88b4918b650e, type: 2}
     <Amount>k__BackingField: 1
+  <MaxEquipmentSpaces>k__BackingField: 4
+  <EquipmentSlots>k__BackingField:
+  - {fileID: 11400000, guid: 560714ea60805a3489a5db3029c93983, type: 2}
