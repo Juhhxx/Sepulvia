@@ -1,8 +1,5 @@
-namespace Sepulvia.Assets.Scripts.InventorySystem
+public enum EquipmentType
 {
-    public enum EquipmentType
-    {
-        StatModifier,
-        MoveModidier
-    }
+    StatModifier,
+    MoveModidier
 }

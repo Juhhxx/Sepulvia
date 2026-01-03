@@ -67,10 +67,25 @@ public class CharacterInfo : ScriptableObject
 
         return bonus;
     }
+
+    public void CheckEquipment()
+    {
+        if (Inventory == null) return;
+
+        if (Inventory.EquipmentSlots.Count == 0) return;
+
+        foreach (ItemInfo e in Inventory.EquipmentSlots)
+        {
+            if (e.EquipmentType == EquipmentType.MoveModidier)
+            {
+                MoveSet[e.MoveIndex] = e.ChangeTo;
+            }
+        }
+    }
     public int GetEquipmentBonus(Stats stat)
     {
         if (Inventory == null) return 0;
-        
+
         if (Inventory.EquipmentSlots.Count == 0) return 0;
 
         int bonus = 0;
@@ -87,6 +102,10 @@ public class CharacterInfo : ScriptableObject
     [field: Header("Character Moves")]
     [field: Space(5)]
     [field: SerializeField, Expandable] public List<MoveInfo> MoveSet { get; private set; }
+    private List<MoveInfo> _baseMoves;
+    public void SetBaseMoves() => _baseMoves = new List<MoveInfo>(MoveSet);
+    public void ResetMoves() => MoveSet = new List<MoveInfo>(_baseMoves);
+    public void ResetMove(int index) => MoveSet[index] = _baseMoves[index];
 
     [field: Space(10)]
     [field: Header("Character Inventory")]
@@ -101,6 +120,10 @@ public class CharacterInfo : ScriptableObject
         {
             c.MoveSet[i] = c.MoveSet[i].Instantiate();
         }
+
+        c.SetBaseMoves();
+
+        c.CheckEquipment();
 
         c.CurrentStance = c.MaxStance;
         _statModifiers = new List<StatModifier>();

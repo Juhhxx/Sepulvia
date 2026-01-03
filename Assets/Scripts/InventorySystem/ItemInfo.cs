@@ -1,6 +1,5 @@
 using UnityEngine;
 using NaughtyAttributes;
-using Sepulvia.Assets.Scripts.InventorySystem;
 
 [CreateAssetMenu(fileName = "ItemInfo", menuName = "Inventory/New Item")]
 public class ItemInfo : ScriptableObject
