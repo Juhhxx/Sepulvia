@@ -1,69 +1,118 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
 {
-    [SerializeField, ReadOnly] private List<Scene> _loadedScenes = new List<Scene>();
+    public enum GameSceneTypes { Overworld, Battle }
 
-    public Scene CurrentActiveScene => _loadedScenes[0];
+    [Serializable]
+    public struct GameScene
+    {
+        // General
+        [field: Header("General")]
+        [field: Space(5f)]
+        [field: SerializeField] public GameSceneTypes SceneType { get; private set; }
+        [field: SerializeField] public Camera SceneCamera { get; private set; }
 
-    public event Action<Scene> OnSceneChanged;
+        // Fog
+        [field: Space(10f)]
+        [field: Header("Objects")]
+        [field: Space(5f)]
+        [field: SerializeField] public GameObject SceneGameObject { get; private set; }
 
+        // Fog
+        [field: Space(10f)]
+        [field: Header("Fog")]
+        [field: Space(5f)]
+        [field: SerializeField] public bool Fog { get; private set; }
+        
+        [field: AllowNesting]
+        [field: SerializeField, ShowIf("Fog")] public Color FogColor { get; private set; }
+
+        [field: AllowNesting]
+        [field: SerializeField, ShowIf("Fog")] public FogMode FogMode { get; private set; }
+
+        [field: AllowNesting]
+        [field: SerializeField, Range(0,1), ShowIf("Fog")] public float FogDensity { get; private set; }
+
+        [field: AllowNesting]
+        [field: SerializeField, Range(0,1), ShowIf("Fog")] public float HaloStrenght { get; private set; }
+    }
+
+    [SerializeField] private GameSceneTypes _currentGameScene;
+    public GameSceneTypes CurrentGameScene
+    {
+        get => _currentGameScene;
+
+        set
+        {
+            if (_currentGameScene != value)
+            {
+                UpdateGameScene(GetGameSceneByType(value));
+            }
+        }
+    }
+
+    [Button(enabledMode: EButtonEnableMode.Always)]
+    private void ChangeScene()
+    {
+        CurrentGameScene = _currentGameScene == GameSceneTypes.Overworld ? GameSceneTypes.Battle : GameSceneTypes.Overworld; 
+    }
+
+    [SerializeField, ReorderableList] private List<GameScene> _gameScenes;
+
+    public Camera CurrentCamera { get; private set; }
+
+    private GameScene GetGameSceneByType(GameSceneTypes type)
+    {
+        foreach(GameScene gs in _gameScenes)
+        {
+            if (gs.SceneType == type) return gs;
+        }
+
+        Debug.Log($"[Game Scene Manager] Game Scene of Type {type} not found!", this);
+        return default;
+    }
+
+    private void UpdateGameScene(GameScene scene)
+    {
+        Debug.Log($"[Game Scene Manager] Changing from Game Scene {_currentGameScene} to {scene.SceneType}", this);
+
+        // Disable Previous Camera and Scene Objects
+        GetGameSceneByType(_currentGameScene).SceneCamera.enabled = false;
+        GetGameSceneByType(_currentGameScene).SceneGameObject.SetActive(false);
+
+        _currentGameScene = scene.SceneType;
+
+        SetGameScene(scene);
+    }
+
+    private void SetGameScene(GameScene scene)
+    {
+        scene.SceneCamera.enabled = true;
+
+        CurrentCamera = scene.SceneCamera;
+
+        scene.SceneGameObject.SetActive(true);
+        Debug.LogWarning($"{scene.SceneGameObject.activeInHierarchy}");
+
+        RenderSettings.fog = scene.Fog;
+
+        if (scene.Fog)
+        {
+            RenderSettings.fogColor = scene.FogColor;
+            RenderSettings.fogMode = scene.FogMode;
+            RenderSettings.fogDensity = scene.FogDensity;
+            RenderSettings.haloStrength = scene.HaloStrenght;
+        }
+    }
+    
     private void Awake()
     {
-        base.SingletonCheck(this, true);
+        base.SingletonCheck(this, false);
 
-        _loadedScenes.Add(SceneManager.GetActiveScene());
-    }
-
-    public async Task LoadNewSceneAsync(string sceneName, bool activate = false, Action onSceneActive = null)
-    {
-        Debug.Log($"[Game Scene Manager] Loading Scene {sceneName}", this);
-
-        Scene scene = SceneManager.GetSceneByName(sceneName);
-
-        await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-
-        _loadedScenes.Add(scene);
-
-        Debug.Log($"[Game Scene Manager] Loaded Scene {sceneName}", this);
-
-        if (activate) ActivateScene(sceneName, onSceneActive);
-    }
-
-    public async Task UnloadNewSceneAsync(string sceneName)
-    {
-        Debug.Log($"[Game Scene Manager] Unloading Scene {sceneName}", this);
-
-        Scene scene = SceneManager.GetSceneByName(sceneName);
-
-        await SceneManager.UnloadSceneAsync(sceneName);
-
-        _loadedScenes.Remove(scene);
-
-        Debug.Log($"[Game Scene Manager] Unloaded Scene {sceneName}", this);
-    }
-
-    public void ActivateScene(string sceneName, Action onSceneActive = null)
-    {
-        Debug.Log($"[Game Scene Manager] Setting Scene {sceneName} as Active Scene", this);
-
-        Scene scene = SceneManager.GetSceneByName(sceneName);
-
-        _loadedScenes.Remove(scene);
-        _loadedScenes.Insert(0, scene);
-
-        SceneManager.SetActiveScene(scene);
-
-        OnSceneChanged?.Invoke(scene);
-        onSceneActive?.Invoke();
-
-        Debug.Log($"[Game Scene Manager] Set Scene {sceneName} as Active Scene", this);
-
-
+        UpdateGameScene(GetGameSceneByType(_currentGameScene));
     }
 }
