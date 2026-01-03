@@ -203,7 +203,7 @@ public class PullingManager : MonoBehaviour
 
     public void MoveHeart(int pushForce)
     {
-        StartCoroutine(MoveHeartCR(Mathf.Abs(pushForce), (pushForce > 0)));
+        StartCoroutine(MoveHeartCR(Mathf.Abs(pushForce), pushForce > 0));
     }
     private IEnumerator MoveHeartCR(int pushForce, bool positive)
     {

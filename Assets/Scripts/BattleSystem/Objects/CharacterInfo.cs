@@ -13,10 +13,10 @@ public class CharacterInfo : ScriptableObject
     [Header("Character Stats")]
     [Space(5)]
     [SerializeField] private int _baseSpeed;
-    public int Speed => _baseSpeed + GetModifierBonus(Stats.Speed);
+    public int Speed => _baseSpeed + GetModifierBonus(Stats.Speed) + GetEquipmentBonus(Stats.Speed);
 
     [SerializeField] private int _baseStance;
-    public int MaxStance => _baseStance + GetModifierBonus(Stats.Stance);
+    public int MaxStance => _baseStance + GetModifierBonus(Stats.Stance) + GetEquipmentBonus(Stats.Stance);
 
     [SerializeField, ReadOnly] private int _currentStance;
     public int CurrentStance
@@ -31,7 +31,9 @@ public class CharacterInfo : ScriptableObject
     }
 
     [SerializeField] private int _baseStanceRecover;
-    public int StanceRecover => _baseStanceRecover + GetModifierBonus(Stats.StanceGain);
+    public int StanceRecover => _baseStanceRecover + GetModifierBonus(Stats.StanceGain) + GetEquipmentBonus(Stats.StanceGain);
+
+    public int PullStrenghtBonus => GetModifierBonus(Stats.PullStrength) + GetEquipmentBonus(Stats.PullStrength);
 
     [Space(10)]
     [Header("Character Stats Modifiers")]
@@ -61,6 +63,21 @@ public class CharacterInfo : ScriptableObject
         foreach (StatModifier m in _statModifiers)
         {
             if (m.StatAffected == stat) bonus += m.AmountAffected;
+        }
+
+        return bonus;
+    }
+    public int GetEquipmentBonus(Stats stat)
+    {
+        if (Inventory == null) return 0;
+        
+        if (Inventory.EquipmentSlots.Count == 0) return 0;
+
+        int bonus = 0;
+
+        foreach (ItemInfo e in Inventory.EquipmentSlots)
+        {
+            if (e.StatEquip == stat) bonus += e.AmountEquip;
         }
 
         return bonus;

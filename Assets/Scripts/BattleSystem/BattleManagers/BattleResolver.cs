@@ -59,12 +59,12 @@ public class BattleResolver : MonoBehaviour
         if (user is PlayerInfo)
         {
             _pullManager.MoveHeart(-move.PullStrength -
-            user.GetModifierBonus(Stats.PullStrength));
+            user.PullStrenghtBonus);
         }
         else
         {
             _pullManager.MoveHeart(move.PullStrength +
-            user.GetModifierBonus(Stats.PullStrength));
+            user.PullStrenghtBonus);
         }
     }
 

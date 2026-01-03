@@ -5,15 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
 {
-    [SerializeField, Scene] private string _overworldScene;
-    [SerializeField, Scene] private string _battleScene;
+    [SerializeField] private BattleManager _battleManager;
 
     PartyInfo _playerParty;
-    BattleManager _battleManager;
 
     private void Awake()
     {
-        base.SingletonCheck(this, true);
+        base.SingletonCheck(this, false);
 
         _playerParty = FindAnyObjectByType<PlayerController>().PlayerParty;
     }
@@ -32,23 +30,9 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
     {
         Debug.Log($"Doing encounter with {party.PartyName}");
 
-        _ = GameSceneManager.Instance.LoadNewSceneAsync(_battleScene, true,
-        () =>
-        {
-            _battleManager = FindAnyObjectByType<BattleManager>();
+        GameSceneManager.Instance.CurrentGameScene = GameSceneManager.GameSceneTypes.Battle;
 
-            _battleManager.StartBattle(_playerParty, party);
-
-            _battleManager.OnBattleEnd += GoBackToOverworld;
-        });
-    }
-
-    private void GoBackToOverworld()
-    {
-        GameSceneManager.Instance.ActivateScene(_overworldScene);
-        _ = GameSceneManager.Instance.UnloadNewSceneAsync(_battleScene);
-
-        _battleManager.OnBattleEnd -= GoBackToOverworld;
+        _battleManager.StartBattle(_playerParty, party);
     }
 
 }
