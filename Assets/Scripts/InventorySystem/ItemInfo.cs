@@ -1,5 +1,6 @@
 using UnityEngine;
 using NaughtyAttributes;
+using Sepulvia.Assets.Scripts.InventorySystem;
 
 [CreateAssetMenu(fileName = "ItemInfo", menuName = "Inventory/New Item")]
 public class ItemInfo : ScriptableObject
@@ -28,6 +29,27 @@ public class ItemInfo : ScriptableObject
     [field: Space(5)]
     [field: ShowIf("Type", ItemTypes.LongTerm)]
     [field: SerializeField] public StatModifier Modifier { get; private set; }
+
+    [field: Space(10)]
+    [field: Header("Equippable Item Parameters")]
+    [field: Space(5)]
+    [field: ShowIf("Type", ItemTypes.Equippable)]
+    [field: SerializeField] public EquipmentType EquipmentType { get; private set; }
+
+    [field: ShowIf("IsStatEquip")]
+    [field: SerializeField] public Stats StatEquip { get; private set; }
+
+    [field: ShowIf("IsStatEquip")]
+    [field: SerializeField] public int AmountEquip { get; private set; }
+    private bool IsStatEquip => Type == ItemTypes.Equippable && EquipmentType == EquipmentType.StatModifier;
+
+    [field: ShowIf("IsMoveEquip")]
+    [field: SerializeField, MinValue(0), MaxValue(3)] public int MoveIndex { get; private set; }
+
+    [field: ShowIf("IsMoveEquip")]
+    [field: SerializeField] public MoveInfo ChangeTo { get; private set; }
+    private bool IsMoveEquip => Type == ItemTypes.Equippable && EquipmentType == EquipmentType.MoveModidier;
+
 
     [field: Space(10)]
     [field: Header("Item Description")]

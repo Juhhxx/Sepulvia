@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using NaughtyAttributes;
 
 [CreateAssetMenu(fileName = "InventoryInfo", menuName = "Inventory/New Inventory")]
 public class InventoryInfo : ScriptableObject
@@ -98,7 +99,14 @@ public class InventoryInfo : ScriptableObject
     [field: Header("Character Equipment")]
     [field: Space(5)]
     [field: SerializeField] public int MaxEquipmentSpaces { get; private set; }
-    [field: SerializeField] public List<ItemInfo> EquipmentSlots { get; private set; }
+
+    [field: OnValueChanged("CheckEquipment")]
+    [field: SerializeField, Expandable] public List<ItemInfo> EquipmentSlots { get; private set; }
+
+    private void CheckEquipment()
+    {
+        EquipmentSlots.RemoveAll((e) => e.Type != ItemTypes.Equippable);
+    }
 
     public bool AddEquipment(ItemInfo item)
     {
@@ -123,6 +131,8 @@ public class InventoryInfo : ScriptableObject
     public InventoryInfo Instantiate()
     {
         InventoryInfo inv = Instantiate(this);
+
+        inv.CheckEquipment();
 
         // for (int i = 0; i < inv.Items.Count; i++)
         // {
