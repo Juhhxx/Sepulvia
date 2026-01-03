@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2856377646141156432}
-  - component: {fileID: 62417993616205509}
+  - component: {fileID: 5901781904693945250}
   m_Layer: 0
   m_Name: Scene Manager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &62417993616205509
+--- !u!114 &5901781904693945250
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,4 +44,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7570560c1f4dbd46b93579ed05d16b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameSceneManager
-  _loadedScenes: []
+  _currentGameScene: 0
+  _gameScenes:
+  - <SceneType>k__BackingField: 0
+    <SceneCamera>k__BackingField: {fileID: 0}
+    <SceneGameObject>k__BackingField: {fileID: 0}
+    <Fog>k__BackingField: 1
+    <FogColor>k__BackingField: {r: 0.21960784, g: 0.023529412, b: 0.23921569, a: 1}
+    <FogMode>k__BackingField: 2
+    <FogDensity>k__BackingField: 0.12
+    <HaloStrenght>k__BackingField: 0.4
+  - <SceneType>k__BackingField: 1
+    <SceneCamera>k__BackingField: {fileID: 0}
+    <SceneGameObject>k__BackingField: {fileID: 0}
+    <Fog>k__BackingField: 1
+    <FogColor>k__BackingField: {r: 0, g: 0, b: 0, a: 1}
+    <FogMode>k__BackingField: 3
+    <FogDensity>k__BackingField: 0.054
+    <HaloStrenght>k__BackingField: 0.379
