@@ -11,7 +11,7 @@ public class FollowCamera : MonoBehaviour
 
     private void Start()
     {
-        _cameraTrans = FindAnyObjectByType<Camera>().transform;
+        _cameraTrans = GameSceneManager.Instance.CurrentCamera.transform;
     }
 
     private void Follow()

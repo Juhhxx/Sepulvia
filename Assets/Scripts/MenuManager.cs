@@ -24,14 +24,14 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
 
     public void LoadScene(string scene)
     {
-        _ = GameSceneManager.Instance.LoadNewSceneAsync(scene, true);
+        SceneManager.LoadScene(scene);
     }
 
     public void ResetSelection() => EventSystem.current.SetSelectedGameObject(null);
 
     private void CheckPause()
     {
-        if (_noPauseScenes.Contains(GameSceneManager.Instance.CurrentActiveScene.name)) return;
+        if (_noPauseScenes.Contains(SceneManager.GetActiveScene().name)) return;
 
         if (_pauseMenu == null) return;
 
