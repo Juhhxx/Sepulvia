@@ -328,7 +328,7 @@ public class BattleManager : MonoBehaviour
 
             UpdateButtons();
             _uiManager.UpdateStatModifierDisplay(Player.StatModifiers);
-
+            _uiManager.ShowTurnOrder(_playerParty, _enemyParty);
 
             yield return new WaitUntil(() => _actionList.Count == _numberOfBattlers);
 
@@ -346,6 +346,7 @@ public class BattleManager : MonoBehaviour
             _uiManager.ToggleMoveButtons(false);
             _uiManager.ToggleActionButtons(false);
             _uiManager.ToggleMoveInfo(false);
+            _uiManager.HideTurnOrder();
             _inventoryManager.HideInventory();
 
             // Little Delay Before Battle Starts

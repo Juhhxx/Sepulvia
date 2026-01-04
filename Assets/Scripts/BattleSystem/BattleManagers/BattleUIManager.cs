@@ -20,6 +20,8 @@ public class BattleUIManager : MonoBehaviour
 
     [SerializeField] private GameObject _seletBarCanvas;
 
+    [SerializeField] private GameObject _turnOrderIndicator;
+
     [SerializeField] private GameObject _moveInfoPanel;
     [SerializeField] private TextMeshProUGUI _panelTitle;
     [SerializeField] private TextMeshProUGUI _panelDescription;
@@ -184,6 +186,42 @@ public class BattleUIManager : MonoBehaviour
     public void UpdateStatModifierDisplay(List<StatModifier> statModifiers)
     {
         _statModifierDisplay.UpdateDisplay(statModifiers);
+    }
+
+    private List<GameObject> _createdObjectsTurns = new List<GameObject>();
+    public void ShowTurnOrder(PartyInfo playerParty, PartyInfo enemyParty)
+    {
+        if (_createdObjectsTurns.Count > 0)
+        {
+            foreach (GameObject go in _createdObjectsTurns) Destroy(go);
+            _createdObjectsTurns.Clear();
+        }
+
+        _turnOrderIndicator.transform.parent.gameObject.SetActive(true);
+
+        TextMeshProUGUI prefab = _turnOrderIndicator.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+
+        var battlers = new List<CharacterInfo>(playerParty.PartyMembers);
+
+        battlers.AddRange(enemyParty.PartyMembers);
+
+        battlers.Sort((a, b) => b.Speed.CompareTo(a.Speed));
+
+        foreach (CharacterInfo c in battlers)
+        {
+            TextMeshProUGUI tmp = Instantiate(prefab, _turnOrderIndicator.transform);
+
+            tmp.text = c.Name;
+
+            tmp.gameObject.SetActive(true);
+
+            _createdObjectsTurns.Add(tmp.gameObject);
+        }
+    }
+
+    public void HideTurnOrder()
+    {
+        _turnOrderIndicator.transform.parent.gameObject.SetActive(false);
     }
 
     public void ToggleMoveInfo(bool onOff, MoveInfo move = null)

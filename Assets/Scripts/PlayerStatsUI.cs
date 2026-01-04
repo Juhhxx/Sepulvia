@@ -16,11 +16,16 @@ public class PlayerStatsUI : MonoBehaviour
         _statsTMP.text = 
         $"Stance : {c.CurrentStance}/{c.MaxStance}\nStance Gain : {c.StanceRecover}\nSpeed : {c.Speed}\nPull Str. : +{c.PullStrenghtBonus}";
 
-        var tmp = _moveButtons.GetComponentsInChildren<Button>();
+        var tmp = _moveButtons.GetComponentsInChildren<TextMeshProUGUI>();
 
         for (int i = 0; i < tmp.Length; i++)
         {
-            tmp[i].GetComponentInChildren<TextMeshProUGUI>().text = c.MoveSet[i].Name;
+            Debug.Log($"{c.MoveSet.Count}");
+            Debug.Log($"{i}");
+            Debug.Log($"{tmp[i]}");
+            Debug.Log($"{c.MoveSet[i]}");
+            
+            tmp[i].text = c.MoveSet[i].Name;
         }
     }
 }
