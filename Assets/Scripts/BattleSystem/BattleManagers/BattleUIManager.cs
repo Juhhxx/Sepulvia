@@ -26,8 +26,12 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _panelTitle;
     [SerializeField] private TextMeshProUGUI _panelDescription;
 
-    [SerializeField] private GameObject _endBattleScreen;
-    [SerializeField] private TextMeshProUGUI _endBattleText;
+    [SerializeField] private GameObject _winBattleScreen;
+    [SerializeField] private GameObject _decisionBattleScreen;
+    [SerializeField] private GameObject _rewardsBattleScreen;
+    [SerializeField] private GameObject _rewardsShowcase;
+
+    [SerializeField] private GameObject _loseBattleScreen;
 
     public void ClearCreatedObjects()
     {
@@ -114,12 +118,62 @@ public class BattleUIManager : MonoBehaviour
     public void ToggleMoveButtons(bool onOff) => _moveButtons.SetActive(onOff);
     public void ToggleSelecBar(bool onOff) => _seletBarCanvas.SetActive(onOff);
 
-    public void ShowEndScreen(bool won)
+    public void ShowWinScreen()
     {
-        if (won) _endBattleText.text = "YOU WON!";
-        else _endBattleText.text = "YOU LOST!";
+        _winBattleScreen.SetActive(true);
+        _decisionBattleScreen.SetActive(true);
+        _rewardsBattleScreen.SetActive(false);
+    }
 
-        _endBattleScreen.SetActive(true);
+    public void ShowRewardsScreen()
+    {
+        _decisionBattleScreen.SetActive(false);
+        _rewardsBattleScreen.SetActive(true);
+    }
+    private List<GameObject> _rewardShowcaseObjs = new List<GameObject>();
+    public void ShowRewards(List<ItemInfo> items, int essence)
+    {
+        if (_rewardShowcaseObjs.Count  > 0)
+        {
+            foreach (GameObject go in _rewardShowcaseObjs) Destroy(go);
+            _rewardShowcaseObjs.Clear();
+        }
+
+        GameObject itemPrefab = _rewardsShowcase.transform.GetChild(0).gameObject;
+        GameObject essencePrefab = _rewardsShowcase.transform.GetChild(1).gameObject;
+
+        foreach(ItemInfo item in items)
+        {
+            GameObject go = Instantiate(itemPrefab, _rewardsShowcase.transform);
+            go.SetActive(true);
+
+            TextMeshProUGUI tmp = go.GetComponentInChildren<TextMeshProUGUI>();
+            tmp.text = item.Name;
+
+            Image img = go.GetComponentInChildren<Image>();
+            img.sprite = item.Sprite;
+        }
+
+        if (essence > 0)
+        {
+            GameObject go = Instantiate(essencePrefab, _rewardsShowcase.transform);
+            go.SetActive(true);
+
+            TextMeshProUGUI[] tmps = go.GetComponentsInChildren<TextMeshProUGUI>();
+            tmps[1].text = $"x{essence}";
+
+        }
+    }
+
+    public void ShowLoseScreen()
+    {
+        _loseBattleScreen.SetActive(true);
+    }
+
+    public void HideFinalScreens()
+    {
+        _winBattleScreen.SetActive(false);
+        _loseBattleScreen.SetActive(false);
     }
 
     public List<Button> GetActionButtons()
@@ -218,7 +272,6 @@ public class BattleUIManager : MonoBehaviour
             _createdObjectsTurns.Add(tmp.gameObject);
         }
     }
-
     public void HideTurnOrder()
     {
         _turnOrderIndicator.transform.parent.gameObject.SetActive(false);

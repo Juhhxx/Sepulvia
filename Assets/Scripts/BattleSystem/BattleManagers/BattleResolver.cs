@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleResolver : MonoBehaviour
@@ -95,5 +96,60 @@ public class BattleResolver : MonoBehaviour
     public void UseItem(ItemInfo item, CharacterInfo user)
     {
         _inventoryResolver.UseItem(item, user);
+    }
+
+    public (List<ItemInfo>, int) GiveRewards(PartyInfo enemyParty, bool spared)
+    {
+        // Return Values
+        List<ItemInfo> items = new List<ItemInfo>();
+        int essence = 0;
+
+        // Party Values
+        List<ItemInfo> possibleRewards = new List<ItemInfo>();
+        int totalDifficulty = 0;
+
+        foreach (EnemyInfo e in enemyParty.PartyMembers)
+        {
+            totalDifficulty += e.DifficultyLevel;
+
+            possibleRewards.AddRange(e.PossibleRewards);
+        }
+
+        // Reward Calculation
+        essence = Random.Range(1, (totalDifficulty * 2) + 1) * 5;
+
+        if (spared) essence *= 2;
+
+        if (!spared)
+        {
+            int num = Random.Range(1, totalDifficulty + 1);
+
+            for (int i = 0; i < num; i++)
+            {
+                int rnd = Random.Range(0, possibleRewards.Count);
+
+                items.Add(possibleRewards[rnd]);
+            }
+        }
+        
+        return (items, essence);
+    }
+
+    public bool CanRun(PartyInfo enemyParty)
+    {
+        float rnd = Random.Range(0,1f);
+
+        float difficultyAverage = 0;
+
+        foreach (EnemyInfo e in enemyParty.PartyMembers)
+        {
+            difficultyAverage += e.DifficultyLevel;
+        }
+
+        difficultyAverage /= enemyParty.PartySize;
+
+        float chance = (1 / difficultyAverage) + 0.25f;
+
+        return rnd <= chance;
     }
 }

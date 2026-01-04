@@ -86,9 +86,6 @@ public class BattleManager : MonoBehaviour
 
     public event Action OnBattleEnd;
 
-    [Button(enabledMode: EButtonEnableMode.Playmode)]
-    private void EndBattle() => OnBattleEnd?.Invoke();
-
     private void Start()
     {
 // #if UNITY_EDITOR
@@ -140,12 +137,28 @@ public class BattleManager : MonoBehaviour
     public IEnumerator RunCR()
     {
         _uiManager.ToggleActionButtons(false);
-        _dialogueManager.StartDialogues($"{Player.Name} ran.");
+        _uiManager.HideTurnOrder();
+
+        _dialogueManager.AddDialogue($"{Player.Name} tried to run.");
+
+        bool result = _battleResolver.CanRun(_enemyParty);
+
+        if (result) _dialogueManager.AddDialogue($"{Player.Name} ran away!");
+        else _dialogueManager.AddDialogue($"{Player.Name} couldn't run from battle.");
+
+        _dialogueManager.StartDialogues();
 
         yield return _wfd;
         yield return new WaitForSeconds(0.5f);
 
-        BattleTest.Instance.StartBattle();
+        if (result)
+        {
+            EndBattle();
+        }
+        else
+        {
+            _uiManager.ToggleActionButtons(true);
+        }
     }
 
     private void SetUpNewTurnEvents()
@@ -398,7 +411,47 @@ public class BattleManager : MonoBehaviour
         _dialogueManager.HideDialogue();
         _inventoryManager.HideInventory();
 
-        _uiManager.ShowEndScreen(_playerWon);
+        if (_playerWon) _uiManager.ShowWinScreen();
+        else _uiManager.ShowLoseScreen();
+    }
+
+    public void DoAssimilation()
+    {
+        (List<ItemInfo> items, int essence) = _battleResolver.GiveRewards(_enemyParty, false);
+
+        (Player as PlayerInfo).Essence += essence;
+
+        if (items.Count > 0)
+        {
+            foreach (ItemInfo i in items) Player.Inventory.AddItem(i);
+        }
+
+        _uiManager.ShowRewards(items, essence);
+        _uiManager.ShowRewardsScreen();
+    }
+
+    public void DoSpare()
+    {
+        (List<ItemInfo> items, int essence) = _battleResolver.GiveRewards(_enemyParty, true);
+
+        (Player as PlayerInfo).Essence += essence;
+
+        if (items.Count > 0)
+        {
+            foreach (ItemInfo i in items) Player.Inventory.AddItem(i);
+        }
+
+        _uiManager.ShowRewards(items, essence);
+        _uiManager.ShowRewardsScreen();
+    }
+
+    [Button(enabledMode: EButtonEnableMode.Playmode)]
+    public void EndBattle()
+    {
+        _uiManager.HideFinalScreens();
+        _dialogueManager.HideDialogue();
+
+        OnBattleEnd?.Invoke();
     }
     
     private void VerifyTurnLosses()
