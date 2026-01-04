@@ -7,13 +7,13 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
 {
     [SerializeField] private BattleManager _battleManager;
 
-    PartyInfo _playerParty;
+    PlayerController _player;
 
     private void Awake()
     {
         base.SingletonCheck(this, false);
 
-        _playerParty = FindAnyObjectByType<PlayerController>().PlayerParty;
+        _player = FindAnyObjectByType<PlayerController>();
     }
 
     public void RegsiterEncounterable(EncounterEntity entity)
@@ -32,7 +32,9 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
 
         GameSceneManager.Instance.CurrentGameScene = GameSceneManager.GameSceneTypes.Battle;
 
-        _battleManager.StartBattle(_playerParty, party);
+        _battleManager.StartBattle(_player.PlayerParty, party);
+
+        _player.InBattle = true;
     }
 
 }

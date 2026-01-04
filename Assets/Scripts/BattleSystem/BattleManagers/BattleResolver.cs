@@ -54,7 +54,7 @@ public class BattleResolver : MonoBehaviour
     private void DoPull(MoveInfo move, CharacterInfo user)
     {
         DialogueManager.Instance.AddDialogue(
-        $"{user.Name} pushed the Soul to their side by {move.PullStrength + user.GetModifierBonus(Stats.PullStrength)}.");
+        $"{user.Name} pushed the Soul to their side by {move.PullStrength + user.PullStrenghtBonus}.");
         
         if (user is PlayerInfo)
         {
@@ -76,12 +76,12 @@ public class BattleResolver : MonoBehaviour
             if (move.Type == MoveTypes.Buff)
             {
                 DialogueManager.Instance.AddDialogue(
-                $"{target.Name} {sm.StatAffected} Rose.");
+                $"{target.Name} {sm.StatAffected.ToTitle()} Rose.");
             }
             else if (move.Type == MoveTypes.Nerf)
             {
                 DialogueManager.Instance.AddDialogue(
-                $"{target.Name} {sm.StatAffected} Fell.");
+                $"{target.Name} {sm.StatAffected.ToTitle()} Fell.");
             }
         }
     }
@@ -116,7 +116,10 @@ public class BattleResolver : MonoBehaviour
             case Stats.Stance:
 
                 user.CurrentStance += item.Amount;
-                DialogueManager.Instance.AddDialogue($"{user.Name} recovered {item.Amount} stance.");
+
+                int realAmount = item.Amount > user.MaxStance ? user.MaxStance : item.Amount;
+
+                DialogueManager.Instance.AddDialogue($"{user.Name} recovered {realAmount} stance.");
                 break;
             
             default:

@@ -92,7 +92,8 @@ public class CharacterInfo : ScriptableObject
 
         foreach (ItemInfo e in Inventory.EquipmentSlots)
         {
-            if (e.StatEquip == stat) bonus += e.AmountEquip;
+            if (e.EquipmentType == EquipmentType.StatModifier && e.StatEquip == stat)
+                bonus += e.AmountEquip;
         }
 
         return bonus;
