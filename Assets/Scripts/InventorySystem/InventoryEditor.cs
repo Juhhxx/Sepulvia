@@ -201,7 +201,7 @@ public class InventoryEditor : MonoBehaviour
         if (canAdd)
         {
             _player.PlayerCharacter.Inventory.RemoveEquipment(item);
-            _player.PlayerCharacter.ResetMoves();
+            _player.PlayerCharacter.ResetMove(item.MoveIndex);
         }
         else
         {
