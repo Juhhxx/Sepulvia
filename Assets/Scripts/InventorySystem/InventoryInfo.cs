@@ -55,7 +55,10 @@ public class InventoryInfo : ScriptableObject
             }
         }
 
-        ItemSlots.Add(new ItemStack(item));
+        if (ItemSlots.Count < MaxInventorySpaces)
+            ItemSlots.Add(new ItemStack(item));
+        else
+            return false;
 
         return true;
     }
@@ -106,6 +109,16 @@ public class InventoryInfo : ScriptableObject
     private void CheckEquipment()
     {
         EquipmentSlots.RemoveAll((e) => e.Type != ItemTypes.Equippable);
+    }
+
+    public bool EquipmentFull()
+    {
+        return EquipmentSlots.Count >= MaxEquipmentSpaces;
+    }
+
+    public bool HasEquiped(ItemInfo item)
+    {
+        return EquipmentSlots.Contains(item);
     }
 
     public bool AddEquipment(ItemInfo item)

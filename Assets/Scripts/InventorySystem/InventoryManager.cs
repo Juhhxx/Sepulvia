@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
+    [Space(10f)]
+    [Header("Inventory UI Parameters")]
+    [Space(5f)]
     [SerializeField] private GameObject _inventoryCanvas;
     [SerializeField] private GameObject _inventorySlots;
     [SerializeField] private GameObject _equipmentSlots;
@@ -21,6 +24,8 @@ public class InventoryManager : MonoBehaviour
     private List<GameObject> _createdObjects;
 
     private List<Button> _buttons;
+
+    public List<Button> GetAllButtons() => _buttons;
     public List<Button> GetItemButtons() => _buttons.GetRange(0, _inventory.MaxInventorySpaces);
     public List<Button> GetEquipmentButtons() => _buttons.GetRange(_inventory.MaxInventorySpaces, _inventory.MaxEquipmentSpaces);
 
@@ -31,6 +36,7 @@ public class InventoryManager : MonoBehaviour
         FollowMouse();
     }
 
+    // Generic Inventory Functionality
     public void ShowInventory(InventoryInfo inventory)
     {
         _inventory = inventory;
@@ -118,6 +124,8 @@ public class InventoryManager : MonoBehaviour
         _createdObjects.Clear();
     }
 
+
+    // Info Panel
     public void ToggleItemInfo(bool onOff, ItemInfo item = null)
     {
         if (onOff)

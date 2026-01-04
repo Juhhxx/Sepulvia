@@ -1,11 +1,12 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 [Serializable]
 public class ItemStack
 {
     [field: SerializeField] public ItemInfo Item { get; private set; }
-    [field: SerializeField] public int Amount { get; private set; }
+    [field: SerializeField, MinValue(0)] public int Amount { get; private set; }
 
     public void AddItem()
     {
