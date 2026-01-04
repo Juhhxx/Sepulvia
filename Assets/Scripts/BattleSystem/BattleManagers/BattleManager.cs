@@ -98,7 +98,7 @@ public class BattleManager : MonoBehaviour
 
     public void StartBattle(PartyInfo playerParty, PartyInfo enemyParty)
     {
-        _playerParty = playerParty.Instantiate();
+        _playerParty = playerParty;
         _enemyParty = enemyParty.Instantiate();
 
         _hasWinner = false;

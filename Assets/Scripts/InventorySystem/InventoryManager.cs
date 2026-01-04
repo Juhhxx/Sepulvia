@@ -13,6 +13,8 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject _inventorySlots;
     [SerializeField] private GameObject _equipmentSlots;
 
+    [SerializeField] private PlayerStatsUI _statsUI;
+
     [SerializeField] private GameObject _itemInfoPanel;
     [SerializeField] private TextMeshProUGUI _panelTitle;
     [SerializeField] private TextMeshProUGUI _panelDescription;
@@ -30,6 +32,12 @@ public class InventoryManager : MonoBehaviour
     public List<Button> GetEquipmentButtons() => _buttons.GetRange(_inventory.MaxInventorySpaces, _inventory.MaxEquipmentSpaces);
 
     private InventoryInfo _inventory;
+    private PlayerController _player;
+
+    private void Start()
+    {
+        _player = FindAnyObjectByType<PlayerController>();
+    }
 
     private void Update()
     {
@@ -39,6 +47,8 @@ public class InventoryManager : MonoBehaviour
     // Generic Inventory Functionality
     public void ShowInventory(InventoryInfo inventory)
     {
+        _statsUI.UpdateStats(_player.PlayerCharacter);
+        
         _inventory = inventory;
 
         if (_createdObjects != null) ClearSlots();

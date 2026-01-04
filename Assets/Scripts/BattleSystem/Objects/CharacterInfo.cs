@@ -107,6 +107,7 @@ public class CharacterInfo : ScriptableObject
     public void SetBaseMoves() => _baseMoves = new List<MoveInfo>(MoveSet);
     public void ResetMoves() => MoveSet = new List<MoveInfo>(_baseMoves);
     public void ResetMove(int index) => MoveSet[index] = _baseMoves[index];
+    public void ChangeMove(int index, MoveInfo to) => MoveSet[index] = to;
 
     [field: Space(10)]
     [field: Header("Character Inventory")]

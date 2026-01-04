@@ -9,7 +9,9 @@ public class InventoryEditor : MonoBehaviour
     [Space(5f)]
     [SerializeField, InputAxis] private string _inventoryButton;
     [SerializeField] private InventoryManager _inventoryManager;
+    [SerializeField] private InventoryResolver _inventoryResolver;
 
+    [SerializeField] private GameObject _confirmUsePanel;
     [SerializeField] private GameObject _confirmEquipPanel;
     [SerializeField] private GameObject _confirmUnequipPanel;
     [SerializeField] private GameObject _warningPanel;
@@ -54,10 +56,11 @@ public class InventoryEditor : MonoBehaviour
             
             if (stack != null)
             {
+                tmp[i].enabled = true;
+                tmp[i].onClick.RemoveAllListeners();
+                
                 if (stack.Item.Type == ItemTypes.Equippable)
                 {
-                    tmp[i].enabled = true;
-                    tmp[i].onClick.RemoveAllListeners();
                     tmp[i].onClick.AddListener(() =>
                     {
                         UpdatedSelectedStack(stack);
@@ -67,12 +70,26 @@ public class InventoryEditor : MonoBehaviour
                         $"Are you sure you want to equip {stack.Item.Name}?";
                     });
                 }
+                else if (stack.Item.Type != ItemTypes.Save)
+                {
+                    tmp[i].onClick.AddListener(() =>
+                    {
+                        UpdatedSelectedStack(stack);
+                        _raycastBlockerPanel.SetActive(true);
+                        _confirmUsePanel.SetActive(true);
+                        _confirmUsePanel.GetComponentInChildren<TextMeshProUGUI>().text =
+                        $"Are you sure you want to use {stack.Item.Name}?";
+                    });
+                }
                 else
                 {
-                    tmp[i].enabled = false;
-                    Color c = Color.white;
-                    c.a = 0.35f;
-                    tmp[i].transform.GetChild(0).GetComponent<Image>().color = c;
+                    tmp[i].onClick.AddListener(() =>
+                    {
+                        _raycastBlockerPanel.SetActive(true);
+                        _warningPanel.SetActive(true);
+                        _warningPanel.GetComponentInChildren<TextMeshProUGUI>().text =
+                        $"Not Implemented :3";
+                    });
                 }
             
                 tmp[i]?.GetComponent<ItemHoverInfo>()
@@ -110,6 +127,13 @@ public class InventoryEditor : MonoBehaviour
     public void UpdatedSelectedStack(ItemStack stack) => _selectedStack = stack;
     public void UpdatedSelectedEquipment(ItemInfo item) => _selectedEquipment = item;
 
+    public void Use()
+    {
+        UseItem(_selectedStack);
+        _inventoryManager.ShowInventory(_player.PlayerCharacter.Inventory);
+        SetUpButtons();
+    }
+
     public void Equip()
     {
         EquipItem(_selectedStack);
@@ -124,9 +148,17 @@ public class InventoryEditor : MonoBehaviour
         SetUpButtons();
     }
 
-    public void EquipItem(ItemStack stack)
+    public void UseItem(ItemStack stack)
     {
         if (!_player.PlayerCharacter.Inventory.Contains(stack.Item)) return;
+
+        _inventoryResolver.UseItem(stack.Item, _player.PlayerCharacter);
+        _player.PlayerCharacter.Inventory.RemoveItem(stack);
+    }
+
+    public void EquipItem(ItemStack stack)
+    {
+        if (!_player.PlayerCharacter.Inventory.Contains(stack.Item) || stack.Item.Type != ItemTypes.Equippable) return;
 
         if (_player.PlayerCharacter.Inventory.EquipmentFull())
         {
@@ -136,7 +168,7 @@ public class InventoryEditor : MonoBehaviour
             return;
         }
 
-        if (stack.Item.Type == ItemTypes.Equippable && stack.Item.EquipmentType == EquipmentType.MoveModidier)
+        if (stack.Item.EquipmentType == EquipmentType.MoveModidier)
         {
             if (_player.PlayerCharacter.Inventory.HasEquiped(stack.Item))
             {
@@ -149,6 +181,7 @@ public class InventoryEditor : MonoBehaviour
 
         _player.PlayerCharacter.Inventory.AddEquipment(stack.Item);
         _player.PlayerCharacter.Inventory.RemoveItem(stack);
+        _player.PlayerCharacter.CheckEquipment();
     }
 
     public void UnequipItem(ItemInfo item)
@@ -165,7 +198,11 @@ public class InventoryEditor : MonoBehaviour
 
         bool canAdd = _player.PlayerCharacter.Inventory.AddItem(item);
 
-        if (canAdd) _player.PlayerCharacter.Inventory.RemoveEquipment(item);
+        if (canAdd)
+        {
+            _player.PlayerCharacter.Inventory.RemoveEquipment(item);
+            _player.PlayerCharacter.ResetMoves();
+        }
         else
         {
             _raycastBlockerPanel.SetActive(true);
