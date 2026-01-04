@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerOverworldUI : MonoBehaviour
 {
+    [SerializeField] private GameObject _overworldUICanvas;
     [SerializeField] private TextMeshProUGUI _stanceTMP;
     [SerializeField] private TextMeshProUGUI _essenceTMP;
     [SerializeField] private TextMeshProUGUI _soulFragmentsTMP;
@@ -15,11 +16,17 @@ public class PlayerOverworldUI : MonoBehaviour
     {
         _player = FindAnyObjectByType<PlayerController>();
 
+        _player.OnBattleEnterExit += (bool inBattle) => ToggleOverworldUI(!inBattle);
     }
 
     private void Update()
     {
         UpdateValues();
+    }
+
+    public void ToggleOverworldUI(bool onOff)
+    {
+        _overworldUICanvas.SetActive(onOff);
     }
 
     public void UpdateValues()
