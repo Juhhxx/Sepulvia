@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: InventoryInfoPanelbackground_Material_1
-  m_Shader: {fileID: -6465566751694194690, guid: 317427a0638115844bcc4a1145001878, type: 3}
+  m_Name: LightBackground_Material_1
+  m_Shader: {fileID: -6465566751694194690, guid: 17516b5a50a113643823d854be2e7666, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -27,16 +27,20 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_1ed92c56f1fc4337944b3067a96f36d8_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: fc666631226fed54d86925500908fcfc, type: 3}
+    - _SampleTexture2D_1ca33b59f5dc4c59bf756e146cf1de86_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: cd823dc88c7feb748a3d58bc0d3c1fa9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_47c36d041463440da896fd4ccb992209_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: b44105337422bb54bb63d29606c4c3dd, type: 3}
+    - _SampleTexture2D_4e85c587ecdd47e9be19c8fa63b7e8b4_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: cd823dc88c7feb748a3d58bc0d3c1fa9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_b46b15e78ffb47e698eb075e21c1dfea_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: fc666631226fed54d86925500908fcfc, type: 3}
+    - _SampleTexture2D_79212affa97e4e4fb0b48445292ec7ca_Texture_1_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_a0f37cc6d06d41c1a818ca6f38f9eb86_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: c912e5fd8405e6f4d89198f7f5649681, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -53,8 +57,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Background_Chains_Offset: 0.75
+    - _Animation_Speed: 10
     - _ColorMask: 15
+    - _Lerp_Band_Width: 1.08
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -62,18 +67,9 @@ Material:
     - _StencilWriteMask: 255
     - _UIMaskSoftnessX: 1
     - _UIMaskSoftnessY: 1
-    - _Wave_Amplitude: 0.2
-    - _Wave_Frequency: 2
-    - _Wave_Speed: 0.2
-    - _swirling_Speed: 0.1
     m_Colors:
-    - _Background_Chains_Color: {r: 0.0152634485, g: 0.2645523, b: 0.46226418, a: 1}
-    - _Background_Chains_Scrolling_Speed: {r: -0.05, g: 0.03, b: 0, a: 0}
-    - _Border_Color: {r: 0, g: 0.856643, b: 33.046265, a: 1}
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
-    - _Foreground_Chains_Color: {r: 0.1938412, g: 0.33809084, b: 0.41509432, a: 1}
-    - _Foreground_Chains_Scrolling_Speed: {r: 0.08, g: 0.06, b: 0, a: 0}
-    - _Scrolling_Speed: {r: 0, g: -0.1, b: 0, a: 0}
-    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _Color: {r: 0.3429832, g: 0, b: 3.9999995, a: 1}
+    - _Main_Color: {r: 20.35365, g: 5.926262, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

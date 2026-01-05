@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: InventoryInfoPanelbackground_Material_1
-  m_Shader: {fileID: -6465566751694194690, guid: 317427a0638115844bcc4a1145001878, type: 3}
+  m_Name: AssimilateButton_Material_1
+  m_Shader: {fileID: -6465566751694194690, guid: 94b414a9df2b05a43afdb234b4567d99, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -53,8 +53,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Background_Chains_Offset: 0.75
+    - _Background_Chains_Offset: 0
     - _ColorMask: 15
+    - _Flip_Horizontal: 1
+    - _Gradient_Intensity: 0.8
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -67,13 +69,13 @@ Material:
     - _Wave_Speed: 0.2
     - _swirling_Speed: 0.1
     m_Colors:
-    - _Background_Chains_Color: {r: 0.0152634485, g: 0.2645523, b: 0.46226418, a: 1}
-    - _Background_Chains_Scrolling_Speed: {r: -0.05, g: 0.03, b: 0, a: 0}
-    - _Border_Color: {r: 0, g: 0.856643, b: 33.046265, a: 1}
+    - _Background_Chains_Color: {r: 0.055013258, g: 0.0499288, b: 0.20754719, a: 1}
+    - _Background_Chains_Scrolling_Speed: {r: 0.05, g: 0.03, b: 0, a: 0}
+    - _Background_Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _Border_Color: {r: 0, g: 66.68894, b: 43.295444, a: 1}
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
-    - _Foreground_Chains_Color: {r: 0.1938412, g: 0.33809084, b: 0.41509432, a: 1}
+    - _Foreground_Chains_Color: {r: 0.06933072, g: 0.24976222, b: 0.3584906, a: 1}
     - _Foreground_Chains_Scrolling_Speed: {r: 0.08, g: 0.06, b: 0, a: 0}
-    - _Scrolling_Speed: {r: 0, g: -0.1, b: 0, a: 0}
-    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _Tiling: {r: 2, g: 2, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
