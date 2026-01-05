@@ -28,4 +28,16 @@ public class PlayerController : MonoBehaviour
     {
         PlayerParty = PlayerParty.Instantiate();
     }
+
+    private void Update()
+    {
+        if (!_inBattle)
+        {
+            if (PlayerCharacter.CurrentStance <= 0)
+            {
+                Debug.Log("[Player Controller] Player has fallen unconscious!", this);
+                EncounterManager.Instance.DoRandomEncounter();
+            }
+        }
+    }
 }
