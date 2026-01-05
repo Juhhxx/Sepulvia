@@ -57,6 +57,7 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
     private Vector3 _direction = Vector3.zero;
     private Vector3 _motion = Vector3.zero;
     private Rigidbody _rb;
+    private bool _doCheck = true;
 
     public Vector3 Direction => _direction;
     public float Speed => _rb.linearVelocity.magnitude;
@@ -70,7 +71,7 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
 
     private void Update()
     {
-        CheckIfReached();
+        if (_doCheck) CheckIfReached();
         UpdateMovement();
     }
 
@@ -78,13 +79,35 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
     {
         if (Vector3.Distance(transform.position, _path.GetCurrentWaypoint()) <= 0.15f)
         {
-            UpdateDirection();
+            if (_stopAtWaypoints) StartCoroutine(UpdateDirectionCR());
+            else UpdateDirection();
 
             _motion = Vector3.zero;
         }
     }
     private void UpdateDirection()
     {
+        Vector3 dir = _path.GetNextWaypoint() - transform.position;
+        
+        dir = dir.normalized;
+
+        _direction = dir;
+
+        Debug.Log($"Enemy {name} : Changed Direction to {_direction}");
+    }
+
+    private IEnumerator UpdateDirectionCR()
+    {
+        _doCheck = false;
+
+        _direction = Vector3.zero;
+
+        Debug.Log($"Enemy {name} : Stopping at waypoint for {_stopTime} seconds.");
+
+        yield return new WaitForSeconds(_stopTime);
+
+        _doCheck = true;
+
         Vector3 dir = _path.GetNextWaypoint() - transform.position;
         
         dir = dir.normalized;
