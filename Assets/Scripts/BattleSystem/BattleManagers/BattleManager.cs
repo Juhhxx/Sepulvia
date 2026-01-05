@@ -105,6 +105,7 @@ public class BattleManager : MonoBehaviour
         _uiManager.InstantiateBattlePrefabs(_playerParty, _enemyParty);
         _dialogueManager.SetUpDialogueManager();
 
+        _pullManager.TogglePullUI(true);
         _pullManager.SpawnHeart();
         _pullManager.SpawnBarSections((_enemyParty.PartySize * 5) + 5);
         _pullManager.SetHeartInMiddle();
@@ -123,7 +124,6 @@ public class BattleManager : MonoBehaviour
         _uiManager.ToggleMoveInfo(false);
         _dialogueManager.HideDialogue();
         _inventoryManager.HideInventory();
-        _pullManager.TogglePullUI(true);
 
         SetUpNewTurnEvents();
 
