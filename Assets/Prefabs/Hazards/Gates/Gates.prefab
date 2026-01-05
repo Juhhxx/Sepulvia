@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 637170691820045410}
   - component: {fileID: 8173475997541444224}
+  - component: {fileID: 3047741045390600677}
   m_Layer: 0
   m_Name: HitBox
   m_TagString: Untagged
@@ -53,6 +54,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 4.6134315, z: 2.7884674}
   m_Center: {x: 0, y: 1.8067162, z: -0.0029439926}
+--- !u!114 &3047741045390600677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018964198823770312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be075a595c20734488ecb8f97b68390f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hazard
+  _damageAmount: 5
+  _hazardLayer: 8
 --- !u!1001 &645310954159234515
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -63,15 +78,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 70caea47f5688744780824f5a7ac581f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.550243
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 70caea47f5688744780824f5a7ac581f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.21390533
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 70caea47f5688744780824f5a7ac581f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.307335
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 70caea47f5688744780824f5a7ac581f, type: 3}
       propertyPath: m_LocalRotation.w

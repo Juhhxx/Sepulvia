@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eb74138361b8ca4cb05b0861330182a, type: 3}
   m_Name: Room2
   m_EditorClassIdentifier: Assembly-CSharp::RoomData
-  roomPrefab: {fileID: 9044950173518787483, guid: 6dbbebee97cc1964688edf3cfd0e78e0, type: 3}
+  roomPrefab: {fileID: 7485454932048664361, guid: 0965bae23955d844c817ba96650af0af, type: 3}
   connections:
+  - doorId: 0
+    targetRoom: {fileID: 11400000, guid: 885af2f528fe90043a791f2a47011054, type: 2}
   - doorId: 2
     targetRoom: {fileID: 11400000, guid: feaf942208c125848aebd0b04e0210e6, type: 2}
-  - doorId: 1
-    targetRoom: {fileID: 11400000, guid: 885af2f528fe90043a791f2a47011054, type: 2}

@@ -45,9 +45,10 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
         if (currentRoom != null)
             Destroy(currentRoom.gameObject);
 
-        GameObject roomGO = Instantiate(roomData.roomPrefab);
+        GameObject roomGO = Instantiate(roomData.roomPrefab, transform);
         currentRoom = roomGO.GetComponent<RoomInstance>();
         currentRoom.RoomData = roomData;
+        _playerController.transform.position = currentRoom.Spawnposition.position;
     }
 
     private IEnumerator LoadRoomCR(RoomData roomData)
@@ -55,8 +56,6 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
         _fadeAnimator.SetTrigger("Fade");
 
         yield return new WaitForSeconds(1f);
-
-        _playerController.transform.position = Vector3.zero;
 
         LoadRoom(roomData);
 

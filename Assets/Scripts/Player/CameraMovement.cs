@@ -5,7 +5,7 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private Transform _target;
     [SerializeField] private float _followSpeed = 0.05f;
 
-    private void Update()
+    private void FixedUpdate()
     {
         Vector3 pos = _target.position;
 
