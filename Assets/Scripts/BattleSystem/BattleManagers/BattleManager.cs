@@ -123,6 +123,7 @@ public class BattleManager : MonoBehaviour
         _uiManager.ToggleMoveInfo(false);
         _dialogueManager.HideDialogue();
         _inventoryManager.HideInventory();
+        _pullManager.TogglePullUI(true);
 
         SetUpNewTurnEvents();
 
@@ -410,6 +411,7 @@ public class BattleManager : MonoBehaviour
         _uiManager.ToggleMoveInfo(false);
         _dialogueManager.HideDialogue();
         _inventoryManager.HideInventory();
+        _pullManager.TogglePullUI(false);
 
         if (_playerWon) _uiManager.ShowWinScreen();
         else _uiManager.ShowLoseScreen();

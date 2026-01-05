@@ -45,6 +45,14 @@ public class PullingManager : MonoBehaviour
 
     public bool IsMoving { get; private set; }
 
+    public void TogglePullUI(bool onOff)
+    {
+        if (_canvas != null)
+        {
+            _canvas.gameObject.SetActive(onOff);
+        }
+    }
+
     public void SpawnHeart()
     {
         if (_spawnedHeart != null) return;
