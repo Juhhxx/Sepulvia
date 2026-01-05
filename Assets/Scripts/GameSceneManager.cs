@@ -108,11 +108,24 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
             RenderSettings.haloStrength = scene.HaloStrenght;
         }
     }
+
+    private void DisableOtherScenes()
+    {
+        foreach(GameScene gs in _gameScenes)
+        {
+            if (gs.SceneType != _currentGameScene)
+            {
+                gs.SceneCamera.enabled = false;
+                gs.SceneGameObject.SetActive(false);
+            }
+        }
+    }
     
     private void Awake()
     {
         base.SingletonCheck(this, false);
 
         UpdateGameScene(GetGameSceneByType(_currentGameScene));
+        DisableOtherScenes();
     }
 }
