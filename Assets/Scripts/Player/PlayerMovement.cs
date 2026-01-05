@@ -1,27 +1,52 @@
+using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float _maxSpeed;
+
     [SerializeField, InputAxis] private string _horizontalAxis;
     [SerializeField, InputAxis] private string _verticalAxis;
+
+    [SerializeField] private float _dashCooldownTime = 3f;
+    [SerializeField] private float _dashTime = 1f;
+    [SerializeField] private float _dashSpeed;
+    [SerializeField, InputAxis] private string _dashButton;
+    [SerializeField] private LayerMask _excludeWhenDashing;
+
     private Rigidbody _rb;
     private Vector3 _velocity;
     private Vector3 _motion;
-    private Transform _head;
-    public Transform Head { get => _head; }
 
-    void Start()
+    [SerializeField, ReadOnly] private bool _canDash = true;
+    [SerializeField, ReadOnly] private bool _isDashing = false;
+    private Timer _dashCooldownTimer;
+
+
+    private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+
+        _dashCooldownTimer = new Timer(2f);
+        _dashCooldownTimer.OnTimerDone += () => { _canDash = true; };
     }
-    
-    void FixedUpdate()
+
+    private void Update()
+    {
+        CheckDash();
+
+        if (!_canDash)
+        {
+            _dashCooldownTimer.CountTimer();
+        }
+    }
+    private void FixedUpdate()
     {
         UpdateVelocity();
-        UpdatePosition();
+        if (!_isDashing) UpdatePosition();
     }
+
     private void UpdateVelocity()
     {
         float forwardAxis = Input.GetAxis(_verticalAxis);
@@ -37,5 +62,33 @@ public class PlayerMovement : MonoBehaviour
         _motion = transform.TransformVector(_velocity);
 
         _rb.linearVelocity = _motion;
+    }
+
+    private void CheckDash()
+    {
+        if (Input.GetButtonDown(_dashButton) && _canDash)
+        {
+            StartCoroutine(DashCR());
+        }
+    }
+
+    private IEnumerator DashCR()
+    {
+        _isDashing = true;
+        _canDash = false;
+
+        _dashCooldownTimer.ResetTimer();
+
+        Vector3 dashVelocity = _motion.normalized * _dashSpeed;
+
+        _rb.linearVelocity = dashVelocity;
+
+        _rb.excludeLayers = _excludeWhenDashing;
+
+        yield return new WaitForSeconds(_dashTime);
+
+        _rb.excludeLayers = LayerMask.GetMask();
+
+        _isDashing = false;
     }
 }
