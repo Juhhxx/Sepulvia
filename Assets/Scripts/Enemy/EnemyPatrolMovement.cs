@@ -62,7 +62,7 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
     public Vector3 Direction => _direction;
     public float Speed => _rb.linearVelocity.magnitude;
 
-    private void Start()
+    private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
 

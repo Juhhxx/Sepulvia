@@ -52,7 +52,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 4.6134315, z: 2.7884674}
+  m_Size: {x: 0.2, y: 4.6134315, z: 2.7884674}
   m_Center: {x: 0, y: 1.8067162, z: -0.0029439926}
 --- !u!114 &3047741045390600677
 MonoBehaviour:
@@ -148,6 +148,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 70caea47f5688744780824f5a7ac581f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5194259034551771121}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 70caea47f5688744780824f5a7ac581f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2635182455929051208}
   m_SourcePrefab: {fileID: 100100000, guid: 70caea47f5688744780824f5a7ac581f, type: 3}
 --- !u!1 &303415959754465410 stripped
 GameObject:
@@ -218,6 +221,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.4436045, y: 2.5830047, z: 0.9798293}
   m_Center: {x: -0.038710117, y: 1.2637819, z: -1.9764922}
+--- !u!114 &2635182455929051208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303415959754465410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21a020bc34f6175428c434c8afc50840, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RandomDelay
+  _gateAnimator: {fileID: 920374612968453036}
+  _stateName: ClosingDoor
 --- !u!4 &1116368900605950520 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 70caea47f5688744780824f5a7ac581f, type: 3}

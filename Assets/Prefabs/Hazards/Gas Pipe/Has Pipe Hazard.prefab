@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 679085769564153865}
+  - component: {fileID: 6684847741235275767}
   m_Layer: 0
   m_Name: Has Pipe Hazard
   m_TagString: Untagged
@@ -34,6 +35,21 @@ Transform:
   - {fileID: 3613083728183657704}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6684847741235275767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2786382787488048364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d46ff634ed26b4da7af23cd2688a43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HazardController
+  _hazardEffect: {fileID: 6142112642752174914}
+  _hazardCollider: {fileID: 1555145771559645718}
+  _effectIntervalRange: {x: 4, y: 8}
 --- !u!1 &2940592181235657874
 GameObject:
   m_ObjectHideFlags: 0
@@ -84,7 +100,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -5058,7 +5074,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
