@@ -60,6 +60,8 @@ public class InventoryManager : MonoBehaviour
         ShowEquipmentSpaces(inventory);
 
         _inventoryCanvas.SetActive(true);
+
+        Time.timeScale = 0f;
     }
 
     private void ShowItemSpaces(InventoryInfo inventory)
@@ -126,6 +128,7 @@ public class InventoryManager : MonoBehaviour
     {
         _inventoryCanvas.SetActive(false);
         _itemInfoPanel.SetActive(false);
+        Time.timeScale = 1f;
     }
 
     private void ClearSlots()
