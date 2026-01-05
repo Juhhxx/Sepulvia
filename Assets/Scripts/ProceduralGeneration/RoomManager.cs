@@ -1,9 +1,11 @@
 using System.Collections;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class RoomManager : MonoBehaviourSingleton<RoomManager>
 {
     [SerializeField] private RoomData startingRoom;
+    [SerializeField] private NavMeshSurface _navMeshSurface;
 
     private RoomInstance currentRoom;
     private Animator _fadeAnimator;
@@ -20,6 +22,8 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
         _playerController = FindAnyObjectByType<PlayerController>();
 
         LoadRoom(startingRoom);
+
+        _navMeshSurface.BuildNavMesh();
     }
 
     public void EnterDoor(RoomId doorId)
@@ -54,11 +58,10 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
 
         _playerController.transform.position = Vector3.zero;
 
-        if (currentRoom != null)
-            Destroy(currentRoom.gameObject);
+        LoadRoom(roomData);
 
-        GameObject roomGO = Instantiate(roomData.roomPrefab);
-        currentRoom = roomGO.GetComponent<RoomInstance>();
-        currentRoom.RoomData = roomData;
+        yield return new WaitForEndOfFrame();
+
+        _navMeshSurface.BuildNavMesh();
     }
 }

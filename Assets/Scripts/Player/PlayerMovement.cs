@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float _dashCooldownTime = 3f;
     [SerializeField] private float _dashTime = 1f;
-    [SerializeField] private float _dashSpeed;
+    [SerializeField] private float _dashSpeedMultiplier = 3f;
     [SerializeField, InputAxis] private string _dashButton;
     [SerializeField] private LayerMask _excludeWhenDashing;
 
@@ -55,11 +55,11 @@ public class PlayerMovement : MonoBehaviour
         _velocity.z = forwardAxis;
         _velocity.x = strafeAxis;
 
-        _velocity = Vector3.Normalize(_velocity) * _maxSpeed;
+        _velocity = Vector3.Normalize(_velocity);
     }
     private void UpdatePosition()
     {
-        _motion = transform.TransformVector(_velocity);
+        _motion = transform.TransformVector(_velocity * _maxSpeed);
 
         _rb.linearVelocity = _motion;
     }
@@ -79,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
         _dashCooldownTimer.ResetTimer();
 
-        Vector3 dashVelocity = _motion.normalized * _dashSpeed;
+        Vector3 dashVelocity = _motion * _dashSpeedMultiplier;
 
         _rb.linearVelocity = dashVelocity;
 
