@@ -5,7 +5,7 @@ public class RandomDelay : MonoBehaviour
     [SerializeField] private Animator _gateAnimator;
     [SerializeField] private string _stateName = "Idle"; // animation state name
 
-    private void Start()
+    private void OnEnable()
     {
         if (_gateAnimator == null)
             _gateAnimator = GetComponent<Animator>();

@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 1
   m_FogColor: {r: 0.21960784, g: 0.023529412, b: 0.23921569, a: 1}
   m_FogMode: 2
-  m_FogDensity: 0.12
+  m_FogDensity: 0.1
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -1003,11 +1003,11 @@ Transform:
   m_GameObject: {fileID: 780470813}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 50, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1407184462}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &791711989
 GameObject:
@@ -1095,6 +1095,10 @@ PrefabInstance:
     - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
       propertyPath: _currentGameScene
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
+      propertyPath: _gameScenes.Array.data[0].<FogDensity>k__BackingField
+      value: 0.098
       objectReference: {fileID: 0}
     - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
       propertyPath: _gameScenes.Array.data[0].<SceneCamera>k__BackingField
@@ -1405,6 +1409,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 494834887942439619, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1885138284}
+    - targetCorrespondingSourceObject: {fileID: 494834887942439619, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 780470816}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
 --- !u!4 &1407184462 stripped
@@ -1995,7 +2002,7 @@ PrefabInstance:
       objectReference: {fileID: 1919745056}
     - target: {fileID: 8843392687231901510, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 50
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 8843392687231901510, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2201,7 +2208,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 1486379099}
   - {fileID: 1407184461}
-  - {fileID: 780470816}
   - {fileID: 1696941670}
   - {fileID: 3119119775086999342}
   - {fileID: 574740832}

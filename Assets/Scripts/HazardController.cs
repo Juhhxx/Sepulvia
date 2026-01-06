@@ -9,12 +9,12 @@ public class HazardController : MonoBehaviour
     [SerializeField, MinMaxSlider(0f, 10f)] private Vector2 _effectIntervalRange = new Vector2(2f, 5f);
 
 
-    private void Start()
+    private void OnEnable()
     {
         _hazardCollider.enabled = false;
         StartCoroutine(PlayHazardCR());
     }
-    
+
     private IEnumerator PlayHazardCR()
     {
         while (true)

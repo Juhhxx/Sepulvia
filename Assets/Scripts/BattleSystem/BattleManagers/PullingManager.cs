@@ -98,7 +98,7 @@ public class PullingManager : MonoBehaviour
 
         if (_spawnedObjects != null)
         {
-            foreach (GameObject go in _spawnedObjects) DestroyImmediate(go);
+            foreach (GameObject go in _spawnedObjects) Destroy(go);
             _spawnedObjects.Clear();
         }
         else _spawnedObjects = new List<GameObject>();

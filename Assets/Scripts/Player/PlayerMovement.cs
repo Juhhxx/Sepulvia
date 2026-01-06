@@ -48,7 +48,11 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (_playerController.InBattle) return;
+        if (_playerController.InBattle)
+        {
+            _rb.linearVelocity = Vector3.zero;
+            return;
+        }
 
         UpdateVelocity();
         if (!_isDashing) UpdatePosition();
@@ -62,11 +66,11 @@ public class PlayerMovement : MonoBehaviour
         _velocity.z = forwardAxis;
         _velocity.x = strafeAxis;
 
-        _velocity = Vector3.Normalize(_velocity);
+        _velocity = Vector3.Normalize(_velocity) * _maxSpeed;
     }
     private void UpdatePosition()
     {
-        _motion = transform.TransformVector(_velocity * _maxSpeed);
+        _motion = transform.TransformVector(_velocity);
 
         _rb.linearVelocity = _motion;
     }
@@ -88,6 +92,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 dashVelocity = _motion * _dashSpeedMultiplier;
 
+        // _velocity = dashVelocity;
         _rb.linearVelocity = dashVelocity;
 
         _rb.excludeLayers = _excludeWhenDashing;
