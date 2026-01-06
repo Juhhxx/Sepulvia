@@ -23,10 +23,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, ReadOnly] private bool _isDashing = false;
     private Timer _dashCooldownTimer;
 
+    private PlayerController _playerController;
+
 
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _playerController = GetComponent<PlayerController>();
 
         _dashCooldownTimer = new Timer(2f);
         _dashCooldownTimer.OnTimerDone += () => { _canDash = true; };
@@ -34,6 +37,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (_playerController.InBattle) return;
+        
         CheckDash();
 
         if (!_canDash)
@@ -43,6 +48,8 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (_playerController.InBattle) return;
+
         UpdateVelocity();
         if (!_isDashing) UpdatePosition();
     }

@@ -18,6 +18,11 @@ public class CharacterInfo : ScriptableObject
     [SerializeField] private int _baseStance;
     public int MaxStance => _baseStance + GetModifierBonus(Stats.Stance) + GetEquipmentBonus(Stats.Stance);
 
+    public void SetBaseStance(int stance)
+    {
+        _baseStance = stance;
+    }
+
     [SerializeField, ReadOnly] private int _currentStance;
     public int CurrentStance
     {
