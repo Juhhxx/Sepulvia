@@ -45,9 +45,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _dashCooldownTimer.CountTimer();
         }
-    }
-    private void FixedUpdate()
-    {
+        
         if (_playerController.InBattle)
         {
             _rb.linearVelocity = Vector3.zero;
