@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviourSingleton<AudioManager>
 {
     [SerializeField] private AudioMixer _audioMixer;
+    [SerializeField] private PlaySound _soundTestMaster;
+    [SerializeField] private PlaySound _soundTestMusic;
+    [SerializeField] private PlaySound _soundTestAmbience;
+    [SerializeField] private PlaySound _soundTestSFX;
 
     private const string MASTERVOLUME = "masterVolume";
     private const string MUSICVOLUME = "musicVolume";
@@ -51,6 +56,8 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
                 _audioMixer.SetFloat(MASTERVOLUME, ValueToDb(value));
                 PlayerPrefs.SetFloat(MASTERVOLUME, value);
                 PlayerPrefs.Save();
+
+                _masterVolume = value;
             }
 
             _masterVolume = value;
@@ -69,6 +76,8 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
                 _audioMixer.SetFloat(MUSICVOLUME, ValueToDb(value));
                 PlayerPrefs.SetFloat(MUSICVOLUME, value);
                 PlayerPrefs.Save();
+
+                _musicVolume = value;
             }
 
             _musicVolume = value;
@@ -87,6 +96,11 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
                 _audioMixer.SetFloat(AMBIENCEVOLUME, ValueToDb(value));
                 PlayerPrefs.SetFloat(AMBIENCEVOLUME, value);
                 PlayerPrefs.Save();
+
+                // if (MenuManager.Instance.OptionsOpen)
+                //     _soundTestAmbience.SoundPlay();
+
+                _ambienceVolume = value;
             }
 
             _ambienceVolume = value;
@@ -105,6 +119,11 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
                 _audioMixer.SetFloat(SFXVOLUME, ValueToDb(value));
                 PlayerPrefs.SetFloat(SFXVOLUME, value);
                 PlayerPrefs.Save();
+
+                if (MenuManager.Instance.OptionsOpen)
+                    _soundTestSFX.SoundPlay();
+
+                _sfxVolume = value;
             }
 
             _sfxVolume = value;
@@ -126,24 +145,26 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
     {
         [field: SerializeField] public AudioSource AudioSource { get; private set; }
         [field: SerializeField] public AudioGroup MixerGroup { get; private set; }
+        [field: SerializeField] public bool Permanent { get; private set; }
 
-        public AudioSourceInfo(AudioSource source, AudioGroup group)
+        public AudioSourceInfo(AudioSource source, AudioGroup group, bool permanent)
         {
             AudioSource = source;
             MixerGroup = group;
+            Permanent = permanent;
         }
     }
 
     [SerializeField, ReadOnly] private List<AudioSourceInfo> _activeAudioSources = new List<AudioSourceInfo>();
 
-    public void RegisterAudioSource(AudioSource source, AudioGroup group)
+    public void RegisterAudioSource(AudioSource source, AudioGroup group, bool permanent = false)
     {
         foreach (AudioSourceInfo asi in _activeAudioSources)
         {
             if (asi.AudioSource == source) return;
         }
 
-        _activeAudioSources.Add(new AudioSourceInfo(source, group));
+        _activeAudioSources.Add(new AudioSourceInfo(source, group, permanent));
     }
 
     public void UnRegisterAudioSource(AudioSource source)
@@ -158,14 +179,23 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
         }
     }
 
+    private void ClearAllAudioSources()
+    {
+        _activeAudioSources.RemoveAll(asi => !asi.Permanent);
+    }
+
     [field: SerializeField] public AudioSoundPlayer SoundPlayer { get; private set; }
     [field: SerializeField] public AudioMusicPlayer MusicPlayer { get; private set; }
 
     private void Awake()
     {
-        base.SingletonCheck(this, true);
+        if (base.SingletonCheck(this, true))
+        {
+            LocateAudioGroups();
+            SceneManager.sceneLoaded += (scene, mode) => ClearAllAudioSources();
 
-        LocateAudioGroups();
+            MusicPlayer.SetUp();
+        }
     }
 
     private void Start()
@@ -251,10 +281,5 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
             SFXVolume = 1;
         }
     }
-
-    private void Update()
-    {
-    }
-
     
 }

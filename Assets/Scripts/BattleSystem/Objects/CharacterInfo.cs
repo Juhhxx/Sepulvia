@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
@@ -32,8 +33,12 @@ public class CharacterInfo : ScriptableObject
             if (value > MaxStance) _currentStance = MaxStance;
             else if (value <= 0) _currentStance = 0;
             else _currentStance = value;
+
+            if (_currentStance == 0) OnStanceLost?.Invoke();
         }
     }
+
+    public Action OnStanceLost;
 
     [SerializeField] private int _baseStanceRecover;
     public int StanceRecover => _baseStanceRecover + GetModifierBonus(Stats.StanceGain) + GetEquipmentBonus(Stats.StanceGain);

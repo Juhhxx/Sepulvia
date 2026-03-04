@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -15,25 +15,63 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
     [SerializeField] private GameObject _confirmQuitMenu;
     [SerializeField] private GameObject _confirmMainMenu;
 
+    private Animator _anim;
+
+    private bool _canPause = true;
+    public bool CanPause { get => _canPause; set => _canPause = value; }
+
+    private bool _optionsOpen = false;
+    public bool OptionsOpen => _optionsOpen;
+
+    LocalizationUI _localization;
+
     private void Awake()
     {
         base.SingletonCheck(this, true);
     }
 
+    private void Start()
+    {
+        _anim = GetComponent<Animator>();
+        _localization = GetComponent<LocalizationUI>();
+
+        ResetMenus();
+
+        SceneManager.sceneLoaded += (scene, mode) => ResetMenus();
+    }
+
+    public void ResetMenus()
+    {
+        Time.timeScale = 1f;
+
+        if (_anim != null)
+        {
+            // _anim.enabled = false;
+            _anim.SetTrigger("Reset");
+        }
+
+        _pauseMenu?.SetActive(false);
+        _optionsMenu?.SetActive(false);
+        _instructionsMenu?.SetActive(false);
+        _confirmQuitMenu?.SetActive(false);
+        _confirmMainMenu?.SetActive(false);
+    }
+
     public void Quit() => Application.Quit();
 
-    public void LoadScene(string scene)
+    public void LoadScene(string scene) => LoadScene(scene, null, true);
+    public void LoadScene(string scene, Action onLoad = null, bool doFade = true)
     {
-        SceneManager.LoadScene(scene);
+        SceneChanger.Instance.ChangeScene(scene, onLoad, doFade);
     }
 
     public void ResetSelection() => EventSystem.current.SetSelectedGameObject(null);
 
     private void CheckPause()
     {
-        if (_noPauseScenes.Contains(SceneManager.GetActiveScene().name)) return;
+        if (!_canPause) return;
 
-        if (_pauseMenu == null) return;
+        if (_noPauseScenes.Contains(SceneManager.GetActiveScene().name)) return;
 
         if (_pauseMenu.activeInHierarchy) return;
 
@@ -45,18 +83,42 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
 
     public void TooglePauseMenu(bool onOff)
     {
-        _pauseMenu.SetActive(onOff);
-        AudioManager.Instance.TogglePauseAllGroups(onOff);
+        // AudioManager.Instance.TogglePauseAllGroups(onOff);
+        _anim.ResetTrigger("Reset");
         ResetSelection();
+
+        _anim.enabled = true;
 
         if (onOff)
         {
             Time.timeScale = 0f;
+            _anim.SetTrigger("OpenPause");
         }
-        else Time.timeScale = 1f;
+        else
+        {
+            Time.timeScale = 1f;
+            _anim.SetTrigger("ClosePause");
+        }
     }
-    public void ToogleOptionsMenu(bool onOff) => _optionsMenu.SetActive(onOff);
-    public void ToogleInstructionsMenu(bool onOff) => _instructionsMenu.SetActive(onOff);
+    public void ToogleOptionsMenu(bool onOff)
+    {
+        _anim.ResetTrigger("Reset");
+        _anim.enabled = true;
+        _optionsOpen = onOff;
+
+        _localization.ToggleDropdown(_noPauseScenes.Contains(SceneManager.GetActiveScene().name));
+
+        if (onOff) _anim.SetTrigger("OpenOptions");
+        else _anim.SetTrigger("CloseOptions");
+    }
+    public void ToogleInstructionsMenu(bool onOff)
+    {
+        _anim.ResetTrigger("Reset");
+        _anim.enabled = true;
+
+        if (onOff) _anim.SetTrigger("OpenInstructions");
+        else _anim.SetTrigger("CloseInstructions");
+    }
     public void ToogleConfirmQuitMenu(bool onOff) => _confirmQuitMenu.SetActive(onOff);
     public void ToogleConfirmMainMenu(bool onOff) => _confirmMainMenu.SetActive(onOff);
 

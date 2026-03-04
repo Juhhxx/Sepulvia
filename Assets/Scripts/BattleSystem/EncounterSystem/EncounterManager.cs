@@ -55,7 +55,7 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
 
     private void ReturnToOverworld()
     {
-        Debug.Log($"[Encounter Manager] Ended Encunter", this);
+        Debug.Log($"[Encounter Manager] Ended Encounter", this);
 
         GameSceneManager.Instance.CurrentGameScene = GameSceneManager.GameSceneTypes.Overworld;
 

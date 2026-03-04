@@ -18,26 +18,36 @@ public class PlayerController : MonoBehaviour
             {
                 OnBattleEnterExit?.Invoke(value);
             }
+            
+            if (value)
+            {
+                _playerMovement?.SetVelocity(Vector3.zero);
+            }
 
             _inBattle = value;
         }
     }
     public event Action<bool> OnBattleEnterExit;
 
+    private PlayerMovement _playerMovement;
+
     private void Awake()
     {
         PlayerParty = PlayerParty.Instantiate();
+        _playerMovement = GetComponent<PlayerMovement>();
+
+        PlayerCharacter.OnStanceLost += () =>
+        {
+            Debug.Log("[Player Controller] Player has fallen unconscious!", this);
+            EncounterManager.Instance.DoRandomEncounter();
+        };
     }
 
     private void Update()
     {
         if (!_inBattle)
         {
-            if (PlayerCharacter.CurrentStance <= 0)
-            {
-                Debug.Log("[Player Controller] Player has fallen unconscious!", this);
-                EncounterManager.Instance.DoRandomEncounter();
-            }
+            _playerMovement.DoMovement();
         }
     }
 }
