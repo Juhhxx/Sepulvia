@@ -23,6 +23,8 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
     private bool _dialoguePlaying;
     private bool _fillingDialogue = false;
 
+    private const string HTML_ALPHA = "<color=#00000000>";
+
     public void Awake()
     {
         base.SingletonCheck(this, false);
@@ -110,6 +112,11 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
 
             _fillingDialogue = true;
 
+            string displayText = "";
+            int alphaIndex = 0;
+
+            bool inCode = false;
+
             foreach (char c in dialogue)
             {
                 if (_skipDialogue)
@@ -119,11 +126,25 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
                     _dialogueTextBox.text = dialogue;
                     break;
                 }
-                
-                yield return _wfs; // Wait For Seconds 
 
-                // Add letter
-                _dialogueTextBox.text += c;
+                alphaIndex++;
+
+                if (c == '<') inCode = true;
+
+                if (inCode)
+                {
+                    if (c == '>') inCode = false;
+
+                    continue;
+                }
+
+                displayText = dialogue.Insert(alphaIndex, HTML_ALPHA);
+
+                _dialogueTextBox.text = displayText;
+
+                // _soundPlayer?.SoundPlay();
+
+                yield return _wfs;
             }
 
             _fillingDialogue = false;

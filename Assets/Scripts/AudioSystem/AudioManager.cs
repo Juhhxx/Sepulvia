@@ -8,9 +8,16 @@ using UnityEngine.SceneManagement;
 public class AudioManager : MonoBehaviourSingleton<AudioManager>
 {
     [SerializeField] private AudioMixer _audioMixer;
+
+    [SerializeField] private bool _doSoundTests;
+
+    [ShowIf("_doSoundTests")]
     [SerializeField] private PlaySound _soundTestMaster;
+    [ShowIf("_doSoundTests")]
     [SerializeField] private PlaySound _soundTestMusic;
+    [ShowIf("_doSoundTests")]
     [SerializeField] private PlaySound _soundTestAmbience;
+    [ShowIf("_doSoundTests")]
     [SerializeField] private PlaySound _soundTestSFX;
 
     private const string MASTERVOLUME = "masterVolume";
@@ -57,6 +64,9 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
                 PlayerPrefs.SetFloat(MASTERVOLUME, value);
                 PlayerPrefs.Save();
 
+                if (MenuManager.Instance.OptionsOpen)
+                    _soundTestMaster?.SoundPlay();
+
                 _masterVolume = value;
             }
 
@@ -76,6 +86,9 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
                 _audioMixer.SetFloat(MUSICVOLUME, ValueToDb(value));
                 PlayerPrefs.SetFloat(MUSICVOLUME, value);
                 PlayerPrefs.Save();
+
+                if (MenuManager.Instance.OptionsOpen)
+                    _soundTestMusic?.SoundPlay();
 
                 _musicVolume = value;
             }
@@ -97,8 +110,8 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
                 PlayerPrefs.SetFloat(AMBIENCEVOLUME, value);
                 PlayerPrefs.Save();
 
-                // if (MenuManager.Instance.OptionsOpen)
-                //     _soundTestAmbience.SoundPlay();
+                if (MenuManager.Instance.OptionsOpen)
+                    _soundTestAmbience?.SoundPlay();
 
                 _ambienceVolume = value;
             }
@@ -121,7 +134,7 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
                 PlayerPrefs.Save();
 
                 if (MenuManager.Instance.OptionsOpen)
-                    _soundTestSFX.SoundPlay();
+                    _soundTestSFX?.SoundPlay();
 
                 _sfxVolume = value;
             }

@@ -11,7 +11,6 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
     [SerializeField] private KeyCode _pauseKey;
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _optionsMenu;
-    [SerializeField] private GameObject _instructionsMenu;
     [SerializeField] private GameObject _confirmQuitMenu;
     [SerializeField] private GameObject _confirmMainMenu;
 
@@ -42,17 +41,15 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
 
     public void ResetMenus()
     {
-        Time.timeScale = 1f;
+        PauseManager.Instance.UnPause();
 
         if (_anim != null)
         {
-            // _anim.enabled = false;
             _anim.SetTrigger("Reset");
         }
 
         _pauseMenu?.SetActive(false);
         _optionsMenu?.SetActive(false);
-        _instructionsMenu?.SetActive(false);
         _confirmQuitMenu?.SetActive(false);
         _confirmMainMenu?.SetActive(false);
     }
@@ -62,7 +59,7 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
     public void LoadScene(string scene) => LoadScene(scene, null, true);
     public void LoadScene(string scene, Action onLoad = null, bool doFade = true)
     {
-        // SceneChanger.Instance.ChangeScene(scene, onLoad, doFade);
+        SceneChanger.Instance.ChangeScene(scene, onLoad, doFade);
     }
 
     public void ResetSelection() => EventSystem.current.SetSelectedGameObject(null);
@@ -73,54 +70,63 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
 
         if (_noPauseScenes.Contains(SceneManager.GetActiveScene().name)) return;
 
-        if (_pauseMenu.activeInHierarchy) return;
-
         if (Input.GetKeyDown(_pauseKey))
         {
-            TooglePauseMenu(true);
+            if (_pauseMenu.activeInHierarchy)
+            {
+                // Check if other menus are open
+                if (_optionsMenu.activeInHierarchy) ToggleOptionsMenu(false);
+                else if (_confirmMainMenu.activeInHierarchy) ToggleConfirmMainMenu(false);
+                else if (_confirmQuitMenu.activeInHierarchy) ToggleConfirmQuitMenu(false);
+                else TogglePauseMenu(false);
+            }
+            else TogglePauseMenu(true);
         }
     }
 
-    public void TooglePauseMenu(bool onOff)
+    public void TogglePauseMenu(bool onOff)
     {
         // AudioManager.Instance.TogglePauseAllGroups(onOff);
-        _anim.ResetTrigger("Reset");
         ResetSelection();
 
+        if (_anim == null)
+        {
+            _pauseMenu.SetActive(onOff);
+
+            if (onOff) PauseManager.Instance.Pause();
+            else PauseManager.Instance.UnPause();
+
+            return;
+        }
+
+        _anim.ResetTrigger("Reset");
+
         _anim.enabled = true;
 
-        if (onOff)
-        {
-            Time.timeScale = 0f;
-            _anim.SetTrigger("OpenPause");
-        }
-        else
-        {
-            Time.timeScale = 1f;
-            _anim.SetTrigger("ClosePause");
-        }
+        if (onOff)  _anim.SetTrigger("OpenPause");
+        else  _anim.SetTrigger("ClosePause");
     }
-    public void ToogleOptionsMenu(bool onOff)
+    public void ToggleOptionsMenu(bool onOff)
     {
+        _optionsOpen = onOff;
+
+        if (_anim == null)
+        {
+            _optionsMenu.SetActive(onOff);
+
+            return;
+        }
+
         _anim.ResetTrigger("Reset");
         _anim.enabled = true;
-        _optionsOpen = onOff;
 
         // _localization.ToggleDropdown(_noPauseScenes.Contains(SceneManager.GetActiveScene().name));
 
         if (onOff) _anim.SetTrigger("OpenOptions");
         else _anim.SetTrigger("CloseOptions");
     }
-    public void ToogleInstructionsMenu(bool onOff)
-    {
-        _anim.ResetTrigger("Reset");
-        _anim.enabled = true;
-
-        if (onOff) _anim.SetTrigger("OpenInstructions");
-        else _anim.SetTrigger("CloseInstructions");
-    }
-    public void ToogleConfirmQuitMenu(bool onOff) => _confirmQuitMenu.SetActive(onOff);
-    public void ToogleConfirmMainMenu(bool onOff) => _confirmMainMenu.SetActive(onOff);
+    public void ToggleConfirmQuitMenu(bool onOff) => _confirmQuitMenu.SetActive(onOff);
+    public void ToggleConfirmMainMenu(bool onOff) => _confirmMainMenu.SetActive(onOff);
 
     private void Update()
     {

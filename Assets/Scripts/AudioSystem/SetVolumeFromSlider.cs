@@ -55,6 +55,8 @@ public class SetVolumeFromSlider : MonoBehaviour
     private void Start()
     {
         _slider = GetComponent<Slider>();
+        
+        _slider.onValueChanged.AddListener(SetVolume);
 
         UpdateSlider();
 
@@ -68,9 +70,9 @@ public class SetVolumeFromSlider : MonoBehaviour
         AudioManager.Instance.OnResetValues -= UpdateSlider;
     }
 
-    public void SetVolume()
+    public void SetVolume(float volume)
     {
-        Value = _slider.value;
+        Value = volume;
     }
 
     public void UpdateSlider()
