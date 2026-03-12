@@ -13,7 +13,7 @@ public class RoomData : ScriptableObject
 [System.Serializable]
 public class RoomConnection
 {
-    public RoomId doorId;            // e.g. "NorthDoor"
+    public RoomId doorId;
     public RoomData targetRoom;
 }
 
