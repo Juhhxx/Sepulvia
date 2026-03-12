@@ -47,7 +47,7 @@ public class BarSection : MonoBehaviour
     private Button _button;
     public Button Button => _button;
 
-    private void Start()
+    private void Awake()
     {
         _image = GetComponent<Image>();
         _button = GetComponent<Button>();

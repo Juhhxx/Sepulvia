@@ -15,6 +15,7 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
         [field: Space(5f)]
         [field: SerializeField] public GameSceneTypes SceneType { get; private set; }
         [field: SerializeField] public Camera SceneCamera { get; private set; }
+        [field: SerializeField] public PlaySound SceneBackground { get; private set; }
 
         // Fog
         [field: Space(10f)]
@@ -94,6 +95,8 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
         scene.SceneCamera.enabled = true;
 
         CurrentCamera = scene.SceneCamera;
+
+        scene.SceneBackground.SoundPlay();
 
         scene.SceneGameObject.SetActive(true);
         Debug.LogWarning($"{scene.SceneGameObject.activeInHierarchy}");

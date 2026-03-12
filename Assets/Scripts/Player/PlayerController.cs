@@ -38,8 +38,11 @@ public class PlayerController : MonoBehaviour
 
         PlayerCharacter.OnStanceLost += () =>
         {
-            Debug.Log("[Player Controller] Player has fallen unconscious!", this);
-            EncounterManager.Instance.DoRandomEncounter();
+            if (!InBattle)
+            {
+                Debug.Log("[Player Controller] Player has fallen unconscious!", this);
+                EncounterManager.Instance.DoRandomEncounter();   
+            }
         };
     }
 

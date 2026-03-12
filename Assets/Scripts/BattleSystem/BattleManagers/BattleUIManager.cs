@@ -130,10 +130,11 @@ public class BattleUIManager : MonoBehaviour
         _decisionBattleScreen.SetActive(false);
         _rewardsBattleScreen.SetActive(true);
     }
+    
     private List<GameObject> _rewardShowcaseObjs = new List<GameObject>();
     public void ShowRewards(List<ItemInfo> items, int essence)
     {
-        if (_rewardShowcaseObjs.Count  > 0)
+        if (_rewardShowcaseObjs.Count > 0)
         {
             foreach (GameObject go in _rewardShowcaseObjs) Destroy(go);
             _rewardShowcaseObjs.Clear();
@@ -152,6 +153,8 @@ public class BattleUIManager : MonoBehaviour
 
             Image img = go.GetComponentInChildren<Image>();
             img.sprite = item.Sprite;
+
+            _rewardShowcaseObjs.Add(go);
         }
 
         if (essence > 0)
@@ -162,6 +165,7 @@ public class BattleUIManager : MonoBehaviour
             TextMeshProUGUI[] tmps = go.GetComponentsInChildren<TextMeshProUGUI>();
             tmps[1].text = $"x{essence}";
 
+            _rewardShowcaseObjs.Add(go);
         }
     }
 
