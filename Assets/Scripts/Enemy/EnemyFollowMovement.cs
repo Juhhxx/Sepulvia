@@ -8,7 +8,7 @@ public class EnemyFollowMovement : MonoBehaviour, IMovementType
     private NavMeshAgent _agent;
     private Transform _target;
 
-    public Vector3 Direction => Vector3.zero;
+    public Vector3 Direction => _agent.steeringTarget.normalized;
     public float Speed => _agent.speed;
 
     private void Start()

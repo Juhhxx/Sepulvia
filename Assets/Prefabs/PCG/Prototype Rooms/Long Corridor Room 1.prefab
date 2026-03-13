@@ -915,6 +915,37 @@ LightProbeGroup:
   - {x: -1.2024672, y: -0.61657953, z: -4.051776}
   - {x: -1.5824649, y: 1.2689419, z: -3.98908}
   m_Dering: 1
+--- !u!1 &2164367502855412018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5037587261813387251}
+  m_Layer: 0
+  m_Name: Spawnpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5037587261813387251
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2164367502855412018}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5483008743521533140}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2315932038004584385
 GameObject:
   m_ObjectHideFlags: 0
@@ -2129,6 +2160,37 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &5235798814485608342
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2612357733847432068}
+  m_Layer: 0
+  m_Name: Spawnpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2612357733847432068
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5235798814485608342}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6229099491384192104}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5309937305498680944
 GameObject:
   m_ObjectHideFlags: 0
@@ -2274,7 +2336,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -37.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5037587261813387251}
   m_Father: {fileID: 3150545328827967550}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2057084511544577766
@@ -2289,7 +2352,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab864f89210726345ac71b73d163fd5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Door
-  doorId: 0
+  _doorId: 0
+  <Spawnposition>k__BackingField: {fileID: 5037587261813387251}
 --- !u!65 &3390725417739931492
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2341,7 +2405,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 18.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2612357733847432068}
   m_Father: {fileID: 3150545328827967550}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7083864305252646542
@@ -2356,7 +2421,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab864f89210726345ac71b73d163fd5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Door
-  doorId: 2
+  _doorId: 2
+  <Spawnposition>k__BackingField: {fileID: 2612357733847432068}
 --- !u!65 &8976477401469693027
 BoxCollider:
   m_ObjectHideFlags: 0

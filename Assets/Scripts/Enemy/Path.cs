@@ -11,6 +11,7 @@ public class Path : MonoBehaviour
     [SerializeField] private bool _showPath = true;
 
     [SerializeField, ReorderableList, ReadOnly] private List<Transform> _waypoints = new List<Transform>();
+    public List<Transform> Waypoints => _waypoints;
 
     public int Size => _waypoints.Count;
 
@@ -18,6 +19,12 @@ public class Path : MonoBehaviour
     public void SwitchDirection() => _direction *= -1; 
 
     private int _index = 0;
+
+    public void Reset()
+    {
+        _index = 0;
+        _direction = 1;
+    }
 
     public Vector3 GetCurrentWaypoint() => _waypoints[_index].position;
 

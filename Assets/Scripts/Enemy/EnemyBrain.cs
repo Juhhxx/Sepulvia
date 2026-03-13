@@ -18,7 +18,6 @@ public class EnemyBrain : MonoBehaviour
         {
             if (value != _activeMovement)
             {
-                _activeMovement?.ResetMovement();
                 OnMovementChange?.Invoke();
             }
 
@@ -40,14 +39,20 @@ public class EnemyBrain : MonoBehaviour
     [SerializeField] private bool _doFollow = true;
     [SerializeField, ShowIf("_doFollow")] private float _detectionRadius = 2;
 
-    public void Start()
+    public void OnEnable()
     {
+        Debug.Log($"{name} OnEnable");
         _patrolMovement = GetComponent<EnemyPatrolMovement>();
         _followMovement = GetComponent<EnemyFollowMovement>();
 
         _target = FindAnyObjectByType<PlayerMovement>().transform;
 
+        _movementeState = MovementType.Patrolling;
+
+        gameObject.SetActive(true);
+
         UpdateMovement();
+        _activeMovement.ResetMovement();
     }
 
     private bool DetectPlayer() => 

@@ -8,7 +8,7 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
     [SerializeField] private RoomData startingRoom;
     [SerializeField] private NavMeshSurface _navMeshSurface;
 
-    private RoomInstance currentRoom;
+    private RoomInstance _currentRoom;
     private Animator _fadeAnimator;
     private PlayerController _playerController;
 
@@ -37,7 +37,7 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
 
     public void EnterDoor(RoomId doorId)
     {
-        var connection = currentRoom.RoomData.connections
+        var connection = _currentRoom.RoomData.connections
             .Find(c => c.doorId == doorId);
 
         if (connection == null)
@@ -46,13 +46,13 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
             return;
         }
 
-        StartCoroutine(LoadRoomCR(connection.targetRoom));
+        StartCoroutine(LoadRoomCR(connection.targetRoom, connection.targetDoorId));
     }
 
-    private void LoadRoom(RoomData roomData)
+    private void LoadRoom(RoomData roomData, RoomId targetId = RoomId.None)
     {
-        if (currentRoom != null)
-            currentRoom.gameObject.SetActive(false);
+        if (_currentRoom != null)
+            _currentRoom.gameObject.SetActive(false);
         
         if (_loadedRooms.Contains(roomData))
         {
@@ -61,7 +61,7 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
                 if (ri.RoomData == roomData)
                 {
                     ri.gameObject.SetActive(true);
-                    currentRoom = ri;
+                    _currentRoom = ri;
                     break;
                 }
             }
@@ -69,23 +69,30 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
         else
         {
             GameObject roomGO = Instantiate(roomData.roomPrefab, transform);
-            currentRoom = roomGO.GetComponent<RoomInstance>();
+            _currentRoom = roomGO.GetComponent<RoomInstance>();
 
             _loadedRooms.Add(roomData);
-            _instantiatedRooms.Add(currentRoom);
+            _instantiatedRooms.Add(_currentRoom);
         }
 
-        currentRoom.RoomData = roomData;
-        _playerController.transform.position = currentRoom.Spawnposition.position;
+        _currentRoom.RoomData = roomData;
+
+        if (targetId == RoomId.None)
+            _playerController.transform.position = _currentRoom.Spawnposition.position;
+        else
+        {
+            Transform spawn = _currentRoom.GetDoor(targetId).Spawnposition;
+            _playerController.transform.position = spawn.position;
+        }
     }
 
-    private IEnumerator LoadRoomCR(RoomData roomData)
+    private IEnumerator LoadRoomCR(RoomData roomData, RoomId targetId)
     {
         _fadeAnimator.SetTrigger("Fade");
 
         yield return new WaitForSeconds(1f);
 
-        LoadRoom(roomData);
+        LoadRoom(roomData, targetId);
 
         yield return new WaitForEndOfFrame();
 

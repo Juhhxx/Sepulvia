@@ -15,6 +15,7 @@ public class RoomConnection
 {
     public RoomId doorId;
     public RoomData targetRoom;
+    public RoomId targetDoorId;
 }
 
 public enum RoomId
@@ -22,5 +23,6 @@ public enum RoomId
     North,
     East,
     South,
-    West
+    West,
+    None
 }
