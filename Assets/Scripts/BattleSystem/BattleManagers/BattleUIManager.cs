@@ -30,6 +30,8 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private GameObject _decisionBattleScreen;
     [SerializeField] private GameObject _rewardsBattleScreen;
     [SerializeField] private GameObject _rewardsShowcase;
+    [SerializeField] private GameObject _itemPrefab;
+    [SerializeField] private GameObject _essencePrefab;
 
     [SerializeField] private GameObject _loseBattleScreen;
 
@@ -140,12 +142,9 @@ public class BattleUIManager : MonoBehaviour
             _rewardShowcaseObjs.Clear();
         }
 
-        GameObject itemPrefab = _rewardsShowcase.transform.GetChild(0).gameObject;
-        GameObject essencePrefab = _rewardsShowcase.transform.GetChild(1).gameObject;
-
         foreach(ItemInfo item in items)
         {
-            GameObject go = Instantiate(itemPrefab, _rewardsShowcase.transform);
+            GameObject go = Instantiate(_itemPrefab, _rewardsShowcase.transform);
             go.SetActive(true);
 
             TextMeshProUGUI tmp = go.GetComponentInChildren<TextMeshProUGUI>();
@@ -159,7 +158,7 @@ public class BattleUIManager : MonoBehaviour
 
         if (essence > 0)
         {
-            GameObject go = Instantiate(essencePrefab, _rewardsShowcase.transform);
+            GameObject go = Instantiate(_essencePrefab, _rewardsShowcase.transform);
             go.SetActive(true);
 
             TextMeshProUGUI[] tmps = go.GetComponentsInChildren<TextMeshProUGUI>();
@@ -218,9 +217,11 @@ public class BattleUIManager : MonoBehaviour
 
         _enemyStanceBars = new List<FillBar>();
 
-        foreach (CharacterInfo enemy in enemyParty.PartyMembers)
+        for (int i = 0; i < enemyParty.PartySize; i++)
         {
-            Vector3 pos = _characterModels[enemyParty.PartyMembers.IndexOf(enemy) + 1].transform.position;
+            CharacterInfo enemy = enemyParty.PartyMembers[i];
+
+            Vector3 pos = _characterModels[i + 1].transform.position;
 
             GameObject bar = Instantiate(_enemyStanceBarPrefab, pos + (Vector3.up * 7), Quaternion.identity);
             FillBar enemyFillBar = bar.GetComponent<FillBar>();

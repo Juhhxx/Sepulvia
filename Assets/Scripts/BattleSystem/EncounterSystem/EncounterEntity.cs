@@ -11,13 +11,13 @@ public class EncounterEntity : MonoBehaviour
 
     private void Start()
     {
-        EncounterManager.Instance.RegsiterEncounterable(this);
+        EncounterManager.Instance.RegisterEncounterable(this);
     }
 
     private void OnDestroy()
     {
         if (EncounterManager.Instance != null)
-            EncounterManager.Instance.UnregsiterEncounterable(this);
+            EncounterManager.Instance.UnregisterEncounterable(this);
     }
 
     private void OnTriggerEnter(Collider other)

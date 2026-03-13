@@ -20,12 +20,12 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
         _battleManager.OnBattleEnd += ReturnToOverworld;
     }
 
-    public void RegsiterEncounterable(EncounterEntity entity)
+    public void RegisterEncounterable(EncounterEntity entity)
     {
         entity.OnEncounterPlayer += DoEncounter;
     }
 
-    public void UnregsiterEncounterable(EncounterEntity entity)
+    public void UnregisterEncounterable(EncounterEntity entity)
     {
         entity.OnEncounterPlayer -= DoEncounter;
     }
@@ -44,13 +44,7 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
     {
         PartyInfo party = _possibleEncounters[Random.Range(0, _possibleEncounters.Count)];
 
-        Debug.Log($"[Encounter Manager] Doing encounter with {party.PartyName}", this);
-
-        GameSceneManager.Instance.CurrentGameScene = GameSceneManager.GameSceneTypes.Battle;
-
-        _battleManager.StartBattle(_player.PlayerParty, party);
-
-        _player.InBattle = true;
+        DoEncounter(party);
     }
 
     private void ReturnToOverworld()

@@ -5,6 +5,8 @@ using System;
 public class PlayerController : MonoBehaviour
 {
     [field: SerializeField, Expandable] public PartyInfo PlayerParty { get; private set; }
+
+    // Player Party never has more than 1 character
     public CharacterInfo PlayerCharacter => PlayerParty.PartyMembers[0];
 
     private bool _inBattle = false;

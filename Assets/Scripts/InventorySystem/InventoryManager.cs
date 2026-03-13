@@ -133,7 +133,7 @@ public class InventoryManager : MonoBehaviour
 
     private void ClearSlots()
     {
-        foreach(GameObject go in _createdObjects) DestroyImmediate(go);
+        foreach(GameObject go in _createdObjects) Destroy(go);
         _createdObjects.Clear();
     }
 

@@ -6,7 +6,7 @@ public class AudioMusicPlayer : MonoBehaviour
     [Header("Fade Settings")]
     [SerializeField] private float _fadeDuration = 1.5f;
     [SerializeField] private float _maxVolume = 1f;
-    [SerializeField] private AudioGroup group = AudioGroup.Ambience;
+    [SerializeField] private AudioGroup _group = AudioGroup.Music;
 
     private AudioSource _sourceA;
     private AudioSource _sourceB;
@@ -21,11 +21,11 @@ public class AudioMusicPlayer : MonoBehaviour
         _sourceA.loop = true;
         _sourceB.loop = true;
 
-        _sourceA.outputAudioMixerGroup = AudioManager.Instance.GetAudioMixerGroup(group);
-        _sourceB.outputAudioMixerGroup = AudioManager.Instance.GetAudioMixerGroup(group);
+        _sourceA.outputAudioMixerGroup = AudioManager.Instance.GetAudioMixerGroup(_group);
+        _sourceB.outputAudioMixerGroup = AudioManager.Instance.GetAudioMixerGroup(_group);
 
-        AudioManager.Instance.RegisterAudioSource(_sourceA, group, true);
-        AudioManager.Instance.RegisterAudioSource(_sourceB, group, true);
+        AudioManager.Instance.RegisterAudioSource(_sourceA, _group, true);
+        AudioManager.Instance.RegisterAudioSource(_sourceB, _group, true);
 
         _currentSource = _sourceA;
     }

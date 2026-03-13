@@ -182,14 +182,18 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
 
     public void UnRegisterAudioSource(AudioSource source)
     {
+        AudioSourceInfo tmp = default;
+        
         foreach (AudioSourceInfo asi in _activeAudioSources)
         {
             if (asi.AudioSource == source)
             {
-                _activeAudioSources.Remove(asi);
+                tmp = asi;
                 break;
             }
         }
+
+        _activeAudioSources.Remove(tmp);
     }
 
     private void ClearAllAudioSources()
