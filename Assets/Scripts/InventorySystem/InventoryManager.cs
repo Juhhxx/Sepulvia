@@ -1,173 +1,215 @@
-using System.Collections.Generic;
-using NaughtyAttributes;
-using TMPro;
 using UnityEngine;
+using NaughtyAttributes;
 using UnityEngine.UI;
+using TMPro;
 
 public class InventoryManager : MonoBehaviour
 {
-    [Space(10f)]
-    [Header("Inventory UI Parameters")]
+    [Header("Inventory Logic Parameters")]
     [Space(5f)]
-    [SerializeField] private GameObject _inventoryCanvas;
-    [SerializeField] private GameObject _inventorySlots;
-    [SerializeField] private GameObject _equipmentSlots;
+    [SerializeField, InputAxis] private string _inventoryButton;
+    [SerializeField] private InventoryUIManager _inventoryUIManager;
+    [SerializeField] private InventoryResolver _inventoryResolver;
 
-    [SerializeField] private PlayerStatsUI _statsUI;
+    [SerializeField] private GameObject _confirmUsePanel;
+    [SerializeField] private GameObject _confirmEquipPanel;
+    [SerializeField] private GameObject _confirmUnequipPanel;
+    [SerializeField] private GameObject _warningPanel;
+    [SerializeField] private GameObject _raycastBlockerPanel;
 
-    [SerializeField] private GameObject _itemInfoPanel;
-    [SerializeField] private TextMeshProUGUI _panelTitle;
-    [SerializeField] private TextMeshProUGUI _panelDescription;
-
-    [SerializeField] private Camera _uiCamera;
-    [SerializeField] private RectTransform _itemInfoPanelRect;
-    [SerializeField] private Canvas _canvas;
-
-    private List<GameObject> _createdObjects;
-
-    private List<Button> _buttons;
-
-    public List<Button> GetAllButtons() => _buttons;
-    public List<Button> GetItemButtons() => _buttons.GetRange(0, _inventory.MaxInventorySpaces);
-    public List<Button> GetEquipmentButtons() => _buttons.GetRange(_inventory.MaxInventorySpaces, _inventory.MaxEquipmentSpaces);
-
-    private InventoryInfo _inventory;
     private PlayerController _player;
+
+    private ItemStack _selectedStack;
+    private ItemInfo _selectedEquipment;
 
     private void Start()
     {
         _player = FindAnyObjectByType<PlayerController>();
+        _inventoryUIManager.CreateInventory(_player.PlayerCharacter.Inventory);
+
+        _confirmEquipPanel.SetActive(false);
+        _confirmUnequipPanel.SetActive(false);
     }
 
     private void Update()
     {
-        FollowMouse();
+        if (!_player.InBattle) CheckInventoryOpen();
     }
 
-    // Generic Inventory Functionality
-    public void ShowInventory(InventoryInfo inventory)
+    private void CheckInventoryOpen()
     {
-        _statsUI.UpdateStats(_player.PlayerCharacter);
-        
-        _inventory = inventory;
-
-        if (_createdObjects != null) ClearSlots();
-        else _createdObjects = new List<GameObject>();
-
-        _buttons = new List<Button>();
-
-        ShowItemSpaces(inventory);
-        ShowEquipmentSpaces(inventory);
-
-        _inventoryCanvas.SetActive(true);
-
-        // Time.timeScale = 0f;
-    }
-
-    private void ShowItemSpaces(InventoryInfo inventory)
-    {
-        GameObject inventorySlotPrefab = _inventorySlots.transform.GetChild(0).gameObject;
-
-        for (int i = 0; i < inventory.MaxInventorySpaces; i++)
+        if (Input.GetButtonDown(_inventoryButton))
         {
-            ItemStack stack = (i < inventory.ItemSlots.Count) ? inventory.ItemSlots[i] : null;
+            _inventoryUIManager.ShowInventory();
+            SetUpButtons();
+        }
+    }
 
-            GameObject slot = Instantiate(inventorySlotPrefab, _inventorySlots.transform);
-            Image image = slot.transform.GetChild(0).GetComponent<Image>();
-            TextMeshProUGUI tmp = slot.GetComponentInChildren<TextMeshProUGUI>();
+    private void SetUpButtons()
+    {
+        var tmp = _inventoryUIManager.GetItemButtons();
 
-            slot.SetActive(true);
-
+        for (int i = 0; i < tmp.Count; i++)
+        {
+            ItemStack stack = 
+            (i < _player.PlayerCharacter.Inventory.ItemSlots.Count) ? 
+            _player.PlayerCharacter.Inventory.ItemSlots[i] : null;
+            
             if (stack != null)
             {
-                image.sprite = stack.Item.Sprite;
-                image.color = Color.white;
+                tmp[i].enabled = true;
+                tmp[i].onClick.RemoveAllListeners();
                 
-                tmp.text = $"{stack.Amount}";
-            }
-            else
-            {
-                image.color = new Color(1f , 1f, 1f, 0f);
-                tmp.text = "";
-            }
+                if (stack.Item.Type == ItemTypes.Equippable)
+                {
+                    tmp[i].onClick.AddListener(() =>
+                    {
+                        UpdatedSelectedStack(stack);
+                        _raycastBlockerPanel.SetActive(true);
+                        _confirmEquipPanel.SetActive(true);
+                        _confirmEquipPanel.GetComponentInChildren<TextMeshProUGUI>().text =
+                        $"Are you sure you want to equip {stack.Item.Name}?";
+                    });
+                }
+                else if (stack.Item.Type != ItemTypes.Save)
+                {
+                    tmp[i].onClick.AddListener(() =>
+                    {
+                        UpdatedSelectedStack(stack);
+                        _raycastBlockerPanel.SetActive(true);
+                        _confirmUsePanel.SetActive(true);
+                        _confirmUsePanel.GetComponentInChildren<TextMeshProUGUI>().text =
+                        $"Are you sure you want to use {stack.Item.Name}?";
+                    });
+                }
+                else
+                {
+                    tmp[i].onClick.AddListener(() =>
+                    {
+                        _raycastBlockerPanel.SetActive(true);
+                        _warningPanel.SetActive(true);
+                        _warningPanel.GetComponentInChildren<TextMeshProUGUI>().text =
+                        $"Not Implemented :3";
+                    });
+                }
             
-            _createdObjects.Add(slot);
-            _buttons.Add(slot.GetComponent<Button>());
+                tmp[i]?.GetComponent<ItemHoverInfo>()
+                .SetUpHover(stack.Item, _inventoryUIManager);
+            }
         }
-    }
 
-    private void ShowEquipmentSpaces(InventoryInfo inventory)
-    {
-        GameObject equipmentSlotPrefab = _equipmentSlots.transform.GetChild(0).gameObject;
-        
-        for (int i = 0; i < inventory.MaxEquipmentSpaces; i++)
+        tmp = _inventoryUIManager.GetEquipmentButtons();
+
+        for (int i = 0; i < tmp.Count; i++)
         {
-            ItemInfo item = (i < inventory.EquipmentSlots.Count) ? inventory.EquipmentSlots[i] : null;
-
-            GameObject slot = Instantiate(equipmentSlotPrefab, _equipmentSlots.transform);
-            Image image = slot.transform.GetChild(0).GetComponent<Image>();
-
-            slot.SetActive(true);
-
+            ItemInfo item = 
+            (i < _player.PlayerCharacter.Inventory.EquipmentSlots.Count) ? 
+            _player.PlayerCharacter.Inventory.EquipmentSlots[i] : null;
+            
             if (item != null)
             {
-                image.sprite = item.Sprite;
-                image.color = Color.white;
-            }
-            else
-            {
-                image.color = new Color(1f , 1f, 1f, 0f);
-            }
+                tmp[i].enabled = true;
+                tmp[i].onClick.RemoveAllListeners();
+                tmp[i].onClick.AddListener(() =>
+                {
+                    UpdatedSelectedEquipment(item);
+                    _raycastBlockerPanel.SetActive(true);
+                    _confirmUnequipPanel.SetActive(true);
+                    _confirmUnequipPanel.GetComponentInChildren<TextMeshProUGUI>().text =
+                    $"Are you sure you want to unequip {item.Name}?";
+                });
             
-            _createdObjects.Add(slot);
-            _buttons.Add(slot.GetComponent<Button>());
+                tmp[i]?.GetComponent<ItemHoverInfo>()
+                .SetUpHover(item, _inventoryUIManager);
+            }
         }
     }
 
-    public void HideInventory()
+    public void UpdatedSelectedStack(ItemStack stack) => _selectedStack = stack;
+    public void UpdatedSelectedEquipment(ItemInfo item) => _selectedEquipment = item;
+
+    public void Use()
     {
-        _inventoryCanvas.SetActive(false);
-        _itemInfoPanel.SetActive(false);
-        // Time.timeScale = 1f;
+        UseItem(_selectedStack);
+        _inventoryUIManager.ShowInventory();
+        SetUpButtons();
     }
 
-    private void ClearSlots()
+    public void Equip()
     {
-        foreach(GameObject go in _createdObjects) Destroy(go);
-        _createdObjects.Clear();
+        EquipItem(_selectedStack);
+        _inventoryUIManager.ShowInventory();
+        SetUpButtons();
     }
 
-
-    // Info Panel
-    public void ToggleItemInfo(bool onOff, ItemInfo item = null)
+    public void Unequip()
     {
-        if (onOff)
+        UnequipItem(_selectedEquipment);
+        _inventoryUIManager.ShowInventory();
+        SetUpButtons();
+    }
+
+    public void UseItem(ItemStack stack)
+    {
+        if (!_player.PlayerCharacter.Inventory.Contains(stack.Item)) return;
+
+        _inventoryResolver.UseItem(stack.Item, _player.PlayerCharacter);
+        _player.PlayerCharacter.Inventory.RemoveItem(stack);
+    }
+
+    public void EquipItem(ItemStack stack)
+    {
+        if (!_player.PlayerCharacter.Inventory.Contains(stack.Item) || stack.Item.Type != ItemTypes.Equippable) return;
+
+        if (_player.PlayerCharacter.Inventory.EquipmentFull())
         {
-            _panelTitle.text = $"{item.Name}";
-            _panelDescription.text = $"{item.Description}";
+            _raycastBlockerPanel.SetActive(true);
+            _warningPanel.SetActive(true);
+            _warningPanel.GetComponentInChildren<TextMeshProUGUI>().text = "You don't have space for more equipment!";
+            return;
         }
-        
-        _itemInfoPanel.SetActive(onOff);
+
+        if (stack.Item.EquipmentType == EquipmentType.MoveModidier)
+        {
+            if (_player.PlayerCharacter.Inventory.HasEquiped(stack.Item))
+            {
+                _raycastBlockerPanel.SetActive(true);
+                _warningPanel.SetActive(true);
+                _warningPanel.GetComponentInChildren<TextMeshProUGUI>().text = "You can't equip any more of this soul!";
+                return;
+            }
+        }
+
+        _player.PlayerCharacter.Inventory.AddEquipment(stack.Item);
+        _player.PlayerCharacter.Inventory.RemoveItem(stack);
+        _player.PlayerCharacter.CheckEquipment();
     }
 
-    private void FollowMouse()
+    public void UnequipItem(ItemInfo item)
     {
-        Vector2 canvasPos = ScreenToCanvas(Input.mousePosition);
-        _itemInfoPanelRect.anchoredPosition = canvasPos;
-    }
+        if (_player.PlayerCharacter.Inventory.IsFull())
+        {
+            _raycastBlockerPanel.SetActive(true);
+            _warningPanel.SetActive(true);
+            _warningPanel.GetComponentInChildren<TextMeshProUGUI>().text = "Your inventory is full!";
+            return;
+        }
 
-    private Vector2 ScreenToCanvas(Vector2 screenPos)
-    {
-        RectTransform canvasRect = _canvas.GetComponent<RectTransform>();
+        if (!_player.PlayerCharacter.Inventory.HasEquiped(item)) return;
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect,
-            screenPos,
-            _uiCamera, 
-            out Vector2 localPoint
-        );
+        bool canAdd = _player.PlayerCharacter.Inventory.AddItem(item);
 
-        return localPoint;
+        if (canAdd)
+        {
+            _player.PlayerCharacter.Inventory.RemoveEquipment(item);
+            _player.PlayerCharacter.ResetMove(item.MoveIndex);
+        }
+        else
+        {
+            _raycastBlockerPanel.SetActive(true);
+            _warningPanel.SetActive(true);
+            _warningPanel.GetComponentInChildren<TextMeshProUGUI>().text = "Your inventory is full!";
+        }
     }
 
 }

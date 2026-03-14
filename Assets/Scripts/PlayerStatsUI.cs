@@ -23,7 +23,7 @@ public class PlayerStatsUI : MonoBehaviour
             Debug.Log($"{c.MoveSet.Count}");
             Debug.Log($"{i}");
             Debug.Log($"{tmp[i]}");
-            Debug.Log($"{c.MoveSet[i]}");
+            Debug.Log($"{c.MoveSet[i].Name}");
             
             tmp[i].text = c.MoveSet[i].Name;
         }

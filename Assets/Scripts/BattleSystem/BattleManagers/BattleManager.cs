@@ -12,7 +12,7 @@ public class BattleManager : MonoBehaviour
     [Space(5)]
     [SerializeField] private BattleResolver _battleResolver;
     [SerializeField] private BattleUIManager _uiManager;
-    [SerializeField] private InventoryManager _inventoryManager;
+    [SerializeField] private InventoryUIManager _inventoryUIManager;
     [SerializeField] private PullingManager _pullManager;
     [SerializeField] private DialogueManager _dialogueManager;
 
@@ -123,7 +123,7 @@ public class BattleManager : MonoBehaviour
         _uiManager.ToggleActionButtons(true);
         _uiManager.ToggleMoveInfo(false);
         _dialogueManager.HideDialogue();
-        _inventoryManager.HideInventory();
+        _inventoryUIManager.HideInventory();
 
         SetUpNewTurnEvents();
 
@@ -276,9 +276,9 @@ public class BattleManager : MonoBehaviour
     // Inventory UI
     public void SetUpInventoryButtons()
     {
-        _inventoryManager.ShowInventory(Player.Inventory);
+        _inventoryUIManager.ShowInventory();
 
-        var invButtons = _inventoryManager.GetItemButtons();
+        var invButtons = _inventoryUIManager.GetItemButtons();
 
         for (int i = 0; i < invButtons.Count; i++)
         {
@@ -305,12 +305,12 @@ public class BattleManager : MonoBehaviour
                 }
             
                 invButtons[i]?.GetComponent<ItemHoverInfo>()
-                .SetUpHover(stack.Item, _inventoryManager);
+                .SetUpHover(stack.Item, _inventoryUIManager);
             }
 
         }
 
-        invButtons = _inventoryManager.GetEquipmentButtons();
+        invButtons = _inventoryUIManager.GetEquipmentButtons();
 
         for (int i = 0; i < invButtons.Count; i++)
         {
@@ -324,7 +324,7 @@ public class BattleManager : MonoBehaviour
                 invButtons[i].transform.GetChild(0).GetComponent<Image>().color = c;
             
                 invButtons[i]?.GetComponent<ItemHoverInfo>()
-                .SetUpHover(item, _inventoryManager);
+                .SetUpHover(item, _inventoryUIManager);
             }
 
         }
@@ -361,7 +361,7 @@ public class BattleManager : MonoBehaviour
             _uiManager.ToggleActionButtons(false);
             _uiManager.ToggleMoveInfo(false);
             _uiManager.HideTurnOrder();
-            _inventoryManager.HideInventory();
+            _inventoryUIManager.HideInventory();
 
             // Little Delay Before Battle Starts
             yield return new WaitForSeconds(0.5f);
@@ -410,7 +410,7 @@ public class BattleManager : MonoBehaviour
         _uiManager.ToggleActionButtons(false);
         _uiManager.ToggleMoveInfo(false);
         _dialogueManager.HideDialogue();
-        _inventoryManager.HideInventory();
+        _inventoryUIManager.HideInventory();
         _pullManager.TogglePullUI(false);
 
         if (_playerWon) _uiManager.ShowWinScreen();

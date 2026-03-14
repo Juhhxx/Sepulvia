@@ -5,13 +5,13 @@ using UnityEngine.UI;
 public class ItemHoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private ItemInfo _item;
-    private InventoryManager _inventoryManager;
+    private InventoryUIManager _inventoryUIManager;
     private bool _active = false;
 
-    public void SetUpHover(ItemInfo item, InventoryManager inventoryManager)
+    public void SetUpHover(ItemInfo item, InventoryUIManager inventoryManager)
     {
         _item = item;
-        _inventoryManager = inventoryManager;
+        _inventoryUIManager = inventoryManager;
         _active = true;
     }
 
@@ -19,11 +19,11 @@ public class ItemHoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (!_active) return;
         
-        _inventoryManager?.ToggleItemInfo(true, _item);
+        _inventoryUIManager?.ToggleItemInfo(true, _item);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         if (!_active) return;
-        _inventoryManager?.ToggleItemInfo(false);
+        _inventoryUIManager?.ToggleItemInfo(false);
     }
 }
