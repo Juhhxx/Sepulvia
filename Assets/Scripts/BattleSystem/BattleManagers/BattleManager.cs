@@ -3,7 +3,7 @@ using UnityEngine;
 using NaughtyAttributes;
 using System.Collections.Generic;
 using System;
-using UnityEngine.EventSystems;
+using System.Linq;
 using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
@@ -29,7 +29,7 @@ public class BattleManager : MonoBehaviour
     // Battle Action Variables
     [SerializeField, ReadOnly] private List<BattleAction> _actionList;
 
-    public enum ActionType { Move, Item, Empty }
+    public enum ActionType { Move, Item, Run, Empty }
 
     [Serializable]
     public class BattleAction
@@ -38,6 +38,7 @@ public class BattleManager : MonoBehaviour
         [field: SerializeField] public ActionType Type { get; private set;}
         [field: SerializeField] public MoveInfo Move { get; private set; }
         [field: SerializeField] public ItemInfo Item { get; private set;}
+        [field: SerializeField] public int Priority { get; private set; }
 
         public BattleAction(CharacterInfo character, MoveInfo move)
         {
@@ -45,6 +46,7 @@ public class BattleManager : MonoBehaviour
             Type = ActionType.Move;
             Move = move;
             Item = null;
+            Priority = Move.PriorityLevel;
         }
 
         public BattleAction(CharacterInfo character, ItemInfo item)
@@ -53,14 +55,16 @@ public class BattleManager : MonoBehaviour
             Type = ActionType.Item;
             Move = null;
             Item = item;
+            Priority = 5;
         }
 
-        public BattleAction(CharacterInfo character)
+        public BattleAction(CharacterInfo character, bool isRun = false)
         {
             Character = character;
-            Type = ActionType.Empty;
+            Type = isRun ? ActionType.Run : ActionType.Empty;
             Move = null;
             Item = null;
+            Priority = 6;
         }
     }
 
@@ -99,6 +103,7 @@ public class BattleManager : MonoBehaviour
         _enemyParty = enemyParty.Instantiate();
 
         _hasWinner = false;
+        _doRun = false;
 
         _uiManager.ClearCreatedObjects();
 
@@ -133,33 +138,14 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(BattleLoopCR());
     }
 
-    public void Run() => StartCoroutine(RunCR());
+    public void DoRun() => AddAction(Player, true);
 
-    public IEnumerator RunCR()
+    bool _doRun = false;
+    public void Run()
     {
-        _uiManager.ToggleActionButtons(false);
-        _uiManager.HideTurnOrder();
+        bool result = _battleResolver.CanRun(Player, _enemyParty);
 
-        _dialogueManager.AddDialogue($"{Player.Name} tried to run.");
-
-        bool result = _battleResolver.CanRun(_enemyParty);
-
-        if (result) _dialogueManager.AddDialogue($"{Player.Name} ran away!");
-        else _dialogueManager.AddDialogue($"{Player.Name} couldn't run from battle.");
-
-        _dialogueManager.StartDialogues();
-
-        yield return _wfd;
-        yield return new WaitForSeconds(0.5f);
-
-        if (result)
-        {
-            EndBattle();
-        }
-        else
-        {
-            _uiManager.ToggleActionButtons(true);
-        }
+        _doRun = result;
     }
 
     private void SetUpNewTurnEvents()
@@ -364,7 +350,7 @@ public class BattleManager : MonoBehaviour
             _inventoryUIManager.HideInventory();
 
             // Little Delay Before Battle Starts
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.8f);
 
             OrganizeActions();
 
@@ -386,6 +372,13 @@ public class BattleManager : MonoBehaviour
                 {
                     Debug.Log("END BATTLE");
                     ShowEnd();
+                    yield break;
+                }
+
+                if (_doRun)
+                {
+                    Debug.Log("END BATTLE");
+                    EndBattle();
                     yield break;
                 }
             }
@@ -453,6 +446,8 @@ public class BattleManager : MonoBehaviour
         _uiManager.HideFinalScreens();
         _dialogueManager.HideDialogue();
 
+        Player.ResetModifiers();
+
         OnBattleEnd?.Invoke();
     }
     
@@ -467,9 +462,9 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void AddAction(CharacterInfo character)
+    public void AddAction(CharacterInfo character, bool isRun = false)
     {
-        var action = new BattleAction(character);
+        var action = new BattleAction(character, isRun);
         _actionList.Add(action);
     }
     public void AddAction(CharacterInfo character, MoveInfo move)
@@ -506,6 +501,12 @@ public class BattleManager : MonoBehaviour
                 _battleResolver.UseItem(action.Item, action.Character);
                 break;
 
+            case ActionType.Run:
+
+                _dialogueManager.AddDialogue($"{Player.Name} tried to run.");
+                Run();
+                break;
+
             case ActionType.Empty:
 
                 _dialogueManager.AddDialogue($"{action.Character.Name} lost their stance and took a turn to recover their balance.");
@@ -517,12 +518,15 @@ public class BattleManager : MonoBehaviour
     {
         Debug.Log($"PLAYER SPEED: {Player.Speed} ENEMY SPEED: {_enemyParty.PartyMembers[0].Speed}");
 
-        _actionList.Sort((a, b) => b.Character.Speed.CompareTo(a.Character.Speed));
+        _actionList = _actionList
+                        .OrderByDescending(a => a.Priority)
+                        .ThenByDescending(a => a.Character.Speed)
+                        .ToList();
 
-        Debug.Log("ACTION ORDER");
+        Debug.Log("ACTION ORDER:");
         for (int i = 0; i < _actionList.Count; i++)
         {
-            Debug.Log($"{_actionList[i].Character.Name}");
+            Debug.Log($"{_actionList[i].Character.Name}, Speed: {_actionList[i].Character.Speed}, Priority: {_actionList[i].Priority}");
         }
     }
 

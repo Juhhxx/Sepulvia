@@ -11,6 +11,7 @@ public class MoveInfo : ScriptableObject
     [field: SerializeField] public string Name { get; private set; }
 
     [field: SerializeField] public MoveTypes Type { get; private set; }
+    [field: SerializeField] public int PriorityLevel { get; private set; }
 
     [field: SerializeField] public int StanceCost { get; private set; }
     public bool CheckStanceCost(CharacterInfo character) => character.CurrentStance >= StanceCost;

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -135,7 +136,7 @@ public class BattleResolver : MonoBehaviour
         return (items, essence);
     }
 
-    public bool CanRun(PartyInfo enemyParty)
+    public bool CanRun(CharacterInfo user, PartyInfo enemyParty)
     {
         float rnd = Random.Range(0,1f);
 
@@ -150,6 +151,11 @@ public class BattleResolver : MonoBehaviour
 
         float chance = (1 / difficultyAverage) + 0.25f;
 
-        return rnd <= chance;
+        bool result = rnd <= chance;
+
+        if (result) DialogueManager.Instance.AddDialogue($"{user.Name} ran away!");
+        else DialogueManager.Instance.AddDialogue($"{user.Name} couldn't run from battle.");
+
+        return result;
     }
 }

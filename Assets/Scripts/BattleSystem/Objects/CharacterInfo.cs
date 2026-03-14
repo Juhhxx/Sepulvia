@@ -51,6 +51,7 @@ public class CharacterInfo : ScriptableObject
     [SerializeField, ReadOnly] private List<StatModifier> _statModifiers;
     public List<StatModifier> StatModifiers => _statModifiers;
 
+    public void ResetModifiers() => _statModifiers.Clear();
     public void AddModifier(StatModifier modifier)
     {
         _statModifiers.Add(modifier);

@@ -2607,7 +2607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattleManager
   _battleResolver: {fileID: 5681168893953205041}
   _uiManager: {fileID: 6381016173856266312}
-  _inventoryManager: {fileID: 0}
+  _inventoryUIManager: {fileID: 0}
   _pullManager: {fileID: 2209899652498141366}
   _dialogueManager: {fileID: 565393613876488626}
   _playerParty: {fileID: 11400000, guid: 89d2679380e72fe4d8e5112223a8279c, type: 2}
@@ -5670,6 +5670,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 8665088232080352009}
+    - target: {fileID: 5728537636049448176, guid: e00fa5cbc5839904cb070f6a24b8edc3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DoRun
+      objectReference: {fileID: 0}
     - target: {fileID: 5738629392820034231, guid: e00fa5cbc5839904cb070f6a24b8edc3, type: 3}
       propertyPath: m_Name
       value: Battle Canvas

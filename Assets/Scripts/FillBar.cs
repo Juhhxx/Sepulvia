@@ -47,7 +47,7 @@ public class FillBar : MonoBehaviour
     {
         Debug.Log($"CURRENT HP : {newAmount}");
         StopAllCoroutines();
-        StartCoroutine(UpdateBarCR(newAmount / _maxValue));
+        if (gameObject.activeInHierarchy) StartCoroutine(UpdateBarCR(newAmount / _maxValue));
     }
 
     private IEnumerator UpdateBarCR(float to)
