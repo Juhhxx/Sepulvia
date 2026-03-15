@@ -4,15 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SceneChanger : MonoBehaviourSingleton<SceneChanger>
+public class SceneChanger : MonoBehaviour
 {
     private Animator _anim;
     private RawImage _image;
-
-    private void Awake()
-    {
-        base.SingletonCheck(this, true);
-    }
 
     private void Start()
     {

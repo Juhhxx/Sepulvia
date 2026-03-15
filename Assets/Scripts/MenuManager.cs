@@ -15,6 +15,7 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
     [SerializeField] private GameObject _confirmMainMenu;
 
     private Animator _anim;
+    private SceneChanger _sceneChanger;
 
     private bool _canPause = true;
     public bool CanPause { get => _canPause; set => _canPause = value; }
@@ -32,6 +33,7 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
     private void Start()
     {
         _anim = GetComponent<Animator>();
+        _sceneChanger = FindAnyObjectByType<SceneChanger>();
         // _localization = GetComponent<LocalizationUI>();
 
         ResetMenus();
@@ -59,7 +61,7 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
     public void LoadScene(string scene) => LoadScene(scene, null, true);
     public void LoadScene(string scene, Action onLoad = null, bool doFade = true)
     {
-        SceneChanger.Instance.ChangeScene(scene, onLoad, doFade);
+        _sceneChanger.ChangeScene(scene, onLoad, doFade);
     }
 
     public void ResetSelection() => EventSystem.current.SetSelectedGameObject(null);
@@ -77,7 +79,6 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
                 // Check if other menus are open
                 if (_optionsMenu.activeInHierarchy) ToggleOptionsMenu(false);
                 else if (_confirmMainMenu.activeInHierarchy) ToggleConfirmMainMenu(false);
-                else if (_confirmQuitMenu.activeInHierarchy) ToggleConfirmQuitMenu(false);
                 else TogglePauseMenu(false);
             }
             else TogglePauseMenu(true);

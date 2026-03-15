@@ -3,15 +3,28 @@ using UnityEngine;
 
 public class ButtonsUtillities : MonoBehaviour
 {
-    [SerializeField, Scene] private string _sceneToLoad;
-
-    public void LoadScene()
+    public void LoadScene(string scene)
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(_sceneToLoad);
+        MenuManager.Instance.LoadScene(scene);
     }
 
-    public void QuitGame()
+    public void OpenOptions()
     {
-        Application.Quit();
+        MenuManager.Instance.ToggleOptionsMenu(true);
     }
+
+    public void Quit()
+    {
+        MenuManager.Instance.ToggleConfirmQuitMenu(true);
+    }
+
+    public void ResetSelection()
+    {
+        MenuManager.Instance.ResetSelection();
+    }
+
+    // public void OpenCredits()
+    // {
+    //     CreditsManager.Instance.OpenCredits();
+    // }
 }
