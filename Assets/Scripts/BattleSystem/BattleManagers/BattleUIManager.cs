@@ -10,6 +10,7 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private StatModifierDisplay _statModifierDisplay;
     [SerializeField] private GameObject _enemyStanceBarPrefab;
     private List<FillBar> _enemyStanceBars;
+    private List<StatModifierDisplay> _enemyStatDisplay;
 
     [SerializeField] private Transform _playerPivot;
     [SerializeField] private Transform _enemyPivot;
@@ -216,6 +217,7 @@ public class BattleUIManager : MonoBehaviour
         _playerStanceBar.SetUpBar(player.Name, "Stance", player.MaxStance);
 
         _enemyStanceBars = new List<FillBar>();
+        _enemyStatDisplay = new List<StatModifierDisplay>();
 
         for (int i = 0; i < enemyParty.PartySize; i++)
         {
@@ -225,8 +227,10 @@ public class BattleUIManager : MonoBehaviour
 
             GameObject bar = Instantiate(_enemyStanceBarPrefab, pos + (Vector3.up * 7), Quaternion.identity);
             FillBar enemyFillBar = bar.GetComponent<FillBar>();
+            StatModifierDisplay enemyStat = bar.GetComponent<StatModifierDisplay>();
 
             _enemyStanceBars.Add(enemyFillBar);
+            _enemyStatDisplay.Add(enemyStat);
             enemyFillBar.SetUpBar(enemy.Name, "Stance", enemy.MaxStance);
         }
     }
@@ -242,9 +246,14 @@ public class BattleUIManager : MonoBehaviour
         }
     }
     
-    public void UpdateStatModifierDisplay(List<StatModifier> statModifiers)
+    public void UpdateStatModifierDisplay(PartyInfo playerParty, PartyInfo enemyParty)
     {
-        _statModifierDisplay.UpdateDisplay(statModifiers);
+        _statModifierDisplay.UpdateDisplay(playerParty.PartyMembers[0].StatModifiers);
+
+        for (int i = 0; i < enemyParty.PartySize; i++)
+        {
+            _enemyStatDisplay[i].UpdateDisplay(enemyParty.PartyMembers[i].StatModifiers);
+        }
     }
 
     private List<GameObject> _createdObjectsTurns = new List<GameObject>();

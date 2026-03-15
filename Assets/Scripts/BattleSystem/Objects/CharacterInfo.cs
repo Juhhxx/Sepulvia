@@ -89,7 +89,7 @@ public class CharacterInfo : ScriptableObject
         {
             if (e.EquipmentType == EquipmentType.MoveModidier)
             {
-                MoveSet[e.MoveIndex] = e.ChangeTo;
+                MoveSet[e.MoveIndex] = e.ChangeTo.Instantiate();
             }
         }
     }

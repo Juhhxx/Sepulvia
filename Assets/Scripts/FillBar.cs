@@ -8,14 +8,11 @@ public class FillBar : MonoBehaviour
 {
     [SerializeField] private bool _3D = false;
 
-    [SerializeField, HideIf("_3D")] private TextMeshProUGUI _barNameTMP;
-    [SerializeField, HideIf("_3D")] private TextMeshProUGUI _barInfoTMP;
-    [SerializeField, HideIf("_3D")] private Image _barFillImage;
+    [SerializeField] private TextMeshProUGUI _barNameTMP;
+    [SerializeField] private TextMeshProUGUI _barInfoTMP;
+    [SerializeField] private Image _barFillImage;
 
-    [SerializeField, ShowIf("_3D")] private TextMeshPro _barNameTMP3D;
-    [SerializeField, ShowIf("_3D")] private TextMeshPro _barInfoTMP3D;
-    [SerializeField, ShowIf("_3D")] private Transform _barFillImage3D;
-
+    [SerializeField, ShowIf("_3D")] private Canvas _canvas;
     [SerializeField] private float _updateSpeed = 0.5f;
 
     private string _infoName;
@@ -25,19 +22,12 @@ public class FillBar : MonoBehaviour
     {
         if (_3D)
         {
-            _barNameTMP3D.text = name;
-            _barInfoTMP3D.text = $"{info} ({maxValue}/{maxValue})";
+            _canvas.worldCamera = GameSceneManager.Instance.CurrentCamera;
+        }
 
-            Vector3 newScale = _barFillImage3D.localScale;
-            newScale.x = 1f;
-            _barFillImage3D.localScale = newScale;
-        }
-        else
-        {
-           _barNameTMP.text = name;
-            _barInfoTMP.text = $"{info} ({maxValue}/{maxValue})";
-            _barFillImage.fillAmount = 1f; 
-        }
+        _barNameTMP.text = name;
+        _barInfoTMP.text = $"{info} ({maxValue}/{maxValue})";
+        _barFillImage.fillAmount = 1f; 
 
         _infoName = info;
         _maxValue = maxValue;
@@ -52,7 +42,7 @@ public class FillBar : MonoBehaviour
 
     private IEnumerator UpdateBarCR(float to)
     {
-        float from = _3D ? _barFillImage3D.localScale.x : _barFillImage.fillAmount;
+        float from = _barFillImage.fillAmount;
 
         if (to == from) StopAllCoroutines();
 
@@ -79,17 +69,7 @@ public class FillBar : MonoBehaviour
     {
         int displayValue = Mathf.RoundToInt(_maxValue * to);
 
-        if (_3D)
-        {
-            Vector3 newScale = _barFillImage3D.localScale;
-            newScale.x = to;
-            _barFillImage3D.localScale = newScale;
-            _barInfoTMP3D.text = $"{_infoName} ({displayValue}/{_maxValue})";
-        }
-        else
-        {
-            _barFillImage.fillAmount = to;
-            _barInfoTMP.text = $"{_infoName} ({displayValue}/{_maxValue})";
-        }
+        _barFillImage.fillAmount = to;
+        _barInfoTMP.text = $"{_infoName} ({displayValue}/{_maxValue})";
     }
 }

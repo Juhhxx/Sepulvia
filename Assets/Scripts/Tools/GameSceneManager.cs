@@ -96,7 +96,7 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
 
         CurrentCamera = scene.SceneCamera;
 
-        scene.SceneBackground.SoundPlay();
+        if (Application.isPlaying) scene.SceneBackground?.SoundPlay();
 
         scene.SceneGameObject.SetActive(true);
         Debug.LogWarning($"{scene.SceneGameObject.activeInHierarchy}");

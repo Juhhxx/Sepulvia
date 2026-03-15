@@ -39,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 350, y: 0}
+  m_SizeDelta: {x: 350, y: 80}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &1695426452271615678
 CanvasRenderer:
@@ -3285,9 +3285,9 @@ RectTransform:
   - {fileID: 1216274098270931162}
   m_Father: {fileID: 2943644374158572412}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 175, y: 0}
   m_SizeDelta: {x: 350, y: 80}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &4321364580829750489
@@ -4251,7 +4251,7 @@ MonoBehaviour:
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
-  _playOnStart: 1
+  _playOnStart: 0
   _loop: 1
   _isMusic: 1
 --- !u!1 &7331147095930496869
@@ -5574,6 +5574,10 @@ PrefabInstance:
       propertyPath: _decisionBattleScreen
       value: 
       objectReference: {fileID: 6245165275247244487}
+    - target: {fileID: 3381466034499674453, guid: e00fa5cbc5839904cb070f6a24b8edc3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -75
+      objectReference: {fileID: 0}
     - target: {fileID: 4317118227039647407, guid: e00fa5cbc5839904cb070f6a24b8edc3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

@@ -327,7 +327,7 @@ public class BattleManager : MonoBehaviour
             CurrentTurn++;
 
             UpdateButtons();
-            _uiManager.UpdateStatModifierDisplay(Player.StatModifiers);
+            _uiManager.UpdateStatModifierDisplay(_playerParty, _enemyParty);
             _uiManager.ShowTurnOrder(_playerParty, _enemyParty);
 
             yield return new WaitUntil(() => _actionList.Count == _numberOfBattlers);
@@ -359,7 +359,7 @@ public class BattleManager : MonoBehaviour
                 ExecuteAction(action);
 
                 _uiManager.UpdateStanceBars(_playerParty, _enemyParty);
-                _uiManager.UpdateStatModifierDisplay(Player.StatModifiers);
+                _uiManager.UpdateStatModifierDisplay(_playerParty, _enemyParty);
                 _dialogueManager.StartDialogues();
 
                 yield return new WaitUntil(() => !_pullManager.IsMoving);

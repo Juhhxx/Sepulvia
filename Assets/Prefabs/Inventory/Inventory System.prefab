@@ -1492,8 +1492,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 306912943977759705}
+  - component: {fileID: 8830613772550667910}
   - component: {fileID: 4606279029918345856}
-  - component: {fileID: 2767252347800028535}
   - component: {fileID: 8827801818494341867}
   m_Layer: 0
   m_Name: Inventory System
@@ -1518,7 +1518,7 @@ Transform:
   - {fileID: 8923960179093584465}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4606279029918345856
+--- !u!114 &8830613772550667910
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1527,9 +1527,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1480622994227430377}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18bc665c2144bec47b6357e9e49009c1, type: 3}
+  m_Script: {fileID: 11500000, guid: 85c0a4e483c95b54fa1467db3b760ae2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryUIManager
   _inventoryCanvas: {fileID: 8409441712253951658}
   _itemSlots: {fileID: 9167331429640561924}
   _itemSlotPrefab: {fileID: 3725253527899684491, guid: 61161cb317c8d304386564a6443f23cc, type: 3}
@@ -1542,7 +1542,7 @@ MonoBehaviour:
   _uiCamera: {fileID: 0}
   _itemInfoPanelRect: {fileID: 8897309772822124553}
   _canvas: {fileID: 2796053441512461111}
---- !u!114 &2767252347800028535
+--- !u!114 &4606279029918345856
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1551,11 +1551,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1480622994227430377}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df103270b897710429f064097f0f0e6b, type: 3}
+  m_Script: {fileID: 11500000, guid: 18bc665c2144bec47b6357e9e49009c1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventoryEditor
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
   _inventoryButton: Inventory
-  _inventoryUIManager: {fileID: 4606279029918345856}
+  _inventoryUIManager: {fileID: 8830613772550667910}
   _inventoryResolver: {fileID: 8827801818494341867}
   _confirmUsePanel: {fileID: 5120746347808104924}
   _confirmEquipPanel: {fileID: 5365290076344250271}
@@ -1855,8 +1855,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2767252347800028535}
-        m_TargetAssemblyTypeName: InventoryEditor, Assembly-CSharp
+      - m_Target: {fileID: 4606279029918345856}
+        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
         m_MethodName: Equip
         m_Mode: 1
         m_Arguments:
@@ -2850,8 +2850,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2767252347800028535}
-        m_TargetAssemblyTypeName: InventoryEditor, Assembly-CSharp
+      - m_Target: {fileID: 4606279029918345856}
+        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
         m_MethodName: Use
         m_Mode: 1
         m_Arguments:
@@ -5743,8 +5743,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2767252347800028535}
-        m_TargetAssemblyTypeName: InventoryEditor, Assembly-CSharp
+      - m_Target: {fileID: 4606279029918345856}
+        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
         m_MethodName: Unequip
         m_Mode: 1
         m_Arguments:
@@ -6004,7 +6004,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -6582,8 +6582,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4606279029918345856}
-        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
+      - m_Target: {fileID: 8830613772550667910}
+        m_TargetAssemblyTypeName: InventoryUIManager, Assembly-CSharp
         m_MethodName: HideInventory
         m_Mode: 1
         m_Arguments:

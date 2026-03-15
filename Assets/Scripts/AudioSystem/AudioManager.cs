@@ -221,7 +221,7 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
     }
 
     [Button(enabledMode: EButtonEnableMode.Always)]
-    private void ResetVolumes()
+    public void ResetVolumes()
     {
         MasterVolume    = 1.0f;
         MusicVolume  = 1.0f;
