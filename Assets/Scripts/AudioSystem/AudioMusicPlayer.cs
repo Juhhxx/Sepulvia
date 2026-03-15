@@ -33,7 +33,7 @@ public class AudioMusicPlayer : MonoBehaviour
     /// <summary>
     /// Plays a song. If another song is playing, crossfades between them.
     /// </summary>
-    public void PlaySong(AudioClip newClip)
+    public void PlaySong(AudioClip newClip, float volume)
     {
         if (newClip == null)
         {
@@ -53,11 +53,11 @@ public class AudioMusicPlayer : MonoBehaviour
         nextSource.volume = 0f;
         nextSource.Play();
 
-        _fadeCoroutine = StartCoroutine(Crossfade(_currentSource, nextSource));
+        _fadeCoroutine = StartCoroutine(Crossfade(_currentSource, nextSource, volume));
         _currentSource = nextSource;
     }
 
-    private IEnumerator Crossfade(AudioSource from, AudioSource to)
+    private IEnumerator Crossfade(AudioSource from, AudioSource to, float volume)
     {
         float t = 0f;
 
@@ -71,7 +71,7 @@ public class AudioMusicPlayer : MonoBehaviour
             if (from != null)
                 from.volume = Mathf.Lerp(fromStartVolume, 0f, normalized);
 
-            to.volume = Mathf.Lerp(0f, _maxVolume, normalized);
+            to.volume = Mathf.Lerp(0f, volume, normalized);
 
             yield return null;
         }
@@ -82,7 +82,7 @@ public class AudioMusicPlayer : MonoBehaviour
             from.clip = null;
         }
 
-        to.volume = _maxVolume;
+        to.volume = volume;
     }
 
     /// <summary>

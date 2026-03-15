@@ -24,10 +24,12 @@ public class PlaySound : MonoBehaviour
 
     private void Start()
     {
-        _audioSource = gameObject.AddComponent<AudioSource>();
-
-        _audioSource.loop = _loop;
-        _audioSource.playOnAwake = false;
+        if (!_isMusic)
+        {
+            _audioSource = gameObject.AddComponent<AudioSource>();
+            _audioSource.loop = _loop;
+            _audioSource.playOnAwake = false;
+        }
 
         if (_playOnStart) SoundPlay();
     }
@@ -38,7 +40,7 @@ public class PlaySound : MonoBehaviour
 
         if (_isMusic)
         {
-            AudioManager.Instance.MusicPlayer.PlaySong(sound);
+            AudioManager.Instance.MusicPlayer.PlaySong(sound, _volume);
             return;
         }
 
@@ -66,7 +68,7 @@ public class PlaySound : MonoBehaviour
 
         if (_isMusic)
         {
-            AudioManager.Instance.MusicPlayer.PlaySong(_soudsToPlay[0]);
+            AudioManager.Instance.MusicPlayer.PlaySong(_soudsToPlay[0], _volume);
             return;
         }
 
