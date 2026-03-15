@@ -139,7 +139,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
   _movementeState: 0
   _doFollow: 1
-  _detectionRadius: 5
+  _playerMemoryTimer: 2
+  _detectionRadius: 10
 --- !u!114 &7119811215546372381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,7 +156,8 @@ MonoBehaviour:
   _path: {fileID: 0}
   _stopAtWaypoints: 0
   _stopTime: 0
-  _speed: 3.5
+  _speed: 2
+  _motion: {x: 0, y: 0, z: 0}
 --- !u!114 &7528536309725313395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,7 +170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b199a3a47c659e44082bdbbef0dbfdd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyFollowMovement
-  _followSpeed: 6
+  _followSpeed: 3.5
+  _stopingDistance: 1
 --- !u!1 &6098821230097112360
 GameObject:
   m_ObjectHideFlags: 0

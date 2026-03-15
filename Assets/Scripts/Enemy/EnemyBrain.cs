@@ -1,10 +1,11 @@
 using System;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(EnemyPatrolMovement))]
 [RequireComponent(typeof(EnemyFollowMovement))]
-public class EnemyBrain : MonoBehaviour
+public class EnemyBrain : MonoBehaviour, IPausable
 {
     private EnemyPatrolMovement _patrolMovement;
     private EnemyFollowMovement _followMovement;
@@ -19,6 +20,7 @@ public class EnemyBrain : MonoBehaviour
             if (value != _activeMovement)
             {
                 OnMovementChange?.Invoke();
+                value.ResetMovement();
             }
 
             _activeMovement = value;
@@ -31,19 +33,27 @@ public class EnemyBrain : MonoBehaviour
     public event Action OnMovementChange;
 
     private Transform _target;
+    private Timer _memoryTimer;
 
     public enum MovementType { Patrolling, Following }
 
     [SerializeField, ReadOnly] private MovementType _movementeState = MovementType.Patrolling;
 
     [SerializeField] private bool _doFollow = true;
+    [SerializeField, ShowIf("_doFollow")] private float _playerMemoryTimer = 2f;
     [SerializeField, ShowIf("_doFollow")] private float _detectionRadius = 2;
 
     public void OnEnable()
     {
         Debug.Log($"{name} OnEnable");
+
         _patrolMovement = GetComponent<EnemyPatrolMovement>();
         _followMovement = GetComponent<EnemyFollowMovement>();
+
+        _memoryTimer = new Timer(_playerMemoryTimer);
+        _memoryTimer.OnTimerDone += CheckPlayer;
+
+        PauseManager.Instance.RegisterPausable(this);
 
         _target = FindAnyObjectByType<PlayerMovement>().transform;
 
@@ -52,7 +62,11 @@ public class EnemyBrain : MonoBehaviour
         gameObject.SetActive(true);
 
         UpdateMovement();
-        _activeMovement.ResetMovement();
+    }
+
+    private void OnDisable()
+    {
+        PauseManager.Instance.UnregisterPausable(this);
     }
 
     private bool DetectPlayer() => 
@@ -63,24 +77,42 @@ public class EnemyBrain : MonoBehaviour
         ActiveMovement = _movementeState == MovementType.Patrolling ? 
                                     _patrolMovement : _followMovement;
     }
-
     private void BrainLogic()
     {
         if (DetectPlayer())
         {
             _movementeState = MovementType.Following;
         }
+
+        UpdateMovement();
+    }
+
+    private void CheckPlayer()
+    {
+        Debug.LogWarning($"{name}: Checking if Player still visible", this);
+        if (!DetectPlayer())
+        {
+            _movementeState = MovementType.Patrolling;
+        }
+
         UpdateMovement();
     }
 
     private void Update()
     {
-        if (_doFollow) BrainLogic();
+        if (_doFollow && !Paused)
+        {
+            BrainLogic();
+
+            if (_movementeState == MovementType.Following) _memoryTimer.CountTimer();
+        }
+
+        Debug.Log($"{name} - Direction: {Direction} Speed: {Speed}", this);
     }
 
     private void LateUpdate()
     {
-        ActiveMovement.Move();
+        if (!Paused) ActiveMovement.Move();
     }
 
     private void OnDrawGizmos()
@@ -89,5 +121,14 @@ public class EnemyBrain : MonoBehaviour
 
         if (_doFollow)
             Gizmos.DrawWireSphere(transform.position, _detectionRadius);
+    }
+
+    // Pausing Logic
+    public bool Paused { get; private set; }
+
+    public void TogglePause(bool onOff)
+    {
+       Paused = onOff;
+       ActiveMovement.ResetMovement();
     }
 }

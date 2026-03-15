@@ -1,7 +1,6 @@
 public interface IPausable
 {
-    public abstract bool Paused { get; set; }
+    public bool Paused { get; }
 
-    public abstract void Pause();
-    public abstract void UnPause();
+    public abstract void TogglePause(bool onOff);
 }

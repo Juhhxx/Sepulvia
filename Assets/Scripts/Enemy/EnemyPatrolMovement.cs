@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.AI;
+using UnityEngine.Splines;
 
 public class EnemyPatrolMovement : MonoBehaviour, IMovementType
 {
@@ -26,7 +26,6 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
         GameObject go = new GameObject($"{name}_Path");
 
         go.transform.position = transform.position;
-        go.transform.parent = transform.parent;
         go.transform.SetSiblingIndex(transform.GetSiblingIndex() + 1);
 
         Path path = go.AddComponent<Path>();
@@ -43,11 +42,11 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
     }
 
     [Button(enabledMode: EButtonEnableMode.Always)]
-    public void SetInPath()
+    private void SetInPath()
     {
         if (_path == null) return;
 
-        transform.position = _path.Waypoints[0].position;
+        transform.position = _path.GetCurrentWaypoint();
     }
 
     [SerializeField] private bool _stopAtWaypoints = false;
@@ -55,19 +54,28 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
 
     [SerializeField] private float _speed = 1f;
 
-    private NavMeshAgent _agent;
+    private Vector3 _direction = Vector3.zero;
+    [SerializeField, ReadOnly] private Vector3 _motion = Vector3.zero;
+    private Rigidbody _rb;
     private bool _doCheck = true;
 
-    public Vector3 Direction => _agent.steeringTarget.normalized;
-    public float Speed => _agent.speed;
+    public Vector3 Direction => _direction;
+    public float Speed => _rb.linearVelocity.magnitude;
 
     private void Awake()
     {
-        _agent = GetComponent<NavMeshAgent>();
-        _agent.updateRotation = false;
-        _agent.speed = _speed;
-        _agent.stoppingDistance = 0.5f;
+        _rb = GetComponent<Rigidbody>();
 
+        SetInPath();
+        UpdateDirection();
+    }
+
+    private void Update()
+    {
+        if (_doCheck) CheckIfReached();
+        UpdateMovement();
+
+        Debug.Log($"{_path.GetCurrentWaypoint()}", this);
     }
 
     private void CheckIfReached()
@@ -76,18 +84,27 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
         {
             if (_stopAtWaypoints) StartCoroutine(UpdateDirectionCR());
             else UpdateDirection();
+
+            _motion = Vector3.zero;
         }
     }
     private void UpdateDirection()
     {
-        if (_agent.isOnNavMesh) _agent.destination = _path.GetNextWaypoint();
+        Vector3 dir = _path.GetNextWaypoint() - transform.position;
         
-        Debug.Log($"Enemy {name} : Changed Destination to {_agent.destination}");
+        dir.y = transform.position.y;
+        dir = dir.normalized;
+
+        _direction = dir;
+
+        // Debug.Log($"Enemy {name} : Changed Direction to {_direction}", this);
     }
 
     private IEnumerator UpdateDirectionCR()
     {
         _doCheck = false;
+
+        _direction = Vector3.zero;
 
         Debug.Log($"Enemy {name} : Stopping at waypoint for {_stopTime} seconds.");
 
@@ -95,22 +112,27 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
 
         _doCheck = true;
 
-        if (_agent.isOnNavMesh) _agent.destination = _path.GetNextWaypoint();
+        Vector3 dir = _path.GetNextWaypoint() - transform.position;
+        
+        dir = dir.normalized;
 
-        Debug.Log($"Enemy {name} : Changed Destination to {_agent.destination}");
+        _direction = dir;
+
+        Debug.Log($"Enemy {name} : Changed Direction to {_direction}");
     }
 
+    private void UpdateMovement()
+    {
+        _motion = _direction * _speed;
+    }
     public void Move()
     {
-        if (_doCheck) CheckIfReached();
+        _rb.linearVelocity = _motion;
     }
 
     public void ResetMovement()
     {
-        if (_agent == null) return;
-
-        if (_agent.isOnNavMesh) _agent.destination = transform.position;
-        _path.Reset();
-        SetInPath();
+        if (_rb != null) _rb.linearVelocity = Vector3.zero;
+        UpdateDirection();
     }
 }

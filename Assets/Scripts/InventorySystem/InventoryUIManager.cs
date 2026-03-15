@@ -64,7 +64,7 @@ public class InventoryUIManager : MonoBehaviour
 
         _inventoryCanvas.SetActive(true);
 
-        // Time.timeScale = 0f;
+        PauseManager.Instance.Pause();
     }
 
     List<GameObject> _inventoryItemSlots = new List<GameObject>();
@@ -121,7 +121,7 @@ public class InventoryUIManager : MonoBehaviour
     {
         _inventoryCanvas.SetActive(false);
         _itemInfoPanel.SetActive(false);
-        // Time.timeScale = 1f;
+        PauseManager.Instance.UnPause();
     }
 
     private void ClearSlots()

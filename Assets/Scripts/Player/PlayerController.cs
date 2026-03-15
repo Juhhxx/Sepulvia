@@ -2,7 +2,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using System;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IPausable
 {
     [field: SerializeField, Expandable] public PartyInfo PlayerParty { get; private set; }
 
@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
             _inBattle = value;
         }
     }
+
     public event Action<bool> OnBattleEnterExit;
 
     private PlayerMovement _playerMovement;
@@ -48,11 +49,34 @@ public class PlayerController : MonoBehaviour
         };
     }
 
+    private void Start()
+    {
+        PauseManager.Instance?.RegisterPausable(this);
+    }
+
+    private void OnEnable()
+    {
+        PauseManager.Instance?.RegisterPausable(this);
+    }
+
+    private void OnDisable()
+    {
+        PauseManager.Instance?.UnregisterPausable(this);
+    }
+
     private void Update()
     {
-        if (!_inBattle)
+        if (!_inBattle && !Paused)
         {
             _playerMovement.DoMovement();
         }
+    }
+
+    // Pausing Logic
+    public bool Paused { get; private set; }
+
+    public void TogglePause(bool onOff)
+    {
+        Paused = onOff;
     }
 }

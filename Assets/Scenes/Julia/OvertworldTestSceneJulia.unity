@@ -885,7 +885,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: 2962dec242928e84cac8a9a8344d8a1c, type: 3}
   _group: 1
-  _volume: 0.01
+  _volume: 0.02
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -1155,7 +1155,7 @@ PrefabInstance:
     - target: {fileID: 4742336046542537727, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
       propertyPath: startingRoom
       value: 
-      objectReference: {fileID: 11400000, guid: 885af2f528fe90043a791f2a47011054, type: 2}
+      objectReference: {fileID: 11400000, guid: 56a2ff75a62bc5249b930c505173b73c, type: 2}
     - target: {fileID: 4742336046542537727, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
       propertyPath: _navMeshSurface
       value: 
@@ -1527,6 +1527,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6938475565895994930, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938475565895994930, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _dashCooldownTime
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7498980921109840918, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
