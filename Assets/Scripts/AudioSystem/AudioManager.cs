@@ -284,18 +284,20 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
 
     private void LoadVolumeValues()
     {
-        MasterVolume    = PlayerPrefs.GetFloat(MASTERVOLUME);
-        MusicVolume     = PlayerPrefs.GetFloat(MUSICVOLUME);
-        AmbienceVolume  = PlayerPrefs.GetFloat(AMBIENCEVOLUME);
-        SFXVolume       = PlayerPrefs.GetFloat(SFXVOLUME);
-
-        if (MasterVolume == 0)
+        if (!PlayerPrefs.HasKey(MASTERVOLUME))
         {
             Debug.Log("[Audio Manager] No Audio Preferences Found, Setting Values to Default.", this);
             MasterVolume = 1;
             MusicVolume = 1;
             AmbienceVolume = 1;
             SFXVolume = 1;
+        }
+        else
+        {
+            MasterVolume    = PlayerPrefs.GetFloat(MASTERVOLUME);
+            MusicVolume     = PlayerPrefs.GetFloat(MUSICVOLUME);
+            AmbienceVolume  = PlayerPrefs.GetFloat(AMBIENCEVOLUME);
+            SFXVolume       = PlayerPrefs.GetFloat(SFXVOLUME);
         }
     }
     

@@ -62,6 +62,7 @@ public class EnemyBrain : MonoBehaviour, IPausable
         gameObject.SetActive(true);
 
         UpdateMovement();
+        _activeMovement.ResetMovement();
     }
 
     private void OnDisable()

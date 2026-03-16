@@ -66,6 +66,8 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
 
     public Camera CurrentCamera { get; private set; }
 
+    public Action OnGameSceneChange;
+
     private GameScene GetGameSceneByType(GameSceneTypes type)
     {
         foreach(GameScene gs in _gameScenes)
