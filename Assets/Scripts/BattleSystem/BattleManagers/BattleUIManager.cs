@@ -59,6 +59,8 @@ public class BattleUIManager : MonoBehaviour
 
         GameObject playerGO = Instantiate(player.BattlePrefab, _playerPivot.position, Quaternion.identity);
 
+        player.Animator = playerGO.GetComponent<Animator>();
+
         _characterModels.Add(playerGO);
 
         List<Vector3> positions = GetSpawnPoints(enemyParty.PartySize, _enemyPivot);

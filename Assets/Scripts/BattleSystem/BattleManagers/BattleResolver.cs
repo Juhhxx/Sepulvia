@@ -61,11 +61,15 @@ public class BattleResolver : MonoBehaviour
         
         if (user is PlayerInfo)
         {
+            user.Animator.SetTrigger("Attack");
+
             _pullManager.MoveHeart(-move.PullStrength -
             user.PullStrenghtBonus);
         }
         else
         {
+            user.Animator.SetTrigger("Hurt");
+
             _pullManager.MoveHeart(move.PullStrength +
             user.PullStrenghtBonus);
         }
@@ -76,13 +80,18 @@ public class BattleResolver : MonoBehaviour
         foreach (StatModifier sm in move.StatModifiers)
         {
             target.AddModifier(sm.Instantiate());
+
             if (move.Type == MoveTypes.Buff)
             {
+                if (target is PlayerInfo) target.Animator.SetTrigger("Buff");
+
                 DialogueManager.Instance.AddDialogue(
                 $"{target.Name} {sm.StatAffected.ToTitle()} Rose.");
             }
             else if (move.Type == MoveTypes.Nerf)
             {
+                if (target is PlayerInfo) target.Animator.SetTrigger("Buff");
+                
                 DialogueManager.Instance.AddDialogue(
                 $"{target.Name} {sm.StatAffected.ToTitle()} Fell.");
             }

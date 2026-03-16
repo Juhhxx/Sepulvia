@@ -9,6 +9,7 @@ public class CharacterInfo : ScriptableObject
     [field: Space(5)]
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public GameObject BattlePrefab { get; private set; }
+    public Animator Animator;
 
     [Space(10)]
     [Header("Character Stats")]
