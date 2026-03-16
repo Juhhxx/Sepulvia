@@ -117,8 +117,9 @@ GameObject:
   - component: {fileID: 9057019696532367986}
   - component: {fileID: 7108961713755761908}
   - component: {fileID: 8967336212676743552}
-  - component: {fileID: 6938475565895994930}
   - component: {fileID: 1508272504764424918}
+  - component: {fileID: 6938475565895994930}
+  - component: {fileID: 1197046777596630015}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -192,6 +193,19 @@ CapsuleCollider:
   m_Height: 4
   m_Direction: 1
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &1508272504764424918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7498980921109840918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4723de4a1ca9fe428d94ae39de30bdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  <PlayerParty>k__BackingField: {fileID: 11400000, guid: 89d2679380e72fe4d8e5112223a8279c, type: 2}
 --- !u!114 &6938475565895994930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,7 +221,7 @@ MonoBehaviour:
   _maxSpeed: 10
   _horizontalAxis: Horizontal
   _verticalAxis: Vertical
-  _dashCooldownTime: 1.5
+  _dashCooldownTime: 1
   _dashTime: 0.5
   _dashSpeedMultiplier: 2
   _dashButton: Dash
@@ -216,7 +230,7 @@ MonoBehaviour:
     m_Bits: 256
   _canDash: 1
   _isDashing: 0
---- !u!114 &1508272504764424918
+--- !u!114 &1197046777596630015
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -225,7 +239,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7498980921109840918}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4723de4a1ca9fe428d94ae39de30bdf, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d47415b01ff24b4dadf3a7e9c76decd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  <PlayerParty>k__BackingField: {fileID: 11400000, guid: 89d2679380e72fe4d8e5112223a8279c, type: 2}
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractionManager
+  _interactionRadius: 5
+  _interactionButton: Interact
