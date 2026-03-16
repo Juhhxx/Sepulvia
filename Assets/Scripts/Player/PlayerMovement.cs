@@ -22,11 +22,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, ReadOnly] private bool _canDash = true;
     [SerializeField, ReadOnly] private bool _isDashing = false;
     private Timer _dashCooldownTimer;
+    private Animator _anim;
+    private SpriteRenderer _spr;
 
 
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _anim = GetComponent<Animator>();
+        _spr = GetComponentInChildren<SpriteRenderer>();
 
         _dashCooldownTimer = new Timer(2f);
         _dashCooldownTimer.OnTimerDone += () => { _canDash = true; };
@@ -43,6 +47,17 @@ public class PlayerMovement : MonoBehaviour
         
         UpdateVelocity();
         if (!_isDashing) UpdatePosition();
+
+        _anim.SetFloat("XSpeed", Mathf.Min(Mathf.Abs(_velocity.x), 1));
+        _anim.SetFloat("YSpeed", Mathf.Clamp(_velocity.z, -1, 1));
+        _anim.SetBool("IsDashing", _isDashing);
+
+        if (_velocity.magnitude > 0.5)
+        {
+            _anim.SetFloat("XDir", Mathf.Min(Mathf.Abs(_velocity.x), 1));
+            _anim.SetFloat("YDir", Mathf.Clamp(_velocity.z, -1, 1));
+            _spr.flipX = _velocity.x > 0;
+        }
     }
 
     public void SetVelocity(Vector3 velocity) => _rb.linearVelocity = velocity;

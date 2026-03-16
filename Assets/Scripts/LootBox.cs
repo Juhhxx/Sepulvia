@@ -16,10 +16,20 @@ public class LootBox : MonoBehaviour, IInteractable
     public bool CanInteract { get; private set; }
     public void Interact()
     {
-        int rnd = Random.Range(0, _itemPool.Count);
-        _player.PlayerCharacter.Inventory.AddItem(_itemPool[rnd]);
+        float rndGet = Random.Range(0f, 1f);
 
-        _overworldUI.AddScrollText($"Wow! You got {_itemPool[rnd].Name}!!!");
+        if (rndGet < 0.5f)
+        {
+            int rnd = Random.Range(0, _itemPool.Count);
+            _player.PlayerCharacter.Inventory.AddItem(_itemPool[rnd]);
+
+            _overworldUI.AddScrollText($"Wow! You got {_itemPool[rnd].Name}!!!");
+        }
+        else
+        {
+            _overworldUI.AddScrollText($"Ew!!! Stop messing with the trash");
+        }
+        
     }
 
     public void ToggleSelected(bool onOff)
