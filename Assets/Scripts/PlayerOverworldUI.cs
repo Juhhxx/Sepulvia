@@ -1,3 +1,5 @@
+using System.Collections;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +11,17 @@ public class PlayerOverworldUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _essenceTMP;
     [SerializeField] private TextMeshProUGUI _soulFragmentsTMP;
     [SerializeField] private GameObject _equipmentSlots;
+    [SerializeField] private TextMeshProUGUI _scrollingText;
+    [SerializeField] private float _scrollingSpeed = 2f;
+    private float _textWait;
+    [SerializeField] private int _scrollingTextThreshold = 300;
+
+    [SerializeField] private string _testText;
+
+    [Button(enabledMode: EButtonEnableMode.Playmode)]
+    private void Displayext() => AddScrollText(_testText);
+
+    private const string INVISIBLECHAR = "<color=#00000000>A</color>";
 
     private PlayerController _player;
 
@@ -17,6 +30,9 @@ public class PlayerOverworldUI : MonoBehaviour
         _player = FindAnyObjectByType<PlayerController>();
 
         _player.OnBattleEnterExit += (bool inBattle) => ToggleOverworldUI(!inBattle);
+
+        _scrollingText.text = "";
+        StartCoroutine(ScrollTextCR());
     }
 
     private void Update()
@@ -52,6 +68,41 @@ public class PlayerOverworldUI : MonoBehaviour
                 c.a = 0;
                 img.color = c;
             }
+        }
+    }
+
+    [SerializeField, ReadOnly] private string _textToAdd = "";
+
+    public void AddScrollText(string text)
+    {
+        string add = "";
+
+        if (_textToAdd == "") add = text;
+        else add = " | " + text;
+
+        _textToAdd += add;
+    }
+
+    private IEnumerator ScrollTextCR()
+    {
+        while (true)
+        {
+            if (_textToAdd == "")
+            {
+                _scrollingText.text += INVISIBLECHAR;
+            }
+            else
+            {
+                _scrollingText.text += _textToAdd[0];
+                _textToAdd = _textToAdd.Remove(0, 1);
+            }
+
+            if (_scrollingText.text.Length > _scrollingTextThreshold)
+            {
+                _scrollingText.text.Remove(0);
+            }
+
+            yield return new WaitForSeconds(_scrollingSpeed);
         }
     }
 }
