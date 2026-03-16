@@ -1942,13 +1942,13 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 3874641800417670739}
-  m_PlaneDistance: 1
+  m_PlaneDistance: 2.5
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -2743,7 +2743,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 3874641800417670739}
-  m_PlaneDistance: 1
+  m_PlaneDistance: 2.5
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -3393,7 +3393,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 3874641800417670739}
-  m_PlaneDistance: 1
+  m_PlaneDistance: 2.5
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -6478,13 +6478,13 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 3874641800417670739}
-  m_PlaneDistance: 1
+  m_PlaneDistance: 2.5
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -7199,7 +7199,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39aa6e6312148a40b4beff6f0a2ad39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuManager
-  _noPauseScenes: []
+  _noPauseScenes:
+  - MainMenu
+  _uiCamera: {fileID: 3874641800417670739}
   _pauseKey: 27
   _pauseMenu: {fileID: 6448115876696045223}
   _optionsMenu: {fileID: 987841025729286168}

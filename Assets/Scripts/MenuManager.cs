@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviourSingleton<MenuManager>
 {
     [SerializeField, Scene] private List<string> _noPauseScenes;
+    [SerializeField] private Camera _uiCamera;
     [SerializeField] private KeyCode _pauseKey;
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _optionsMenu;
@@ -39,6 +41,7 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
         ResetMenus();
 
         SceneManager.sceneLoaded += (scene, mode) => ResetMenus();
+        SceneManager.sceneLoaded += (scene, mode) => AddUICameraToStack();
     }
 
     public void ResetMenus()
@@ -65,6 +68,20 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
     }
 
     public void ResetSelection() => EventSystem.current.SetSelectedGameObject(null);
+
+    private void AddUICameraToStack()
+    {
+        Camera[] cameras = FindObjectsByType<Camera>(0);
+        Debug.LogWarning(cameras.Length, this);
+
+        foreach (Camera c in cameras)
+        {
+            if (c == _uiCamera) continue;
+
+            Debug.LogWarning(c.name, this);
+            c.GetUniversalAdditionalCameraData().cameraStack.Add(_uiCamera);
+        }
+    }
 
     private void CheckPause()
     {
