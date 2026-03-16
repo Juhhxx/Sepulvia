@@ -8,6 +8,7 @@ public class PlayerInteractionManager : MonoBehaviour
     [Space(5)]
     [SerializeField] private float _interactionRadius = 5f;
     [SerializeField, InputAxis] private string _interactionButton;
+    [SerializeField] private LayerMask _interactableLayer;
 
     [Space(10)]
     [Header("Interaction Debug")]
@@ -18,10 +19,13 @@ public class PlayerInteractionManager : MonoBehaviour
         get => _currentInteractable;
         set
         {
-            _currentInteractable?.ToggleSelected(false);
-            value?.ToggleSelected(true);
-            
-            Debug.Log($"[Interaction Manager] Set Current Interactable as {value}");
+            if (value != _currentInteractable)
+            {
+                _currentInteractable?.ToggleSelected(false);
+                value?.ToggleSelected(true);
+                Debug.Log($"[Interaction Manager] Set Current Interactable as {value}");
+            }
+
             _currentInteractable = value;
         }
     }
@@ -35,23 +39,19 @@ public class PlayerInteractionManager : MonoBehaviour
 
     private void CheckInteractable()
     {
-        RaycastHit hit;
+        Collider[] hits = Physics.OverlapSphere(transform.position, _interactionRadius, _interactableLayer);
 
-        if (Physics.SphereCast(transform.position, _interactionRadius, transform.up, out hit))
+        foreach (Collider col in hits)
         {
-            IInteractable interactable = hit.collider.gameObject.GetComponent<IInteractable>();
-
+            IInteractable interactable = col.GetComponent<IInteractable>();
             if (interactable != null)
             {
                 CurrentInteractable = interactable;
                 return;
             }
-            else
-            {
-                CurrentInteractable = null;
-            }
         }
-        else CurrentInteractable = null;
+
+        CurrentInteractable = null;
     }
     private void CheckInteraction()
     {

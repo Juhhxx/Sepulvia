@@ -3,5 +3,6 @@ public enum ItemTypes
     Immediate,
     LongTerm,
     Equippable,
-    Save
+    Save,
+    Fuel
 }
