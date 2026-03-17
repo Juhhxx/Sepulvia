@@ -36,12 +36,22 @@ public class InventoryManager : MonoBehaviour
         if (!_player.InBattle) CheckInventoryOpen();
     }
 
+    private bool _inventoryOpen = false;
     private void CheckInventoryOpen()
     {
         if (Input.GetButtonDown(_inventoryButton))
         {
-            _inventoryUIManager.ShowInventory();
-            SetUpButtons();
+            if (_inventoryOpen)
+            {
+                _inventoryUIManager.HideInventory();
+                _inventoryOpen = false;
+            }
+            else
+            {
+                _inventoryUIManager.ShowInventory();
+                SetUpButtons();
+                _inventoryOpen = true;
+            }
         }
     }
 

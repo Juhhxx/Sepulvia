@@ -173,7 +173,7 @@ public class PullingManager : MonoBehaviour
         {
             if (onOff)
             {
-                if (!section.HasModifier) section.Button.enabled = true;
+                if (!section.HasModifier && !section.HasHeart) section.Button.enabled = true;
                 else section.Button.enabled = false;
             }
             else section.Button.enabled = false;
@@ -188,7 +188,13 @@ public class PullingManager : MonoBehaviour
 
             section.BarModifier.TurnPassed();
 
-            if (section.BarModifier.CheckIfDone()) section.RemoveBarModifier();
+            // if (section.BarModifier.CheckIfAlmostDone()) DialogueManager.Instance.AddDialogue($"{section.BarModifier.Type.ToTitle()} was destroyed.");
+
+            if (section.BarModifier.CheckIfDone())
+            {
+                section.RemoveBarModifier();
+                // DialogueManager.Instance.StartDialogues($"{section.BarModifier.Type.ToTitle()} was destroyed.");
+            }
         }
     }
     public bool DoBarModifier(BarSection section)

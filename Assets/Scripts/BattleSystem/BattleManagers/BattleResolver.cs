@@ -18,6 +18,9 @@ public class BattleResolver : MonoBehaviour
         foreach (CharacterInfo c in target.PartyMembers)
         {
             c.CurrentStance -= move.StanceDamage;
+
+            if (move.StanceDamage > 0)
+                if (c is PlayerInfo) c.Animator?.SetTrigger("Hurt");
         }
 
         switch(move.Type)
@@ -58,18 +61,17 @@ public class BattleResolver : MonoBehaviour
     {
         DialogueManager.Instance.AddDialogue(
         $"{user.Name} pushed the Soul to their side by {move.PullStrength + user.PullStrenghtBonus}.");
+
+        if (user is PlayerInfo) user.Animator?.SetTrigger("Attack");
+
         
         if (user is PlayerInfo)
         {
-            user.Animator.SetTrigger("Attack");
-
             _pullManager.MoveHeart(-move.PullStrength -
             user.PullStrenghtBonus);
         }
         else
         {
-            user.Animator.SetTrigger("Hurt");
-
             _pullManager.MoveHeart(move.PullStrength +
             user.PullStrenghtBonus);
         }
@@ -83,15 +85,15 @@ public class BattleResolver : MonoBehaviour
 
             if (move.Type == MoveTypes.Buff)
             {
-                if (target is PlayerInfo) target.Animator.SetTrigger("Buff");
+                if (target is PlayerInfo) target.Animator?.SetTrigger("Buff");
 
                 DialogueManager.Instance.AddDialogue(
                 $"{target.Name} {sm.StatAffected.ToTitle()} Rose.");
             }
             else if (move.Type == MoveTypes.Nerf)
             {
-                if (target is PlayerInfo) target.Animator.SetTrigger("Buff");
-                
+                if (target is PlayerInfo) target.Animator?.SetTrigger("Nerf");
+
                 DialogueManager.Instance.AddDialogue(
                 $"{target.Name} {sm.StatAffected.ToTitle()} Fell.");
             }

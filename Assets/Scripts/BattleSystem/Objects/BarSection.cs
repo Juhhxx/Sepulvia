@@ -2,15 +2,19 @@ using System;
 using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.UI;
+using System.Collections;
 
 public class BarSection : MonoBehaviour
 {
     [field: SerializeField, ReadOnly] public BarModifier BarModifier { get; private set; }
     public bool HasModifier { get; private set; }
+    private GameObject _modifierPrefab;
+
     public void AddBarModifier(BarModifier barModifier)
     {
         BarModifier = barModifier.Instantiate();
-        _image.color = barModifier.Color;
+        _modifierPrefab = Instantiate(barModifier.BarEffectPrefab, GetComponentInParent<Canvas>().transform);
+        _modifierPrefab.GetComponent<RectTransform>().anchoredPosition = HeartPosition;
         HasModifier = true;
         
     }
@@ -18,6 +22,16 @@ public class BarSection : MonoBehaviour
     {
         BarModifier = null;
         HasModifier = false;
+        _modifierPrefab.GetComponent<Animator>().SetTrigger("Destroy");
+
+        StartCoroutine(DestroyModifierCR(_modifierPrefab));
+    }
+
+    private IEnumerator DestroyModifierCR(GameObject modifier)
+    {
+        yield return new WaitForSeconds(2);
+
+        Destroy(modifier);
     }
 
     [field: SerializeField, ReadOnly] public BarSection ConnectRight { get; set; }
