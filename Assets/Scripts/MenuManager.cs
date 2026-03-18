@@ -69,6 +69,7 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
 
     public void ResetSelection() => EventSystem.current.SetSelectedGameObject(null);
 
+    public Camera GetUICamera() => _uiCamera;
     private void AddUICameraToStack()
     {
         Camera[] cameras = FindObjectsByType<Camera>(0);

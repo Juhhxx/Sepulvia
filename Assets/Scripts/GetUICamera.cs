@@ -2,15 +2,12 @@ using UnityEngine;
 
 public class GetUICamera : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private Canvas _canvas;
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        if (_canvas == null) _canvas = GetComponent<Canvas>();
+
+        _canvas.worldCamera = MenuManager.Instance.GetUICamera();
     }
 }
