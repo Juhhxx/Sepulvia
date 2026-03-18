@@ -4,19 +4,27 @@ public abstract class MonoBehaviourSingleton<T> : MonoBehaviour where T : Compon
 {
     public static T Instance;
 
-    protected bool SingletonCheck(T obj, bool ddol)
+    protected bool SingletonCheck(T obj, bool ddol = true, bool fake = false)
     {
-        if (Instance == null)
+        if (!fake)
         {
-            Instance = obj;
-            if (ddol) DontDestroyOnLoad(obj);
+            if (Instance == null)
+            {
+                Instance = obj;
+                if (ddol) DontDestroyOnLoad(obj);
 
-            return true;
+                return true;
+            }
+            else
+            {
+                Destroy(gameObject);
+                return false;
+            }
         }
         else
         {
-            DestroyImmediate(gameObject);
-            return false;
+            Instance = obj;
+            return true;
         }
     }
 }

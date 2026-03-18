@@ -129,6 +129,7 @@ public class BattleManager : MonoBehaviour
         _uiManager.ToggleMoveInfo(false);
         _dialogueManager.HideDialogue();
         _inventoryUIManager.HideInventory();
+        _inventoryUIManager.ResetInventory();
 
         SetUpNewTurnEvents();
 

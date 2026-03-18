@@ -76,10 +76,17 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
 
         foreach (Camera c in cameras)
         {
-            if (c == _uiCamera) continue;
-
             Debug.LogWarning(c.name, this);
-            c.GetUniversalAdditionalCameraData().cameraStack.Add(_uiCamera);
+
+            UniversalAdditionalCameraData cameraData = c.GetUniversalAdditionalCameraData();
+
+            if (cameraData.renderType == CameraRenderType.Overlay)
+            {
+                Debug.Log($"SKIPPING OVERLAY CAMERA {c.name}", this);
+                continue;
+            }
+
+            cameraData.cameraStack.Add(_uiCamera);
         }
     }
 

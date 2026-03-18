@@ -55,8 +55,19 @@ public class InventoryUIManager : MonoBehaviour
         CreateEquipmentSpaces(_inventory);
     }
 
-    public void ShowInventory()
+    private bool _inventoryOpen = false;
+    public void ResetInventory()
     {
+        _inventoryOpen = false;
+    }
+    public bool ShowInventory()
+    {
+        if (_inventoryOpen)
+        {
+            HideInventory();
+            return false;
+        }
+
         _statsUI.UpdateStats(_player.PlayerCharacter);
         
         ShowItemSpaces(_inventory);
@@ -65,6 +76,19 @@ public class InventoryUIManager : MonoBehaviour
         _inventoryCanvas.SetActive(true);
 
         PauseManager.Instance.Pause();
+
+        _inventoryOpen = true;
+
+        return true;
+    }
+
+    public void HideInventory()
+    {
+        _inventoryCanvas.SetActive(false);
+        _itemInfoPanel.SetActive(false);
+        PauseManager.Instance.UnPause();
+
+        _inventoryOpen = false;
     }
 
     List<GameObject> _inventoryItemSlots = new List<GameObject>();
@@ -115,13 +139,6 @@ public class InventoryUIManager : MonoBehaviour
             if (item != null) slot.UpdateSlot(item.Sprite);
             else slot.UpdateSlot();
         }
-    }
-
-    public void HideInventory()
-    {
-        _inventoryCanvas.SetActive(false);
-        _itemInfoPanel.SetActive(false);
-        PauseManager.Instance.UnPause();
     }
 
     private void ClearSlots()

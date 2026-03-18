@@ -75,4 +75,9 @@ public class BarSection : MonoBehaviour
             else _image.color = Color.white;
         }
     }
+
+    private void OnDestroy()
+    {
+        Destroy(_modifierPrefab);
+    }
 }
