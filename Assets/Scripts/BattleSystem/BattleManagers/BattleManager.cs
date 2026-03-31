@@ -64,7 +64,7 @@ public class BattleManager : MonoBehaviour
             Type = isRun ? ActionType.Run : ActionType.Empty;
             Move = null;
             Item = null;
-            Priority = 6;
+            Priority = isRun ? 8 : 7;
         }
     }
 

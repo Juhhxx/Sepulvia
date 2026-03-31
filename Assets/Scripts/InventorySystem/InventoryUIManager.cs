@@ -172,6 +172,7 @@ public class InventoryUIManager : MonoBehaviour
     private Vector2 ScreenToCanvas(Vector2 screenPos)
     {
         RectTransform canvasRect = _canvas.GetComponent<RectTransform>();
+        _uiCamera = _canvas.worldCamera;
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvasRect,

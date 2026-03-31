@@ -35,20 +35,22 @@ public class RenderingSettings : MonoBehaviour
 
     private void Start()
     {
-        FindVolume();
+        FindVolumes();
+        ChangeGamma(Gamma);
 
-        SceneManager.activeSceneChanged += (a, b) => FindVolume();
+        SceneManager.activeSceneChanged += (a, b) => FindVolumes();
+
         _gammaSlider.onValueChanged.AddListener(ChangeGamma);
         _resetButton.onClick.AddListener(ResetValues);
     }
     private void OnDestroy()
     {
-        SceneManager.activeSceneChanged -= (a, b) => FindVolume();
+        SceneManager.activeSceneChanged -= (a, b) => FindVolumes();
     }
 
-    public void FindVolume()
+    public void FindVolumes()
     {
-        _renderingVolumes = FindObjectsByType<Volume>(0);
+        _renderingVolumes = FindObjectsByType<Volume>(FindObjectsInactive.Include, 0);
 
         GetOverrides();
         
@@ -62,6 +64,7 @@ public class RenderingSettings : MonoBehaviour
         }
 
         _gammaSlider.value = Gamma;
+        UpdateGammas(Gamma);
     }
 
     private void GetOverrides()

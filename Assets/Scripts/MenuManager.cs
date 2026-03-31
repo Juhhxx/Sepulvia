@@ -10,6 +10,7 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
 {
     [SerializeField, Scene] private List<string> _noPauseScenes;
     [SerializeField] private Camera _uiCamera;
+    [SerializeField] private GameObject _uiPostProcessingVolume;
     [SerializeField] private KeyCode _pauseKey;
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _optionsMenu;
@@ -114,6 +115,7 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
     {
         // AudioManager.Instance.TogglePauseAllGroups(onOff);
         ResetSelection();
+        _uiPostProcessingVolume.SetActive(onOff);
 
         if (_anim == null)
         {
