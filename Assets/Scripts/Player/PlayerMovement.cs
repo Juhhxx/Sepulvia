@@ -25,6 +25,9 @@ public class PlayerMovement : MonoBehaviour
     private Animator _anim;
     private SpriteRenderer _spr;
 
+    public bool CanDash => _canDash;
+    public float DashCooldownTime => _dashCooldownTimer.CurrentTime / _dashCooldownTime;
+
 
     private void Start()
     {

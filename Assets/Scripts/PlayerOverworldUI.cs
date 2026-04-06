@@ -11,6 +11,10 @@ public class PlayerOverworldUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _essenceTMP;
     [SerializeField] private TextMeshProUGUI _soulFragmentsTMP;
     [SerializeField] private GameObject _equipmentSlots;
+
+    [SerializeField] private Image _dashTimerImage;
+    [SerializeField] private bool _showDashTimer = true;
+
     [SerializeField] private TextMeshProUGUI _scrollingText;
     [SerializeField] private float _scrollingSpeed = 2f;
     private float _textWait;
@@ -33,6 +37,8 @@ public class PlayerOverworldUI : MonoBehaviour
 
         _scrollingText.text = "";
         StartCoroutine(ScrollTextCR());
+
+        if (!_showDashTimer) _dashTimerImage.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -69,6 +75,9 @@ public class PlayerOverworldUI : MonoBehaviour
                 img.color = c;
             }
         }
+
+        _dashTimerImage.fillAmount = 1 - _player.DashCooldownTime;
+        if (_player.CanDash) _dashTimerImage.fillAmount = 1;
     }
 
     [SerializeField, ReadOnly] private string _textToAdd = "";
@@ -83,16 +92,20 @@ public class PlayerOverworldUI : MonoBehaviour
         _textToAdd += add;
     }
 
+    private Timer _moveTextTimer = new Timer(2.5f, Timer.TimerReset.Manual);
+
     private IEnumerator ScrollTextCR()
     {
         while (true)
         {
-            if (_textToAdd == "")
+            if (_textToAdd == "" && !_moveTextTimer.Done)
             {
+                _moveTextTimer.CountTimer();
                 _scrollingText.text += INVISIBLECHAR;
             }
-            else
+            else if (_textToAdd != "")
             {
+                _moveTextTimer.ResetTimer();
                 _scrollingText.text += _textToAdd[0];
                 _textToAdd = _textToAdd.Remove(0, 1);
             }

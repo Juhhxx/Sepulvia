@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class PlayerController : MonoBehaviour, IPausable
 {
@@ -9,7 +10,12 @@ public class PlayerController : MonoBehaviour, IPausable
     // Player Party never has more than 1 character
     public CharacterInfo PlayerCharacter => PlayerParty.PartyMembers[0];
 
-    private bool _inBattle = false;
+    [SerializeField] private float _immunityTime = 1f;
+    private Timer _immunityTimer;
+    private bool _isImmune = false;
+    public bool IsImmune => _isImmune;
+
+    [SerializeField, ReadOnly] private bool _inBattle = false;
     public bool InBattle 
     {
         get => _inBattle;
@@ -25,6 +31,10 @@ public class PlayerController : MonoBehaviour, IPausable
             {
                 _playerMovement?.SetVelocity(Vector3.zero);
             }
+            else
+            {
+                ToogleImmunity(true);
+            }
 
             _inBattle = value;
         }
@@ -33,6 +43,11 @@ public class PlayerController : MonoBehaviour, IPausable
     public event Action<bool> OnBattleEnterExit;
 
     private PlayerMovement _playerMovement;
+    public bool CanDash => _playerMovement.CanDash;
+    public float DashCooldownTime => _playerMovement.DashCooldownTime;
+
+    private Collider _collider;
+    private SpriteRenderer _spriteRenderer;
 
     private void Awake()
     {
@@ -47,6 +62,13 @@ public class PlayerController : MonoBehaviour, IPausable
                 EncounterManager.Instance.DoRandomEncounter();   
             }
         };
+
+        _immunityTimer = new Timer(_immunityTime);
+
+        _immunityTimer.OnTimerDone += () => ToogleImmunity(false);
+
+        _collider = GetComponent<Collider>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start()
@@ -66,10 +88,31 @@ public class PlayerController : MonoBehaviour, IPausable
 
     private void Update()
     {
-        if (!_inBattle && !Paused)
+        if (Paused) return;
+
+        if (!_inBattle)
         {
             _playerMovement.DoMovement();
         }
+
+        if (_isImmune)
+        {
+            _immunityTimer.CountTimer();
+        }
+    }
+
+    private void ToogleImmunity(bool onOff)
+    {
+        _immunityTimer.ResetTimer();
+
+        _collider.enabled = !onOff;
+
+        Color c = _spriteRenderer.color;
+        c.a = onOff ? 0.5f : 1f;
+
+        _spriteRenderer.color = c;
+
+        _isImmune = onOff;
     }
 
     // Pausing Logic

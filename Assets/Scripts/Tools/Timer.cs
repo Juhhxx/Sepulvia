@@ -12,6 +12,7 @@ public class Timer
 
     public event Action OnTimerDone;
     private bool _done = false;
+    public bool Done => _done;
 
     public void CountTimer()
     {
