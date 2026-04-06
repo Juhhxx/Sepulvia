@@ -65,7 +65,7 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
     public void LoadScene(string scene) => LoadScene(scene, null, true);
     public void LoadScene(string scene, Action onLoad = null, bool doFade = true)
     {
-        _sceneChanger.ChangeScene(scene, onLoad, doFade);
+        _sceneChanger.ChangeScene(scene, onLoad += () => AudioManager.Instance.MusicPlayer.PlaySong(null, 0), doFade);
     }
 
     public void ResetSelection() => EventSystem.current.SetSelectedGameObject(null);
@@ -87,6 +87,8 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
                 Debug.Log($"SKIPPING OVERLAY CAMERA {c.name}", this);
                 continue;
             }
+
+            Debug.Log($"ADDING UI CAMERA TO {c.name}", this);
 
             cameraData.cameraStack.Add(_uiCamera);
         }

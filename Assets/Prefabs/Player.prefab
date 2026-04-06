@@ -207,6 +207,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   <PlayerParty>k__BackingField: {fileID: 11400000, guid: 89d2679380e72fe4d8e5112223a8279c, type: 2}
+  _immunityTime: 2.5
+  _inBattle: 0
 --- !u!114 &6938475565895994930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,11 +221,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc5c4a398e251564b9daf5800b6efc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  _maxSpeed: 15
+  _maxSpeed: 12
   _horizontalAxis: Horizontal
   _verticalAxis: Vertical
-  _dashCooldownTime: 0.5
-  _dashTime: 0.8
+  _dashCooldownTime: 1.25
+  _dashTime: 0.5
   _dashSpeedMultiplier: 2
   _dashButton: Dash
   _excludeWhenDashing:

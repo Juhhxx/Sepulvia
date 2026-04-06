@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour, IPausable
     public CharacterInfo PlayerCharacter => PlayerParty.PartyMembers[0];
 
     [SerializeField] private float _immunityTime = 1f;
+    [SerializeField] private LayerMask _excludeWhenImmune;
     private Timer _immunityTimer;
     private bool _isImmune = false;
     public bool IsImmune => _isImmune;
@@ -105,7 +106,7 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         _immunityTimer.ResetTimer();
 
-        _collider.enabled = !onOff;
+        _collider.excludeLayers = onOff ? _excludeWhenImmune : LayerMask.GetMask();
 
         Color c = _spriteRenderer.color;
         c.a = onOff ? 0.5f : 1f;

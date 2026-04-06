@@ -614,7 +614,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5549163676196223490}
         m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
         m_MethodName: ResetVolumes
         m_Mode: 1
@@ -7124,6 +7124,7 @@ Transform:
   m_Children:
   - {fileID: 5373040831464629974}
   - {fileID: 3274904642543746974}
+  - {fileID: 1552205348281866797}
   - {fileID: 7443981418301890341}
   - {fileID: 8357436982955994773}
   - {fileID: 3171655154399094526}
@@ -7213,7 +7214,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8389755908744335664}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 689c2512ac7ded240bec247a9e800d83, type: 3}
   m_Name: 
@@ -7818,6 +7819,79 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1001 &810630366953933549
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6367747585085238351}
+    m_Modifications:
+    - target: {fileID: 423758422089006413, guid: 00e4967e028c3ac428d42a02b1446bb4, type: 3}
+      propertyPath: m_Name
+      value: Audio Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 2212809534855073984, guid: 00e4967e028c3ac428d42a02b1446bb4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 960
+      objectReference: {fileID: 0}
+    - target: {fileID: 2212809534855073984, guid: 00e4967e028c3ac428d42a02b1446bb4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 540
+      objectReference: {fileID: 0}
+    - target: {fileID: 2212809534855073984, guid: 00e4967e028c3ac428d42a02b1446bb4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2212809534855073984, guid: 00e4967e028c3ac428d42a02b1446bb4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2212809534855073984, guid: 00e4967e028c3ac428d42a02b1446bb4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2212809534855073984, guid: 00e4967e028c3ac428d42a02b1446bb4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2212809534855073984, guid: 00e4967e028c3ac428d42a02b1446bb4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2212809534855073984, guid: 00e4967e028c3ac428d42a02b1446bb4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2212809534855073984, guid: 00e4967e028c3ac428d42a02b1446bb4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2212809534855073984, guid: 00e4967e028c3ac428d42a02b1446bb4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 00e4967e028c3ac428d42a02b1446bb4, type: 3}
+--- !u!4 &1552205348281866797 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2212809534855073984, guid: 00e4967e028c3ac428d42a02b1446bb4, type: 3}
+  m_PrefabInstance: {fileID: 810630366953933549}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5549163676196223490 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5061314738860994799, guid: 00e4967e028c3ac428d42a02b1446bb4, type: 3}
+  m_PrefabInstance: {fileID: 810630366953933549}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf0384c692a1114abe29a941a6a7b33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
 --- !u!1001 &7724208883593364296
 PrefabInstance:
   m_ObjectHideFlags: 0

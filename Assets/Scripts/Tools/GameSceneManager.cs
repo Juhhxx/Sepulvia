@@ -57,7 +57,7 @@ public class GameSceneManager : MonoBehaviourSingleton<GameSceneManager>
     }
 
     [Button(enabledMode: EButtonEnableMode.Always)]
-    private void ChangeScene()
+    public void ChangeScene()
     {
         CurrentGameScene = _currentGameScene == GameSceneTypes.Overworld ? GameSceneTypes.Battle : GameSceneTypes.Overworld; 
     }
