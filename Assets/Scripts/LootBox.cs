@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class LootBox : MonoBehaviour, IInteractable
 {
+    [SerializeField] private int _uses = 1;
+    private int _currentUses = 0;
     [SerializeField] private List<ItemInfo> _itemPool;
     private PlayerOverworldUI _overworldUI;
     
@@ -16,6 +18,12 @@ public class LootBox : MonoBehaviour, IInteractable
     public bool CanInteract { get; private set; }
     public void Interact()
     {
+        if (_currentUses >= _uses)
+        {
+            _overworldUI.AddScrollText($"The trash can is empty...");
+            return;
+        }
+
         float rndGet = Random.Range(0f, 1f);
 
         if (rndGet < 0.5f)
@@ -29,7 +37,7 @@ public class LootBox : MonoBehaviour, IInteractable
         {
             _overworldUI.AddScrollText($"Ew!!! Stop messing with the trash");
         }
-        
+        _currentUses++;
     }
 
     public void ToggleSelected(bool onOff)
