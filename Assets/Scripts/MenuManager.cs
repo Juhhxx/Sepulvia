@@ -48,6 +48,8 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
     public void ResetMenus()
     {
         PauseManager.Instance.UnPause();
+        _uiPostProcessingVolume.SetActive(false);
+
 
         if (_anim != null)
         {
