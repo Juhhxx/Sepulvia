@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LootBox : MonoBehaviour, IInteractable
+public class LootBox : MonoBehaviour, IInteractable, IRandom
 {
     [SerializeField] private int _uses = 1;
     private int _currentUses = 0;
@@ -24,11 +24,11 @@ public class LootBox : MonoBehaviour, IInteractable
             return;
         }
 
-        float rndGet = Random.Range(0f, 1f);
+        float rndGet = (float)_random.NextDouble();
 
         if (rndGet < 0.5f)
         {
-            int rnd = Random.Range(0, _itemPool.Count);
+            int rnd = _random.Next(0, _itemPool.Count);
             _player.PlayerCharacter.Inventory.AddItem(_itemPool[rnd]);
 
             _overworldUI.AddScrollText($"Wow! You got {_itemPool[rnd].Name}!!!");
@@ -52,6 +52,12 @@ public class LootBox : MonoBehaviour, IInteractable
         }
     }
 
+    private System.Random _random;
+    public void InitializeRandom(int seed)
+    {
+        _random = new System.Random(seed);
+    }
+
     private void Start()
     {
         CanInteract = true;
@@ -67,5 +73,7 @@ public class LootBox : MonoBehaviour, IInteractable
         }
 
         _outlineMaterials[_outlineMaterials.Length - 1] = _outline;
+
+        SeedManager.Instance.RegisterRandom(this, transform.GetPath());
     }
 }
