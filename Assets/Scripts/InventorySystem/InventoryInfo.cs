@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 
@@ -172,6 +173,8 @@ public class Inventory
 
         EquipmentSlots.Add(item);
 
+        OnChangeEqupipment?.Invoke();
+
         return true;
     }
 
@@ -182,5 +185,9 @@ public class Inventory
         if (!EquipmentSlots.Contains(item)) return;
 
         EquipmentSlots.Remove(item);
+
+        OnChangeEqupipment?.Invoke();
     }
+
+    public Action OnChangeEqupipment;
 }

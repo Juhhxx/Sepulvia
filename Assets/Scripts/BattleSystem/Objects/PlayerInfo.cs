@@ -1,11 +1,11 @@
-using System.Collections.Generic;
+using System;
 using NaughtyAttributes;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Character", menuName = "Battle System/New Player Character")]
 public class PlayerInfo : CharacterInfo
 {
-    [field: SerializeField] public int Essence { get; set; }
+    [field: SerializeField] public int Essence { get; private set; }
 }
 
 public class Player : Character
@@ -15,5 +15,18 @@ public class Player : Character
         Essence = info.Essence;
     }
 
-    [field: SerializeField, ReadOnly] public int Essence { get; set; }
+    [SerializeField, ReadOnly] private int _essence;
+    public int Essence
+    {
+        get => _essence;
+        set
+        {
+            _essence = value < 0 ? 0 : value;
+            OnEssenceChange?.Invoke(_essence);
+        }
+    }
+
+    public void ChangeEssence(int amount) => Essence += amount;
+
+    public Action<int> OnEssenceChange;
 }

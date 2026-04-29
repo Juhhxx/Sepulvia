@@ -38,6 +38,12 @@ public class PlayerOverworldUI : MonoBehaviour
 
         _player.OnBattleEnterExit += (bool inBattle) => ToggleOverworldUI(!inBattle);
 
+        _player.PlayerCharacter.OnStanceChange += (int current, int max) => UpdateValue(_stanceTMP, $"{current} / {max}");
+        _player.PlayerCharacter.Inventory.OnChangeEqupipment += UpdateEquipmentSlots;
+        (_player.PlayerCharacter as Player).OnEssenceChange += (int essence) => UpdateValue(_essenceTMP, essence);
+
+        _essenceTMP.text = $"{(_player.PlayerCharacter as Player).Essence:000}";
+
         _scrollingText.text = "";
         StartCoroutine(ScrollTextCR());
 
@@ -56,12 +62,45 @@ public class PlayerOverworldUI : MonoBehaviour
 
     public void UpdateValues()
     {
-        _stanceTMP.text = $"{_player?.PlayerCharacter.CurrentStance} / {_player?.PlayerCharacter.MaxStance}";
-
-        _essenceTMP.text = $"{(_player?.PlayerCharacter as Player).Essence:000}";
-
         _soulFragmentsTMP.text = "0";
 
+        _dashTimerImage.fillAmount = 1 - _player.DashCooldownTime;
+        if (_player.CanDash) _dashTimerImage.fillAmount = 1;
+    }
+
+    private void UpdateValue(TextMeshProUGUI tmp, string text)
+    {
+        tmp.text = text;
+        tmp.transform.DOScale(Vector3.one * 1.25f, 0.15f).OnComplete(() => tmp.transform.DOScale(Vector3.one, 0.15f));
+    }
+
+    private void UpdateValue(TextMeshProUGUI tmp, int value)
+    {
+        if (_updateValueCR != null) StopCoroutine(_updateValueCR);
+
+        _updateValueCR = StartCoroutine(UpdateValueCR(tmp, value));
+    }
+    Coroutine _updateValueCR = null;
+    private IEnumerator UpdateValueCR(TextMeshProUGUI tmp, int targetValue)
+    {
+        while (int.Parse(tmp.text) != targetValue)
+        {
+            int currentValue = int.Parse(tmp.text);
+
+            if (currentValue < targetValue) currentValue++;
+            else if (currentValue > targetValue) currentValue--;
+
+            tmp.text = currentValue.ToString();
+            tmp.transform.DOScale(Vector3.one * 1.25f, 0.1f).OnComplete(() => tmp.transform.DOScale(Vector3.one, 0.1f));
+
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        _updateValueCR = null;
+    }
+
+    private void UpdateEquipmentSlots()
+    {
         for (int i = 0; i < _equipmentSlots.transform.childCount; i++)
         {
             Image img = _equipmentSlots.transform.GetChild(i).GetChild(0).GetComponent<Image>();
@@ -78,14 +117,6 @@ public class PlayerOverworldUI : MonoBehaviour
                 img.color = c;
             }
         }
-
-        _dashTimerImage.fillAmount = 1 - _player.DashCooldownTime;
-        if (_player.CanDash) _dashTimerImage.fillAmount = 1;
-    }
-
-    private void ChangeText(TextMeshProUGUI tmp, string text)
-    {
-        tmp.transform.DOScale(Vector3.one * 1.25f, 0.25f).OnComplete(() => tmp.text = text).OnComplete(() => tmp.transform.DOScale(Vector3.one, 0.25f));
     }
 
     [SerializeField, ReadOnly] private string _textToAdd = "";

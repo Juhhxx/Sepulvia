@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour, IPausable
     // Player Party never has more than 1 character
     public Character PlayerCharacter => PlayerParty.PartyMembers[0];
 
+    public void ChangeEssence(int amount) => (PlayerCharacter as Player).ChangeEssence(amount);
+
     [SerializeField] private float _immunityTime = 1f;
     [SerializeField] private LayerMask _excludeWhenImmune;
     private Timer _immunityTimer;

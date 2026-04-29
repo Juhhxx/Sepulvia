@@ -97,10 +97,13 @@ public class Character
             else if (value <= 0) _currentStance = 0;
             else _currentStance = value;
 
+            OnStanceChange?.Invoke(_currentStance, MaxStance);
+
             if (_currentStance == 0) OnStanceLost?.Invoke();
         }
     }
 
+    public Action<int, int> OnStanceChange;
     public Action OnStanceLost;
 
     [SerializeField] private int _baseStanceRecover;
