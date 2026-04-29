@@ -34,7 +34,7 @@ public class CharacterInfo : ScriptableObject
 
     public Character Instantiate()
     {
-        return new Character(this);
+        return this is PlayerInfo ? new Player(this as PlayerInfo) : new Enemy(this as EnemyInfo);
     }
 }
 
@@ -47,11 +47,13 @@ public class Character
 
         _baseSpeed = info.Speed;
         _baseStance = info.MaxStance;
-        _currentStance = MaxStance;
+        _currentStance = info.MaxStance;
         _baseStanceRecover = info.StanceRecover;
         
 
         _statModifiers = new List<StatModifier>();
+
+        MoveSet = new List<Move>();
 
         foreach (MoveInfo m in info.MoveSet)
         {

@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+
 
 public class PlayerOverworldUI : MonoBehaviour
 {
@@ -53,9 +56,9 @@ public class PlayerOverworldUI : MonoBehaviour
 
     public void UpdateValues()
     {
-        _stanceTMP.text = $"{_player.PlayerCharacter.CurrentStance} / {_player.PlayerCharacter.MaxStance}";
+        _stanceTMP.text = $"{_player?.PlayerCharacter.CurrentStance} / {_player?.PlayerCharacter.MaxStance}";
 
-        _essenceTMP.text = $"{(_player.PlayerCharacter as PlayerInfo).Essence:000}";
+        _essenceTMP.text = $"{(_player?.PlayerCharacter as Player).Essence:000}";
 
         _soulFragmentsTMP.text = "0";
 
@@ -78,6 +81,11 @@ public class PlayerOverworldUI : MonoBehaviour
 
         _dashTimerImage.fillAmount = 1 - _player.DashCooldownTime;
         if (_player.CanDash) _dashTimerImage.fillAmount = 1;
+    }
+
+    private void ChangeText(TextMeshProUGUI tmp, string text)
+    {
+        tmp.transform.DOScale(Vector3.one * 1.25f, 0.25f).OnComplete(() => tmp.text = text).OnComplete(() => tmp.transform.DOScale(Vector3.one, 0.25f));
     }
 
     [SerializeField, ReadOnly] private string _textToAdd = "";

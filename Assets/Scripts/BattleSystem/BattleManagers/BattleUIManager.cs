@@ -51,11 +51,11 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    public void InstantiateBattlePrefabs(PartyInfo playerParty, PartyInfo enemyParty)
+    public void InstantiateBattlePrefabs(Party playerParty, Party enemyParty)
     {
         _characterModels = new List<GameObject>();
 
-        CharacterInfo player = playerParty.PartyMembers[0];
+        Character player = playerParty.PartyMembers[0];
 
         GameObject playerGO = Instantiate(player.BattlePrefab, _playerPivot.position, Quaternion.identity);
 
@@ -67,7 +67,7 @@ public class BattleUIManager : MonoBehaviour
 
         for (int i = 0; i < enemyParty.PartySize; i++)
         {
-            CharacterInfo c = enemyParty.PartyMembers[i];
+            Character c = enemyParty.PartyMembers[i];
 
             GameObject enemyGO = Instantiate(c.BattlePrefab, positions[i], Quaternion.identity);
             _characterModels.Add(enemyGO);
@@ -188,7 +188,7 @@ public class BattleUIManager : MonoBehaviour
     public List<Button> GetMoveButtons()
     => _moveButtons.transform.GetChild(0).GetComponentsInChildren<Button>().ToList();
 
-    public void SetUpButton(Button button, MoveInfo move)
+    public void SetUpButton(Button button, Move move)
     {
         button.GetComponentInChildren<TextMeshProUGUI>().text = move.Name;
 
@@ -212,9 +212,9 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    public void SetUpStanceBars(PartyInfo playerParty, PartyInfo enemyParty)
+    public void SetUpStanceBars(Party playerParty, Party enemyParty)
     {        
-        CharacterInfo player = playerParty.PartyMembers[0];
+        Character player = playerParty.PartyMembers[0];
 
         _playerStanceBar.SetUpBar(player.Name, "Stance", player.MaxStance);
 
@@ -223,7 +223,7 @@ public class BattleUIManager : MonoBehaviour
 
         for (int i = 0; i < enemyParty.PartySize; i++)
         {
-            CharacterInfo enemy = enemyParty.PartyMembers[i];
+            Character enemy = enemyParty.PartyMembers[i];
 
             Vector3 pos = _characterModels[i + 1].transform.position;
 
@@ -236,9 +236,9 @@ public class BattleUIManager : MonoBehaviour
             enemyFillBar.SetUpBar(enemy.Name, "Stance", enemy.MaxStance);
         }
     }
-    public void UpdateStanceBars(PartyInfo playerParty, PartyInfo enemyParty)
+    public void UpdateStanceBars(Party playerParty, Party enemyParty)
     {
-        CharacterInfo player = playerParty.PartyMembers[0];
+        Character player = playerParty.PartyMembers[0];
 
         _playerStanceBar.UpdateFillAmout(player.CurrentStance);
 
@@ -248,7 +248,7 @@ public class BattleUIManager : MonoBehaviour
         }
     }
     
-    public void UpdateStatModifierDisplay(PartyInfo playerParty, PartyInfo enemyParty)
+    public void UpdateStatModifierDisplay(Party playerParty, Party enemyParty)
     {
         _statModifierDisplay.UpdateDisplay(playerParty.PartyMembers[0].StatModifiers);
 
@@ -259,7 +259,7 @@ public class BattleUIManager : MonoBehaviour
     }
 
     private List<GameObject> _createdObjectsTurns = new List<GameObject>();
-    public void ShowTurnOrder(PartyInfo playerParty, PartyInfo enemyParty)
+    public void ShowTurnOrder(Party playerParty, Party enemyParty)
     {
         if (_createdObjectsTurns.Count > 0)
         {
@@ -271,13 +271,13 @@ public class BattleUIManager : MonoBehaviour
 
         TextMeshProUGUI prefab = _turnOrderIndicator.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
 
-        var battlers = new List<CharacterInfo>(playerParty.PartyMembers);
+        var battlers = new List<Character>(playerParty.PartyMembers);
 
         battlers.AddRange(enemyParty.PartyMembers);
 
         battlers.Sort((a, b) => b.Speed.CompareTo(a.Speed));
 
-        foreach (CharacterInfo c in battlers)
+        foreach (Character c in battlers)
         {
             TextMeshProUGUI tmp = Instantiate(prefab, _turnOrderIndicator.transform);
 
@@ -293,7 +293,7 @@ public class BattleUIManager : MonoBehaviour
         _turnOrderIndicator.transform.parent.gameObject.SetActive(false);
     }
 
-    public void ToggleMoveInfo(bool onOff, MoveInfo move = null)
+    public void ToggleMoveInfo(bool onOff, Move move = null)
     {
         if (onOff)
         {

@@ -1,7 +1,6 @@
 using NaughtyAttributes;
 using UnityEngine;
 using System;
-using Unity.VisualScripting;
 
 public class PlayerController : MonoBehaviour, IPausable
 {
@@ -54,6 +53,9 @@ public class PlayerController : MonoBehaviour, IPausable
     private void Awake()
     {
         PlayerParty = _playerParty.Instantiate();
+
+        Debug.Log($"[Player Controller] Player Character : {PlayerCharacter.Name}", this);
+
         _playerMovement = GetComponent<PlayerMovement>();
 
         PlayerCharacter.OnStanceLost += () =>

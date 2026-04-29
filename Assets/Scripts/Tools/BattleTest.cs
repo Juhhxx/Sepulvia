@@ -14,7 +14,7 @@ public class BattleTest : MonoBehaviourSingleton<BattleTest>
     }
     public void StartBattle()
     {
-        _battleManager.StartBattle(_playerParty, _enemyPartys[Random.Range(0, _enemyPartys.Count)]);
+        _battleManager.StartBattle(_playerParty.Instantiate(), _enemyPartys[Random.Range(0, _enemyPartys.Count)].Instantiate());
     }
 
     public void Quit() => Application.Quit();

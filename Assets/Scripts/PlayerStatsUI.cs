@@ -9,7 +9,7 @@ public class PlayerStatsUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _statsTMP;
     [SerializeField] private GameObject _moveButtons;
 
-    public void UpdateStats(CharacterInfo c)
+    public void UpdateStats(Character c)
     {
         _nameTMP.text = c.Name;
 
