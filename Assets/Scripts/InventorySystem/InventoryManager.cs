@@ -132,21 +132,21 @@ public class InventoryManager : MonoBehaviour
     public void Use()
     {
         UseItem(_selectedStack);
-        _inventoryUIManager.ShowInventory();
+        _inventoryUIManager.UpdateInventory();
         SetUpButtons();
     }
 
     public void Equip()
     {
         EquipItem(_selectedStack);
-        _inventoryUIManager.ShowInventory();
+        _inventoryUIManager.UpdateInventory();
         SetUpButtons();
     }
 
     public void Unequip()
     {
         UnequipItem(_selectedEquipment);
-        _inventoryUIManager.ShowInventory();
+        _inventoryUIManager.UpdateInventory();
         SetUpButtons();
     }
 

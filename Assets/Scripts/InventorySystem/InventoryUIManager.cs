@@ -82,6 +82,14 @@ public class InventoryUIManager : MonoBehaviour
         return true;
     }
 
+    public void UpdateInventory()
+    {
+        _statsUI.UpdateStats(_player.PlayerCharacter);
+        
+        ShowItemSpaces(_inventory);
+        ShowEquipmentSpaces(_inventory);
+    }
+    
     public void HideInventory()
     {
         _inventoryCanvas.SetActive(false);

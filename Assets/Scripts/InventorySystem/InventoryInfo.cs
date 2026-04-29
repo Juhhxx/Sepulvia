@@ -35,7 +35,12 @@ public class Inventory
     public Inventory(InventoryInfo info)
     {
         MaxInventorySpaces = info.MaxInventorySpaces;
-        ItemSlots = new List<ItemStack>(info.ItemSlots);
+        
+        ItemSlots = new List<ItemStack>();
+        foreach (ItemStack stack in info.ItemSlots)
+        {
+            ItemSlots.Add(new ItemStack(stack.Item, stack.Amount));
+        }
 
         MaxEquipmentSpaces = info.MaxEquipmentSpaces;
         EquipmentSlots = new List<ItemInfo>(info.EquipmentSlots);

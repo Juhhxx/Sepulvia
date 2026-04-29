@@ -13,6 +13,8 @@ public class InventorySlotManager : MonoBehaviour
         _itemImage.color = Color.white;
 
         _itemAmountTMP.text = amount.ToString();
+        _itemAmountTMP.transform.parent.gameObject.SetActive(true);
+
     }
 
     public void UpdateSlot(Sprite sprite)
@@ -24,6 +26,10 @@ public class InventorySlotManager : MonoBehaviour
     public void UpdateSlot()
     {
         if (_itemImage != null) _itemImage.color = new Color(1f , 1f, 1f, 0f);
-        if (_itemAmountTMP != null) _itemAmountTMP.text = "";
+        if (_itemAmountTMP != null)
+        {
+            _itemAmountTMP.text = "";
+            _itemAmountTMP.transform.parent.gameObject.SetActive(false);
+        }
     }
 }
