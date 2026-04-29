@@ -31,7 +31,7 @@ public class InventoryUIManager : MonoBehaviour
     public List<Button> GetItemButtons() => _buttons.GetRange(0, _inventory.MaxInventorySpaces);
     public List<Button> GetEquipmentButtons() => _buttons.GetRange(_inventory.MaxInventorySpaces, _inventory.MaxEquipmentSpaces);
 
-    private InventoryInfo _inventory;
+    private Inventory _inventory;
     private PlayerController _player;
 
     private void Start()
@@ -45,7 +45,7 @@ public class InventoryUIManager : MonoBehaviour
     }
 
     // Generic Inventory Functionality
-    public void CreateInventory(InventoryInfo inventory)
+    public void CreateInventory(Inventory inventory)
     {
         _buttons = new List<Button>();
 
@@ -92,7 +92,7 @@ public class InventoryUIManager : MonoBehaviour
     }
 
     List<GameObject> _inventoryItemSlots = new List<GameObject>();
-    private void CreateItemSpaces(InventoryInfo inventory)
+    private void CreateItemSpaces(Inventory inventory)
     {
         for (int i = 0; i < inventory.MaxInventorySpaces; i++)
         {
@@ -104,7 +104,7 @@ public class InventoryUIManager : MonoBehaviour
         }
     }
 
-    private void ShowItemSpaces(InventoryInfo inventory)
+    private void ShowItemSpaces(Inventory inventory)
     {
         for (int i = 0; i < inventory.MaxInventorySpaces; i++)
         {
@@ -117,7 +117,7 @@ public class InventoryUIManager : MonoBehaviour
     }
 
     List<GameObject> _inventoryEquipmentlots = new List<GameObject>();
-    private void CreateEquipmentSpaces(InventoryInfo inventory)
+    private void CreateEquipmentSpaces(Inventory inventory)
     {
         for (int i = 0; i < inventory.MaxEquipmentSpaces; i++)
         {
@@ -129,7 +129,7 @@ public class InventoryUIManager : MonoBehaviour
         }
     }
 
-    private void ShowEquipmentSpaces(InventoryInfo inventory)
+    private void ShowEquipmentSpaces(Inventory inventory)
     {
         for (int i = 0; i < inventory.MaxEquipmentSpaces; i++)
         {

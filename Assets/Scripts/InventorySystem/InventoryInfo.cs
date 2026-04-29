@@ -11,6 +11,44 @@ public class InventoryInfo : ScriptableObject
     [field: SerializeField] public int MaxInventorySpaces { get; private set; }
     [field: SerializeField] public List<ItemStack> ItemSlots { get; private set; }
 
+    [field: Space(10)]
+    [field: Header("Character Equipment")]
+    [field: Space(5)]
+    [field: SerializeField] public int MaxEquipmentSpaces { get; private set; }
+
+    [field: OnValueChanged("CheckEquipment")]
+    [field: SerializeField, Expandable] public List<ItemInfo> EquipmentSlots { get; private set; }
+
+    private void CheckEquipment()
+    {
+        EquipmentSlots.RemoveAll((e) => e.Type != ItemTypes.Equippable);
+    }
+
+    public Inventory Instantiate()
+    {
+        return new Inventory(this);
+    }
+}
+
+public class Inventory
+{
+    public Inventory(InventoryInfo info)
+    {
+        MaxInventorySpaces = info.MaxInventorySpaces;
+        ItemSlots = new List<ItemStack>(info.ItemSlots);
+
+        MaxEquipmentSpaces = info.MaxEquipmentSpaces;
+        EquipmentSlots = new List<ItemInfo>(info.EquipmentSlots);
+
+        CheckEquipment();
+    }
+
+    [field: Space(10)]
+    [field: Header("Character Inventory")]
+    [field: Space(5)]
+    [field: SerializeField, ReadOnly] public int MaxInventorySpaces { get; private set; }
+    [field: SerializeField, ReadOnly] public List<ItemStack> ItemSlots { get; private set; }
+
     public bool IsFull()
     {
         if (ItemSlots.Count < MaxInventorySpaces) return false;
@@ -101,10 +139,10 @@ public class InventoryInfo : ScriptableObject
     [field: Space(10)]
     [field: Header("Character Equipment")]
     [field: Space(5)]
-    [field: SerializeField] public int MaxEquipmentSpaces { get; private set; }
+    [field: SerializeField, ReadOnly] public int MaxEquipmentSpaces { get; private set; }
 
     [field: OnValueChanged("CheckEquipment")]
-    [field: SerializeField, Expandable] public List<ItemInfo> EquipmentSlots { get; private set; }
+    [field: SerializeField, Expandable, ReadOnly] public List<ItemInfo> EquipmentSlots { get; private set; }
 
     private void CheckEquipment()
     {
@@ -139,21 +177,5 @@ public class InventoryInfo : ScriptableObject
         if (!EquipmentSlots.Contains(item)) return;
 
         EquipmentSlots.Remove(item);
-    }
-
-    public InventoryInfo Instantiate()
-    {
-        InventoryInfo inv = Instantiate(this);
-
-        inv.CheckEquipment();
-
-        // for (int i = 0; i < inv.Items.Count; i++)
-        // {
-        //     var tmp = inv.Items[i];
-
-        //     inv.Items[i] = new ItemStack(tmp.Item.Instantiate(), tmp.Amount);
-        // }
-
-        return inv;
     }
 }

@@ -19,8 +19,8 @@ public class BattleManager : MonoBehaviour
     [Space(10)]
     [Header("Battlers Info")]
     [Space(5)]
-    [SerializeField, Expandable] private Party _playerParty;
-    [SerializeField, Expandable] private Party _enemyParty;
+    [SerializeField] private Party _playerParty;
+    [SerializeField] private Party _enemyParty;
 
     private Character Player => _playerParty.PartyMembers[0];
     

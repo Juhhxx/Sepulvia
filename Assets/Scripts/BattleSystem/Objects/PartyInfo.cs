@@ -28,7 +28,7 @@ public class Party
         }
     }
 
-    public string PartyName { get; private set; }
-    public List<Character> PartyMembers { get; private set; }
+    [field: SerializeField, ReadOnly] public string PartyName { get; private set; }
+    [field: SerializeField, ReadOnly] public List<Character> PartyMembers { get; private set; }
     public int PartySize => PartyMembers.Count;
 }

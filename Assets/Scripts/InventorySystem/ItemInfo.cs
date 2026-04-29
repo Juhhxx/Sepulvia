@@ -54,9 +54,4 @@ public class ItemInfo : ScriptableObject
     [field: Header("Item Description")]
     [field: Space(5)]
     [field: SerializeField, ResizableTextArea] public string Description { get; private set; }
-
-    public ItemInfo Instantiate()
-    {
-        return Instantiate(this);
-    }
 }
