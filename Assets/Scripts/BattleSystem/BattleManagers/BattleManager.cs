@@ -19,10 +19,10 @@ public class BattleManager : MonoBehaviour
     [Space(10)]
     [Header("Battlers Info")]
     [Space(5)]
-    [SerializeField, Expandable] private PartyInfo _playerParty;
-    [SerializeField, Expandable] private PartyInfo _enemyParty;
+    [SerializeField, Expandable] private Party _playerParty;
+    [SerializeField, Expandable] private Party _enemyParty;
 
-    private CharacterInfo Player => _playerParty.PartyMembers[0];
+    private Character Player => _playerParty.PartyMembers[0];
     
     private int _numberOfBattlers;
 
@@ -34,13 +34,13 @@ public class BattleManager : MonoBehaviour
     [Serializable]
     public class BattleAction
     {
-        [field: SerializeField] public CharacterInfo Character { get; private set; }
+        [field: SerializeField] public Character Character { get; private set; }
         [field: SerializeField] public ActionType Type { get; private set;}
-        [field: SerializeField] public MoveInfo Move { get; private set; }
+        [field: SerializeField] public Move Move { get; private set; }
         [field: SerializeField] public ItemInfo Item { get; private set;}
         [field: SerializeField] public int Priority { get; private set; }
 
-        public BattleAction(CharacterInfo character, MoveInfo move)
+        public BattleAction(Character character, Move move)
         {
             Character = character;
             Type = ActionType.Move;
@@ -49,7 +49,7 @@ public class BattleManager : MonoBehaviour
             Priority = Move.PriorityLevel;
         }
 
-        public BattleAction(CharacterInfo character, ItemInfo item)
+        public BattleAction(Character character, ItemInfo item)
         {
             Character = character;
             Type = ActionType.Item;
@@ -58,7 +58,7 @@ public class BattleManager : MonoBehaviour
             Priority = 5;
         }
 
-        public BattleAction(CharacterInfo character, bool isRun = false)
+        public BattleAction(Character character, bool isRun = false)
         {
             Character = character;
             Type = isRun ? ActionType.Run : ActionType.Empty;
@@ -97,10 +97,10 @@ public class BattleManager : MonoBehaviour
 // #endif
     }
 
-    public void StartBattle(PartyInfo playerParty, PartyInfo enemyParty)
+    public void StartBattle(Party playerParty, Party enemyParty)
     {
         _playerParty = playerParty;
-        _enemyParty = enemyParty.Instantiate();
+        _enemyParty = enemyParty;
 
         _hasWinner = false;
         _doRun = false;
@@ -159,7 +159,7 @@ public class BattleManager : MonoBehaviour
         {
             if (Player.CurrentStance > 0) Player.CurrentStance += Player.StanceRecover;
 
-            foreach (CharacterInfo e in _enemyParty.PartyMembers)
+            foreach (Character e in _enemyParty.PartyMembers)
             {
                 if (e.CurrentStance > 0) e.CurrentStance += e.StanceRecover;
             }
@@ -173,7 +173,7 @@ public class BattleManager : MonoBehaviour
         {
             Player.CheckModifier();
 
-            foreach (CharacterInfo e in _enemyParty.PartyMembers)
+            foreach (Character e in _enemyParty.PartyMembers)
             {
                 e.CheckModifier();
             }
@@ -186,24 +186,23 @@ public class BattleManager : MonoBehaviour
         // Count Turns in Moves
         OnTurnPassed += () =>
         {
-            foreach (MoveInfo m in Player.MoveSet) m.TurnPassed();
+            foreach (Move m in Player.MoveSet) m.TurnPassed();
 
-            foreach (CharacterInfo c in _enemyParty.PartyMembers)
+            foreach (Character c in _enemyParty.PartyMembers)
             {
-                foreach (MoveInfo m in c.MoveSet) m.TurnPassed();
+                foreach (Move m in c.MoveSet) m.TurnPassed();
             }
             Debug.Log("DID MOVE COUNT");
         };
 
         // Make Enemies Choose Action Every Turn
-        foreach (EnemyInfo enemy in _enemyParty.PartyMembers)
+        foreach (Enemy enemy in _enemyParty.PartyMembers)
         {
-            enemy.SetUpAI();
             OnTurnPassed += () =>
             {
                 if (enemy.CurrentStance > 0)
                 {
-                    MoveInfo m = enemy.BattleAI.ChooseRandom();
+                    Move m = enemy.BattleAI.ChooseRandom();
                     AddAction(enemy, m);
                 }
                 Debug.Log("DID ENEMY AI");
@@ -225,7 +224,7 @@ public class BattleManager : MonoBehaviour
 
         for (int i = 0; i < moveButtons.Count; i++)
         {
-            MoveInfo move = (i < Player.MoveSet.Count) ? Player.MoveSet?[i] : null;
+            Move move = (i < Player.MoveSet.Count) ? Player.MoveSet?[i] : null;
 
             if (move != null)
             {
@@ -248,7 +247,7 @@ public class BattleManager : MonoBehaviour
 
         for (int i = 0; i < moveButtons.Count; i++)
         {
-            MoveInfo move = (i < Player.MoveSet.Count) ? Player.MoveSet?[i] : null;
+            Move move = (i < Player.MoveSet.Count) ? Player.MoveSet?[i] : null;
 
             if (move != null)
             {
@@ -415,7 +414,7 @@ public class BattleManager : MonoBehaviour
     {
         (List<ItemInfo> items, int essence) = _battleResolver.GiveRewards(_enemyParty, false);
 
-        (Player as PlayerInfo).Essence += essence;
+        (Player as Player).Essence += essence;
 
         if (items.Count > 0)
         {
@@ -430,7 +429,7 @@ public class BattleManager : MonoBehaviour
     {
         (List<ItemInfo> items, int essence) = _battleResolver.GiveRewards(_enemyParty, true);
 
-        (Player as PlayerInfo).Essence += essence;
+        (Player as Player).Essence += essence;
 
         if (items.Count > 0)
         {
@@ -457,25 +456,25 @@ public class BattleManager : MonoBehaviour
         // If stance = 0, character loses turn
         if (Player.CurrentStance == 0) AddAction(Player);
 
-        foreach (CharacterInfo e in _enemyParty.PartyMembers)
+        foreach (Character e in _enemyParty.PartyMembers)
         {
             if (e.CurrentStance == 0) AddAction(e);
         }
     }
 
-    public void AddAction(CharacterInfo character, bool isRun = false)
+    public void AddAction(Character character, bool isRun = false)
     {
         var action = new BattleAction(character, isRun);
         _actionList.Add(action);
     }
-    public void AddAction(CharacterInfo character, MoveInfo move)
+    public void AddAction(Character character, Move move)
     {
         var action = new BattleAction(character, move);
         _actionList.Add(action);
 
-        if (character is PlayerInfo && move.Type == MoveTypes.Modifier) _selectingBar = true;
+        if (character is Player && move.Type == MoveTypes.Modifier) _selectingBar = true;
     }
-    public void AddAction(CharacterInfo character, ItemInfo item)
+    public void AddAction(Character character, ItemInfo item)
     {
         var action = new BattleAction(character, item);
         _actionList.Add(action);
@@ -487,7 +486,7 @@ public class BattleManager : MonoBehaviour
         {
             case ActionType.Move:
 
-                var party = action.Character is PlayerInfo ? _enemyParty : _playerParty;
+                var party = action.Character is Player ? _enemyParty : _playerParty;
                 // var target = ChooseTarget(party);
 
                 action.Move.UsedMove();
@@ -531,10 +530,10 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private CharacterInfo ChooseTarget(PartyInfo fromParty)
+    private Character ChooseTarget(Party fromParty)
     {
         int rnd = UnityEngine.Random.Range(0, fromParty.PartySize);
-        CharacterInfo c = fromParty.PartyMembers[rnd];
+        Character c = fromParty.PartyMembers[rnd];
 
         Debug.Log($"TARGETING {c.Name}");
 

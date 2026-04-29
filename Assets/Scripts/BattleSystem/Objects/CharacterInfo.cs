@@ -9,6 +9,66 @@ public class CharacterInfo : ScriptableObject
     [field: Space(5)]
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public GameObject BattlePrefab { get; private set; }
+
+    [Space(10)]
+    [Header("Character Stats")]
+    [Space(5)]
+    [SerializeField] private int _baseSpeed;
+    public int Speed => _baseSpeed;
+
+    [SerializeField] private int _baseStance;
+    public int MaxStance => _baseStance;
+
+    [SerializeField] private int _baseStanceRecover;
+    public int StanceRecover => _baseStanceRecover;
+
+    [field: Space(10)]
+    [field: Header("Character Moves")]
+    [field: Space(5)]
+    [field: SerializeField, Expandable] public List<MoveInfo> MoveSet { get; private set; }
+
+    [field: Space(10)]
+    [field: Header("Character Inventory")]
+    [field: Space(5)]
+    [field: SerializeField, Expandable] public InventoryInfo Inventory { get; private set; }
+
+    public Character Instantiate()
+    {
+        return new Character(this);
+    }
+}
+
+public class Character
+{
+    public Character(CharacterInfo info)
+    {
+        Name = info.Name;
+        BattlePrefab = info.BattlePrefab;
+
+        _baseSpeed = info.Speed;
+        _baseStance = info.MaxStance;
+        _currentStance = MaxStance;
+        _baseStanceRecover = info.StanceRecover;
+        
+
+        _statModifiers = new List<StatModifier>();
+
+        foreach (MoveInfo m in info.MoveSet)
+        {
+            MoveSet.Add(m.Instantiate());
+        }
+
+        SetBaseMoves();
+
+        CheckEquipment();
+
+        Inventory = info.Inventory?.Instantiate();
+    }
+
+    [field: Header("Character Cosmetics")]
+    [field: Space(5)]
+    [field: SerializeField, ReadOnly] public string Name { get; private set; }
+    [field: SerializeField, ReadOnly] public GameObject BattlePrefab { get; private set; }
     public Animator Animator;
 
     [Space(10)]
@@ -114,36 +174,15 @@ public class CharacterInfo : ScriptableObject
     [field: Space(10)]
     [field: Header("Character Moves")]
     [field: Space(5)]
-    [field: SerializeField, Expandable] public List<MoveInfo> MoveSet { get; private set; }
-    private List<MoveInfo> _baseMoves;
-    public void SetBaseMoves() => _baseMoves = new List<MoveInfo>(MoveSet);
-    public void ResetMoves() => MoveSet = new List<MoveInfo>(_baseMoves);
+    [field: SerializeField, Expandable] public List<Move> MoveSet { get; private set; }
+    private List<Move> _baseMoves;
+    public void SetBaseMoves() => _baseMoves = new List<Move>(MoveSet);
+    public void ResetMoves() => MoveSet = new List<Move>(_baseMoves);
     public void ResetMove(int index) => MoveSet[index] = _baseMoves[index];
-    public void ChangeMove(int index, MoveInfo to) => MoveSet[index] = to;
+    public void ChangeMove(int index, Move to) => MoveSet[index] = to;
 
     [field: Space(10)]
     [field: Header("Character Inventory")]
     [field: Space(5)]
     [field: SerializeField, Expandable] public InventoryInfo Inventory { get; private set; }
-
-    public CharacterInfo Instantiate()
-    {
-        var c = Instantiate(this);
-
-        for (int i = 0; i < c.MoveSet.Count; i++)
-        {
-            c.MoveSet[i] = c.MoveSet[i].Instantiate();
-        }
-
-        c.SetBaseMoves();
-
-        c.CheckEquipment();
-
-        c.CurrentStance = c.MaxStance;
-        _statModifiers = new List<StatModifier>();
-
-        c.Inventory = c.Inventory?.Instantiate();
-
-        return c;
-    }
 }

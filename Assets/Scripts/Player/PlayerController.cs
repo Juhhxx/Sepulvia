@@ -5,10 +5,11 @@ using Unity.VisualScripting;
 
 public class PlayerController : MonoBehaviour, IPausable
 {
-    [field: SerializeField, Expandable] public PartyInfo PlayerParty { get; private set; }
+    [SerializeField, Expandable] public PartyInfo _playerParty;
+    public Party PlayerParty { get; private set; }
 
     // Player Party never has more than 1 character
-    public CharacterInfo PlayerCharacter => PlayerParty.PartyMembers[0];
+    public Character PlayerCharacter => PlayerParty.PartyMembers[0];
 
     [SerializeField] private float _immunityTime = 1f;
     [SerializeField] private LayerMask _excludeWhenImmune;
@@ -52,7 +53,7 @@ public class PlayerController : MonoBehaviour, IPausable
 
     private void Awake()
     {
-        PlayerParty = PlayerParty.Instantiate();
+        PlayerParty = _playerParty.Instantiate();
         _playerMovement = GetComponent<PlayerMovement>();
 
         PlayerCharacter.OnStanceLost += () =>

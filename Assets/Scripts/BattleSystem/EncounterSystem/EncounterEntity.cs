@@ -4,14 +4,16 @@ using UnityEngine;
 public class EncounterEntity : MonoBehaviour
 {
     [SerializeField] private PartyInfo _party;
+    public Party EnemyParty { get; private set; }
 
     private bool _didEncounter = false;
 
-    public event Action<PartyInfo> OnEncounterPlayer;
+    public event Action<Party> OnEncounterPlayer;
 
     private void Start()
     {
         EncounterManager.Instance.RegisterEncounterable(this);
+        EnemyParty = _party.Instantiate();
     }
 
     private void OnDestroy()
@@ -26,7 +28,7 @@ public class EncounterEntity : MonoBehaviour
 
         if (p != null && !_didEncounter)
         {
-            OnEncounterPlayer?.Invoke(_party);
+            OnEncounterPlayer?.Invoke(EnemyParty);
             gameObject.SetActive(false);
 
             _didEncounter = true;

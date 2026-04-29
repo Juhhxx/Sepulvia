@@ -30,7 +30,7 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
         entity.OnEncounterPlayer -= DoEncounter;
     }
 
-    private void DoEncounter(PartyInfo party)
+    private void DoEncounter(Party party)
     {
         Debug.Log($"[Encounter Manager] Doing encounter with {party.PartyName}", this);
 
@@ -42,7 +42,7 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
     }
     public void DoRandomEncounter()
     {
-        PartyInfo party = _possibleEncounters[Random.Range(0, _possibleEncounters.Count)];
+        Party party = _possibleEncounters[Random.Range(0, _possibleEncounters.Count)].Instantiate();
 
         DoEncounter(party);
     }

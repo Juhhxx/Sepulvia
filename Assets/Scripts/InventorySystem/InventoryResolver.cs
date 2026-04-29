@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InventoryResolver : MonoBehaviour
 {
-    public void UseItem(ItemInfo item, CharacterInfo user)
+    public void UseItem(ItemInfo item, Character user)
     {
         Debug.Log($"{user.Name} USED {item.Name}");
 
@@ -20,7 +20,7 @@ public class InventoryResolver : MonoBehaviour
         }
     }
 
-    private void ApplyItemEffect (ItemInfo item, CharacterInfo user)
+    private void ApplyItemEffect (ItemInfo item, Character user)
     {
         switch (item.Stat)
         {

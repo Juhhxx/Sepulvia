@@ -9,15 +9,26 @@ public class PartyInfo : ScriptableObject
     [field: SerializeField, Expandable] public List<CharacterInfo> PartyMembers { get; private set; }
     public int PartySize => (PartyMembers?.Count).Value;
 
-    public PartyInfo Instantiate()
+    public Party Instantiate()
     {
-        var p = Instantiate(this);
-
-        for (int i = 0; i < p.PartySize; i++)
-        {
-            p.PartyMembers[i] = p.PartyMembers[i].Instantiate();
-        }
-
-        return p;
+        return new Party(this);
     }
+}
+
+public class Party
+{
+    public Party(PartyInfo info)
+    {
+        PartyName = info.PartyName;
+        PartyMembers = new List<Character>();
+
+        foreach (CharacterInfo c in info.PartyMembers)
+        {
+            PartyMembers.Add(c.Instantiate());
+        }
+    }
+
+    public string PartyName { get; private set; }
+    public List<Character> PartyMembers { get; private set; }
+    public int PartySize => PartyMembers.Count;
 }

@@ -14,12 +14,27 @@ public class EnemyInfo : CharacterInfo
     [field: Header("Character Battle AI")]
     [field: Space(5)]
     [field : SerializeField] public int Inteligence { get; private set; }
-    private EnemyBattleAI _battleAI;
-    public EnemyBattleAI BattleAI => _battleAI;
+}
 
-    public void SetUpAI()
+public class Enemy : Character
+{
+    public Enemy(EnemyInfo info) : base(info)
     {
-        _battleAI = new EnemyBattleAI(this);
+        DifficultyLevel = info.DifficultyLevel;
+        PossibleRewards = info.PossibleRewards;
+        Inteligence = info.Inteligence;
+        BattleAI = new EnemyBattleAI(this);
     }
 
+    [field: Header("Character Defeat Rewards")]
+    [field: Space(5)]
+    [field : SerializeField, ReadOnly] public int DifficultyLevel { get; private set; }
+    [field : SerializeField, ReadOnly] public List<ItemInfo> PossibleRewards { get; private set; }
+
+    [field: Space(10)]
+    [field: Header("Character Battle AI")]
+    [field: Space(5)]
+    [field : SerializeField, ReadOnly] public int Inteligence { get; private set; }
+
+    public EnemyBattleAI BattleAI { get; private set; }
 }

@@ -3,17 +3,17 @@ using System;
 [Serializable]
 public class EnemyBattleAI
 {
-    private CharacterInfo _character;
+    private Character _character;
 
-    public EnemyBattleAI(CharacterInfo character)
+    public EnemyBattleAI(Character character)
     {
         _character = character;
     }
     
-    public MoveInfo ChooseRandom()
+    public Move ChooseRandom()
     {
         Random rnd = new Random();
-        MoveInfo move = null;
+        Move move = null;
 
         bool ok = false;
 

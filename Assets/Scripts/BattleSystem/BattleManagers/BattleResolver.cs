@@ -9,18 +9,18 @@ public class BattleResolver : MonoBehaviour
 
     private int SelectedBar => _pullManager.SelectedIndex;
 
-    public void DoMove(MoveInfo move, CharacterInfo user, PartyInfo target)
+    public void DoMove(Move move, Character user, Party target)
     {
         Debug.Log($"{user.Name} USED {move.Name} AGAINST {target.PartyName}");
 
         user.CurrentStance -= move.StanceCost;
 
-        foreach (CharacterInfo c in target.PartyMembers)
+        foreach (Character c in target.PartyMembers)
         {
             c.CurrentStance -= move.StanceDamage;
 
             if (move.StanceDamage > 0)
-                if (c is PlayerInfo) c.Animator?.SetTrigger("Hurt");
+                if (c is Player) c.Animator?.SetTrigger("Hurt");
         }
 
         switch(move.Type)
@@ -47,25 +47,25 @@ public class BattleResolver : MonoBehaviour
         }
     }
 
-    private CharacterInfo ChooseTarget(PartyInfo fromParty)
+    private Character ChooseTarget(Party fromParty)
     {
         int rnd = UnityEngine.Random.Range(0, fromParty.PartySize);
-        CharacterInfo c = fromParty.PartyMembers[rnd];
+        Character c = fromParty.PartyMembers[rnd];
 
         Debug.Log($"TARGETING {c.Name}");
 
         return c;
     }
 
-    private void DoPull(MoveInfo move, CharacterInfo user)
+    private void DoPull(Move move, Character user)
     {
         DialogueManager.Instance.AddDialogue(
         $"{user.Name} pushed the Soul to their side by {move.PullStrength + user.PullStrenghtBonus}.");
 
-        if (user is PlayerInfo) user.Animator?.SetTrigger("Attack");
+        if (user is Player) user.Animator?.SetTrigger("Attack");
 
         
-        if (user is PlayerInfo)
+        if (user is Player)
         {
             _pullManager.MoveHeart(-move.PullStrength -
             user.PullStrenghtBonus);
@@ -77,7 +77,7 @@ public class BattleResolver : MonoBehaviour
         }
     }
 
-    private void DoStatModifier(MoveInfo move, CharacterInfo target)
+    private void DoStatModifier(Move move, Character target)
     {
         foreach (StatModifier sm in move.StatModifiers)
         {
@@ -85,14 +85,14 @@ public class BattleResolver : MonoBehaviour
 
             if (move.Type == MoveTypes.Buff)
             {
-                if (target is PlayerInfo) target.Animator?.SetTrigger("Buff");
+                if (target is Player) target.Animator?.SetTrigger("Buff");
 
                 DialogueManager.Instance.AddDialogue(
                 $"{target.Name} {sm.StatAffected.ToTitle()} Rose.");
             }
             else if (move.Type == MoveTypes.Nerf)
             {
-                if (target is PlayerInfo) target.Animator?.SetTrigger("Nerf");
+                if (target is Player) target.Animator?.SetTrigger("Nerf");
 
                 DialogueManager.Instance.AddDialogue(
                 $"{target.Name} {sm.StatAffected.ToTitle()} Fell.");
@@ -100,17 +100,17 @@ public class BattleResolver : MonoBehaviour
         }
     }
 
-    private void ApplyBarModifier(MoveInfo move)
+    private void ApplyBarModifier(Move move)
     {
         _pullManager.BarSections[SelectedBar].AddBarModifier(move.Modifier);
     }
 
-    public void UseItem(ItemInfo item, CharacterInfo user)
+    public void UseItem(ItemInfo item, Character user)
     {
         _inventoryResolver.UseItem(item, user);
     }
 
-    public (List<ItemInfo>, int) GiveRewards(PartyInfo enemyParty, bool spared)
+    public (List<ItemInfo>, int) GiveRewards(Party enemyParty, bool spared)
     {
         // Return Values
         List<ItemInfo> items = new List<ItemInfo>();
@@ -120,7 +120,7 @@ public class BattleResolver : MonoBehaviour
         List<ItemInfo> possibleRewards = new List<ItemInfo>();
         int totalDifficulty = 0;
 
-        foreach (EnemyInfo e in enemyParty.PartyMembers)
+        foreach (Enemy e in enemyParty.PartyMembers)
         {
             totalDifficulty += e.DifficultyLevel;
 
@@ -147,13 +147,13 @@ public class BattleResolver : MonoBehaviour
         return (items, essence);
     }
 
-    public bool CanRun(CharacterInfo user, PartyInfo enemyParty)
+    public bool CanRun(Character user, Party enemyParty)
     {
         float rnd = Random.Range(0,1f);
 
         float difficultyAverage = 0;
 
-        foreach (EnemyInfo e in enemyParty.PartyMembers)
+        foreach (Enemy e in enemyParty.PartyMembers)
         {
             difficultyAverage += e.DifficultyLevel;
         }
