@@ -19,6 +19,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _velocity;
     private Vector3 _motion;
 
+    public Vector3 Velocity => transform.TransformVector(_velocity);
+    public Vector3 Direction => transform.TransformVector(_velocity).normalized;
+
     [SerializeField, ReadOnly] private bool _canDash = true;
     [SerializeField, ReadOnly] private bool _isDashing = false;
     private Timer _dashCooldownTimer;
@@ -61,6 +64,8 @@ public class PlayerMovement : MonoBehaviour
             _anim.SetFloat("YDir", Mathf.Clamp(_velocity.z, -1, 1));
             _spr.flipX = _velocity.x > 0;
         }
+
+        Debug.DrawRay(transform.position, Direction, Color.green);
     }
 
     public void SetVelocity(Vector3 velocity) => _rb.linearVelocity = velocity;
@@ -88,7 +93,6 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(DashCR());
         }
     }
-
     private IEnumerator DashCR()
     {
         _isDashing = true;

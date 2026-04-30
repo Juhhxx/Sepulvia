@@ -18,9 +18,10 @@ public class Hazard : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         PlayerController player = other.GetComponent<PlayerController>();
+
         if (player != null)
         {
-            player.PlayerCharacter.CurrentStance -= _damageAmount;
+            player.HurtPlayer(_damageAmount, transform);
         }
     }
 }

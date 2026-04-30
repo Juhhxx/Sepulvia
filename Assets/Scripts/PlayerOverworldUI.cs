@@ -38,7 +38,7 @@ public class PlayerOverworldUI : MonoBehaviour
 
         _player.OnBattleEnterExit += (bool inBattle) => ToggleOverworldUI(!inBattle);
 
-        _player.PlayerCharacter.OnStanceChange += (int current, int max) => UpdateValue(_stanceTMP, $"{current} / {max}");
+        _player.PlayerCharacter.OnStanceChange += (int current, int max, int previous) => UpdateValue(_stanceTMP, $"{current} / {max}");
         _player.PlayerCharacter.Inventory.OnChangeEqupipment += UpdateEquipmentSlots;
         (_player.PlayerCharacter as Player).OnEssenceChange += (int essence) => UpdateValue(_essenceTMP, essence);
 
@@ -92,6 +92,8 @@ public class PlayerOverworldUI : MonoBehaviour
 
             tmp.text = currentValue.ToString();
             tmp.transform.DOScale(Vector3.one * 1.25f, 0.1f).OnComplete(() => tmp.transform.DOScale(Vector3.one, 0.1f));
+
+            _player.OnEssenceChange?.Invoke();
 
             yield return new WaitForSeconds(0.01f);
         }

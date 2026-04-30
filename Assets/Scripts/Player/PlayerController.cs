@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour, IPausable
 {
@@ -10,14 +11,27 @@ public class PlayerController : MonoBehaviour, IPausable
     // Player Party never has more than 1 character
     public Character PlayerCharacter => PlayerParty.PartyMembers[0];
 
-    public void ChangeEssence(int amount) => (PlayerCharacter as Player).ChangeEssence(amount);
+    public void ChangeEssence(int amount)
+    {
+        (PlayerCharacter as Player).ChangeEssence(amount);
+        OnEssenceChange?.Invoke();
+    }
 
+    // Immunity
     [SerializeField] private float _immunityTime = 1f;
     [SerializeField] private LayerMask _excludeWhenImmune;
     private Timer _immunityTimer;
     private bool _isImmune = false;
     public bool IsImmune => _isImmune;
 
+    // Hurt
+    [SerializeField] private float _hurtTime = 1f;
+    [SerializeField] private float _hurtForce = 3f;
+    private Timer _hurtTimer;
+    private bool _isHurt = false;
+    public bool IsHurt => _isHurt;
+
+    // Battle State
     [SerializeField, ReadOnly] private bool _inBattle = false;
     public bool InBattle 
     {
@@ -36,21 +50,28 @@ public class PlayerController : MonoBehaviour, IPausable
             }
             else
             {
-                ToogleImmunity(true);
+                ToggleImmunity(true);
             }
 
             _inBattle = value;
         }
     }
-
     public event Action<bool> OnBattleEnterExit;
 
+    // Movement and Dash
     private PlayerMovement _playerMovement;
     public bool CanDash => _playerMovement.CanDash;
     public float DashCooldownTime => _playerMovement.DashCooldownTime;
 
+    // Player Components
     private Collider _collider;
     private SpriteRenderer _spriteRenderer;
+    private Animator _anim;
+
+    // Player States
+    public UnityEvent OnPlayerDamaged;
+    public UnityEvent OnPlayerHealed;
+    public UnityEvent OnEssenceChange;
 
     private void Awake()
     {
@@ -69,12 +90,28 @@ public class PlayerController : MonoBehaviour, IPausable
             }
         };
 
+        PlayerCharacter.OnStanceChange += (int current, int max, int previous) =>
+        {
+            if (!InBattle)
+            {
+                if (previous > current) OnPlayerDamaged?.Invoke();
+                else if (previous < current) OnPlayerHealed?.Invoke();
+            }
+        };
+
+        // Immunity Timer
         _immunityTimer = new Timer(_immunityTime);
 
-        _immunityTimer.OnTimerDone += () => ToogleImmunity(false);
+        _immunityTimer.OnTimerDone += () => ToggleImmunity(false);
+
+        // Hurt Timer
+        _hurtTimer = new Timer(_hurtTime);
+
+        _hurtTimer.OnTimerDone += () => ToggleHurt(false);
 
         _collider = GetComponent<Collider>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _anim = GetComponent<Animator>();
     }
 
     private void Start()
@@ -96,7 +133,9 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         if (Paused) return;
 
-        if (!_inBattle)
+        _anim.SetBool("Hurt", _isHurt);
+
+        if (!_inBattle && !_isHurt)
         {
             _playerMovement.DoMovement();
         }
@@ -105,9 +144,15 @@ public class PlayerController : MonoBehaviour, IPausable
         {
             _immunityTimer.CountTimer();
         }
+
+        if (_isHurt)
+        {
+            _hurtTimer.CountTimer();
+        }
     }
 
-    private void ToogleImmunity(bool onOff)
+    // Immunity and Hurt Logic
+    private void ToggleImmunity(bool onOff)
     {
         _immunityTimer.ResetTimer();
 
@@ -119,6 +164,32 @@ public class PlayerController : MonoBehaviour, IPausable
         _spriteRenderer.color = c;
 
         _isImmune = onOff;
+    }
+
+    public void HurtPlayer(int damage, Transform damageSource)
+    {
+        PlayerCharacter.CurrentStance -= damage;
+
+        ToggleHurt(true, damageSource);
+    }
+    private void ToggleHurt(bool onOff, Transform damageSource = null)
+    {
+        _hurtTimer.ResetTimer();
+
+        _collider.excludeLayers = onOff ? _excludeWhenImmune : LayerMask.GetMask();
+
+        if (damageSource != null)
+        {
+            Vector3 knockbackDir = (-_playerMovement.Direction).normalized;
+            knockbackDir.y = 0;
+
+            Debug.DrawRay(transform.position, knockbackDir, Color.red, 5f);
+            Debug.DrawRay(transform.position, -_playerMovement.Direction, Color.blue, 5f);
+
+            _playerMovement.SetVelocity(knockbackDir * _hurtForce);   
+        }
+
+        _isHurt = onOff;
     }
 
     // Pausing Logic

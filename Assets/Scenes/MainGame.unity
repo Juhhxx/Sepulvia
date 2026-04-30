@@ -666,15 +666,11 @@ PrefabInstance:
     - target: {fileID: 2796053441512461111, guid: 70e967c5c6f8fb849b4b52e68482b6ff, type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 4233730808385802518}
-    - target: {fileID: 2796053441512461111, guid: 70e967c5c6f8fb849b4b52e68482b6ff, type: 3}
-      propertyPath: m_PlaneDistance
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7756767707655228296, guid: 70e967c5c6f8fb849b4b52e68482b6ff, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 20
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 330585545}
+    - target: {fileID: 8830613772550667910, guid: 70e967c5c6f8fb849b4b52e68482b6ff, type: 3}
+      propertyPath: _uiCamera
+      value: 
+      objectReference: {fileID: 1438993961}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1110,14 +1106,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1508272504764424918, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
-      propertyPath: _playerParty
-      value: 
-      objectReference: {fileID: 11400000, guid: 89d2679380e72fe4d8e5112223a8279c, type: 2}
-    - target: {fileID: 1508272504764424918, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
-      propertyPath: _excludeWhenImmune.m_Bits
-      value: 1280
+    - target: {fileID: 6776827643527410017, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _pitch
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6776827643527410017, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _changePitch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6776827643527410017, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _soudsToPlay.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6776827643527410017, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: '_soudsToPlay.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: f39b7a06d4f22a148aa9e3435bf98990, type: 3}
     - target: {fileID: 7498980921109840918, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1172,6 +1176,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9057019696532367986, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
   m_PrefabInstance: {fileID: 3119119775086999342}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3119119775086999347 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1508272504764424918, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+  m_PrefabInstance: {fileID: 3119119775086999342}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4723de4a1ca9fe428d94ae39de30bdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
 --- !u!1001 &4233730808385802517
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1351,6 +1366,90 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[1].FirstKey
+      value: 306
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[2].FirstKey
+      value: 306
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[1].SecondKey
+      value: 109
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[2].SecondKey
+      value: 108
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[1].Cheat.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[2].Cheat.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[1].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[2].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[1].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3119119775086999347}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[2].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3119119775086999347}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[1].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[2].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[1].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeEssence
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[2].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeEssence
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[1].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[2].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[1].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[2].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[1].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090610912284375274, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _cheatCodes.Array.data[2].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6367747585085238351, guid: b73eded718488c54abbb56df165aacf5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

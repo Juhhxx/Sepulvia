@@ -93,17 +93,19 @@ public class Character
         get => _currentStance;
         set
         {
+            var tmp = _currentStance;
+
             if (value > MaxStance) _currentStance = MaxStance;
             else if (value <= 0) _currentStance = 0;
             else _currentStance = value;
 
-            OnStanceChange?.Invoke(_currentStance, MaxStance);
+            OnStanceChange?.Invoke(_currentStance, MaxStance, tmp);
 
             if (_currentStance == 0) OnStanceLost?.Invoke();
         }
     }
 
-    public Action<int, int> OnStanceChange;
+    public Action<int, int, int> OnStanceChange;
     public Action OnStanceLost;
 
     [SerializeField] private int _baseStanceRecover;
