@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class InventorySlotManager : MonoBehaviour
 {
@@ -31,5 +32,22 @@ public class InventorySlotManager : MonoBehaviour
             _itemAmountTMP.text = "";
             _itemAmountTMP.transform.parent.gameObject.SetActive(false);
         }
+    }
+
+    // Animations
+
+    private float _scaleAmount = 1.15f;
+    private float _animDuration = 0.5f;
+
+    public void DoSlotSelectAnim()
+    {
+        if (_itemImage == null) return;
+        _itemImage.transform.DOScale(Vector3.one * _scaleAmount, _animDuration).SetEase(Ease.OutElastic);
+    }
+
+    public void DoSlotDeselectAnim()
+    {
+        if (_itemImage == null) return;
+        _itemImage.transform.DOScale(Vector3.one, _animDuration).SetEase(Ease.OutElastic);
     }
 }
