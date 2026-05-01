@@ -11,8 +11,15 @@ public class ItemInfo : ScriptableObject
 
     [field: SerializeField] public int StackMaximum { get; private set; }
     [field: SerializeField] public bool CanBeUsedInBattle { get; private set; }
+    [field: SerializeField] public bool CanBeSold { get; private set; }
 
     [field: SerializeField] public ItemTypes Type { get; private set; }
+
+    [field: Space(10)]
+    [field: Header("Item Shop Value")]
+    [field: Space(5)]
+    [field: ShowIf("CanBeSold")]
+    [field: SerializeField] public int Value { get; private set; }
 
     [field: Space(10)]
     [field: Header("Immidiate Effect Item Parameters")]

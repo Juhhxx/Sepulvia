@@ -80,22 +80,34 @@ public class PlayerOverworldUI : MonoBehaviour
 
         _updateValueCR = StartCoroutine(UpdateValueCR(tmp, value));
     }
-    Coroutine _updateValueCR = null;
+    private Coroutine _updateValueCR = null;
+    private float _waitTime = 0.025f;
     private IEnumerator UpdateValueCR(TextMeshProUGUI tmp, int targetValue)
     {
         while (int.Parse(tmp.text) != targetValue)
         {
             int currentValue = int.Parse(tmp.text);
 
-            if (currentValue < targetValue) currentValue++;
-            else if (currentValue > targetValue) currentValue--;
+            int distance = Mathf.Abs(targetValue - currentValue);
+
+            int step = Mathf.Max(1, distance / 5);
+
+            Debug.Log(step, this);
+
+            if (currentValue < targetValue) currentValue += step;
+            else if (currentValue > targetValue) currentValue -= step;
 
             tmp.text = currentValue.ToString();
             tmp.transform.DOScale(Vector3.one * 1.25f, 0.1f).OnComplete(() => tmp.transform.DOScale(Vector3.one, 0.1f));
 
-            _player.OnEssenceChange?.Invoke();
+            // _player.OnEssenceChange?.Invoke();
 
-            yield return new WaitForSeconds(0.01f);
+            // float waitTime = _waitTimeBase / (1f + distance * 0.1f);
+            // waitTime = Mathf.Clamp(waitTime, 0.005f, _waitTimeBase);
+
+            // Debug.Log(waitTime, this);
+
+            yield return new WaitForSeconds(_waitTime);
         }
 
         _updateValueCR = null;

@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour, IPausable
         (PlayerCharacter as Player).ChangeEssence(amount);
         OnEssenceChange?.Invoke();
     }
+    public int Essence => (PlayerCharacter as Player).Essence;
 
     // Immunity
     [SerializeField] private float _immunityTime = 1f;
