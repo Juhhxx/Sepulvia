@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,10 +8,6 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private int _shopSize = 4;
 
     [SerializeField] private Canvas _shopCanvas;
-    [SerializeField] private GameObject _buyPanel;
-    [SerializeField] private GameObject _sellPanel;
-    [SerializeField] private GameObject _upgradesPanel;
-    [SerializeField] private GameObject _soulsPanel;
 
     [SerializeField] private Button _buyButton;
     [SerializeField] private Button _sellButton;
@@ -19,7 +16,6 @@ public class ShopManager : MonoBehaviour
 
 
     [SerializeField] private ShopUIManager _shopUIManager;
-    [SerializeField] private InventoryUIManager _inventoryUIManager;
     [SerializeField] private List<ItemInfo> _possibleItems;
 
     private PlayerController _player;
@@ -32,56 +28,45 @@ public class ShopManager : MonoBehaviour
         Souls
     }
 
+    [Serializable]
+    public struct Upgrade
+    {
+        public Stats Stat;
+        public Sprite Icon;
+    }
+    [SerializeField] private List<Upgrade> _possibleUpgrades;
+
     private void Start()
     {
         _player = FindAnyObjectByType<PlayerController>();
 
-        _buyButton.onClick.AddListener(() => ToggleShopPanel(ShopState.Buy));
-        _sellButton.onClick.AddListener(() => ToggleShopPanel(ShopState.Sell));
-        _upgradesButton.onClick.AddListener(() => ToggleShopPanel(ShopState.Upgrades));
-        _soulsButton.onClick.AddListener(() => ToggleShopPanel(ShopState.Souls));
+        _buyButton.onClick.AddListener(() => _shopUIManager.ToggleShopPanel(ShopState.Buy));
+        _sellButton.onClick.AddListener(() => _shopUIManager.ToggleShopPanel(ShopState.Sell));
+        _upgradesButton.onClick.AddListener(() => _shopUIManager.ToggleShopPanel(ShopState.Upgrades));
+        _soulsButton.onClick.AddListener(() => _shopUIManager.ToggleShopPanel(ShopState.Souls));
 
         _shopUIManager.CreateShopBuyDisplays(_shopSize);
         _shopUIManager.CreateShopSellDisplays(_player.PlayerCharacter.Inventory.MaxInventorySpaces);
+        _shopUIManager.CreateShopUpgradeDisplays(_possibleUpgrades.Count);
 
-        ToggleShop(true);
+        _shopUIManager.ToggleShop(true);
+        SetUpShop();
     }
 
-    public void ToggleShop(bool onOff)
+    private void SetUpShop()
     {
-        _shopCanvas.gameObject.SetActive(onOff);
-        ToggleShopPanel(ShopState.Buy);
-    }
-
-    public void ToggleShopPanel(ShopState state)
-    {
-        _buyPanel.SetActive(state == ShopState.Buy);
-        _sellPanel.SetActive(state == ShopState.Sell);
-        _upgradesPanel.SetActive(state == ShopState.Upgrades);
-        _soulsPanel.SetActive(state == ShopState.Souls);
-
-        switch (state)
-        {
-            case ShopState.Buy:
-                SetUpShopBuy();
-                break;
-            case ShopState.Sell:
-                SetUpShopSell();
-                break;
-            case ShopState.Upgrades:
-                break;
-            case ShopState.Souls:
-                break;
-        }
+        SetUpShopBuy();
+        SetUpShopSell();
+        SetUpShopUpgrades();
     }
 
     private void SetUpShopBuy()
     {
-        List<ItemInfo> items = new List<ItemInfo>();
+        var items = new List<ItemInfo>();
 
         for (int i = 0; i < _shopSize; i++)
         {
-            items.Add(_possibleItems[Random.Range(0, _possibleItems.Count)]);
+            items.Add(_possibleItems[UnityEngine.Random.Range(0, _possibleItems.Count)]);
         }
 
         _shopUIManager.UpdateShopBuyDisplays(items);
@@ -97,7 +82,11 @@ public class ShopManager : MonoBehaviour
 
                 bool hasBought = BuyItem(items[index]);
 
-                if (hasBought) buttons[index].GetComponent<ShopDisplayManager>().DoDisplayPurchaseAnim();
+                if (hasBought)
+                {
+                    buttons[index].GetComponent<ShopDisplayManager>().DoDisplayPurchaseAnim();
+                    _shopUIManager.SpawnItemAnim(items[index].Sprite, ScreenToCanvas(Input.mousePosition));
+                }
                 else buttons[index].GetComponent<ShopDisplayManager>().DoDisplayNotEnoughAnim();
 
             });
@@ -143,9 +132,76 @@ public class ShopManager : MonoBehaviour
         }
     }
 
+    private void SetUpShopUpgrades()
+    {
+        _shopUIManager.UpdateShopUpgradeDisplays(_possibleUpgrades, _player.PlayerCharacter);
+
+        var buttons = _shopUIManager.GetButtonsUpgrades();
+        for (int i = 0; i < buttons.Count; i++)
+        {
+            int index = i;
+
+            if (index < _possibleUpgrades.Count)
+            {
+                Upgrade upgrade = _possibleUpgrades[index];
+
+                (int cost, int amountGained) = _player.PlayerCharacter.LevelUpCost(upgrade.Stat);
+
+                ShopUpgradeManager display = buttons[i].GetComponent<ShopUpgradeManager>();
+
+                buttons[i].enabled = true;
+                buttons[i].onClick.RemoveAllListeners();
+                buttons[i].onClick.AddListener(() =>
+                {
+                    bool hasBought = BuyUpgrade(upgrade.Stat);
+
+                    if (hasBought)
+                    {
+                        display.DoDisplayPurchaseAnim();
+                    }
+                    else
+                    {
+                        display.DoDisplayNotEnoughAnim();
+                    }
+                });
+
+                PointerButtonEvents pointerEvents = buttons[i].GetComponent<PointerButtonEvents>();
+
+                (int statLevel, int statValue) = _player.PlayerCharacter.GetStatLevelValue(upgrade.Stat);
+
+                pointerEvents.OnPointerEnterEvent.RemoveAllListeners();
+                pointerEvents.OnPointerEnterEvent.AddListener(() =>
+                {
+                    display.ShowUpgrade(cost, amountGained, statLevel, statValue);
+                    display.DoDisplaySelectAnim();
+                });
+
+                pointerEvents.OnPointerExitEvent.RemoveAllListeners();
+                pointerEvents.OnPointerExitEvent.AddListener(() =>
+                {
+                    display.UpdateDisplay(statLevel, statValue);
+                    display.DoDisplayDeselectAnim();
+                    display.ResetSelection();
+                });
+
+                if (pointerEvents.IsPointerOver)
+                {
+                    display.ShowUpgrade(cost, amountGained, statLevel, statValue);
+                }
+
+            }
+            else
+            {
+                buttons[i].enabled = false;
+                buttons[i].onClick.RemoveAllListeners();
+            }
+        }
+    }
+
+
     public bool BuyItem(ItemInfo item)
     {
-        if (_player.Essence >= item.Value)
+        if (_player.Essence >= item.Value && !_player.PlayerCharacter.Inventory.IsFull())
         {
             _player.ChangeEssence(-item.Value);
             _player.PlayerCharacter.Inventory.AddItem(item);
@@ -158,8 +214,39 @@ public class ShopManager : MonoBehaviour
 
     public void SellItem(ItemStack stack)
     {
-        _player.ChangeEssence(stack.Item.Value / 2);
+        _player.ChangeEssence(stack.Item.Value / 2); // Selling gives back half the value
         _player.PlayerCharacter.Inventory.RemoveItem(stack);
         SetUpShopSell();
+    }
+
+    public bool BuyUpgrade(Stats stat)
+    {
+        (int cost, _) = _player.PlayerCharacter.LevelUpCost(stat);
+
+        if (_player.Essence >= cost)
+        {
+            _player.ChangeEssence(-cost);
+            _player.PlayerCharacter.LevelUpStat(stat);
+
+            SetUpShopUpgrades();
+
+            return true;
+        }
+        return false;
+    }
+
+    private Vector2 ScreenToCanvas(Vector2 screenPos)
+    {
+        RectTransform canvasRect = _shopCanvas.GetComponent<RectTransform>();
+        Camera _uiCamera = _shopCanvas.worldCamera;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            screenPos,
+            _uiCamera, 
+            out Vector2 localPoint
+        );
+
+        return localPoint;
     }
 }

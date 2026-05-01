@@ -76,17 +76,24 @@ public class Character
     [Space(10)]
     [Header("Character Stats")]
     [Space(5)]
+    // Base Speed
     [SerializeField] private int _baseSpeed;
-    public int Speed => _baseSpeed + GetModifierBonus(Stats.Speed) + GetEquipmentBonus(Stats.Speed);
+    public int Speed => _baseSpeed + GetModifierBonus(Stats.Speed) + GetEquipmentBonus(Stats.Speed) + GetStatLevelBonus(Stats.Speed);
+    private int _speedLevel = 1;
+    public int SpeedLevel => _speedLevel;
 
+    // Base Stance
     [SerializeField] private int _baseStance;
-    public int MaxStance => _baseStance + GetModifierBonus(Stats.Stance) + GetEquipmentBonus(Stats.Stance);
+    public int MaxStance => _baseStance + GetModifierBonus(Stats.Stance) + GetEquipmentBonus(Stats.Stance) + GetStatLevelBonus(Stats.Stance);
+    private int _stanceLevel = 1;
+    public int StanceLevel => _stanceLevel;
 
     public void SetBaseStance(int stance)
     {
         _baseStance = stance;
     }
 
+    // Current Stance
     [SerializeField, ReadOnly] private int _currentStance;
     public int CurrentStance
     {
@@ -99,7 +106,7 @@ public class Character
             else if (value <= 0) _currentStance = 0;
             else _currentStance = value;
 
-            OnStanceChange?.Invoke(_currentStance, MaxStance, tmp);
+            if(tmp != _currentStance) OnStanceChange?.Invoke(_currentStance, MaxStance, tmp);
 
             if (_currentStance == 0) OnStanceLost?.Invoke();
         }
@@ -108,11 +115,14 @@ public class Character
     public Action<int, int, int> OnStanceChange;
     public Action OnStanceLost;
 
+    // Stance Recover
     [SerializeField] private int _baseStanceRecover;
     public int StanceRecover => _baseStanceRecover + GetModifierBonus(Stats.StanceGain) + GetEquipmentBonus(Stats.StanceGain);
 
+    // Pull Strength
     public int PullStrenghtBonus => GetModifierBonus(Stats.PullStrength) + GetEquipmentBonus(Stats.PullStrength);
 
+    // Modifiers
     [Space(10)]
     [Header("Character Stats Modifiers")]
     [Space(5)]
@@ -147,6 +157,7 @@ public class Character
         return bonus;
     }
 
+    // Equipment
     public void CheckEquipment()
     {
         if (Inventory == null) return;
@@ -176,6 +187,108 @@ public class Character
         }
 
         return bonus;
+    }
+
+    // Stat Levels
+    private int _maxStatLevel = 10;
+
+    public (int, int) GetStatLevelValue(Stats stat)
+    {
+        int level = 0;
+        int amount = 0;
+
+        switch (stat)
+        {
+            case Stats.Speed:
+                level = _speedLevel;
+                amount = Speed;
+                break;
+            case Stats.Stance:
+                level = _stanceLevel;
+                amount = MaxStance;
+                break;
+        }
+
+        return (level, amount);
+    }
+    public void LevelUpStat(Stats stat)
+    {
+        switch (stat)
+        {
+            case Stats.Speed:
+                if (_speedLevel < _maxStatLevel) _speedLevel++;
+                break;
+            case Stats.Stance:
+                if (_stanceLevel < _maxStatLevel)
+                {
+                    _stanceLevel++;
+                    CurrentStance = MaxStance;
+                }
+                break;
+        }
+    }
+
+    public (int, int) LevelUpCost(Stats stat)
+    {
+        int cost = 0;
+        int amountGained = 0;
+
+        switch (stat)
+        {
+            case Stats.Speed:
+                cost = LevelUpCostFormula(_speedLevel, _baseSpeed, 50);
+                amountGained = LevelBonusFormula(_speedLevel + 1, _baseSpeed, 50) - LevelBonusFormula(_speedLevel, _baseSpeed, 50);
+                break;
+            case Stats.Stance:
+                cost = LevelUpCostFormula(_stanceLevel, _baseStance, 100);
+                amountGained = LevelBonusFormula(_stanceLevel + 1, _baseStance, 100) - LevelBonusFormula(_stanceLevel, _baseStance, 100);
+                break;
+        }
+
+        return (cost, amountGained);
+    }
+
+    private int GetStatLevelBonus(Stats stat)
+    {
+        int bonus = 0;
+
+        switch (stat)
+        {
+            case Stats.Speed:
+                bonus = LevelBonusFormula(_speedLevel, _baseSpeed, 50); // Assuming 50 is the max amount for Speed
+                break;
+            case Stats.Stance:
+                bonus = LevelBonusFormula(_stanceLevel, _baseStance, 100); // Assuming 100 is the max amount for Stance
+                break;
+        }
+
+        return bonus;
+    }
+
+    private int LevelBonusFormula(int level, int baseAmount, int maxAmount)
+    {
+        float bonusf = RawLevelBonusFormula(level, baseAmount, maxAmount);
+        int bonus = Mathf.RoundToInt(bonusf / 5f) * 5; // Round to nearest 5
+
+        return bonus - baseAmount;
+    }
+    private float RawLevelBonusFormula(int level, int baseAmount, int maxAmount)
+    {
+        float t = (level - 1f) / (_maxStatLevel - 1f);
+        float bonus = baseAmount * Mathf.Pow(maxAmount / baseAmount, t);
+
+        return bonus;
+    }
+
+    private int LevelUpCostFormula(int level, int baseAmount, int maxAmount)
+    {
+        int baseCost = 5; // base cost for amount gained
+        float t = 1.3f; 
+
+        float difference = RawLevelBonusFormula(level + 1, baseAmount, maxAmount) - RawLevelBonusFormula(level, baseAmount, maxAmount);
+        float costf = baseCost * Mathf.Pow(difference, t);
+
+        return Mathf.RoundToInt(costf / 5f) * 5; // Round to nearest 5
     }
 
     [field: Space(10)]

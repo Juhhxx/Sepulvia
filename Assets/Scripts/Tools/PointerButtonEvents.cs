@@ -8,6 +8,8 @@ public class PointerButtonEvents : MonoBehaviour, IPointerEnterHandler, IPointer
     public UnityEvent OnPointerExitEvent;
     public UnityEvent OnPointerDownEvent;
 
+    public bool IsPointerOver { get; private set; }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         OnPointerDownEvent?.Invoke();
@@ -16,10 +18,12 @@ public class PointerButtonEvents : MonoBehaviour, IPointerEnterHandler, IPointer
     public void OnPointerEnter(PointerEventData eventData)
     {
         OnPointerEnterEvent?.Invoke();
+        IsPointerOver = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         OnPointerExitEvent?.Invoke();
+        IsPointerOver = false;
     }
 }

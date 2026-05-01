@@ -92,8 +92,6 @@ public class PlayerOverworldUI : MonoBehaviour
 
             int step = Mathf.Max(1, distance / 5);
 
-            Debug.Log(step, this);
-
             if (currentValue < targetValue) currentValue += step;
             else if (currentValue > targetValue) currentValue -= step;
 
