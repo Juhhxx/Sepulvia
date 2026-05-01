@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
 {
     [SerializeField] private BattleManager _battleManager;
+    [SerializeField] private float _timeBeforeBattleStart = 0.5f;
     [SerializeField] private List<PartyInfo> _possibleEncounters;
 
     PlayerController _player;
@@ -32,6 +32,12 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
 
     private void DoEncounter(Party party)
     {
+        StartCoroutine(DoEncounterCR(party));
+    }
+    private IEnumerator DoEncounterCR(Party party)
+    {
+        yield return new WaitForSeconds(_timeBeforeBattleStart);
+
         Debug.Log($"[Encounter Manager] Doing encounter with {party.PartyName}", this);
 
         GameSceneManager.Instance.CurrentGameScene = GameSceneManager.GameSceneTypes.Battle;
@@ -40,6 +46,7 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
 
         _player.InBattle = true;
     }
+
     public void DoRandomEncounter()
     {
         Party party = _possibleEncounters[Random.Range(0, _possibleEncounters.Count)].Instantiate();
