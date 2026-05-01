@@ -166,6 +166,8 @@ public class InventoryUIManager : MonoBehaviour
         {
             _panelTitle.text = $"{item.Name}";
             _panelDescription.text = $"{item.Description}";
+
+            if (item.CanBeSold) _panelDescription.text += $"\n\n<color=#11F227FF>Sell Value: {item.Value / 2} Essence</color>";
         }
         
         _itemInfoPanel.SetActive(onOff);

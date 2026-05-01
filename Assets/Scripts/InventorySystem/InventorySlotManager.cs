@@ -7,6 +7,12 @@ public class InventorySlotManager : MonoBehaviour
 {
     [SerializeField] private Image _itemImage;
     [SerializeField] private TextMeshProUGUI _itemAmountTMP;
+    [SerializeField] private GameObject _selectionImage;
+
+    private void OnDisable()
+    {
+        _selectionImage.SetActive(false);
+    }
 
     public void UpdateSlot(Sprite sprite, int amount)
     {
@@ -15,7 +21,6 @@ public class InventorySlotManager : MonoBehaviour
 
         _itemAmountTMP.text = amount.ToString();
         _itemAmountTMP.transform.parent.gameObject.SetActive(true);
-
     }
 
     public void UpdateSlot(Sprite sprite)
