@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
@@ -20,9 +21,20 @@ public class ShopUIManager : MonoBehaviour
     [SerializeField] private GameObject _upgradesPanel;
     [SerializeField] private GameObject _soulsPanel;
 
+    public Action<ShopManager.ShopState> OnShopPanelToggle;
+
     public void ToggleShop(bool onOff)
     {
-        if (onOff) ToggleShopPanel(ShopManager.ShopState.Buy);
+        if (onOff)
+        {
+            PauseManager.Instance.Pause();
+            ToggleShopPanel(ShopManager.ShopState.Buy);
+        }
+        else
+        {
+            PauseManager.Instance.UnPause();
+        }
+        
 
         _shopCanvas.gameObject.SetActive(onOff);
     }
@@ -33,6 +45,8 @@ public class ShopUIManager : MonoBehaviour
         _sellPanel.SetActive(state == ShopManager.ShopState.Sell);
         _upgradesPanel.SetActive(state == ShopManager.ShopState.Upgrades);
         _soulsPanel.SetActive(state == ShopManager.ShopState.Souls);
+
+        OnShopPanelToggle?.Invoke(state);
     }
 
     // Buy Displays

@@ -17,6 +17,7 @@ public class ShopManager : MonoBehaviour
 
     [SerializeField] private ShopUIManager _shopUIManager;
     [SerializeField] private List<ItemInfo> _possibleItems;
+    private List<ItemInfo> _shopItems = new List<ItemInfo>();
 
     private PlayerController _player;
 
@@ -49,27 +50,48 @@ public class ShopManager : MonoBehaviour
         _shopUIManager.CreateShopSellDisplays(_player.PlayerCharacter.Inventory.MaxInventorySpaces);
         _shopUIManager.CreateShopUpgradeDisplays(_possibleUpgrades.Count);
 
-        _shopUIManager.ToggleShop(true);
-        SetUpShop();
+        _shopUIManager.ToggleShop(false);
+
+        _shopUIManager.OnShopPanelToggle += (ShopState state) => {
+            switch (state)
+            {
+                case ShopState.Buy:
+                    SetUpShopBuy();
+                    break;
+                case ShopState.Sell:
+                    SetUpShopSell();
+                    break;
+                case ShopState.Upgrades:
+                    SetUpShopUpgrades();
+                    break;
+                case ShopState.Souls:
+                    break;
+            }
+        };
     }
 
-    private void SetUpShop()
+    public void SetUpShop()
     {
         SetUpShopBuy();
         SetUpShopSell();
         SetUpShopUpgrades();
     }
 
-    private void SetUpShopBuy()
+    public void ChooseShopItems()
     {
-        var items = new List<ItemInfo>();
+        // For now, just randomly choose items. Later can implement some sort of item progression based on player progression or something
+        _shopItems.Clear();
 
         for (int i = 0; i < _shopSize; i++)
         {
-            items.Add(_possibleItems[UnityEngine.Random.Range(0, _possibleItems.Count)]);
+            int rnd = UnityEngine.Random.Range(0, _possibleItems.Count);
+            _shopItems.Add(_possibleItems[rnd]);
         }
+    }
 
-        _shopUIManager.UpdateShopBuyDisplays(items);
+    private void SetUpShopBuy()
+    {
+        _shopUIManager.UpdateShopBuyDisplays(_shopItems);
 
         _shopUIManager.GetButtonsBuy().ForEach(button => button.onClick.RemoveAllListeners());
 
@@ -80,12 +102,12 @@ public class ShopManager : MonoBehaviour
             Debug.Log("Adding listener to button " + i);
             buttons[i].onClick.AddListener(() => {
 
-                bool hasBought = BuyItem(items[index]);
+                bool hasBought = BuyItem(_shopItems[index]);
 
                 if (hasBought)
                 {
                     buttons[index].GetComponent<ShopDisplayManager>().DoDisplayPurchaseAnim();
-                    _shopUIManager.SpawnItemAnim(items[index].Sprite, ScreenToCanvas(Input.mousePosition));
+                    _shopUIManager.SpawnItemAnim(_shopItems[index].Sprite, ScreenToCanvas(Input.mousePosition));
                 }
                 else buttons[index].GetComponent<ShopDisplayManager>().DoDisplayNotEnoughAnim();
 
