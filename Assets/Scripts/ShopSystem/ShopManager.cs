@@ -16,6 +16,8 @@ public class ShopManager : MonoBehaviour
 
 
     [SerializeField] private ShopUIManager _shopUIManager;
+    [SerializeField] private ShopSoulUpgradeManager _shopSoulUpgradeManager;
+
     [SerializeField] private List<ItemInfo> _possibleItems;
     private List<ItemInfo> _shopItems = new List<ItemInfo>();
 
@@ -41,10 +43,9 @@ public class ShopManager : MonoBehaviour
     {
         _player = FindAnyObjectByType<PlayerController>();
 
-        _buyButton.onClick.AddListener(() => _shopUIManager.ToggleShopPanel(ShopState.Buy));
-        _sellButton.onClick.AddListener(() => _shopUIManager.ToggleShopPanel(ShopState.Sell));
-        _upgradesButton.onClick.AddListener(() => _shopUIManager.ToggleShopPanel(ShopState.Upgrades));
-        _soulsButton.onClick.AddListener(() => _shopUIManager.ToggleShopPanel(ShopState.Souls));
+        SetUpButtons();
+        _shopSoulUpgradeManager.SetUp(_player.PlayerCharacter.Inventory);
+        _shopSoulUpgradeManager.OnSelectDeselectSouls += ToggleItemInfoPanel;
 
         _shopUIManager.CreateShopBuyDisplays(_shopSize);
         _shopUIManager.CreateShopSellDisplays(_player.PlayerCharacter.Inventory.MaxInventorySpaces);
@@ -65,9 +66,56 @@ public class ShopManager : MonoBehaviour
                     SetUpShopUpgrades();
                     break;
                 case ShopState.Souls:
+                    _shopSoulUpgradeManager.CreateAvailableSouls(_player.PlayerCharacter.Inventory);
+                    _shopSoulUpgradeManager.SetUpAvailableSouls();
+                    _shopSoulUpgradeManager.SetUpSoulButtons();
                     break;
             }
         };
+    }
+
+    private void SetUpButtons()
+    {
+        _buyButton.onClick.AddListener(() =>
+        {
+            _shopUIManager.ToggleShopPanel(ShopState.Buy);
+            _shopUIManager.DoButtonClickAnim(_buyButton);
+        });
+        _buyButton.GetComponent<PointerButtonEvents>().OnPointerEnterEvent.AddListener(() => _shopUIManager.DoButtonSelectAnim(_buyButton));
+        _buyButton.GetComponent<PointerButtonEvents>().OnPointerExitEvent.AddListener(() => _shopUIManager.DoButtonDeselectAnim(_buyButton));
+
+        _sellButton.onClick.AddListener(() => {
+            _shopUIManager.ToggleShopPanel(ShopState.Sell);
+            _shopUIManager.DoButtonClickAnim(_sellButton);
+        });
+        _sellButton.GetComponent<PointerButtonEvents>().OnPointerEnterEvent.AddListener(() => _shopUIManager.DoButtonSelectAnim(_sellButton));
+        _sellButton.GetComponent<PointerButtonEvents>().OnPointerExitEvent.AddListener(() => _shopUIManager.DoButtonDeselectAnim(_sellButton));
+
+
+        _upgradesButton.onClick.AddListener(() => {
+            _shopUIManager.ToggleShopPanel(ShopState.Upgrades);
+            _shopUIManager.DoButtonClickAnim(_upgradesButton);
+        });
+        _upgradesButton.GetComponent<PointerButtonEvents>().OnPointerEnterEvent.AddListener(() => _shopUIManager.DoButtonSelectAnim(_upgradesButton));
+        _upgradesButton.GetComponent<PointerButtonEvents>().OnPointerExitEvent.AddListener(() => _shopUIManager.DoButtonDeselectAnim(_upgradesButton));
+
+        _soulsButton.onClick.AddListener(() => {
+            _shopUIManager.ToggleShopPanel(ShopState.Souls);
+            _shopUIManager.DoButtonClickAnim(_soulsButton);
+        });
+        _soulsButton.GetComponent<PointerButtonEvents>().OnPointerEnterEvent.AddListener(() => _shopUIManager.DoButtonSelectAnim(_soulsButton));
+        _soulsButton.GetComponent<PointerButtonEvents>().OnPointerExitEvent.AddListener(() => _shopUIManager.DoButtonDeselectAnim(_soulsButton));
+    }
+
+    private void Update()
+    {
+        Vector2 canvasPos = ScreenToCanvas(Input.mousePosition);
+        _shopUIManager.MoveItemInfoPanel(canvasPos);
+    }
+
+    private void ToggleItemInfoPanel(bool onOff, ItemInfo item = null)
+    {
+        _shopUIManager.ToggleItemInfo(onOff, item);
     }
 
     public void SetUpShop()
@@ -99,7 +147,6 @@ public class ShopManager : MonoBehaviour
         for (int i = 0; i < buttons.Count; i++)
         {
             int index = i;
-            Debug.Log("Adding listener to button " + i);
             buttons[i].onClick.AddListener(() => {
 
                 bool hasBought = BuyItem(_shopItems[index]);
@@ -110,8 +157,15 @@ public class ShopManager : MonoBehaviour
                     _shopUIManager.SpawnItemAnim(_shopItems[index].Sprite, ScreenToCanvas(Input.mousePosition));
                 }
                 else buttons[index].GetComponent<ShopDisplayManager>().DoDisplayNotEnoughAnim();
-
             });
+
+            PointerButtonEvents pointerEvents = buttons[i].GetComponent<PointerButtonEvents>();
+
+            pointerEvents.OnPointerEnterEvent.RemoveListener(() => ToggleItemInfoPanel(true, _shopItems[index]));
+            pointerEvents.OnPointerEnterEvent.AddListener(() => ToggleItemInfoPanel(true, _shopItems[index]));
+
+            pointerEvents.OnPointerExitEvent.RemoveListener(() => ToggleItemInfoPanel(false));
+            pointerEvents.OnPointerExitEvent.AddListener(() => ToggleItemInfoPanel(false));
         }
     }
 
@@ -139,18 +193,23 @@ public class ShopManager : MonoBehaviour
                 buttons[i].onClick.RemoveAllListeners();
                 buttons[i].onClick.AddListener(() =>
                 {
-                    Debug.Log("Selling " + stack.Item.Name);
                     SellItem(stack);
                 });
             }
             else
             {
                 buttons[i].enabled = false;
-                Color c = Color.white;
-                c.a = 0.35f;
-                buttons[i].transform.GetChild(0).GetComponent<Image>().color = c;
                 buttons[i].onClick.RemoveAllListeners();
+                buttons[i].GetComponent<InventorySlotManager>().SetDisabled();
             }
+
+            PointerButtonEvents pointerEvents = buttons[i].GetComponent<PointerButtonEvents>();
+
+            pointerEvents.OnPointerEnterEvent.RemoveListener(() => ToggleItemInfoPanel(true, stack.Item));
+            pointerEvents.OnPointerEnterEvent.AddListener(() => ToggleItemInfoPanel(true, stack.Item));
+
+            pointerEvents.OnPointerExitEvent.RemoveListener(() => ToggleItemInfoPanel(false));
+            pointerEvents.OnPointerExitEvent.AddListener(() => ToggleItemInfoPanel(false));
         }
     }
 
@@ -223,10 +282,9 @@ public class ShopManager : MonoBehaviour
 
     public bool BuyItem(ItemInfo item)
     {
-        if (_player.Essence >= item.Value && !_player.PlayerCharacter.Inventory.IsFull())
+        if (_player.Essence >= item.Value && _player.PlayerCharacter.Inventory.AddItem(item))
         {
             _player.ChangeEssence(-item.Value);
-            _player.PlayerCharacter.Inventory.AddItem(item);
 
             return true;
         }

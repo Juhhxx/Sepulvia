@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
+using DG.Tweening;
 
 public class ShopUIManager : MonoBehaviour
 {
@@ -20,8 +22,28 @@ public class ShopUIManager : MonoBehaviour
     [SerializeField] private GameObject _sellPanel;
     [SerializeField] private GameObject _upgradesPanel;
     [SerializeField] private GameObject _soulsPanel;
+    private GameObject _currentPanel;
+
+    [SerializeField] private GameObject _buySelectionImage;
+    [SerializeField] private GameObject _sellSelectionImage;
+    [SerializeField] private GameObject _upgradesSelectionImage;
+    [SerializeField] private GameObject _soulsSelectionImage;
+    private GameObject _currentSelectionImage;
+
+
+    [SerializeField] private GameObject _itemInfoPanel;
+    [SerializeField] private TextMeshProUGUI _panelTitle;
+    [SerializeField] private TextMeshProUGUI _panelDescription;
 
     public Action<ShopManager.ShopState> OnShopPanelToggle;
+
+    private void Start()
+    {
+        _buyPanel.SetActive(false);
+        _sellPanel.SetActive(false);
+        _upgradesPanel.SetActive(false);
+        _soulsPanel.SetActive(false);
+    }
 
     public void ToggleShop(bool onOff)
     {
@@ -34,17 +56,41 @@ public class ShopUIManager : MonoBehaviour
         {
             PauseManager.Instance.UnPause();
         }
-        
 
         _shopCanvas.gameObject.SetActive(onOff);
     }
 
     public void ToggleShopPanel(ShopManager.ShopState state)
     {
-        _buyPanel.SetActive(state == ShopManager.ShopState.Buy);
-        _sellPanel.SetActive(state == ShopManager.ShopState.Sell);
-        _upgradesPanel.SetActive(state == ShopManager.ShopState.Upgrades);
-        _soulsPanel.SetActive(state == ShopManager.ShopState.Souls);
+        _currentPanel?.SetActive(false);
+        _currentSelectionImage?.SetActive(false);
+
+        switch (state)
+        {
+            case ShopManager.ShopState.Buy:
+                _currentPanel = _buyPanel;
+                _currentSelectionImage = _buySelectionImage;
+                break;
+
+            case ShopManager.ShopState.Sell:
+                _currentPanel = _sellPanel;
+                _currentSelectionImage = _sellSelectionImage;
+                break;
+
+            case ShopManager.ShopState.Upgrades:
+                _currentPanel = _upgradesPanel;
+                _currentSelectionImage = _upgradesSelectionImage;
+                break;
+
+            case ShopManager.ShopState.Souls:
+                _currentPanel = _soulsPanel;
+                _currentSelectionImage = _soulsSelectionImage;
+                break;
+        }
+
+        _currentPanel.SetActive(true);
+        _currentSelectionImage.SetActive(true);
+        DoPanelOpenAnim(_currentPanel);
 
         OnShopPanelToggle?.Invoke(state);
     }
@@ -98,7 +144,7 @@ public class ShopUIManager : MonoBehaviour
         for (int i = 0; i < inventory.MaxInventorySpaces; i++)
         {
             ItemStack stack = (i < inventory.ItemSlots.Count) ? inventory.ItemSlots[i] : null;
-            InventorySlotManager display = _shopSellDisplays[i].GetComponent<InventorySlotManager>();
+            InventorySlotManager display = _shopSellDisplays[i];
 
             if (stack != null) display.UpdateSlot(stack.Item.Sprite, stack.Amount);
             else display.UpdateSlot();
@@ -147,4 +193,50 @@ public class ShopUIManager : MonoBehaviour
         anim.GetComponent<ShopItemAnimation>().DoItemAnim(sprite, _shopItemAnimFinalPosition.position);
     }
 
+    public void ToggleItemInfo(bool onOff, ItemInfo item = null)
+    {
+        if (onOff)
+        {
+            _panelTitle.text = $"{item.Name}";
+            _panelDescription.text = $"{item.Description}";
+
+            if (item.CanBeSold) _panelDescription.text += $"\n\n<color=#11F227FF>Sell Value: {item.Value / 2} Essence</color>";
+        }
+        
+        _itemInfoPanel.SetActive(onOff);
+    }
+    public void MoveItemInfoPanel(Vector3 position)
+    {
+        _itemInfoPanel.GetComponent<RectTransform>().anchoredPosition = position;
+    }
+
+    // Animations
+
+    public void DoPanelOpenAnim(GameObject panel)
+    {
+        panel.transform.localScale = Vector3.zero;
+        panel.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
+    }
+
+    public void DoPanelCloseAnim(GameObject panel, Action onComplete = null)
+    {
+        panel.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack).OnComplete(() => onComplete());
+    }
+
+    public void DoButtonClickAnim(Button button)
+    {
+        button.transform.DOScale(Vector3.one * 1f, 0.1f).SetEase(Ease.OutSine).OnComplete(() =>
+        {
+            button.transform.DOScale(Vector3.one * 1.1f, 0.1f).SetEase(Ease.OutSine);
+        });
+    }
+
+    public void DoButtonSelectAnim(Button button)
+    {
+        button.transform.DOScale(Vector3.one * 1.1f, 0.2f).SetEase(Ease.Linear);
+    }
+    public void DoButtonDeselectAnim(Button button)
+    {
+        button.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.Linear);
+    }
 }

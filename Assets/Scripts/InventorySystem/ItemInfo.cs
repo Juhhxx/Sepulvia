@@ -56,6 +56,9 @@ public class ItemInfo : ScriptableObject
     [field: SerializeField] public MoveInfo ChangeTo { get; private set; }
     private bool IsMoveEquip => Type == ItemTypes.Equippable && EquipmentType == EquipmentType.MoveModidier;
 
+    [field: ShowIf("Type", ItemTypes.Equippable)]
+    [field: SerializeField] public ItemInfo Upgrade { get; private set; }
+
 
     [field: Space(10)]
     [field: Header("Item Description")]

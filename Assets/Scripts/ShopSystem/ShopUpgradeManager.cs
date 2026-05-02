@@ -18,6 +18,8 @@ public class ShopUpgradeManager : MonoBehaviour
         _statValueTMP.text = $"{statValue}";
         _statIconImage.sprite = statIcon;
 
+        _statIconImage.color = Color.white;
+        
         _upgradeCostTMP.gameObject.SetActive(false);
     }
 
@@ -26,16 +28,21 @@ public class ShopUpgradeManager : MonoBehaviour
         _statLevelTMP.text = $"Level {statLevel}";
         _statValueTMP.text = $"{statValue}";
 
+        _statIconImage.color = Color.white;
+
         _upgradeCostTMP.gameObject.SetActive(false);
     }
 
     public void ShowUpgrade(int upgradeCost, int amountGained, int statLevel, int statValue)
     {
         _upgradeCostTMP.text = $"{upgradeCost}";
+
         _upgradeCostTMP.gameObject.SetActive(true);
 
         _statLevelTMP.text = $"Level {statLevel} -> <color=green>Level {statLevel + 1}</color>";
         _statValueTMP.text = $"{statValue} -> <color=green>{statValue + amountGained}</color>";
+
+        _statIconImage.color = Color.green;
     }
 
     public void ResetSelection() => MenuManager.Instance.ResetSelection();
@@ -56,7 +63,7 @@ public class ShopUpgradeManager : MonoBehaviour
 
     public void DoDisplayPurchaseAnim()
     {
-        transform.DOShakeRotation(_animDuration, new Vector3(0, 0, 15), 10, 90).SetEase(Ease.Linear);
+        transform.DOShakeRotation(_animDuration, new Vector3(0, 0, 5), 10, 90).SetEase(Ease.Linear);
     }
 
     public void DoDisplayNotEnoughAnim()

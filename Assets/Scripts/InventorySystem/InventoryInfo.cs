@@ -31,6 +31,7 @@ public class InventoryInfo : ScriptableObject
     }
 }
 
+[System.Serializable]
 public class Inventory
 {
     public Inventory(InventoryInfo info)
@@ -49,15 +50,26 @@ public class Inventory
         CheckEquipment();
     }
 
+    public Inventory(int maxInventorySpaces, int maxEquipmentSpaces)
+    {
+        MaxInventorySpaces = maxInventorySpaces;
+        ItemSlots = new List<ItemStack>();
+
+        MaxEquipmentSpaces = maxEquipmentSpaces;
+        EquipmentSlots = new List<ItemInfo>();
+    }
+
     [field: Space(10)]
     [field: Header("Character Inventory")]
     [field: Space(5)]
     [field: SerializeField, ReadOnly] public int MaxInventorySpaces { get; private set; }
     [field: SerializeField, ReadOnly] public List<ItemStack> ItemSlots { get; private set; }
 
-    public bool IsFull()
+    public bool IsFull(bool considerStacks = true)
     {
         if (ItemSlots.Count < MaxInventorySpaces) return false;
+
+        if (!considerStacks) return true;
 
         foreach (ItemStack stack in ItemSlots)
         {
@@ -120,7 +132,7 @@ public class Inventory
             {
                 stack.RemoveItem();
 
-                if (stack.Amount == 0)
+                if (stack.Amount <= 0)
                 {
                     ItemSlots.Remove(stack);
                 }
@@ -136,7 +148,7 @@ public class Inventory
 
         stack.RemoveItem();
 
-        if (stack.Amount == 0)
+        if (stack.Amount <= 0)
         {
             ItemSlots.Remove(stack);
         }

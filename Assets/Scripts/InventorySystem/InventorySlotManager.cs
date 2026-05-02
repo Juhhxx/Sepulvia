@@ -19,7 +19,14 @@ public class InventorySlotManager : MonoBehaviour
         _itemImage.sprite = sprite;
         _itemImage.color = Color.white;
 
+        if (_itemAmountTMP.text != "")
+        {
+            int previousAmount = int.Parse(_itemAmountTMP.text);
+            if (previousAmount != amount) DoAmountChangeAnim();
+        }
+        
         _itemAmountTMP.text = amount.ToString();
+
         _itemAmountTMP.transform.parent.gameObject.SetActive(true);
     }
 
@@ -39,9 +46,15 @@ public class InventorySlotManager : MonoBehaviour
         }
     }
 
+    public void SetDisabled()
+    {
+        if (_itemImage != null) _itemImage.color = new Color(1f, 1f, 1f, 0.35f);
+    }
+
     // Animations
 
     private float _scaleAmount = 1.15f;
+    private float _scaleAmountNumber = 1.25f;
     private float _animDuration = 0.5f;
 
     public void DoSlotSelectAnim()
@@ -54,5 +67,15 @@ public class InventorySlotManager : MonoBehaviour
     {
         if (_itemImage == null) return;
         _itemImage.transform.DOScale(Vector3.one, _animDuration).SetEase(Ease.OutElastic);
+    }
+
+    public void DoAmountChangeAnim()
+    {
+        if (_itemAmountTMP == null) return;
+
+        _itemAmountTMP.transform.DOScale(Vector3.one * _scaleAmountNumber, 0.1f).SetEase(Ease.OutElastic).OnComplete(() =>
+        {
+            _itemAmountTMP.transform.DOScale(Vector3.one, 0.1f).SetEase(Ease.Linear);
+        });
     }
 }
