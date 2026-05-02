@@ -1,7 +1,7 @@
 using NaughtyAttributes;
 using UnityEngine;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System;
 
 [CreateAssetMenu(fileName = "Move", menuName = "Battle System/New Move")]
 public class MoveInfo : ScriptableObject
@@ -52,6 +52,7 @@ public class MoveInfo : ScriptableObject
     }
 }
 
+[Serializable]
 public class Move
 {
     public Move(MoveInfo info)

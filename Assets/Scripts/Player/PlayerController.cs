@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class PlayerController : MonoBehaviour, IPausable
 {
     [SerializeField, Expandable] public PartyInfo _playerParty;
-    public Party PlayerParty { get; private set; }
+    [field: SerializeField] public Party PlayerParty { get; private set; }
 
     // Player Party never has more than 1 character
     public Character PlayerCharacter => PlayerParty.PartyMembers[0];
@@ -130,6 +130,7 @@ public class PlayerController : MonoBehaviour, IPausable
         PauseManager.Instance?.UnregisterPausable(this);
     }
 
+
     private void Update()
     {
         if (Paused) return;
@@ -199,5 +200,10 @@ public class PlayerController : MonoBehaviour, IPausable
     public void TogglePause(bool onOff)
     {
         Paused = onOff;
+
+        if (Paused)
+        {
+            _playerMovement.SetVelocity(Vector3.zero);
+        }
     }
 }

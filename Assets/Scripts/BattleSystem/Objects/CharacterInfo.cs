@@ -38,6 +38,7 @@ public class CharacterInfo : ScriptableObject
     }
 }
 
+[Serializable]
 public class Character
 {
     public Character(CharacterInfo info)
