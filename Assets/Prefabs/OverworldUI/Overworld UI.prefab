@@ -614,6 +614,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1068,6 +1069,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1436,7 +1438,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 0.95686275, g: 0.20392156, b: 0.42063656, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1846,7 +1848,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 26.200012, y: -41.899994}
-  m_SizeDelta: {x: 68, y: 28}
+  m_SizeDelta: {x: 74, y: 29}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &8675971650358078060
 CanvasRenderer:
@@ -2301,17 +2303,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6852691509016082143}
-  m_LocalRotation: {x: -0, y: -0, z: -0.06975647, w: 0.9975641}
+  m_LocalRotation: {x: 0, y: 0, z: -0.043619405, w: 0.9990483}
   m_LocalPosition: {x: 0, y: 0, z: -2.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7640120349714481772}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -8}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -5}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14.600006, y: 0.40000153}
-  m_SizeDelta: {x: 38.3, y: 21.4}
+  m_AnchoredPosition: {x: 15.459999, y: 1.1400003}
+  m_SizeDelta: {x: 25, y: 21.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2565905488817929232
 CanvasRenderer:
@@ -2341,7 +2343,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 118
+  m_text: 9999
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d5ad3e5f6b0ef0944a47b89c013f304e, type: 2}
   m_sharedMaterial: {fileID: -3157542531589667730, guid: d5ad3e5f6b0ef0944a47b89c013f304e, type: 2}
@@ -2368,17 +2370,18 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 17.4
-  m_fontSizeBase: 17.4
+  m_fontSize: 17
+  m_fontSizeBase: 17
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2677,12 +2680,14 @@ MonoBehaviour:
   _stanceTMP: {fileID: 2219887773702496116}
   _essenceTMP: {fileID: 7104770261369252549}
   _soulFragmentsTMP: {fileID: 6249772758581154460}
+  _equipmentParent: {fileID: 578172446022009817}
   _equipmentSlots: {fileID: 4477106752263178101}
+  _dashParent: {fileID: 7923581495136440180}
   _dashTimerImage: {fileID: 4327412073432332736}
   _showDashTimer: 1
   _scrollingText: {fileID: 770974823710812680}
   _scrollingSpeed: 0.065
-  _scrollingTextThreshold: 150
+  _scrollingTextThreshold: 250
   _testText: SEPULVIA IS THE BEST GAME EVER!
   _textToAdd: 
 --- !u!1 &9013054228862865887
@@ -2788,6 +2793,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
