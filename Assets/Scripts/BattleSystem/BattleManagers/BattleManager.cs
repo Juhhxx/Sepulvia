@@ -111,9 +111,7 @@ public class BattleManager : MonoBehaviour
         _dialogueManager.SetUpDialogueManager();
 
         _pullManager.TogglePullUI(true);
-        _pullManager.SpawnHeart();
-        _pullManager.SpawnBarSections((_enemyParty.PartySize * 5) + 5);
-        _pullManager.SetHeartInMiddle();
+        _pullManager.SetUp(enemyParty);
         _pullManager.ResetEvents();
 
         _pullManager.OnSelectBar += () => _selectingBar = false;
