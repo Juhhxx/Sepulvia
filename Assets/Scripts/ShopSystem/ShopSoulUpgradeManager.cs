@@ -17,7 +17,9 @@ public class ShopSoulUpgradeManager : MonoBehaviour
     public void SetUp(Inventory playerInventory)
     {
         _playerInventory = playerInventory;
+
         OnChangeSouls += () => {
+            Debug.Log("SOULS CHANGED");
             _shopSoulUpgradeUIManager.UpdateSoulUpgradeSlots(_soulsForUpgrade);
             CheckUpgrade();
         };
@@ -37,6 +39,7 @@ public class ShopSoulUpgradeManager : MonoBehaviour
         foreach (ItemStack stack in availableSouls) for (int i = 0; i < stack.Amount; i++) _temporaryInventory.AddItem(stack.Item);
 
         _shopSoulUpgradeUIManager.CreateAvailableSouls(_temporaryInventory.ItemSlots.Count);
+        CheckUpgrade();
     }
     public void UpdateAvailableSouls()
     {
@@ -163,6 +166,8 @@ public class ShopSoulUpgradeManager : MonoBehaviour
 
     private void CheckUpgrade()
     {
+        Debug.Log("CHEKING UPGRADES");
+
         PointerButtonEvents soulResultEvents = _shopSoulUpgradeUIManager.SoulUpgradeResultButton.GetComponent<PointerButtonEvents>();
 
         if (_soulsForUpgrade[0] != null && _soulsForUpgrade[1] != null)
@@ -171,7 +176,9 @@ public class ShopSoulUpgradeManager : MonoBehaviour
             {
                 if (_soulsForUpgrade[0].Upgrade != null)
                 {
+                    Debug.Log("UPGRADE SUCCESSFUL");
                     _shopSoulUpgradeUIManager.UpdateSoulUpgradeResultSlot(_soulsForUpgrade[0].Upgrade);
+
                     _shopSoulUpgradeUIManager.SoulUpgradeResultButton.onClick.RemoveAllListeners();
                     _shopSoulUpgradeUIManager.SoulUpgradeResultButton.onClick.AddListener(() =>
                     {
@@ -214,6 +221,8 @@ public class ShopSoulUpgradeManager : MonoBehaviour
         }
 
         _shopSoulUpgradeUIManager.SoulUpgradeResultButton.onClick.RemoveAllListeners();
+        _shopSoulUpgradeUIManager.SoulUpgradeResultButton.onClick.RemoveAllListeners();
+        soulResultEvents.OnPointerEnterEvent.RemoveAllListeners();
         _shopSoulUpgradeUIManager.UpdateSoulUpgradeResultSlot();
     }
 

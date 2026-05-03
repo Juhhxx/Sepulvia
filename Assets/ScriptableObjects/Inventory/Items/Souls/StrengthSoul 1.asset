@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b3849e9688085e241940703948ee8e3e, type: 3}
-  m_Name: Respawn
+  m_Name: StrengthSoul 1
   m_EditorClassIdentifier: Assembly-CSharp::ItemInfo
-  <Name>k__BackingField: Savepoint
-  <Sprite>k__BackingField: {fileID: 21300000, guid: 4136d069ebc933c45bd6f877bfb319cd, type: 3}
-  <StackMaximum>k__BackingField: 1
+  <Name>k__BackingField: Strength Soul II
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 1e5adc3bc3afa074194160f95f8afb47, type: 3}
+  <StackMaximum>k__BackingField: 10
   <CanBeUsedInBattle>k__BackingField: 0
-  <Type>k__BackingField: 3
+  <CanBeSold>k__BackingField: 1
+  <Type>k__BackingField: 2
+  <Value>k__BackingField: 400
   <Stat>k__BackingField: 0
   <Amount>k__BackingField: 0
   <Modifier>k__BackingField:
@@ -27,8 +29,11 @@ MonoBehaviour:
     <Sprite>k__BackingField: {fileID: 0}
   <EquipmentType>k__BackingField: 0
   <StatEquip>k__BackingField: 0
-  <AmountEquip>k__BackingField: 0
-  <MoveIndex>k__BackingField: 0
-  <ChangeTo>k__BackingField: {fileID: 0}
-  <Description>k__BackingField: A mystical object that can be used to save your progress
-    outside of battle.
+  <AmountEquip>k__BackingField: 4
+  <MoveIndex>k__BackingField: 2
+  <ChangeTo>k__BackingField: {fileID: 11400000, guid: b561c1d2eb0a9504aa17f7df5888954b, type: 2}
+  <Upgrade>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: 'A foe''s soul that can be equipped to modify your
+    move set.
+
+    Amplefies your Pull Str. by 4.'

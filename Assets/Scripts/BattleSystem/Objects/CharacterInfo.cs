@@ -268,6 +268,8 @@ public class Character
 
     private int LevelBonusFormula(int level, int baseAmount, int maxAmount)
     {
+        if (level == 1) return 0;
+        
         float bonusf = RawLevelBonusFormula(level, baseAmount, maxAmount);
         int bonus = Mathf.RoundToInt(bonusf / 5f) * 5; // Round to nearest 5
 
