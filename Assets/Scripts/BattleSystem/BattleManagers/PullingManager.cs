@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Collections;
 
-public class PullingManager : MonoBehaviour, IRandom
+public class PullingManager : RandomBehaviour
 {
     // GameObjects
     [SerializeField] private PullingUIManager _pullingUIManager;
@@ -52,8 +52,7 @@ public class PullingManager : MonoBehaviour, IRandom
     // Set Up
     public void SetUp(Party enemyParty)
     {
-        if (_random == null) SeedManager.Instance.RegisterRandom(this, transform.GetPath());
-
+        if (_random == null) TryInitializeRandom();
 
         //  Calculate number of sections based on enemy party
         _sectionsNumber = (enemyParty.PartySize * 5) + 5;
@@ -198,10 +197,4 @@ public class PullingManager : MonoBehaviour, IRandom
         return stopMovement;
     }
 
-    // IRandom Implementation
-    private System.Random _random;
-    public void InitializeRandom(int seed)
-    {
-        _random = new System.Random(seed);
-    }
 }

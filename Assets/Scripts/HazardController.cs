@@ -2,7 +2,7 @@ using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
 
-public class HazardController : MonoBehaviour, IPausable, IRandom
+public class HazardController : RandomBehaviour, IPausable
 {
     [SerializeField] private ParticleSystem _hazardEffect;
     [SerializeField] private Collider _hazardCollider;
@@ -11,7 +11,8 @@ public class HazardController : MonoBehaviour, IPausable, IRandom
     private void OnEnable()
     {
         PauseManager.Instance.RegisterPausable(this);
-        SeedManager.Instance.RegisterRandom(this, transform.GetPath());
+        
+        TryInitializeRandom();
 
         _hazardCollider.enabled = false;
         StartCoroutine(PlayHazardCR());
@@ -24,6 +25,7 @@ public class HazardController : MonoBehaviour, IPausable, IRandom
 
     private IEnumerator PlayHazardCR()
     {
+        yield return new WaitUntil(() => _random != null);
         while (true)
         {
             float t = (float)_random.NextDouble();
@@ -64,12 +66,5 @@ public class HazardController : MonoBehaviour, IPausable, IRandom
                 _hazardEffect.Pause();
             }
         }
-    }
-
-    // IRandom Implementation
-    System.Random _random;
-    public void InitializeRandom(int seed)
-    {
-        _random = new System.Random(seed);
     }
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RoomInstance : MonoBehaviour, IRandom
+public class RoomInstance : RandomBehaviour
 {
     [field: SerializeField] public RoomData RoomData { get; set; }
     [field: SerializeField] public Transform Spawnposition { get; private set; }
@@ -24,23 +24,18 @@ public class RoomInstance : MonoBehaviour, IRandom
     public List<EnemyData> GetRoomEnemyDatas() => _roomEnemyDataList;
     public void SetRoomEnemyDatas(List<EnemyData> enemyDataList) => _roomEnemyDataList = enemyDataList;
 
+    public System.Random Random => _random;
+
     private void Awake()
     {
         _doorList = GetComponentsInChildren<Door>().ToList();
         _pathList = GetComponentsInChildren<Path>().ToList();
     }
+
     public void SetUp(RoomData data)
     {
-        SeedManager.Instance.RegisterRandom(this, transform.GetPath());
-        gameObject.name = data.RoomName + "_" + _seed;
-    }
-
-    public System.Random Random { get; private set; }
-    private int _seed;
-    public void InitializeRandom(int seed)
-    {
-        _seed = seed;
-        Random = new System.Random(seed);
+        gameObject.name = data.RoomName;
+        TryInitializeRandom();
     }
 }
 

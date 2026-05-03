@@ -72,7 +72,10 @@ public class PlayerController : MonoBehaviour, IPausable
     private SpriteRenderer _spriteRenderer;
     private Animator _anim;
 
-    // Player States
+    // Other Components
+    private EncounterManager _encounterManager;
+
+    // Player State Events
     public UnityEvent OnPlayerDamaged;
     public UnityEvent OnPlayerHealed;
     public UnityEvent OnEssenceChange;
@@ -84,13 +87,14 @@ public class PlayerController : MonoBehaviour, IPausable
         Debug.Log($"[Player Controller] Player Character : {PlayerCharacter.Name}", this);
 
         _playerMovement = GetComponent<PlayerMovement>();
+        _encounterManager = FindAnyObjectByType<EncounterManager>();
 
         PlayerCharacter.OnStanceLost += () =>
         {
             if (!InBattle)
             {
                 Debug.Log("[Player Controller] Player has fallen unconscious!", this);
-                EncounterManager.Instance.DoRandomEncounter();   
+                _encounterManager.DoRandomEncounter();   
             }
         };
 

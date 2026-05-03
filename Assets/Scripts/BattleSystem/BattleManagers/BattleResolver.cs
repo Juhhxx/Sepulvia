@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleResolver : MonoBehaviour, IRandom
+public class BattleResolver : RandomBehaviour
 {
     [SerializeField] private PullingManager _pullManager;
     [SerializeField] private InventoryResolver _inventoryResolver;
 
     private void Start()
     {
-        SeedManager.Instance.RegisterRandom(this, transform.GetPath());
+        TryInitializeRandom();
     }
 
     public void DoMove(Move move, Character user, Party target)
@@ -171,12 +171,5 @@ public class BattleResolver : MonoBehaviour, IRandom
         else DialogueManager.Instance.AddDialogue($"{user.Name} couldn't run from battle.");
 
         return result;
-    }
-
-    // IRandom Implementation
-    System.Random _random;
-    public void InitializeRandom(int seed)
-    {
-        _random = new System.Random(seed);
     }
 }

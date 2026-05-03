@@ -8,19 +8,21 @@ public class EncounterEntity : MonoBehaviour
     public Party EnemyParty { get; private set; }
 
     private bool _didEncounter = false;
+    private EncounterManager _encounterManager;
 
-    public event Action<Party> OnEncounterPlayer;
+    public event Action<Party, EncounterEntity> OnEncounterPlayer;
 
     private void Start()
     {
-        EncounterManager.Instance.RegisterEncounterable(this);
+        _encounterManager = FindAnyObjectByType<EncounterManager>();
+
+        _encounterManager.RegisterEncounterable(this);
         EnemyParty = _party.Instantiate();
     }
 
     private void OnDestroy()
     {
-        if (EncounterManager.Instance != null)
-            EncounterManager.Instance.UnregisterEncounterable(this);
+        _encounterManager.UnregisterEncounterable(this);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -29,8 +31,7 @@ public class EncounterEntity : MonoBehaviour
 
         if (p != null && !_didEncounter)
         {
-            OnEncounterPlayer?.Invoke(EnemyParty);
-            gameObject.SetActive(false);
+            OnEncounterPlayer?.Invoke(EnemyParty, this);
 
             _didEncounter = true;
         }

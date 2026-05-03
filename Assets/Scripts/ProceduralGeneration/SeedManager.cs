@@ -1,8 +1,9 @@
-using TMPro;
 using UnityEngine;
 using System;
 using System.Text;
 using NaughtyAttributes;
+using System.Linq;
+using System.Collections.Generic;
 
 public class SeedManager : MonoBehaviourSingleton<SeedManager>
 {
@@ -50,25 +51,34 @@ public class SeedManager : MonoBehaviourSingleton<SeedManager>
         _seed = UnityEngine.Random.Range(min, _seedMaxSize);
     }
 
-    public void RegisterRandom(IRandom random, string key)
+    public int GetSeed(string name, string key)
     {
-        int seed = Hash(key);
+        int seed = Hash(_seed, key);
 
-        random.InitializeRandom(seed);
+        Debug.Log($"[Seed Manager] {name} CREATED SEED : {seed}", this);
 
-        Debug.Log($"{key} CREATED SEED : {seed}");
+        return seed;
+    }
+    
+    public int GetSeed(string name, int providedSeed, string key)
+    {
+        int seed = Hash(providedSeed, key);
+
+        Debug.Log($"[Seed Manager] {name} CREATED SEED : {seed}", this);
+
+        return seed;
     }
 
     private const ulong FNV_OFFSET_BASIS = 0xcbf29ce484222325; // FNV offset basis
     private const ulong FNV_PRIME = 0x100000001b3; // FNV prime
 
     // FNV-1a hash function to create a deterministic hash from a string input, which can be used to generate a seed from a string
-    private int Hash(string input)
+    private int Hash(int seed, string input)
     {
         ulong hash = FNV_OFFSET_BASIS;
 
         // Taking base seed into account
-        hash ^= (ulong)_seed;
+        hash ^= (ulong)seed;
         hash *= FNV_PRIME;
 
         byte[] data = Encoding.UTF8.GetBytes(input);

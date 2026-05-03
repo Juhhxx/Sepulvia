@@ -3,7 +3,7 @@ using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
 
-public class EncounterManager : MonoBehaviourSingleton<EncounterManager>, IRandom
+public class EncounterManager : RandomBehaviour
 {
     [SerializeField] private BattleManager _battleManager;
     [SerializeField] private float _timeBeforeBattleStart = 0.5f;
@@ -13,8 +13,6 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>, IRando
 
     private void Awake()
     {
-        base.SingletonCheck(this, false);
-
         _player = FindAnyObjectByType<PlayerController>();
 
         _battleManager.OnBattleEnd += ReturnToOverworld;
@@ -22,7 +20,7 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>, IRando
 
     private void Start()
     {
-        SeedManager.Instance.RegisterRandom(this, transform.GetPath());
+        TryInitializeRandom();
     }
 
     public void RegisterEncounterable(EncounterEntity entity)
@@ -35,15 +33,17 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>, IRando
         entity.OnEncounterPlayer -= DoEncounter;
     }
 
-    private void DoEncounter(Party party)
+    private void DoEncounter(Party party, EncounterEntity entity = null)
     {
-        StartCoroutine(DoEncounterCR(party));
+        StartCoroutine(DoEncounterCR(party, entity));
     }
-    private IEnumerator DoEncounterCR(Party party)
+    private IEnumerator DoEncounterCR(Party party, EncounterEntity entity)
     {
         yield return new WaitForSeconds(_timeBeforeBattleStart);
 
         Debug.Log($"[Encounter Manager] Doing encounter with {party.PartyName}", this);
+
+        entity?.gameObject.SetActive(false);
 
         GameSceneManager.Instance.CurrentGameScene = GameSceneManager.GameSceneTypes.Battle;
 
@@ -66,11 +66,5 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>, IRando
         GameSceneManager.Instance.CurrentGameScene = GameSceneManager.GameSceneTypes.Overworld;
 
         _player.InBattle = false;
-    }
-    // IRandom Implementation
-    System.Random _random;
-    public void InitializeRandom(int seed)
-    {
-        _random = new System.Random(seed);
     }
 }

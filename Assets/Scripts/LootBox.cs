@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LootBox : MonoBehaviour, IInteractable, IRandom
+public class LootBox : RandomBehaviour, IInteractable
 {
     [SerializeField] private int _uses = 1;
     private int _currentUses = 0;
@@ -52,12 +52,6 @@ public class LootBox : MonoBehaviour, IInteractable, IRandom
         }
     }
 
-    private System.Random _random;
-    public void InitializeRandom(int seed)
-    {
-        _random = new System.Random(seed);
-    }
-
     private void Start()
     {
         CanInteract = true;
@@ -74,6 +68,6 @@ public class LootBox : MonoBehaviour, IInteractable, IRandom
 
         _outlineMaterials[_outlineMaterials.Length - 1] = _outline;
 
-        SeedManager.Instance.RegisterRandom(this, transform.GetPath());
+        TryInitializeRandom();
     }
 }
