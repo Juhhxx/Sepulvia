@@ -172,6 +172,8 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         PlayerCharacter.CurrentStance -= damage;
 
+        CameraEffectsUtility.DoCameraShake(0.5f, 1.5f);
+
         ToggleHurt(true, damageSource);
     }
     private void ToggleHurt(bool onOff, Transform damageSource = null)

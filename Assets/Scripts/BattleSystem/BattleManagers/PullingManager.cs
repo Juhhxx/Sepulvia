@@ -28,7 +28,7 @@ public class PullingManager : MonoBehaviour, IRandom
     public void SetSelectedIndex(int index)
     {
         SelectedIndex = index;
-        OnSelectBar?.Invoke();
+        OnSelectBar?.Invoke(index);
     }
 
     private void SetUpBarButtons()
@@ -42,7 +42,7 @@ public class PullingManager : MonoBehaviour, IRandom
     }
 
     // Events
-    public event Action OnSelectBar;
+    public event Action<int> OnSelectBar;
     public event Action<bool> OnHeartEnd;
     public void ResetEvents()
     {
@@ -55,7 +55,7 @@ public class PullingManager : MonoBehaviour, IRandom
     {
         if (_random == null) SeedManager.Instance.RegisterRandom(this, transform.GetPath());
 
-        
+
         //  Calculate number of sections based on enemy party
         _sectionsNumber = (enemyParty.PartySize * 5) + 5;
 
@@ -78,12 +78,12 @@ public class PullingManager : MonoBehaviour, IRandom
 
             _currentHeartIndex = (_sectionsNumber / 2) + rnd;
 
-            _pullingUIManager.MoveHeart(_currentHeartIndex);
+            _pullingUIManager.MoveHeart(_currentHeartIndex, false);
         }
         else
         {
             _currentHeartIndex = (_sectionsNumber / 2) + 1;
-            _pullingUIManager.MoveHeart(_currentHeartIndex);
+            _pullingUIManager.MoveHeart(_currentHeartIndex, false);
         }
     }
 

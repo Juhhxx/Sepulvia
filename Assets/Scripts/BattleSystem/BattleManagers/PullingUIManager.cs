@@ -3,9 +3,11 @@ using UnityEngine.UI;
 using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class PullingUIManager : MonoBehaviour
 {
+    [Header("UI Parameters")]
     [SerializeField] Canvas _canvas;
     [SerializeField] GameObject _heartPrefab;
     [SerializeField] GameObject _pullBarPrefab;
@@ -13,10 +15,19 @@ public class PullingUIManager : MonoBehaviour
     [SerializeField, Range(-540, 540), OnValueChanged("SpawnBarSections")] float _barY = -410f;
     [SerializeField, OnValueChanged("SpawnBarSections")] int _divNumb;
     [SerializeField, OnValueChanged("SpawnBarSections")] int _padding;
-    private float _heartHeightPadding = 100;
+    [SerializeField] private float _heartHeightPadding = 100f;
+    
+    [Header("UI Animation Parameters")]
+    [SerializeField] private float _pullHeartAnimSpeed = 1f;
+    [SerializeField] private Ease _pullHeartAnimEase = Ease.InOutElastic;
+    [SerializeField] private float _defaultHeartAnimSpeed = 1f;
+    [SerializeField] private float _defaultHeartAnimMove = 0.5f;
+    [SerializeField] private Ease __defaultHeartAnimEase = Ease.InOutFlash;
+
 
     private List<GameObject> _spawnedObjects = new List<GameObject>();
     private GameObject _spawnedHeart;
+    private RectTransform _heartTrans;
 
     private List<BarSection> _barSectionList = new List<BarSection>();
     public List<BarSection> GetBarSections() => _barSectionList;
@@ -34,10 +45,18 @@ public class PullingUIManager : MonoBehaviour
         if (_spawnedHeart != null) return;
 
         _spawnedHeart = Instantiate(_heartPrefab, _canvas.transform);
+        _heartTrans = _spawnedHeart.GetComponent<RectTransform>();
+
+        DoHearthDefaultAnim();
     }
-    public void MoveHeart(int posotion)
+    public void MoveHeart(int position, bool doAnim = true)
     {
-        _spawnedHeart.GetComponent<RectTransform>().anchoredPosition = _barSectionList[posotion].HeartPosition;
+        if (doAnim)
+        {
+            DoHeathMoveAnim(_barSectionList[position].HeartPosition);
+        }
+        else _heartTrans.anchoredPosition = _barSectionList[position].HeartPosition;
+        
     }
 
     private BarSection _lastBar = null;
@@ -117,5 +136,18 @@ public class PullingUIManager : MonoBehaviour
             }
             else section.Button.enabled = false;
         }
+    }
+
+    // Animations
+    public void DoHeathMoveAnim(Vector3 position)
+    {
+        _heartTrans.DOAnchorPosX(position.x, _pullHeartAnimSpeed).SetEase(_pullHeartAnimEase);
+        CameraEffectsUtility.DoCameraShake(0.5f, 0.5f, _pullHeartAnimSpeed / 2);
+    }
+    public void DoHearthDefaultAnim()
+    {
+        Vector3 pos = _heartTrans.anchoredPosition;
+
+        _heartTrans.DOAnchorPosY(pos.y + _defaultHeartAnimMove, _defaultHeartAnimSpeed).SetEase(__defaultHeartAnimEase).SetLoops(-1, LoopType.Yoyo);
     }
 }

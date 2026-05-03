@@ -705,6 +705,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 8072954173581285941, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1085,14 +1089,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 394929926367270097, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 394929926367270097, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 394929926367270097, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 861394593955332362, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 6227151378590199371}
-    - target: {fileID: 2209899652498141366, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
-      propertyPath: _pullingUIManager
-      value: 
-      objectReference: {fileID: 4233730808385802521}
+    - target: {fileID: 2943644374158572412, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3249903681144182330, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4466942169018796873, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1109,6 +1129,10 @@ PrefabInstance:
       propertyPath: _inventoryResolver
       value: 
       objectReference: {fileID: 1919745060}
+    - target: {fileID: 7126547466146119950, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8665088232080352009, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: _inventoryUIManager
       value: 
@@ -1156,45 +1180,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6254085409230276564, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4233730808385802521}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
 --- !u!20 &4233730808385802518 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 3249903681144182330, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
   m_PrefabInstance: {fileID: 4233730808385802517}
   m_PrefabAsset: {fileID: 0}
---- !u!223 &4233730808385802519 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 1362937764477177308, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
-  m_PrefabInstance: {fileID: 4233730808385802517}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4233730808385802520 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6254085409230276564, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
-  m_PrefabInstance: {fileID: 4233730808385802517}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4233730808385802521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4233730808385802520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bbd6bb12cd2d01498e6123077f3852b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PullingUIManager
-  _canvas: {fileID: 4233730808385802519}
-  _heartPrefab: {fileID: 4202190986578470864, guid: 6a2db4eb242664b44a1ee32dde88ca73, type: 3}
-  _pullBarPrefab: {fileID: 4491539405369718068, guid: 6cc0252a73eb1b04e91d957150862e6e, type: 3}
-  _barsTotalWidth: 1500
-  _barY: -438
-  _divNumb: 20
-  _padding: 0
 --- !u!1001 &4422031724750490373
 PrefabInstance:
   m_ObjectHideFlags: 0

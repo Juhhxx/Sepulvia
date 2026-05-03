@@ -102,7 +102,7 @@ public class BattleResolver : MonoBehaviour
 
     private void ApplyBarModifier(Move move)
     {
-        _pullManager.BarSections[SelectedBar].AddBarModifier(move.Modifier);
+        _pullManager.BarSections[move.BarSection].AddBarModifier(move.Modifier);
     }
 
     public void UseItem(ItemInfo item, Character user)

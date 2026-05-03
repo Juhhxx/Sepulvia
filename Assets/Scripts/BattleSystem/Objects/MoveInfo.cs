@@ -124,6 +124,8 @@ public class Move
     [field: Space(5)]
     [field: ShowIf("Type", MoveTypes.Modifier)]
     [field: SerializeField, ReadOnly] public BarModifier Modifier { get; private set; }
+    [field: SerializeField, ReadOnly] public int BarSection { get; private set; }
+    public void SetBarSection(int index) => BarSection = index;
 
     [field: Space(10)]
     [field: Header("Move Description")]
