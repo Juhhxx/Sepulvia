@@ -17,7 +17,8 @@ public class PlayerOverworldUI : MonoBehaviour
     [SerializeField] private GameObject _equipmentSlots;
 
     [SerializeField] private GameObject _dashParent;
-    [SerializeField] private Image _dashTimerImage;
+    [SerializeField] private Image _dashTimerImageRightHalf;
+    [SerializeField] private Image _dashTimerImageLeftHalf;
     [SerializeField] private bool _showDashTimer = true;
 
     [SerializeField] private TextMeshProUGUI _scrollingText;
@@ -49,7 +50,9 @@ public class PlayerOverworldUI : MonoBehaviour
         _scrollingText.text = "";
         StartCoroutine(ScrollTextCR());
 
-        if (!_showDashTimer) _dashTimerImage.gameObject.SetActive(false);
+        if (!_showDashTimer) _dashTimerImageRightHalf.gameObject.SetActive(false);
+        if (!_showDashTimer) _dashTimerImageLeftHalf.gameObject.SetActive(false);
+
     }
 
     private void Update()
@@ -72,8 +75,12 @@ public class PlayerOverworldUI : MonoBehaviour
     {
         _soulFragmentsTMP.text = "0";
 
-        _dashTimerImage.fillAmount = 1 - _player.DashCooldownTime;
-        if (_player.CanDash) _dashTimerImage.fillAmount = 1;
+        _dashTimerImageRightHalf.fillAmount = 1 - _player.DashCooldownTime;
+        _dashTimerImageLeftHalf.fillAmount = 1 - _player.DashCooldownTime;
+
+        if (_player.CanDash) _dashTimerImageRightHalf.fillAmount = 1;
+        if (_player.CanDash) _dashTimerImageLeftHalf.fillAmount = 1;
+
     }
 
     private void UpdateValue(TextMeshProUGUI tmp, string text)
