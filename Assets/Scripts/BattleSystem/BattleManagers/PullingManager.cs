@@ -21,7 +21,6 @@ public class PullingManager : MonoBehaviour, IRandom
 
     // Hearth Variables
     private int _currentHeartIndex;
-    private GameObject _spawnedHeart;
 
     // Bar Selection Logic
     [field: SerializeField, ReadOnly] public int SelectedIndex { get; private set; }
@@ -111,8 +110,6 @@ public class PullingManager : MonoBehaviour, IRandom
                 }
             }
 
-            float sectionWidth = section.Image.rectTransform.sizeDelta.x;
-
             var tmp = _currentHeartIndex;
 
             if (positive) tmp++;
@@ -120,14 +117,14 @@ public class PullingManager : MonoBehaviour, IRandom
 
             if (tmp < 0)
             {
-                _spawnedHeart.GetComponent<RectTransform>().anchoredPosition = section.HeartPosition + (Vector3.left * sectionWidth);
+                _pullingUIManager.MoveHeart(tmp);
                 OnHeartEnd?.Invoke(true);
                 IsMoving = false;
                 yield break;
             }
             else if (tmp >= _barSectionList.Count)
             {
-                _spawnedHeart.GetComponent<RectTransform>().anchoredPosition = section.HeartPosition + (Vector3.right * sectionWidth);;
+                _pullingUIManager.MoveHeart(tmp);
                 OnHeartEnd?.Invoke(false);
                 IsMoving = false;
                 yield break;

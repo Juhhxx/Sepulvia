@@ -1,38 +1,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawnManager : MonoBehaviour, IRandom
+public class EnemySpawnManager : MonoBehaviour
 {
-    [SerializeField] private Transform _roomTransform;
     [SerializeField] private List<GameObject> _enemyPool;
+    private List<GameObject> _createdEnemies = new List<GameObject>();
 
-    private void Start()
+    public List<EnemyData> GenerateEnemies(List<Path> paths, int maxEnemies, System.Random random)
     {
-        SeedManager.Instance.RegisterRandom(this, transform.GetPath());
-    }
+        List<EnemyData> generatedEnemies = new List<EnemyData>();
 
-    public void SpawnEnemies(List<Path> paths, int maxEnemies)
-    {
-        int numEnemies = _random.Next(maxEnemies);
+        int numEnemies = random.Next(1, maxEnemies + 1);
         var availablePaths = new List<Path>(paths);
 
         for (int i = 0; i < numEnemies; i++)
         {
-            int pathIdx = _random.Next(availablePaths.Count);
+            int pathIdx = random.Next(availablePaths.Count);
             Path path = availablePaths[pathIdx];
             
-            int enemyIdx = _random.Next(_enemyPool.Count);
-            GameObject enemy = Instantiate(_enemyPool[enemyIdx], _roomTransform);
+            int enemyIdx = random.Next(_enemyPool.Count);
+            GameObject enemy = _enemyPool[enemyIdx];
 
-            EnemyBrain enemyBrain = enemy.GetComponent<EnemyBrain>();
-            enemyBrain.SetPath(path);
+            generatedEnemies.Add(new EnemyData(enemy, path));
         }
+
+        return generatedEnemies;
     }
 
-    // IRandom Implmentation
-    private System.Random _random;
-    public void InitializeRandom(int seed)
+    public void SpawnEnemies(List<EnemyData> enemyDataList, Transform enemiesParent)
     {
-        _random = new System.Random(seed);
+        foreach (GameObject go in _createdEnemies) Destroy(go);
+        _createdEnemies.Clear();
+
+        foreach (EnemyData e in enemyDataList)
+        {
+            EnemyBrain enemyBrain = Instantiate(e.Enemy, enemiesParent).GetComponent<EnemyBrain>();
+
+            enemyBrain.SetPath(e.Path);
+
+            _createdEnemies.Add(enemyBrain.gameObject);
+        }
     }
 }

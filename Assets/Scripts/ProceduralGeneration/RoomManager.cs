@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class RoomManager : MonoBehaviourSingleton<RoomManager>
 {
-    [SerializeField] private RoomData startingRoom;
+    [SerializeField] private RoomData _startingRoom;
+    [SerializeField] private EnemySpawnManager _enemySpawner;
     [SerializeField] private NavMeshSurface _navMeshSurface;
 
     private RoomInstance _currentRoom;
@@ -30,14 +31,14 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
         _fadeAnimator = GetComponentInChildren<Animator>();
         _playerController = FindAnyObjectByType<PlayerController>();
 
-        LoadRoom(startingRoom);
+        LoadRoom(_startingRoom);
 
         _navMeshSurface.BuildNavMesh();
     }
 
     public void EnterDoor(RoomId doorId)
     {
-        var connection = _currentRoom.RoomData.connections
+        var connection = _currentRoom.RoomData.Connections
             .Find(c => c.doorId == doorId);
 
         if (connection == null)
@@ -68,14 +69,17 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
         }
         else
         {
-            GameObject roomGO = Instantiate(roomData.roomPrefab, transform);
+            GameObject roomGO = Instantiate(roomData.RoomPrefab, transform);
             _currentRoom = roomGO.GetComponent<RoomInstance>();
+            _currentRoom.SetUp(roomData);
 
             _loadedRooms.Add(roomData);
             _instantiatedRooms.Add(_currentRoom);
         }
 
         _currentRoom.RoomData = roomData;
+
+        SpawnEnemies(_currentRoom);
 
         if (targetId == RoomId.None)
             _playerController.transform.position = _currentRoom.Spawnposition.position;
@@ -97,5 +101,26 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
         yield return new WaitForEndOfFrame();
 
         _navMeshSurface.BuildNavMesh();
+    }
+
+    private void SpawnEnemies(RoomInstance roomInstance)
+    {
+        var paths = roomInstance.GetPaths();
+
+        if (paths.Count > 0)
+        {
+            Debug.Log($"SPAWNING ENEMIES FOR ROOM {roomInstance}");
+
+            var enemyDatas = roomInstance.GetRoomEnemyDatas();
+
+            if (enemyDatas == null)
+            {
+                enemyDatas = _enemySpawner.GenerateEnemies(paths, paths.Count, roomInstance.Random);
+
+                roomInstance.SetRoomEnemyDatas(enemyDatas);
+            }
+
+            _enemySpawner.SpawnEnemies(enemyDatas, roomInstance.EnemyParent);
+        }
     }
 }

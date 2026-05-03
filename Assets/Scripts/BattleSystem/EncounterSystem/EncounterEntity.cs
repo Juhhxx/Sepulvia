@@ -1,9 +1,10 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class EncounterEntity : MonoBehaviour
 {
-    [SerializeField] private PartyInfo _party;
+    [SerializeField, Expandable] private PartyInfo _party;
     public Party EnemyParty { get; private set; }
 
     private bool _didEncounter = false;

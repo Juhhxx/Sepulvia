@@ -16,6 +16,7 @@ public class PullingUIManager : MonoBehaviour
     [SerializeField, OnValueChanged("SpawnBarSections")] int _divNumb;
     [SerializeField, OnValueChanged("SpawnBarSections")] int _padding;
     [SerializeField] private float _heartHeightPadding = 100f;
+    private float _sectionWidth;
     
     [Header("UI Animation Parameters")]
     [SerializeField] private float _pullHeartAnimSpeed = 1f;
@@ -47,13 +48,15 @@ public class PullingUIManager : MonoBehaviour
         _spawnedHeart = Instantiate(_heartPrefab, _canvas.transform);
         _heartTrans = _spawnedHeart.GetComponent<RectTransform>();
 
-        DoHearthDefaultAnim();
+        DoHeartDefaultAnim();
     }
     public void MoveHeart(int position, bool doAnim = true)
     {
         if (doAnim)
         {
-            DoHeathMoveAnim(_barSectionList[position].HeartPosition);
+            if (position < 0) DoHeartMoveAnim(_barSectionList[position + 1].HeartPosition + (Vector3.left * _sectionWidth));
+            else if (position > _barSectionList.Count) DoHeartMoveAnim(_barSectionList[position - 1].HeartPosition + (Vector3.right * _sectionWidth));
+            else DoHeartMoveAnim(_barSectionList[position].HeartPosition);
         }
         else _heartTrans.anchoredPosition = _barSectionList[position].HeartPosition;
         
@@ -123,6 +126,8 @@ public class PullingUIManager : MonoBehaviour
             _spawnedObjects.Add(spawnedBar.gameObject);
         }
 
+        _sectionWidth = _barSectionList[0].Image.rectTransform.sizeDelta.x;
+
     }
 
     public void ToggleBarButtons(bool onOff)
@@ -139,12 +144,12 @@ public class PullingUIManager : MonoBehaviour
     }
 
     // Animations
-    public void DoHeathMoveAnim(Vector3 position)
+    public void DoHeartMoveAnim(Vector3 position)
     {
         _heartTrans.DOAnchorPosX(position.x, _pullHeartAnimSpeed).SetEase(_pullHeartAnimEase);
         CameraEffectsUtility.DoCameraShake(0.5f, 0.5f, _pullHeartAnimSpeed / 2);
     }
-    public void DoHearthDefaultAnim()
+    public void DoHeartDefaultAnim()
     {
         Vector3 pos = _heartTrans.anchoredPosition;
 

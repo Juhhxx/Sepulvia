@@ -111,7 +111,7 @@ public class EnemyBrain : MonoBehaviour, IPausable
             if (_movementeState == MovementType.Following) _memoryTimer.CountTimer();
         }
 
-        Debug.Log($"{name} - Direction: {Direction} Speed: {Speed}", this);
+        // Debug.Log($"{name} - Direction: {Direction} Speed: {Speed}", this);
     }
     private void LateUpdate()
     {

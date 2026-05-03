@@ -4,10 +4,11 @@ using System.Collections.Generic;
 [CreateAssetMenu(menuName = "Rooms/Room")]
 public class RoomData : ScriptableObject
 {
-    public GameObject roomPrefab;
+    public GameObject RoomPrefab;
+    public string RoomName;
 
     [Tooltip("Rooms you can go to from this room")]
-    public List<RoomConnection> connections;
+    public List<RoomConnection> Connections;
 }
 
 [System.Serializable]

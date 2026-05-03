@@ -10,11 +10,11 @@ public class HazardController : MonoBehaviour, IPausable, IRandom
 
     private void OnEnable()
     {
-        _hazardCollider.enabled = false;
-        StartCoroutine(PlayHazardCR());
-
         PauseManager.Instance.RegisterPausable(this);
         SeedManager.Instance.RegisterRandom(this, transform.GetPath());
+
+        _hazardCollider.enabled = false;
+        StartCoroutine(PlayHazardCR());
     }
 
     private void OnDisable()

@@ -68,6 +68,9 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
     public Vector3 Direction => _direction;
     public float Speed => _rb.linearVelocity.magnitude;
 
+    [SerializeField] private bool _doDebug;
+
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -78,10 +81,12 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
 
     private void Update()
     {
+        if (_path == null) return;
         if (_doCheck) CheckIfReached();
+
         UpdateMovement();
 
-        Debug.Log($"{_path.GetCurrentWaypoint()}", this);
+        if(_doDebug) Debug.Log($"{_path.GetCurrentWaypoint()}", this);
     }
 
     private void CheckIfReached()
@@ -96,6 +101,8 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
     }
     private void UpdateDirection()
     {
+        if (_path == null) return;
+        
         Vector3 dir = _path.GetNextWaypoint() - transform.position;
         
         dir.y = transform.position.y;
@@ -112,7 +119,7 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
 
         _direction = Vector3.zero;
 
-        Debug.Log($"Enemy {name} : Stopping at waypoint for {_stopTime} seconds.");
+        if(_doDebug) Debug.Log($"Enemy {name} : Stopping at waypoint for {_stopTime} seconds.");
 
         yield return new WaitForSeconds(_stopTime);
 
@@ -124,7 +131,7 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
 
         _direction = dir;
 
-        Debug.Log($"Enemy {name} : Changed Direction to {_direction}");
+        if(_doDebug) Debug.Log($"Enemy {name} : Changed Direction to {_direction}");
     }
 
     private void UpdateMovement()
