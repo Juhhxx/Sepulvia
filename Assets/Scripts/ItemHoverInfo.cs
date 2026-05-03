@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -5,25 +6,35 @@ using UnityEngine.UI;
 public class ItemHoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private ItemInfo _item;
-    private InventoryUIManager _inventoryUIManager;
     private bool _active = false;
+    public event Action<bool, ItemInfo> OnItemHover;
 
-    public void SetUpHover(ItemInfo item, InventoryUIManager inventoryManager)
+    public void SetUpHover(ItemInfo item, Action<bool, ItemInfo> toggle)
     {
         _item = item;
-        _inventoryUIManager = inventoryManager;
+
+        OnItemHover = toggle;
         _active = true;
+    }
+
+    public void SetUpHover(Action<bool, ItemInfo> toggle)
+    {
+        OnItemHover = toggle;
+        _active = false;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!_active) return;
+        if (!_active)
+        {
+            OnItemHover?.Invoke(false, null);
+            return;
+        }
         
-        _inventoryUIManager?.ToggleItemInfo(true, _item);
+        OnItemHover?.Invoke(true, _item);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (!_active) return;
-        _inventoryUIManager?.ToggleItemInfo(false);
+        OnItemHover?.Invoke(false, null);
     }
 }

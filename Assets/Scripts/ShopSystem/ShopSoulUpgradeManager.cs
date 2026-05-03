@@ -8,8 +8,9 @@ public class ShopSoulUpgradeManager : MonoBehaviour
     [SerializeField] private ShopSoulUpgradeUIManager _shopSoulUpgradeUIManager;
 
     private ItemInfo[] _soulsForUpgrade = new ItemInfo[2];
-    public Action OnChangeSouls;
-    public Action<bool, ItemInfo> OnSelectDeselectSouls;
+    public event Action OnChangeSouls;
+    public event Action<bool, ItemInfo> OnSelectDeselectSouls;
+    public event Action OnUpgradeDone;
 
     private Inventory _playerInventory;
     [SerializeField] private Inventory _temporaryInventory;
@@ -21,6 +22,8 @@ public class ShopSoulUpgradeManager : MonoBehaviour
         OnChangeSouls += () => {
             Debug.Log("SOULS CHANGED");
             _shopSoulUpgradeUIManager.UpdateSoulUpgradeSlots(_soulsForUpgrade);
+            UpdateAvailableSouls();
+            SetUpAvailableSouls();
             CheckUpgrade();
         };
     }
@@ -56,36 +59,12 @@ public class ShopSoulUpgradeManager : MonoBehaviour
 
             buttons[i].onClick.AddListener(() =>
             {
-                bool added = AddSoul(_temporaryInventory.ItemSlots[index].Item);
-
-                if (added)
-                {
-                    _temporaryInventory.ItemSlots[index].RemoveItem();
-
-                    UpdateAvailableSouls();
-                    SetUpAvailableSouls();
-                }
+                AddSoul(_temporaryInventory.ItemSlots[index].Item);
             });
 
-            PointerButtonEvents availableSoulPointerEvents = buttons[i].GetComponent<PointerButtonEvents>();
-            availableSoulPointerEvents.OnPointerEnterEvent.RemoveAllListeners();
-            availableSoulPointerEvents.OnPointerEnterEvent.AddListener(() =>
-            {
-                if (index < _temporaryInventory.ItemSlots.Count)
-                {
-                    ItemStack stack = _temporaryInventory.ItemSlots[index];
-                    if (stack != null) OnSelectDeselectSouls?.Invoke(true, stack.Item);
-                }
-            });
-            availableSoulPointerEvents.OnPointerExitEvent.RemoveAllListeners();
-            availableSoulPointerEvents.OnPointerExitEvent.AddListener(() =>
-            {
-                if (index < _temporaryInventory.ItemSlots.Count)
-                {
-                    ItemStack stack = _temporaryInventory.ItemSlots[index];
-                    if (stack != null) OnSelectDeselectSouls?.Invoke(false, null);
-                }
-            });
+            ItemHoverInfo itemHoverInfo = buttons[i].GetComponent<ItemHoverInfo>();
+
+            itemHoverInfo.SetUpHover(_temporaryInventory.ItemSlots[index].Item, OnSelectDeselectSouls);
         }
     }
 
@@ -138,15 +117,17 @@ public class ShopSoulUpgradeManager : MonoBehaviour
         if (_soulsForUpgrade[0] == null)
         {
             _soulsForUpgrade[0] = soul;
-            OnChangeSouls?.Invoke();
+            _temporaryInventory.RemoveItem(soul);
 
+            OnChangeSouls?.Invoke();
             return true;
         }
         else if (_soulsForUpgrade[1] == null)
         {
             _soulsForUpgrade[1] = soul;
-            OnChangeSouls?.Invoke();
+            _temporaryInventory.RemoveItem(soul);
 
+            OnChangeSouls?.Invoke();
             return true;
         }
 
@@ -169,6 +150,7 @@ public class ShopSoulUpgradeManager : MonoBehaviour
         Debug.Log("CHEKING UPGRADES");
 
         PointerButtonEvents soulResultEvents = _shopSoulUpgradeUIManager.SoulUpgradeResultButton.GetComponent<PointerButtonEvents>();
+        ItemHoverInfo itemHoverInfo = _shopSoulUpgradeUIManager.SoulUpgradeResultButton.GetComponent<ItemHoverInfo>();
 
         if (_soulsForUpgrade[0] != null && _soulsForUpgrade[1] != null)
         {
@@ -187,43 +169,36 @@ public class ShopSoulUpgradeManager : MonoBehaviour
                         _playerInventory.RemoveItem(_soulsForUpgrade[1]);
 
                         for (int i = 0; i < _soulsForUpgrade.Length; i++) _soulsForUpgrade[i] = null;
-
-                        _shopSoulUpgradeUIManager.UpdateSoulUpgradeResultSlot();
-                        _shopSoulUpgradeUIManager.UpdateSoulUpgradeSlots(_soulsForUpgrade);
-
+                        
                         CreateAvailableSouls(_playerInventory);
-                        SetUpAvailableSouls();
+                        OnChangeSouls?.Invoke();
+                        OnUpgradeDone?.Invoke();
                     });
 
-                    soulResultEvents.OnPointerEnterEvent.RemoveAllListeners();
-                    soulResultEvents.OnPointerEnterEvent.AddListener(() =>
-                    {
-                        OnSelectDeselectSouls?.Invoke(true, _soulsForUpgrade[0].Upgrade);
-                    });
-                    soulResultEvents.OnPointerExitEvent.RemoveAllListeners();
-                    soulResultEvents.OnPointerExitEvent.AddListener(() =>
-                    {
-                        OnSelectDeselectSouls?.Invoke(false, null);
-                    });
+                    itemHoverInfo.SetUpHover(_soulsForUpgrade[0], OnSelectDeselectSouls);
 
                     return;
                 }
                 else
                 {
-                    Debug.Log("Selected souls cannot be upgraded further.");
-
+                    _shopSoulUpgradeUIManager.UpdateWarningText("Cannot be upgraded further.");
                 }
             }
             else
             {
-                Debug.Log("Selected souls are not the same. Cannot perform upgrade.");
+                _shopSoulUpgradeUIManager.UpdateWarningText("Incompatible souls.");
             }
+        }
+        else
+        {
+            _shopSoulUpgradeUIManager.UpdateWarningText("");
         }
 
         _shopSoulUpgradeUIManager.SoulUpgradeResultButton.onClick.RemoveAllListeners();
         _shopSoulUpgradeUIManager.SoulUpgradeResultButton.onClick.RemoveAllListeners();
-        soulResultEvents.OnPointerEnterEvent.RemoveAllListeners();
         _shopSoulUpgradeUIManager.UpdateSoulUpgradeResultSlot();
+
+        itemHoverInfo.SetUpHover(OnSelectDeselectSouls);
     }
 
 }

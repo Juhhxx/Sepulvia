@@ -76,6 +76,8 @@ public class ShopManager : MonoBehaviour, IRandom
                     break;
             }
         };
+
+        _shopSoulUpgradeManager.OnUpgradeDone += () => _shopUIManager.ToggleItemInfo(false);
     }
 
     public void ToggleShop(bool onOff)
@@ -172,10 +174,10 @@ public class ShopManager : MonoBehaviour, IRandom
 
             PointerButtonEvents pointerEvents = buttons[i].GetComponent<PointerButtonEvents>();
 
-            pointerEvents.OnPointerEnterEvent.RemoveListener(() => ToggleItemInfoPanel(true, _shopItems[index]));
+            pointerEvents.OnPointerEnterEvent.RemoveAllListeners();
             pointerEvents.OnPointerEnterEvent.AddListener(() => ToggleItemInfoPanel(true, _shopItems[index]));
 
-            pointerEvents.OnPointerExitEvent.RemoveListener(() => ToggleItemInfoPanel(false));
+            pointerEvents.OnPointerExitEvent.RemoveAllListeners();
             pointerEvents.OnPointerExitEvent.AddListener(() => ToggleItemInfoPanel(false));
         }
     }
@@ -191,10 +193,13 @@ public class ShopManager : MonoBehaviour, IRandom
             (i < _player.PlayerCharacter.Inventory.ItemSlots.Count) ? 
             _player.PlayerCharacter.Inventory.ItemSlots[i] : null;
 
+            ItemHoverInfo itemHoverInfo = buttons[i].GetComponent<ItemHoverInfo>();
+
             if (stack == null)
             {
                 buttons[i].enabled = false;
                 buttons[i].onClick.RemoveAllListeners();
+                itemHoverInfo.SetUpHover(_shopUIManager.ToggleItemInfo);
                 continue;
             }
             
@@ -214,13 +219,7 @@ public class ShopManager : MonoBehaviour, IRandom
                 buttons[i].GetComponent<InventorySlotManager>().SetDisabled();
             }
 
-            PointerButtonEvents pointerEvents = buttons[i].GetComponent<PointerButtonEvents>();
-
-            pointerEvents.OnPointerEnterEvent.RemoveListener(() => ToggleItemInfoPanel(true, stack.Item));
-            pointerEvents.OnPointerEnterEvent.AddListener(() => ToggleItemInfoPanel(true, stack.Item));
-
-            pointerEvents.OnPointerExitEvent.RemoveListener(() => ToggleItemInfoPanel(false));
-            pointerEvents.OnPointerExitEvent.AddListener(() => ToggleItemInfoPanel(false));
+            itemHoverInfo.SetUpHover(stack.Item, _shopUIManager.ToggleItemInfo);
         }
     }
 
@@ -306,6 +305,7 @@ public class ShopManager : MonoBehaviour, IRandom
     public void SellItem(ItemStack stack)
     {
         _player.ChangeEssence(stack.Item.Value / 2); // Selling gives back half the value
+        if (stack.Amount == 1) _shopUIManager.ToggleItemInfo(false);
         _player.PlayerCharacter.Inventory.RemoveItem(stack);
         SetUpShopSell();
     }

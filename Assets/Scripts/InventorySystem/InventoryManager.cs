@@ -95,7 +95,11 @@ public class InventoryManager : MonoBehaviour
                 }
             
                 tmp[i]?.GetComponent<ItemHoverInfo>()
-                .SetUpHover(stack.Item, _inventoryUIManager);
+                .SetUpHover(stack.Item, _inventoryUIManager.ToggleItemInfo);
+            }
+            else
+            {
+                tmp[i]?.GetComponent<ItemHoverInfo>().SetUpHover(_inventoryUIManager.ToggleItemInfo);
             }
         }
 
@@ -121,7 +125,11 @@ public class InventoryManager : MonoBehaviour
                 });
             
                 tmp[i]?.GetComponent<ItemHoverInfo>()
-                .SetUpHover(item, _inventoryUIManager);
+                .SetUpHover(item, _inventoryUIManager.ToggleItemInfo);
+            }
+            else
+            {
+                tmp[i]?.GetComponent<ItemHoverInfo>().SetUpHover(_inventoryUIManager.ToggleItemInfo);
             }
         }
     }

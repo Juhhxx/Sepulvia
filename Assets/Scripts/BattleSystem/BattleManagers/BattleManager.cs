@@ -391,7 +391,12 @@ public class BattleManager : MonoBehaviour
                 }
             
                 invButtons[i]?.GetComponent<ItemHoverInfo>()
-                .SetUpHover(stack.Item, _inventoryUIManager);
+                .SetUpHover(stack.Item, _inventoryUIManager.ToggleItemInfo);
+            }
+            else
+            {
+                invButtons[i]?.GetComponent<ItemHoverInfo>()
+                .SetUpHover(_inventoryUIManager.ToggleItemInfo);
             }
 
         }
@@ -410,7 +415,12 @@ public class BattleManager : MonoBehaviour
                 invButtons[i].transform.GetChild(0).GetComponent<Image>().color = c;
             
                 invButtons[i]?.GetComponent<ItemHoverInfo>()
-                .SetUpHover(item, _inventoryUIManager);
+                .SetUpHover(item, _inventoryUIManager.ToggleItemInfo);
+            }
+            else
+            {
+                invButtons[i]?.GetComponent<ItemHoverInfo>()
+                .SetUpHover(_inventoryUIManager.ToggleItemInfo);
             }
 
         }

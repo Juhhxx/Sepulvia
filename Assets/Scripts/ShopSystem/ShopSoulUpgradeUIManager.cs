@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
+using DG.Tweening;
 
 public class ShopSoulUpgradeUIManager : MonoBehaviour
 {
@@ -16,6 +18,7 @@ public class ShopSoulUpgradeUIManager : MonoBehaviour
 
     [SerializeField] private GameObject _availableSoulDisplayPrefab;
     [SerializeField] private GameObject _itemAnimationPrefab;
+    [SerializeField] private TextMeshProUGUI _warningTextTMP;
 
     private List<InventorySlotManager> _availableSoulDisplays = new List<InventorySlotManager>();
     private List<Button> _buttons = new List<Button>();
@@ -68,5 +71,15 @@ public class ShopSoulUpgradeUIManager : MonoBehaviour
     {
         if (result != null) _soulUpgradeSlotResult.UpdateSlot(result.Sprite);
         else _soulUpgradeSlotResult.UpdateSlot();
+    }
+
+    public void UpdateWarningText(string warning)
+    {
+        Debug.Log($"Warning Text : {warning}");
+        
+        _warningTextTMP.text = warning;
+        _warningTextTMP.rectTransform.localScale = Vector3.zero;
+
+        _warningTextTMP.rectTransform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce);
     }
 }
