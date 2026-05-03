@@ -13,8 +13,10 @@ public class PlayerOverworldUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _stanceTMP;
     [SerializeField] private TextMeshProUGUI _essenceTMP;
     [SerializeField] private TextMeshProUGUI _soulFragmentsTMP;
+    [SerializeField] private GameObject _equipmentParent;
     [SerializeField] private GameObject _equipmentSlots;
 
+    [SerializeField] private GameObject _dashParent;
     [SerializeField] private Image _dashTimerImage;
     [SerializeField] private bool _showDashTimer = true;
 
@@ -58,6 +60,12 @@ public class PlayerOverworldUI : MonoBehaviour
     public void ToggleOverworldUI(bool onOff)
     {
         _overworldUICanvas.SetActive(onOff);
+    }
+    public void ToggleEquipmentDash(bool onOff)
+    {
+        Debug.Log($"ASDASDASDA {onOff}");
+        _equipmentParent.SetActive(onOff);
+        _dashParent.SetActive(onOff);
     }
 
     public void UpdateValues()

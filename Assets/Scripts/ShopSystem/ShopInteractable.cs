@@ -8,7 +8,6 @@ public class ShopInteractable : MonoBehaviour, IInteractable
     private Material[] _outlineMaterials;
 
     private ShopManager _shopManager;
-    private ShopUIManager _shopUIManager;
 
     public bool CanInteract { get; private set; }
 
@@ -16,7 +15,7 @@ public class ShopInteractable : MonoBehaviour, IInteractable
     {
         _shopManager.ChooseShopItems();
         _shopManager.SetUpShop();
-        _shopUIManager.ToggleShop(true);
+        _shopManager.ToggleShop(true);
     }
 
     public void ToggleSelected(bool onOff)
@@ -34,7 +33,6 @@ public class ShopInteractable : MonoBehaviour, IInteractable
     private void Start()
     {
         _shopManager = FindAnyObjectByType<ShopManager>();
-        _shopUIManager = FindAnyObjectByType<ShopUIManager>();
 
         CanInteract = true;
 

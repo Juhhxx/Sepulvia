@@ -59,6 +59,9 @@ public class PlayerController : MonoBehaviour, IPausable
     }
     public event Action<bool> OnBattleEnterExit;
 
+    // Shop State
+    public bool InShop { get; set; }
+
     // Movement and Dash
     private PlayerMovement _playerMovement;
     public bool CanDash => _playerMovement.CanDash;

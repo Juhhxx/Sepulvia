@@ -22,6 +22,7 @@ public class ShopManager : MonoBehaviour
     private List<ItemInfo> _shopItems = new List<ItemInfo>();
 
     private PlayerController _player;
+    private PlayerOverworldUI _overworldUI;
 
     public enum ShopState
     {
@@ -42,6 +43,7 @@ public class ShopManager : MonoBehaviour
     private void Start()
     {
         _player = FindAnyObjectByType<PlayerController>();
+        _overworldUI = FindAnyObjectByType<PlayerOverworldUI>();
 
         SetUpButtons();
         _shopSoulUpgradeManager.SetUp(_player.PlayerCharacter.Inventory);
@@ -72,6 +74,13 @@ public class ShopManager : MonoBehaviour
                     break;
             }
         };
+    }
+
+    public void ToggleShop(bool onOff)
+    {
+        _shopUIManager.ToggleShop(onOff);
+        _player.InShop = onOff;
+        _overworldUI.ToggleEquipmentDash(!onOff);
     }
 
     private void SetUpButtons()

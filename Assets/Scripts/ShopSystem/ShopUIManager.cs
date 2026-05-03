@@ -4,10 +4,13 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class ShopUIManager : MonoBehaviour
 {
     [SerializeField] private Canvas _shopCanvas;
+    [SerializeField] private RectTransform _shopParent;
+    [SerializeField] private Image _shopBackground;
 
     [SerializeField] private Transform _shopBuyDisplayParent;
     [SerializeField] private Transform _shopSellDisplayParent;
@@ -51,13 +54,16 @@ public class ShopUIManager : MonoBehaviour
         {
             PauseManager.Instance.Pause();
             ToggleShopPanel(ShopManager.ShopState.Buy);
+            DoShopOpenAnim();
         }
         else
         {
-            PauseManager.Instance.UnPause();
+            DoShopCloseAnim(() =>
+            {
+                PauseManager.Instance.UnPause();
+                _shopCanvas.gameObject.SetActive(false);
+            });
         }
-
-        _shopCanvas.gameObject.SetActive(onOff);
     }
 
     public void ToggleShopPanel(ShopManager.ShopState state)
@@ -211,13 +217,37 @@ public class ShopUIManager : MonoBehaviour
     }
 
     // Animations
+    public void DoShopOpenAnim()
+    {
+        Vector3 pos = _shopParent.anchoredPosition;
+        pos.y = 1920 / 2;
+        _shopParent.anchoredPosition = pos;
+
+        Color c = _shopBackground.color;
+        c.a = 1;
+        
+        _shopCanvas.gameObject.SetActive(true);
+
+        _shopBackground.DOColor(c, 1f);
+        _shopParent.DOAnchorPos(Vector3.zero, 1f).SetEase(Ease.OutElastic);
+    }
+    public void DoShopCloseAnim(Action action)
+    {
+        Vector3 pos = _shopParent.anchoredPosition;
+        pos.y = 1920 / 2;
+
+        Color c = _shopBackground.color;
+        c.a = 0;
+
+        _shopBackground.DOColor(c, 1f);
+        _shopParent.DOAnchorPos(pos, 1f).SetEase(Ease.OutElastic).OnComplete(() => action());
+    }
 
     public void DoPanelOpenAnim(GameObject panel)
     {
         panel.transform.localScale = Vector3.zero;
         panel.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
     }
-
     public void DoPanelCloseAnim(GameObject panel, Action onComplete = null)
     {
         panel.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack).OnComplete(() => onComplete());
@@ -230,7 +260,6 @@ public class ShopUIManager : MonoBehaviour
             button.transform.DOScale(Vector3.one * 1.1f, 0.1f).SetEase(Ease.OutSine);
         });
     }
-
     public void DoButtonSelectAnim(Button button)
     {
         button.transform.DOScale(Vector3.one * 1.1f, 0.2f).SetEase(Ease.Linear);

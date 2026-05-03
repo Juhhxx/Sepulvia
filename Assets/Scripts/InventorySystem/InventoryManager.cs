@@ -33,7 +33,7 @@ public class InventoryManager : MonoBehaviour
 
     private void Update()
     {
-        if (!_player.InBattle) CheckInventoryOpen();
+        if (!_player.InBattle && !_player.InShop) CheckInventoryOpen();
     }
 
     
