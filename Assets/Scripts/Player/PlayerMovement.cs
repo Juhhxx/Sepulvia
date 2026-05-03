@@ -38,8 +38,8 @@ public class PlayerMovement : MonoBehaviour
         _anim = GetComponent<Animator>();
         _spr = GetComponentInChildren<SpriteRenderer>();
 
-        _dashCooldownTimer = new Timer(2f);
-        _dashCooldownTimer.OnTimerDone += () => { _canDash = true; };
+        _dashCooldownTimer = new Timer(_dashCooldownTime);
+        _dashCooldownTimer.OnTimerDone += () => _canDash = true;
     }
 
     public void DoMovement()

@@ -123,6 +123,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5396310604835018956
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -168,6 +169,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 1284500929, guid: 82a50e46c1b461848af70c33907f9415, type: 3}
   m_Color: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
   m_FlipX: 0
@@ -177,7 +179,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &996717798067064146
 MonoBehaviour:
@@ -296,11 +297,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355cd986942c7c745beb7d94e657a9e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlaySound
-  _soudsToPlay: []
+  _soudsToPlay:
+  - {fileID: 8300000, guid: f39b7a06d4f22a148aa9e3435bf98990, type: 3}
   _group: 3
-  _volume: 1
-  _changePitch: 1
-  _pitch: 0
+  _volume: 0.25
+  _changePitch: 0
+  _pitch: 1
   _pitchRange: {x: 0.9, y: 1.2}
   _playOnStart: 0
   _loop: 0
@@ -407,6 +409,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _playerParty: {fileID: 11400000, guid: 89d2679380e72fe4d8e5112223a8279c, type: 2}
+  <PlayerParty>k__BackingField:
+    <PartyName>k__BackingField: 
+    <PartyMembers>k__BackingField: []
   _immunityTime: 2.5
   _excludeWhenImmune:
     serializedVersion: 2
@@ -474,7 +479,7 @@ MonoBehaviour:
   _maxSpeed: 12
   _horizontalAxis: Horizontal
   _verticalAxis: Vertical
-  _dashCooldownTime: 1.25
+  _dashCooldownTime: 0.8
   _dashTime: 0.5
   _dashSpeedMultiplier: 2
   _dashButton: Dash
@@ -495,7 +500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d47415b01ff24b4dadf3a7e9c76decd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractionManager
-  _interactionRadius: 5.5
+  _interactionRadius: 3.5
   _interactionButton: Interact
   _interactableLayer:
     serializedVersion: 2
