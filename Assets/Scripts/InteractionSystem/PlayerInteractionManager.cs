@@ -2,7 +2,7 @@ using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerInteractionManager : MonoBehaviour
+public class PlayerInteractionManager : MonoBehaviour, IPausable
 {
     [Header("Interaction Settings")]
     [Space(5)]
@@ -30,8 +30,23 @@ public class PlayerInteractionManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        PauseManager.Instance?.RegisterPausable(this);
+    }
+    private void OnEnable()
+    {
+        PauseManager.Instance?.RegisterPausable(this);
+    }
+    private void OnDisable()
+    {
+        PauseManager.Instance?.UnregisterPausable(this);
+    }
+
     private void Update()
     {
+        if (Paused) return;
+
         CheckInteractable();
 
         if (_currentInteractable != null) CheckInteraction();
@@ -69,5 +84,12 @@ public class PlayerInteractionManager : MonoBehaviour
     {
         Gizmos.color = _currentInteractable == null ? Color.blue : Color.green;
         Gizmos.DrawWireSphere(transform.position, _interactionRadius);
+    }
+
+    public bool Paused { get; private set; }
+
+    public void TogglePause(bool onOff)
+    {
+        Paused = onOff;
     }
 }

@@ -39,6 +39,11 @@ public class EnemyBrain : MonoBehaviour, IPausable
 
     [SerializeField, ReadOnly] private MovementType _movementeState = MovementType.Patrolling;
 
+    public void SetPath(Path path)
+    {
+        _patrolMovement.SetPath(path);
+    }
+
     [SerializeField] private bool _doFollow = true;
     [SerializeField, ShowIf("_doFollow")] private float _playerMemoryTimer = 2f;
     [SerializeField, ShowIf("_doFollow")] private float _detectionRadius = 2;
@@ -64,14 +69,10 @@ public class EnemyBrain : MonoBehaviour, IPausable
         UpdateMovement();
         _activeMovement.ResetMovement();
     }
-
     private void OnDisable()
     {
         PauseManager.Instance.UnregisterPausable(this);
     }
-
-    private bool DetectPlayer() => 
-    Vector3.Distance(_target.position, transform.position) <= _detectionRadius;
 
     private void UpdateMovement()
     {
@@ -88,6 +89,8 @@ public class EnemyBrain : MonoBehaviour, IPausable
         UpdateMovement();
     }
 
+    private bool DetectPlayer() => 
+    Vector3.Distance(_target.position, transform.position) <= _detectionRadius;
     private void CheckPlayer()
     {
         Debug.LogWarning($"{name}: Checking if Player still visible", this);
@@ -110,7 +113,6 @@ public class EnemyBrain : MonoBehaviour, IPausable
 
         Debug.Log($"{name} - Direction: {Direction} Speed: {Speed}", this);
     }
-
     private void LateUpdate()
     {
         if (!Paused) ActiveMovement.Move();

@@ -22,7 +22,7 @@ public class PullingUIManager : MonoBehaviour
     [SerializeField] private Ease _pullHeartAnimEase = Ease.InOutElastic;
     [SerializeField] private float _defaultHeartAnimSpeed = 1f;
     [SerializeField] private float _defaultHeartAnimMove = 0.5f;
-    [SerializeField] private Ease __defaultHeartAnimEase = Ease.InOutFlash;
+    [SerializeField] private Ease _defaultHeartAnimEase = Ease.InOutFlash;
 
 
     private List<GameObject> _spawnedObjects = new List<GameObject>();
@@ -148,6 +148,6 @@ public class PullingUIManager : MonoBehaviour
     {
         Vector3 pos = _heartTrans.anchoredPosition;
 
-        _heartTrans.DOAnchorPosY(pos.y + _defaultHeartAnimMove, _defaultHeartAnimSpeed).SetEase(__defaultHeartAnimEase).SetLoops(-1, LoopType.Yoyo);
+        _heartTrans.DOAnchorPosY(pos.y + _defaultHeartAnimMove, _defaultHeartAnimSpeed).SetEase(_defaultHeartAnimEase).SetLoops(-1, LoopType.Yoyo);
     }
 }

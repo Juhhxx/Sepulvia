@@ -49,6 +49,12 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
         transform.position = _path.GetCurrentWaypoint();
     }
 
+    public void SetPath(Path path)
+    {
+        _path = path;
+        SetInPath();
+    }
+
     [SerializeField] private bool _stopAtWaypoints = false;
     [SerializeField, ShowIf("_stopAtWaypoints")] private float _stopTime;
 
