@@ -1,4 +1,4 @@
 public interface IRandom
 {
-    public void InitializeRandom(int seed) {}
+    public void InitializeRandom(int seed);
 }
