@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopManager : MonoBehaviour
+public class ShopManager : MonoBehaviour, IRandom
 {
     [SerializeField] private int _shopSize = 4;
 
@@ -42,6 +42,8 @@ public class ShopManager : MonoBehaviour
 
     private void Start()
     {
+        SeedManager.Instance.RegisterRandom(this, transform.GetPath());
+        
         _player = FindAnyObjectByType<PlayerController>();
         _overworldUI = FindAnyObjectByType<PlayerOverworldUI>();
 
@@ -141,7 +143,7 @@ public class ShopManager : MonoBehaviour
 
         for (int i = 0; i < _shopSize; i++)
         {
-            int rnd = UnityEngine.Random.Range(0, _possibleItems.Count);
+            int rnd = _random.Next(0, _possibleItems.Count);
             _shopItems.Add(_possibleItems[rnd]);
         }
     }
@@ -337,5 +339,12 @@ public class ShopManager : MonoBehaviour
         );
 
         return localPoint;
+    }
+
+    // IRandom Implementation
+    System.Random _random;
+    public void InitializeRandom(int seed)
+    {
+        _random = new System.Random(seed);
     }
 }

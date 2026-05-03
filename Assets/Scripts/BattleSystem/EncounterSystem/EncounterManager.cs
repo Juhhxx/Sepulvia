@@ -3,7 +3,7 @@ using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
 
-public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
+public class EncounterManager : MonoBehaviourSingleton<EncounterManager>, IRandom
 {
     [SerializeField] private BattleManager _battleManager;
     [SerializeField] private float _timeBeforeBattleStart = 0.5f;
@@ -18,6 +18,11 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
         _player = FindAnyObjectByType<PlayerController>();
 
         _battleManager.OnBattleEnd += ReturnToOverworld;
+    }
+
+    private void Start()
+    {
+        SeedManager.Instance.RegisterRandom(this, transform.GetPath());
     }
 
     public void RegisterEncounterable(EncounterEntity entity)
@@ -49,7 +54,7 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
 
     public void DoRandomEncounter()
     {
-        Party party = _possibleEncounters[Random.Range(0, _possibleEncounters.Count)].Instantiate();
+        Party party = _possibleEncounters[_random.Next(0, _possibleEncounters.Count)].Instantiate();
 
         DoEncounter(party);
     }
@@ -62,5 +67,10 @@ public class EncounterManager : MonoBehaviourSingleton<EncounterManager>
 
         _player.InBattle = false;
     }
-
+    // IRandom Implementation
+    System.Random _random;
+    public void InitializeRandom(int seed)
+    {
+        _random = new System.Random(seed);
+    }
 }

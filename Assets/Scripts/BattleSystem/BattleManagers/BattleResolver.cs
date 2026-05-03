@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleResolver : MonoBehaviour
+public class BattleResolver : MonoBehaviour, IRandom
 {
     [SerializeField] private PullingManager _pullManager;
     [SerializeField] private InventoryResolver _inventoryResolver;
 
-    private int SelectedBar => _pullManager.SelectedIndex;
+    private void Start()
+    {
+        SeedManager.Instance.RegisterRandom(this, transform.GetPath());
+    }
 
     public void DoMove(Move move, Character user, Party target)
     {
@@ -49,7 +52,7 @@ public class BattleResolver : MonoBehaviour
 
     private Character ChooseTarget(Party fromParty)
     {
-        int rnd = UnityEngine.Random.Range(0, fromParty.PartySize);
+        int rnd = _random.Next(0, fromParty.PartySize);
         Character c = fromParty.PartyMembers[rnd];
 
         Debug.Log($"TARGETING {c.Name}");
@@ -128,17 +131,17 @@ public class BattleResolver : MonoBehaviour
         }
 
         // Reward Calculation
-        essence = Random.Range(1, (totalDifficulty * 2) + 1) * 5;
+        essence = _random.Next(1, (totalDifficulty * 2) + 1) * 5;
 
         if (spared) essence *= 2;
 
         if (!spared)
         {
-            int num = Random.Range(1, totalDifficulty + 1);
+            int num = _random.Next(1, totalDifficulty + 1);
 
             for (int i = 0; i < num; i++)
             {
-                int rnd = Random.Range(0, possibleRewards.Count);
+                int rnd = _random.Next(0, possibleRewards.Count);
 
                 items.Add(possibleRewards[rnd]);
             }
@@ -149,7 +152,7 @@ public class BattleResolver : MonoBehaviour
 
     public bool CanRun(Character user, Party enemyParty)
     {
-        float rnd = Random.Range(0,1f);
+        float rnd = (float)_random.NextDouble();
 
         float difficultyAverage = 0;
 
@@ -168,5 +171,12 @@ public class BattleResolver : MonoBehaviour
         else DialogueManager.Instance.AddDialogue($"{user.Name} couldn't run from battle.");
 
         return result;
+    }
+
+    // IRandom Implementation
+    System.Random _random;
+    public void InitializeRandom(int seed)
+    {
+        _random = new System.Random(seed);
     }
 }
