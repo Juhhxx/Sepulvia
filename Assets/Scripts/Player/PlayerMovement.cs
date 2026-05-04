@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
@@ -26,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, ReadOnly] private bool _isDashing = false;
     private Timer _dashCooldownTimer;
     private Animator _anim;
-    private SpriteRenderer _spr;
+    [SerializeField] private SpriteRenderer _spr;
 
     public bool CanDash => _canDash;
     public float DashCooldownTime => _dashCooldownTimer.CurrentTime / _dashCooldownTime;
@@ -36,7 +37,6 @@ public class PlayerMovement : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _anim = GetComponent<Animator>();
-        _spr = GetComponentInChildren<SpriteRenderer>();
 
         _dashCooldownTimer = new Timer(_dashCooldownTime);
         _dashCooldownTimer.OnTimerDone += () => _canDash = true;
@@ -62,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _anim.SetFloat("XDir", Mathf.Min(Mathf.Abs(_velocity.x), 1));
             _anim.SetFloat("YDir", Mathf.Clamp(_velocity.z, -1, 1));
+
             _spr.flipX = _velocity.x > 0;
         }
 
