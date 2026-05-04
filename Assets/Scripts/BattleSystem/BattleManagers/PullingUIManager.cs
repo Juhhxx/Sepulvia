@@ -55,7 +55,7 @@ public class PullingUIManager : MonoBehaviour
         if (doAnim)
         {
             if (position < 0) DoHeartMoveAnim(_barSectionList[position + 1].HeartPosition + (Vector3.left * _sectionWidth), action);
-            else if (position > _barSectionList.Count) DoHeartMoveAnim(_barSectionList[position - 1].HeartPosition + (Vector3.right * _sectionWidth), action);
+            else if (position > _barSectionList.Count - 1) DoHeartMoveAnim(_barSectionList[position - 1].HeartPosition + (Vector3.right * _sectionWidth), action);
             else DoHeartMoveAnim(_barSectionList[position].HeartPosition, action);
         }
         else _heartTrans.anchoredPosition = _barSectionList[position].HeartPosition;

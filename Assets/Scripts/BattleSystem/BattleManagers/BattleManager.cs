@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class BattleManager : MonoBehaviour
 {
@@ -241,6 +242,8 @@ public class BattleManager : MonoBehaviour
     private bool _playerWon;
 
     public event Action OnBattleEnd;
+    public UnityEvent OnBattleWon;
+    public UnityEvent OnBattleLost;
 
     private void Start()
     {
@@ -507,8 +510,17 @@ public class BattleManager : MonoBehaviour
         _inventoryUIManager.HideInventory();
         _pullManager.TogglePullUI(false);
 
-        if (_playerWon) _uiManager.ShowWinScreen();
-        else _uiManager.ShowLoseScreen();
+        if (_playerWon)
+        {
+            _uiManager.ShowWinScreen();
+            OnBattleWon?.Invoke();
+        }
+        else
+        {
+            _uiManager.ShowLoseScreen();
+            OnBattleLost.Invoke();
+        }
+
     }
 
     public void DoAssimilation()
@@ -522,10 +534,12 @@ public class BattleManager : MonoBehaviour
             foreach (ItemInfo i in items) Player.Inventory.AddItem(i);
         }
 
-        _uiManager.ShowRewards(items, essence);
-        _uiManager.ShowRewardsScreen();
+        _uiManager.DoDecisionHeartAssimilateAnim(() =>
+        {
+            _uiManager.ShowRewards(items, essence);
+            _uiManager.ShowRewardsScreen();
+        });
     }
-
     public void DoSpare()
     {
         (List<ItemInfo> items, int essence) = _battleResolver.GiveRewards(_enemyParty, true);
@@ -537,8 +551,11 @@ public class BattleManager : MonoBehaviour
             foreach (ItemInfo i in items) Player.Inventory.AddItem(i);
         }
 
-        _uiManager.ShowRewards(items, essence);
-        _uiManager.ShowRewardsScreen();
+        _uiManager.DoDecisionHeartSpareAnim(() =>
+        {
+            _uiManager.ShowRewards(items, essence);
+            _uiManager.ShowRewardsScreen();
+        });
     }
 
     [Button(enabledMode: EButtonEnableMode.Playmode)]

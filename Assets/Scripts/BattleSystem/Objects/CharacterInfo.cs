@@ -297,7 +297,7 @@ public class Character
     [field: Space(10)]
     [field: Header("Character Moves")]
     [field: Space(5)]
-    [field: SerializeField, Expandable] public List<Move> MoveSet { get; private set; }
+    [field: SerializeField] public List<Move> MoveSet { get; private set; }
     private List<Move> _baseMoves;
     public void SetBaseMoves() => _baseMoves = new List<Move>(MoveSet);
     public void ResetMoves() => MoveSet = new List<Move>(_baseMoves);
@@ -307,5 +307,5 @@ public class Character
     [field: Space(10)]
     [field: Header("Character Inventory")]
     [field: Space(5)]
-    [field: SerializeField, Expandable] public Inventory Inventory { get; private set; }
+    [field: SerializeField] public Inventory Inventory { get; private set; }
 }

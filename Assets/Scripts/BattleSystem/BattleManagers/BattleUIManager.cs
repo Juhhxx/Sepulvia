@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,6 +35,8 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private GameObject _rewardsShowcase;
     [SerializeField] private GameObject _itemPrefab;
     [SerializeField] private GameObject _essencePrefab;
+    [SerializeField] private RectTransform _decisionScreenHeart;
+    private Vector3 _decisionHearthDefaultPos;
 
     [SerializeField] private GameObject _loseBattleScreen;
 
@@ -125,6 +129,9 @@ public class BattleUIManager : MonoBehaviour
 
     public void ShowWinScreen()
     {
+        _decisionHearthDefaultPos = _decisionScreenHeart.anchoredPosition;
+
+        DoDecisionHeartDefaultAnim();
         _winBattleScreen.SetActive(true);
         _decisionBattleScreen.SetActive(true);
         _rewardsBattleScreen.SetActive(false);
@@ -134,6 +141,7 @@ public class BattleUIManager : MonoBehaviour
     {
         _decisionBattleScreen.SetActive(false);
         _rewardsBattleScreen.SetActive(true);
+        DoRewardsShowAnim();
     }
     
     private List<GameObject> _rewardShowcaseObjs = new List<GameObject>();
@@ -305,4 +313,66 @@ public class BattleUIManager : MonoBehaviour
         
         _moveInfoPanel.SetActive(onOff);
     }
+
+    // Animations
+
+    private float _defaultMoveAmount = 25f;
+    public void DoDecisionHeartDefaultAnim()
+    {
+        Vector3 pos = _decisionScreenHeart.anchoredPosition;
+
+        _decisionScreenHeart.DOKill();
+        _decisionScreenHeart.DOAnchorPosY(pos.y + _defaultMoveAmount, 1.5f).SetEase(Ease.InOutFlash).SetLoops(-1, LoopType.Yoyo);
+    }
+
+    private Tween _moveTween;
+    private float _moveAmount = 50f;
+
+    public void DoDecisionHearthMove(bool right)
+    {
+        Vector3 finalPos = _decisionHearthDefaultPos;
+
+        if (right) finalPos.x += _moveAmount;
+        else finalPos.x -= _moveAmount;
+
+        if (_moveTween != null) _moveTween.Kill();
+
+        _moveTween = _decisionScreenHeart.DOAnchorPosX(finalPos.x, 1.5f).SetEase(Ease.OutFlash);
+    }
+    public void DoDecisionHeartMoveDefault()
+    {
+        if (_moveTween != null) _moveTween.Kill();
+
+        _moveTween = _decisionScreenHeart.DOAnchorPosX(_decisionHearthDefaultPos.x, 0.5f).SetEase(Ease.OutFlash);
+    }
+
+    public void DoDecisionHeartSpareAnim(Action action)
+    {
+        _decisionScreenHeart.DOKill();
+
+        _decisionScreenHeart.DOAnchorPos(_decisionHearthDefaultPos, 1.5f).SetEase(Ease.OutFlash).OnComplete(() =>
+        
+            _decisionScreenHeart.DOAnchorPosY(_decisionHearthDefaultPos.y + 1000f, 2f).SetEase(Ease.InExpo).OnComplete(() => action())
+        );
+    }
+
+    private float _assimilationScale = 100f;
+    public void DoDecisionHeartAssimilateAnim(Action action)
+    {
+        _decisionScreenHeart.DOKill();
+        _decisionScreenHeart.DOShakeAnchorPos(10f, 50f);
+
+        _decisionScreenHeart.DOAnchorPos(_decisionHearthDefaultPos, 1.5f).SetEase(Ease.OutFlash).OnComplete(() =>
+
+            _decisionScreenHeart.DOScale(Vector3.one * _assimilationScale, 2f).SetEase(Ease.InExpo).OnComplete(() => action())
+        );
+        
+    }
+
+    public void DoRewardsShowAnim()
+    {
+        _rewardsBattleScreen.transform.localScale = Vector3.zero;
+        _rewardsBattleScreen.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
+    }
+
 }

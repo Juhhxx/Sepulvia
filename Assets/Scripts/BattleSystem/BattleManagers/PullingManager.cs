@@ -117,6 +117,8 @@ public class PullingManager : RandomBehaviour
             if (positive) tmp++;
             else tmp--;
 
+            Debug.Log($"GOING TO {tmp}");
+
             if (tmp < 0)
             {
                 _pullingUIManager.MoveHeart(tmp);
