@@ -175,7 +175,7 @@ public class ShopSoulUpgradeManager : MonoBehaviour
                         OnUpgradeDone?.Invoke();
                     });
 
-                    itemHoverInfo.SetUpHover(_soulsForUpgrade[0], OnSelectDeselectSouls);
+                    itemHoverInfo.SetUpHover(_soulsForUpgrade[0].Upgrade, OnSelectDeselectSouls);
 
                     return;
                 }
