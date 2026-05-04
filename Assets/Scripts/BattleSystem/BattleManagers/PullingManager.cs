@@ -3,6 +3,7 @@ using NaughtyAttributes;
 using System.Collections.Generic;
 using System;
 using System.Collections;
+using UnityEngine.Events;
 
 public class PullingManager : RandomBehaviour
 {
@@ -49,6 +50,8 @@ public class PullingManager : RandomBehaviour
         OnHeartEnd = null;
     }
 
+    public UnityEvent OnSoulMove;
+
     // Set Up
     public void SetUp(Party enemyParty)
     {
@@ -76,12 +79,12 @@ public class PullingManager : RandomBehaviour
 
             _currentHeartIndex = (_sectionsNumber / 2) + rnd;
 
-            _pullingUIManager.MoveHeart(_currentHeartIndex, false);
+            _pullingUIManager.MoveHeart(_currentHeartIndex, doAnim: false);
         }
         else
         {
             _currentHeartIndex = (_sectionsNumber / 2) + 1;
-            _pullingUIManager.MoveHeart(_currentHeartIndex, false);
+            _pullingUIManager.MoveHeart(_currentHeartIndex, doAnim: false);
         }
     }
 
@@ -143,9 +146,7 @@ public class PullingManager : RandomBehaviour
                 
                 _currentHeartIndex = tmp;
 
-                section = _barSectionList[_currentHeartIndex];
-
-                _pullingUIManager.MoveHeart(_currentHeartIndex);
+                _pullingUIManager.MoveHeart(_currentHeartIndex, () => OnSoulMove?.Invoke());
             }
 
             yield return new WaitForSeconds(_pullSpeed);

@@ -18,6 +18,7 @@ public class PlaySound : MonoBehaviour
 
     [SerializeField] private bool _playOnStart;
     [SerializeField] private bool _loop;
+    [SerializeField] private bool _waitForFinish = true;
     [SerializeField] private bool _isMusic;
 
     AudioSource _audioSource;
@@ -92,7 +93,7 @@ public class PlaySound : MonoBehaviour
 
         if (_audioSource != null)
         {
-            if (!_audioSource.isPlaying)    
+            if (!_audioSource.isPlaying || !_waitForFinish)    
                 AudioManager.Instance.SoundPlayer.PlayClipExisting(_audioSource, clip, _group, _volume, pitch);
         }
     }

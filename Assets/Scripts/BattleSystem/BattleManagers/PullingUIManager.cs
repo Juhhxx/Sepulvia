@@ -50,13 +50,13 @@ public class PullingUIManager : MonoBehaviour
 
         DoHeartDefaultAnim();
     }
-    public void MoveHeart(int position, bool doAnim = true)
+    public void MoveHeart(int position, Action action = null, bool doAnim = true)
     {
         if (doAnim)
         {
-            if (position < 0) DoHeartMoveAnim(_barSectionList[position + 1].HeartPosition + (Vector3.left * _sectionWidth));
-            else if (position > _barSectionList.Count) DoHeartMoveAnim(_barSectionList[position - 1].HeartPosition + (Vector3.right * _sectionWidth));
-            else DoHeartMoveAnim(_barSectionList[position].HeartPosition);
+            if (position < 0) DoHeartMoveAnim(_barSectionList[position + 1].HeartPosition + (Vector3.left * _sectionWidth), action);
+            else if (position > _barSectionList.Count) DoHeartMoveAnim(_barSectionList[position - 1].HeartPosition + (Vector3.right * _sectionWidth), action);
+            else DoHeartMoveAnim(_barSectionList[position].HeartPosition, action);
         }
         else _heartTrans.anchoredPosition = _barSectionList[position].HeartPosition;
         
@@ -144,10 +144,10 @@ public class PullingUIManager : MonoBehaviour
     }
 
     // Animations
-    public void DoHeartMoveAnim(Vector3 position)
+    public void DoHeartMoveAnim(Vector3 position, Action action)
     {
         _heartTrans.DOAnchorPosX(position.x, _pullHeartAnimSpeed).SetEase(_pullHeartAnimEase);
-        CameraEffectsUtility.DoCameraShake(0.5f, 0.5f, _pullHeartAnimSpeed / 2);
+        CameraEffectsUtility.DoCameraShake(0.5f, 0.5f, _pullHeartAnimSpeed / 2, action);
     }
     public void DoHeartDefaultAnim()
     {

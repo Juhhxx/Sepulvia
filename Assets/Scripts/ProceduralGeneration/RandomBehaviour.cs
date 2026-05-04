@@ -52,7 +52,7 @@ public abstract class RandomBehaviour : MonoBehaviour
 
         Initialize(_seed);
 
-        var childRandoms = GetComponentsInChildren<RandomBehaviour>().ToList();
+        var childRandoms = GetComponentsInChildren<RandomBehaviour>(true).ToList();
 
         if (childRandoms.Count > 1)
         {
@@ -69,7 +69,7 @@ public abstract class RandomBehaviour : MonoBehaviour
     }
     public void InitializeChildren(int seed)
     {
-        var childRandoms = GetComponentsInChildren<RandomBehaviour>().ToList();
+        var childRandoms = GetComponentsInChildren<RandomBehaviour>(true).ToList();
 
         foreach (RandomBehaviour rnd in childRandoms)
         {

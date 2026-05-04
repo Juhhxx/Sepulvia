@@ -39,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 350, y: 0}
+  m_SizeDelta: {x: 350, y: 80}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &1695426452271615678
 CanvasRenderer:
@@ -2818,6 +2818,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6970657187409240164}
+  - {fileID: 1542334748655172722}
   - {fileID: 7726786593525389759}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2857,7 +2858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6eeda5c3b76c0147955617543d08cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleResolver
-  _uniqueID: 35f4a9df-daf1-41b2-b61f-e9a168515c4a
+  _uniqueID: cb6b974e-7d48-47af-9bd9-d9ae17a679fa
   _seed: 0
   _pullManager: {fileID: 2209899652498141366}
   _inventoryResolver: {fileID: 0}
@@ -3522,9 +3523,9 @@ RectTransform:
   - {fileID: 1216274098270931162}
   m_Father: {fileID: 2943644374158572412}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 175, y: 0}
   m_SizeDelta: {x: 350, y: 80}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &4321364580829750489
@@ -4491,7 +4492,8 @@ MonoBehaviour:
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
   _playOnStart: 0
-  _loop: 1
+  _loop: 0
+  _waitForFinish: 1
   _isMusic: 1
 --- !u!1 &7331147095930496869
 GameObject:
@@ -4597,6 +4599,61 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!1 &7338242677135367113
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1924979416840609114}
+  - component: {fileID: 3845724646298979398}
+  m_Layer: 0
+  m_Name: Soul Impact
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1924979416840609114
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7338242677135367113}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1542334748655172722}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3845724646298979398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7338242677135367113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 355cd986942c7c745beb7d94e657a9e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaySound
+  _soudsToPlay:
+  - {fileID: 8300000, guid: 913f5cc03dba69741881e037c3dbc7c2, type: 3}
+  _group: 3
+  _volume: 0.8
+  _changePitch: 1
+  _pitch: 1
+  _pitchRange: {x: 0.4, y: 0.8}
+  _playOnStart: 0
+  _loop: 0
+  _waitForFinish: 0
+  _isMusic: 0
 --- !u!1 &7601472903226471465
 GameObject:
   m_ObjectHideFlags: 0
@@ -5046,6 +5103,38 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &8308738292593437783
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1542334748655172722}
+  m_Layer: 0
+  m_Name: Battle Sounds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1542334748655172722
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8308738292593437783}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1924979416840609114}
+  m_Father: {fileID: 8843392687231901510}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8543133271542184538
 GameObject:
   m_ObjectHideFlags: 0
@@ -5880,6 +5969,34 @@ PrefabInstance:
     - target: {fileID: 6148899887327336773, guid: 1786df5d25892c44a8b1beda87cb6025, type: 3}
       propertyPath: _heartPositions.Array.data[19].y
       value: -310
+      objectReference: {fileID: 0}
+    - target: {fileID: 6148899887327336773, guid: 1786df5d25892c44a8b1beda87cb6025, type: 3}
+      propertyPath: OnSoulMove.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6148899887327336773, guid: 1786df5d25892c44a8b1beda87cb6025, type: 3}
+      propertyPath: OnSoulMove.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6148899887327336773, guid: 1786df5d25892c44a8b1beda87cb6025, type: 3}
+      propertyPath: OnSoulMove.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3845724646298979398}
+    - target: {fileID: 6148899887327336773, guid: 1786df5d25892c44a8b1beda87cb6025, type: 3}
+      propertyPath: OnSoulMove.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6148899887327336773, guid: 1786df5d25892c44a8b1beda87cb6025, type: 3}
+      propertyPath: OnSoulMove.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SoundPlay
+      objectReference: {fileID: 0}
+    - target: {fileID: 6148899887327336773, guid: 1786df5d25892c44a8b1beda87cb6025, type: 3}
+      propertyPath: OnSoulMove.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlaySound, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6148899887327336773, guid: 1786df5d25892c44a8b1beda87cb6025, type: 3}
+      propertyPath: OnSoulMove.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6418829538454430767, guid: 1786df5d25892c44a8b1beda87cb6025, type: 3}
       propertyPath: m_Camera
