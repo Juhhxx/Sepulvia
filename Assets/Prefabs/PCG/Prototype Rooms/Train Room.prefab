@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab864f89210726345ac71b73d163fd5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Door
-  _doorId: 2
+  _doorId: -1
   <Spawnposition>k__BackingField: {fileID: 5498834978735039961}
 --- !u!65 &228574875365137402
 BoxCollider:
@@ -2171,7 +2171,7 @@ Transform:
   m_GameObject: {fileID: 5468277656068286042}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3, y: 0, z: -25.5}
+  m_LocalPosition: {x: -3, y: 0, z: -24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2453,7 +2453,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6e58a547115ca41906ca373b671e0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomInstance
-  <RoomData>k__BackingField: {fileID: 0}
+  _uniqueID: 009f0cd2-f7d2-46b8-b0cc-4c7c24d521fa
+  _seed: 0
+  <RoomNode>k__BackingField:
+    RoomName: 
+    RoomData: {fileID: 0}
+    Connections: []
   <Spawnposition>k__BackingField: {fileID: 1108460740242654640}
   <EnemyParent>k__BackingField: {fileID: 3965262272999445567}
 --- !u!1 &5769813432825930462
@@ -3576,7 +3581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab864f89210726345ac71b73d163fd5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Door
-  _doorId: 0
+  _doorId: 1
   <Spawnposition>k__BackingField: {fileID: 5612290576464600874}
 --- !u!65 &524658665437772471
 BoxCollider:
@@ -3676,8 +3681,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7697853012984226995}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.98, y: 11.12576, z: -7.72503}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

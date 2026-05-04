@@ -39,28 +39,10 @@ public class EnemyBrain : MonoBehaviour, IPausable
 
     [SerializeField, ReadOnly] private MovementType _movementeState = MovementType.Patrolling;
 
+    private bool _setUp = false;
     public void SetPath(Path path)
     {
         _patrolMovement.SetPath(path);
-    }
-
-    [SerializeField] private bool _doFollow = true;
-    [SerializeField, ShowIf("_doFollow")] private float _playerMemoryTimer = 2f;
-    [SerializeField, ShowIf("_doFollow")] private float _detectionRadius = 2;
-
-    public void OnEnable()
-    {
-        Debug.Log($"{name} OnEnable");
-
-        _patrolMovement = GetComponent<EnemyPatrolMovement>();
-        _followMovement = GetComponent<EnemyFollowMovement>();
-
-        _memoryTimer = new Timer(_playerMemoryTimer);
-        _memoryTimer.OnTimerDone += CheckPlayer;
-
-        PauseManager.Instance.RegisterPausable(this);
-
-        _target = FindAnyObjectByType<PlayerMovement>().transform;
 
         _movementeState = MovementType.Patrolling;
 
@@ -68,6 +50,27 @@ public class EnemyBrain : MonoBehaviour, IPausable
 
         UpdateMovement();
         _activeMovement.ResetMovement();
+
+        _setUp = true;
+    }
+
+    [SerializeField] private bool _doFollow = true;
+    [SerializeField, ShowIf("_doFollow")] private float _playerMemoryTimer = 2f;
+    [SerializeField, ShowIf("_doFollow")] private float _detectionRadius = 2;
+
+    public void Awake()
+    {
+        _patrolMovement = GetComponent<EnemyPatrolMovement>();
+        _followMovement = GetComponent<EnemyFollowMovement>();
+
+        _memoryTimer = new Timer(_playerMemoryTimer);
+        _memoryTimer.OnTimerDone += CheckPlayer;
+
+        _target = FindAnyObjectByType<PlayerMovement>().transform;
+    }
+    private void OnEnable()
+    {
+        PauseManager.Instance.RegisterPausable(this);
     }
     private void OnDisable()
     {
@@ -81,6 +84,8 @@ public class EnemyBrain : MonoBehaviour, IPausable
     }
     private void BrainLogic()
     {
+        if (!_setUp) return;
+        
         if (DetectPlayer())
         {
             _movementeState = MovementType.Following;

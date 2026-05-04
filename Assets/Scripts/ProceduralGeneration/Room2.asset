@@ -14,10 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoomData
   RoomPrefab: {fileID: 7485454932048664361, guid: 0965bae23955d844c817ba96650af0af, type: 3}
   RoomName: Room Corridor
-  Connections:
-  - doorId: 0
-    targetRoom: {fileID: 11400000, guid: 885af2f528fe90043a791f2a47011054, type: 2}
-    targetDoorId: 2
-  - doorId: 2
-    targetRoom: {fileID: 11400000, guid: feaf942208c125848aebd0b04e0210e6, type: 2}
-    targetDoorId: 0
+  RoomType: 1
+  Weight: 0

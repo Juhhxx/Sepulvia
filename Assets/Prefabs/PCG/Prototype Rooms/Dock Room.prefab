@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab864f89210726345ac71b73d163fd5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Door
-  _doorId: 0
+  _doorId: 1
   <Spawnposition>k__BackingField: {fileID: 9035127306225586306}
 --- !u!65 &9084269322311529773
 BoxCollider:
@@ -1742,8 +1742,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6e58a547115ca41906ca373b671e0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomInstance
-  <RoomData>k__BackingField: {fileID: 0}
+  _uniqueID: d76dbde1-2b3d-4708-acf7-5a1aefd375e9
+  _seed: 0
+  <RoomNode>k__BackingField:
+    RoomData: {fileID: 0}
+    Connections: []
   <Spawnposition>k__BackingField: {fileID: 7024154339280543210}
+  <EnemyParent>k__BackingField: {fileID: 0}
 --- !u!1 &7348084120516186760
 GameObject:
   m_ObjectHideFlags: 0

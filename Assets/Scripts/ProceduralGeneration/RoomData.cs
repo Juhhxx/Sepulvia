@@ -1,29 +1,56 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
-[CreateAssetMenu(menuName = "Rooms/Room")]
+[CreateAssetMenu(menuName = "PCG Rooms/Room")]
 public class RoomData : ScriptableObject
 {
     public GameObject RoomPrefab;
     public string RoomName;
-
-    [Tooltip("Rooms you can go to from this room")]
-    public List<RoomConnection> Connections;
+    public RoomType RoomType;
+    public int Weight;
 }
 
-[System.Serializable]
-public class RoomConnection
+public enum RoomSide
 {
-    public RoomId doorId;
-    public RoomData targetRoom;
-    public RoomId targetDoorId;
+    North = 1,
+    East = 2,
+    South = -1,
+    West = -2,
+    None = 0
 }
 
-public enum RoomId
+public enum RoomType
 {
-    North,
-    East,
-    South,
-    West,
-    None
+    StartingRoom,
+    DungeonRoom,
+    CoreRoom
+}
+
+[Serializable]
+public class RoomNode
+{
+    public string RoomName;
+    public RoomData RoomData;
+    public List<RoomConnection> Connections = new List<RoomConnection>();
+
+    public RoomNode(RoomData data, int num)
+    {
+        RoomData = data;
+        RoomName = data.RoomName + " " + num;
+    }
+}
+
+[System.Serializable] public class RoomConnection 
+{ 
+    public RoomSide DoorId;
+    public RoomNode TargetRoom;
+    public RoomSide TargetDoorId;
+
+    public RoomConnection(RoomSide doorId, RoomSide targetId, RoomNode node)
+    {
+        DoorId = doorId;
+        TargetDoorId = targetId;
+        TargetRoom = node;
+    }
 }

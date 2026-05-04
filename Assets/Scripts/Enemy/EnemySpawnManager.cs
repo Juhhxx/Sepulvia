@@ -10,7 +10,7 @@ public class EnemySpawnManager : MonoBehaviour
     {
         List<EnemyData> generatedEnemies = new List<EnemyData>();
 
-        int numEnemies = random.Next(1, maxEnemies + 1);
+        int numEnemies = random.Next(0, maxEnemies + 1);
         var availablePaths = new List<Path>(paths);
 
         for (int i = 0; i < numEnemies; i++)

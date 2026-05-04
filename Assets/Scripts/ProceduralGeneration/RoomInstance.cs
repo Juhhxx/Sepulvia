@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class RoomInstance : RandomBehaviour
 {
-    [field: SerializeField] public RoomData RoomData { get; set; }
+    [field: SerializeField] public RoomNode RoomNode { get; set; }
     [field: SerializeField] public Transform Spawnposition { get; private set; }
     [field: SerializeField] public Transform EnemyParent { get; private set; }
 
     private List<Door> _doorList;
-    public Door GetDoor(RoomId id)
+    public Door GetDoor(RoomSide id)
     {
         foreach (Door d in _doorList)
         {
@@ -32,10 +32,11 @@ public class RoomInstance : RandomBehaviour
         _pathList = GetComponentsInChildren<Path>().ToList();
     }
 
-    public void SetUp(RoomData data)
+    public void SetUp(RoomNode data)
     {
         gameObject.name = data.RoomName;
-        TryInitializeRandom();
+
+        TryInitializeRandom(gameObject.name);
     }
 }
 

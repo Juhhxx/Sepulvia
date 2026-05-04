@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1278962018141692526}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 948.5805, y: 99.60815, z: -17.57435}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -44,8 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e18a2c385793d43829dae845048f50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EncounterManager
-  _uniqueID: 41b02178-1e5f-4013-8ce1-5d752721d8d4
+  _uniqueID: 87e94e9b-1adb-4e0f-b214-19fb679ee45d
   _seed: 0
   _battleManager: {fileID: 0}
   _timeBeforeBattleStart: 0.5
-  _possibleEncounters: []
+  _possibleEncounters:
+  - {fileID: 11400000, guid: 68435f7a1a5e35545bf9d4f6ab76ac95, type: 2}
+  - {fileID: 11400000, guid: ace545fec2da1bd4c8bde31f55c4b654, type: 2}
+  - {fileID: 11400000, guid: 13593fea15acdae499ef2792c1ca2651, type: 2}
+  - {fileID: 11400000, guid: a2ae2c46496268343841d936075319ed, type: 2}
+  - {fileID: 11400000, guid: 10a97da234961ab4d84815d430c2f8e6, type: 2}
+  - {fileID: 11400000, guid: 7d13e5c1c1108b941955007b94e79ad4, type: 2}

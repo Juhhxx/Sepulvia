@@ -46,13 +46,17 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
     {
         if (_path == null) return;
 
-        transform.position = _path.GetCurrentWaypoint();
+        Debug.Log($"Setting {name} in {_path} : {_path.GetFirstWaypoint()}");
+        transform.position = _path.GetFirstWaypoint();
+        Debug.Log($"{name} went to {transform.position}");
+
     }
 
     public void SetPath(Path path)
     {
         _path = path;
         SetInPath();
+        UpdateDirection();
     }
 
     [SerializeField] private bool _stopAtWaypoints = false;
@@ -71,12 +75,9 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
     [SerializeField] private bool _doDebug;
 
 
-    private void Awake()
+    private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-
-        SetInPath();
-        UpdateDirection();
     }
 
     private void Update()
@@ -140,6 +141,8 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
     }
     public void Move()
     {
+        if (_rb == null) return;
+
         _rb.linearVelocity = _motion;
     }
 

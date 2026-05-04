@@ -38,8 +38,11 @@ public abstract class RandomBehaviour : MonoBehaviour
 
     protected System.Random _random;
 
-    protected void TryInitializeRandom()
+    protected void TryInitializeRandom(string uniqueIdAddition = "")
     {
+        // For classes taht are instantiated at runtime
+        _uniqueID += uniqueIdAddition;
+
         var parentRandom = transform.parent?.GetComponentInParent<RandomBehaviour>();
 
         if (parentRandom != null)

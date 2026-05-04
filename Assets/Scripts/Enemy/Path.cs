@@ -26,6 +26,7 @@ public class Path : MonoBehaviour
         _direction = 1;
     }
 
+    public Vector3 GetFirstWaypoint() => _waypoints[0].position;
     public Vector3 GetCurrentWaypoint() => _waypoints[_index].position;
 
     public Vector3 GetNextWaypoint()
