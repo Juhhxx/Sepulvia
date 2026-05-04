@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Splines;
 
 public class EnemyPatrolMovement : MonoBehaviour, IMovementType
 {
@@ -46,15 +43,14 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
     {
         if (_path == null) return;
 
-        Debug.Log($"Setting {name} in {_path} : {_path.GetFirstWaypoint()}");
         transform.position = _path.GetFirstWaypoint();
-        Debug.Log($"{name} went to {transform.position}");
-
     }
 
     public void SetPath(Path path)
     {
+        _rb = GetComponent<Rigidbody>();
         _path = path;
+
         SetInPath();
         UpdateDirection();
     }
@@ -74,15 +70,10 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
 
     [SerializeField] private bool _doDebug;
 
-
-    private void Start()
-    {
-        _rb = GetComponent<Rigidbody>();
-    }
-
     private void Update()
     {
         if (_path == null) return;
+
         if (_doCheck) CheckIfReached();
 
         UpdateMovement();
@@ -149,6 +140,6 @@ public class EnemyPatrolMovement : MonoBehaviour, IMovementType
     public void ResetMovement()
     {
         if (_rb != null) _rb.linearVelocity = Vector3.zero;
-        UpdateDirection();
+        if (_path != null) UpdateDirection();
     }
 }

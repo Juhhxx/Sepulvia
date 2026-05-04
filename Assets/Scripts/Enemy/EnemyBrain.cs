@@ -1,5 +1,6 @@
 using System;
 using NaughtyAttributes;
+using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -33,25 +34,24 @@ public class EnemyBrain : MonoBehaviour, IPausable
     public event Action OnMovementChange;
 
     private Transform _target;
+    private NavMeshAgent _agent;
     private Timer _memoryTimer;
 
     public enum MovementType { Patrolling, Following }
 
     [SerializeField, ReadOnly] private MovementType _movementeState = MovementType.Patrolling;
 
-    private bool _setUp = false;
     public void SetPath(Path path)
     {
-        _patrolMovement.SetPath(path);
-
         _movementeState = MovementType.Patrolling;
 
         gameObject.SetActive(true);
 
         UpdateMovement();
-        _activeMovement.ResetMovement();
 
-        _setUp = true;
+        path.Reset();
+
+        _patrolMovement.SetPath(path);
     }
 
     [SerializeField] private bool _doFollow = true;
@@ -62,6 +62,7 @@ public class EnemyBrain : MonoBehaviour, IPausable
     {
         _patrolMovement = GetComponent<EnemyPatrolMovement>();
         _followMovement = GetComponent<EnemyFollowMovement>();
+        _agent = GetComponent<NavMeshAgent>();
 
         _memoryTimer = new Timer(_playerMemoryTimer);
         _memoryTimer.OnTimerDone += CheckPlayer;
@@ -81,11 +82,11 @@ public class EnemyBrain : MonoBehaviour, IPausable
     {
         ActiveMovement = _movementeState == MovementType.Patrolling ? 
                                     _patrolMovement : _followMovement;
+
+        _agent.enabled = _movementeState == MovementType.Following;
     }
     private void BrainLogic()
-    {
-        if (!_setUp) return;
-        
+    {        
         if (DetectPlayer())
         {
             _movementeState = MovementType.Following;
