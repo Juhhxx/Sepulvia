@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviourSingleton<PauseManager>
 {
@@ -9,6 +10,8 @@ public class PauseManager : MonoBehaviourSingleton<PauseManager>
     private void Awake()
     {
         base.SingletonCheck(this, true);
+        
+        SceneManager.activeSceneChanged += (_,_) => OnTogglePause = null;
     }
 
     public void RegisterPausable(IPausable pausable)
