@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b2a18b978b0aa94d8e3e05c29121187, type: 3}
-  m_Name: Barrier
+  m_Name: SoulPit
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
-  <Name>k__BackingField: Barrier
+  <Name>k__BackingField: Soul Pit
   <Type>k__BackingField: 4096
   <PriorityLevel>k__BackingField: -1
-  <StanceCost>k__BackingField: 3
+  <StanceCost>k__BackingField: 5
   <StanceDamage>k__BackingField: 0
-  <Cooldown>k__BackingField: 2
+  <Cooldown>k__BackingField: 5
   _pullStrength: 0
   <StatModifiers>k__BackingField: []
   <Modifier>k__BackingField:
-    <Type>k__BackingField: 0
-    <Trigger>k__BackingField: 1
-    <BarEffectPrefab>k__BackingField: {fileID: 4202190986578470864, guid: 3616f33027eb2a848b7f37b85f660fc7, type: 3}
-    <TurnDuration>k__BackingField: 1
+    <Type>k__BackingField: 2
+    <Trigger>k__BackingField: 0
+    <BarEffectPrefab>k__BackingField: {fileID: 4202190986578470864, guid: be4d7b8c05d2d97488cb4ac1f32389a8, type: 3}
+    <TurnDuration>k__BackingField: 4
     <DestroyOnUse>k__BackingField: 0
-  <Description>k__BackingField: 'A barrier that blocks movement of the soul in the
-    pull bar.
+    <GraviyStrength>k__BackingField: 1
+  <Description>k__BackingField: 'Pulls the Soul towards it.
 
-    Lasts for 1 turn.'
+    Lasts for 4 turns.'

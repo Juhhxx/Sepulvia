@@ -1,6 +1,6 @@
 public enum BarModifierType
 {
     Barrier,
-    BearTrap,
+    Beartrap,
     GravityPull
 }

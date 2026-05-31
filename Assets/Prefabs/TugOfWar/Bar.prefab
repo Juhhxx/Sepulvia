@@ -103,7 +103,7 @@ MonoBehaviour:
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
+    m_ColorMultiplier: 2.5
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
@@ -135,9 +135,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BarSection
   <BarModifier>k__BackingField:
     <Type>k__BackingField: 0
-    <Color>k__BackingField: {r: 0, g: 0, b: 0, a: 0}
+    <Trigger>k__BackingField: 0
+    <BarEffectPrefab>k__BackingField: {fileID: 0}
     <TurnDuration>k__BackingField: 0
     <DestroyOnUse>k__BackingField: 0
+    <GraviyStrength>k__BackingField: 0
   <ConnectRight>k__BackingField: {fileID: 0}
   <ConnectLeft>k__BackingField: {fileID: 0}
   <HasHeart>k__BackingField: 0

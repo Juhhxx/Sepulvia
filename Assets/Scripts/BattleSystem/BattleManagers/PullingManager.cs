@@ -84,8 +84,11 @@ public class PullingManager : RandomBehaviour
         else
         {
             _currentHeartIndex = (_sectionsNumber / 2) + 1;
+
             _pullingUIManager.MoveHeart(_currentHeartIndex, doAnim: false);
         }
+
+        _barSectionList[_currentHeartIndex].SetHasHeart(true);
     }
 
     // Moving Logic
@@ -103,13 +106,11 @@ public class PullingManager : RandomBehaviour
         {
             BarSection section = _barSectionList[_currentHeartIndex];
 
-            if (section.HasModifier)
+            // Check Modifier in Current Bar Section
+            if (DoBarModifier(section, BarModifierTrigger.OnInside)) 
             {
-                if (DoBarModifier(section)) 
-                {
-                    IsMoving = false;
-                    yield break;
-                }
+                IsMoving = false;
+                yield break;
             }
 
             var tmp = _currentHeartIndex;
@@ -121,6 +122,7 @@ public class PullingManager : RandomBehaviour
 
             if (tmp < 0)
             {
+                // Tip over to the left
                 _pullingUIManager.MoveHeart(tmp);
                 OnHeartEnd?.Invoke(true);
                 IsMoving = false;
@@ -128,6 +130,7 @@ public class PullingManager : RandomBehaviour
             }
             else if (tmp >= _barSectionList.Count)
             {
+                // Tip over to the right
                 _pullingUIManager.MoveHeart(tmp);
                 OnHeartEnd?.Invoke(false);
                 IsMoving = false;
@@ -135,15 +138,20 @@ public class PullingManager : RandomBehaviour
             }
             else
             {
+                // Check Modifier in Next Bar Section
+                if (DoBarModifier(_barSectionList[tmp], BarModifierTrigger.OnEnter)) 
+                {
+                    IsMoving = false;
+                    yield break;
+                }
+
                 section.SetHasHeart(false);
 
-                if (_barSectionList[tmp].HasModifier)
+                // Check Modifier in Exiting Bar Section
+                if (DoBarModifier(section, BarModifierTrigger.OnExit)) 
                 {
-                    if (DoBarModifier(_barSectionList[tmp])) 
-                    {
-                        IsMoving = false;
-                        yield break;
-                    }
+                    IsMoving = false;
+                    yield break;
                 }
                 
                 _currentHeartIndex = tmp;
@@ -182,9 +190,11 @@ public class PullingManager : RandomBehaviour
             }
         }
     }
-    public bool DoBarModifier(BarSection section, BarModifierTrigger trigger = BarModifierTrigger.OnStartTurn)
+    public bool DoBarModifier(BarSection section, BarModifierTrigger trigger)
     {
-        // if (section.BarModifier.Trigger != trigger) return false;
+        if (!section.HasModifier) return false;
+
+        if (section.BarModifier.Trigger != trigger) return false;
 
         bool stopMovement = false;
 
@@ -195,11 +205,32 @@ public class PullingManager : RandomBehaviour
                 stopMovement = true;
                 DialogueManager.Instance.AddDialogue($"A Barrier Stopped the Movement.");
                 break;
+            
+            case BarModifierType.Beartrap:
+                stopMovement = true;
+                DialogueManager.Instance.AddDialogue($"A Beartrap Trapped the Soul in Place.");
+                break;
+            
+            case BarModifierType.GravityPull:
+                bool positive = _barSectionList.IndexOf(section) > _currentHeartIndex;
+                int force = section.BarModifier.GraviyStrength;
+                DialogueManager.Instance.AddDialogue($"Something is moving the Soul.");
+
+                MoveHeart(positive ? force : -force);
+                break;
         }
 
         if (section.BarModifier.DestroyOnUse) section.RemoveBarModifier();
 
         return stopMovement;
+    }
+
+    public void DoBarModifiers(BarModifierTrigger trigger)
+    {
+        foreach (BarSection section in _barSectionList)
+        {
+            DoBarModifier(section, trigger);
+        }
     }
 
 }

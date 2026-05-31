@@ -172,6 +172,8 @@ public class BattleManager : MonoBehaviour
         // Make Stance Recovering
         OnBeginTurn += () =>
         {
+            if (CurrentTurn == 0) return;
+
             if (Player.CurrentStance > 0) Player.CurrentStance += Player.StanceRecover;
 
             foreach (Character e in _enemyParty.PartyMembers)
@@ -496,10 +498,25 @@ public class BattleManager : MonoBehaviour
             }
 
             OnEndTurn?.Invoke();
+
+            yield return DoEndTurnEffects();
+
             // Clear Actions List
             _actionList.Clear();
             _uiManager.ToggleActionButtons(true);
         }
+    }
+
+    public IEnumerator DoEndTurnEffects()
+    {
+        _pullManager.DoBarModifiers(BarModifierTrigger.OnEndTurn);
+
+        OnActionExecuted?.Invoke(_playerParty, _enemyParty);
+        
+        yield return new WaitForSeconds(0.1f);
+        yield return new WaitUntil(() => !_pullManager.IsMoving);
+        yield return _wfd;
+        yield return new WaitForSeconds(0.5f);
     }
 
     // Win Logic
