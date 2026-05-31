@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 public static class CameraEffectsUtility
 {
-    public static void DoCameraShake(float duration, float force, Action action = null)
+    public static void DoCameraShake(float duration, float force, Camera camera = null, Action action = null)
     {
-        Transform cameraTrans = GameSceneManager.Instance.CurrentCamera.transform;
+        Transform cameraTrans = camera == null ? GameSceneManager.Instance.CurrentCamera.transform : camera.transform;
 
         cameraTrans.DOShakePosition(duration, new Vector3(force, force, 0));
         action?.Invoke();
     }
 
-    public static void DoCameraShake(float duration, float force, float delay, Action action = null)
+    public static void DoCameraShake(float duration, float force, float delay, Camera camera = null, Action action = null)
     {
-        DoDelay(delay, () => DoCameraShake(duration, force, action));
+        DoDelay(delay, () => DoCameraShake(duration, force, camera, action));
     }
     
     private static async void DoDelay(float duration, Action action)

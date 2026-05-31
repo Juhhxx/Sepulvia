@@ -147,7 +147,7 @@ public class PullingUIManager : MonoBehaviour
     public void DoHeartMoveAnim(Vector3 position, Action action)
     {
         _heartTrans.DOAnchorPosX(position.x, _pullHeartAnimSpeed).SetEase(_pullHeartAnimEase);
-        CameraEffectsUtility.DoCameraShake(0.5f, 0.5f, _pullHeartAnimSpeed / 2, action);
+        CameraEffectsUtility.DoCameraShake(0.5f, 0.5f, delay: _pullHeartAnimSpeed / 2, action: action);
     }
     public void DoHeartDefaultAnim()
     {

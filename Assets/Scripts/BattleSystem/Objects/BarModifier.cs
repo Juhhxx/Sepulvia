@@ -4,7 +4,8 @@ using UnityEngine;
 [Serializable]
 public class BarModifier
 {
-    [field: SerializeField] public BarModifierTypes Type { get; private set; }
+    [field: SerializeField] public BarModifierType Type { get; private set; }
+    [field: SerializeField] public BarModifierTrigger Trigger { get; private set; }
 
     [field: SerializeField] public GameObject BarEffectPrefab { get; private set; }
  
@@ -16,6 +17,7 @@ public class BarModifier
     public void TurnPassed() => _turnsPassed++;
     public bool CheckIfDone() => _turnsPassed == TurnDuration + 1; // Don't count the first turn
     public bool CheckIfAlmostDone() => _turnsPassed == TurnDuration ;
+
     public BarModifier Instantiate()
     {
         return this.MemberwiseClone() as BarModifier;

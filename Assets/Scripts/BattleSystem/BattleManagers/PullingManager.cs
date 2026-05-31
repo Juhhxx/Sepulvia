@@ -182,14 +182,16 @@ public class PullingManager : RandomBehaviour
             }
         }
     }
-    public bool DoBarModifier(BarSection section)
+    public bool DoBarModifier(BarSection section, BarModifierTrigger trigger)
     {
+        if (section.BarModifier.Trigger == trigger) return false;
+
         bool stopMovement = false;
 
         switch (section.BarModifier.Type)
         {
-            case BarModifierTypes.Barrier:
-
+            case BarModifierType.Barrier:
+                
                 stopMovement = true;
                 DialogueManager.Instance.AddDialogue($"A Barrier Stopped the Movement.");
                 break;
