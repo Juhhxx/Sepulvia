@@ -182,9 +182,9 @@ public class PullingManager : RandomBehaviour
             }
         }
     }
-    public bool DoBarModifier(BarSection section, BarModifierTrigger trigger)
+    public bool DoBarModifier(BarSection section, BarModifierTrigger trigger = BarModifierTrigger.OnStartTurn)
     {
-        if (section.BarModifier.Trigger == trigger) return false;
+        // if (section.BarModifier.Trigger != trigger) return false;
 
         bool stopMovement = false;
 

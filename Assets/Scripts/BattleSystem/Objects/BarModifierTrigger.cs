@@ -3,5 +3,6 @@ public enum BarModifierTrigger
     OnStartTurn,
     OnEndTurn,
     OnEnter,
-    OnBeforeEnter
+    OnInside,
+    OnExit,
 }

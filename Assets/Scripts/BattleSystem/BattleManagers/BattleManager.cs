@@ -85,6 +85,8 @@ public class BattleManager : MonoBehaviour
         _actionList.Add(action);
     }
 
+    public event Action<Party, Party> OnActionExecuted;
+
     private void ExecuteAction(BattleAction action)
     {
         switch (action.Type)
@@ -147,27 +149,28 @@ public class BattleManager : MonoBehaviour
     }
 
     // Battle Turns
-    public event Action OnTurnPassed;
+    public event Action OnBeginTurn;
+    public event Action OnEndTurn;
+    
     private int _currentTurn;
-    public int CurrentTurn
-    {
-        get => _currentTurn;
+    public int CurrentTurn { get; set; }
 
-        private set
-        {
-            _currentTurn = value;
-            OnTurnPassed?.Invoke();
-        }
-    }
-
-    // New Turn Events
-    private void SetUpNewTurnEvents()
+    // Turn Events
+    private void SetUpTurnEvents()
     {
         // Clear Previous Subscribers
-        OnTurnPassed = null;
+        OnBeginTurn = null;
+        OnEndTurn = null;
+
+        // Count turns
+        OnBeginTurn += () =>
+        {
+            CurrentTurn++;
+            Debug.Log($"TURN {CurrentTurn} START");
+        };
 
         // Make Stance Recovering
-        OnTurnPassed += () =>
+        OnBeginTurn += () =>
         {
             if (Player.CurrentStance > 0) Player.CurrentStance += Player.StanceRecover;
 
@@ -180,8 +183,22 @@ public class BattleManager : MonoBehaviour
             Debug.Log("DID STANCE RECOVER");
         };
 
+        // Make Enemies Choose Action Every Turn
+        foreach (Enemy enemy in _enemyParty.PartyMembers)
+        {
+            OnBeginTurn += () =>
+            {
+                if (enemy.CurrentStance > 0)
+                {
+                    Move m = enemy.BattleAI.ChooseRandom();
+                    AddAction(enemy, m);
+                }
+                Debug.Log("DID ENEMY AI");
+            };
+        }
+
         // Count Turns in Modifiers and Check Them
-        OnTurnPassed += () =>
+        OnEndTurn += () =>
         {
             Player.CheckModifier();
 
@@ -193,10 +210,10 @@ public class BattleManager : MonoBehaviour
         };
 
         // Check Bar Modifiers
-        OnTurnPassed += _pullManager.CheckBarModifiers;
+        OnEndTurn += _pullManager.CheckBarModifiers;
 
         // Count Turns in Moves
-        OnTurnPassed += () =>
+        OnEndTurn += () =>
         {
             foreach (Move m in Player.MoveSet) m.TurnPassed();
 
@@ -206,20 +223,6 @@ public class BattleManager : MonoBehaviour
             }
             Debug.Log("DID MOVE COUNT");
         };
-
-        // Make Enemies Choose Action Every Turn
-        foreach (Enemy enemy in _enemyParty.PartyMembers)
-        {
-            OnTurnPassed += () =>
-            {
-                if (enemy.CurrentStance > 0)
-                {
-                    Move m = enemy.BattleAI.ChooseRandom();
-                    AddAction(enemy, m);
-                }
-                Debug.Log("DID ENEMY AI");
-            };
-        }
     }
 
     // Turn Losses
@@ -239,7 +242,7 @@ public class BattleManager : MonoBehaviour
 
     
     private bool _hasWinner = false;
-    private bool _playerWon;
+    private bool _playerWon = false;
 
     public event Action OnBattleEnd;
     public UnityEvent OnBattleWon;
@@ -269,14 +272,23 @@ public class BattleManager : MonoBehaviour
         _pullManager.SetUp(enemyParty);
         _pullManager.ResetEvents();
 
+        // Pull Bar Events
         _pullManager.OnSelectBar += AddBarModifier;
         _pullManager.OnHeartEnd += Win;
 
+        // On Action Executed Events
+        OnActionExecuted += _uiManager.UpdateStanceBars;
+        OnActionExecuted += _uiManager.UpdateStatModifierDisplay;
+        OnActionExecuted += (_,_) => _dialogueManager.StartDialogues();
+
+        // Instantiate Variables
         _wfd = new WaitForDialogueEnd(_dialogueManager);
         _actionList = new List<BattleAction>();
 
+        // Set Number of Battlers
         _numberOfBattlers = playerParty.PartySize + enemyParty.PartySize;
 
+        // Set UI
         _uiManager.ToggleMoveButtons(false);
         _uiManager.ToggleActionButtons(true);
         _uiManager.ToggleMoveInfo(false);
@@ -284,7 +296,7 @@ public class BattleManager : MonoBehaviour
         _inventoryUIManager.HideInventory();
         _inventoryUIManager.ResetInventory();
 
-        SetUpNewTurnEvents();
+        SetUpTurnEvents();
 
         SetUpBattleUI();
 
@@ -437,7 +449,7 @@ public class BattleManager : MonoBehaviour
         {
             VerifyTurnLosses();
 
-            CurrentTurn++;
+            OnBeginTurn?.Invoke();
 
             UpdateButtons();
             _uiManager.UpdateStatModifierDisplay(_playerParty, _enemyParty);
@@ -460,9 +472,7 @@ public class BattleManager : MonoBehaviour
             {
                 ExecuteAction(action);
 
-                _uiManager.UpdateStanceBars(_playerParty, _enemyParty);
-                _uiManager.UpdateStatModifierDisplay(_playerParty, _enemyParty);
-                _dialogueManager.StartDialogues();
+                OnActionExecuted?.Invoke(_playerParty, _enemyParty);
 
                 yield return new WaitUntil(() => !_pullManager.IsMoving);
                 yield return _wfd;
@@ -485,6 +495,7 @@ public class BattleManager : MonoBehaviour
                 }
             }
 
+            OnEndTurn?.Invoke();
             // Clear Actions List
             _actionList.Clear();
             _uiManager.ToggleActionButtons(true);
