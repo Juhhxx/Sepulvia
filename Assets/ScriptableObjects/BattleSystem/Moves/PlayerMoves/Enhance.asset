@@ -14,12 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
   <Name>k__BackingField: Enhance
   <Type>k__BackingField: 16
-  <PriorityLevel>k__BackingField: 0
+  <PriorityLevel>k__BackingField: 2
   <StanceCost>k__BackingField: 5
   <StanceDamage>k__BackingField: 0
   <Cooldown>k__BackingField: 3
-  _turnsPassed: 0
-  _inCooldown: 0
   _pullStrength: 0
   <StatModifiers>k__BackingField:
   - <StatAffected>k__BackingField: 0
@@ -29,9 +27,11 @@ MonoBehaviour:
     <Sprite>k__BackingField: {fileID: 21300000, guid: fdf48565870c41e4e98603c35525efbe, type: 3}
   <Modifier>k__BackingField:
     <Type>k__BackingField: 0
-    <Color>k__BackingField: {r: 0, g: 0, b: 0, a: 0}
+    <Trigger>k__BackingField: 0
+    <BarEffectPrefab>k__BackingField: {fileID: 0}
     <TurnDuration>k__BackingField: 0
     <DestroyOnUse>k__BackingField: 0
+    <GraviyStrength>k__BackingField: 0
   <Description>k__BackingField: 'Boosts all pull moves by 2 spaces.
 
     Lasts 3
