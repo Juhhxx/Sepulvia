@@ -158,7 +158,7 @@ public class PlayerOverworldUI : MonoBehaviour
         _textToAdd += add;
     }
 
-    private Timer _moveTextTimer = new Timer(2.5f, Timer.TimerReset.Manual);
+    private Timer _moveTextTimer = new Timer(5f, Timer.TimerReset.Manual);
 
     private IEnumerator ScrollTextCR()
     {
