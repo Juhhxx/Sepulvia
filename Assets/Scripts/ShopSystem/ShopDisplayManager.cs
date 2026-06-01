@@ -21,12 +21,19 @@ public class ShopDisplayManager : MonoBehaviour
 
         _priceTMP.text = price.ToString();
         _priceTag.SetActive(true);
+
+        DoUpdateDisplayAnim();
     }
 
     // Animations
 
     private float _scaleAmount = 1.15f;
     private float _animDuration = 0.15f;
+
+    public void DoUpdateDisplayAnim()
+    {
+        transform.DOPunchScale(Vector3.one * _scaleAmount, _animDuration).SetEase(Ease.Linear);
+    }
 
     public void DoDisplaySelectAnim()
     {

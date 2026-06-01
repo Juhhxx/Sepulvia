@@ -15,6 +15,10 @@ public class ShopManager : RandomBehaviour
     [SerializeField] private Button _soulsButton;
 
 
+    [SerializeField] private Button _rerollButton;
+    [SerializeField] private int _rerollPrice;
+
+
     [SerializeField] private ShopUIManager _shopUIManager;
     [SerializeField] private ShopSoulUpgradeManager _shopSoulUpgradeManager;
 
@@ -48,6 +52,8 @@ public class ShopManager : RandomBehaviour
         _overworldUI = FindAnyObjectByType<PlayerOverworldUI>();
 
         SetUpButtons();
+        SetUpShopBuyReroll();
+
         _shopSoulUpgradeManager.SetUp(_player.PlayerCharacter.Inventory);
         _shopSoulUpgradeManager.OnSelectDeselectSouls += ToggleItemInfoPanel;
 
@@ -182,6 +188,22 @@ public class ShopManager : RandomBehaviour
         }
     }
 
+    private void SetUpShopBuyReroll()
+    {
+        _rerollButton.GetComponent<ShopRerollUIManager>().UpdateDisplay(_rerollPrice);
+        _rerollButton.onClick.RemoveAllListeners();
+        _rerollButton.onClick.AddListener(() =>
+        {
+            bool hasBought = BuyReroll();
+
+            if (hasBought)
+            {
+                _rerollButton.GetComponent<ShopRerollUIManager>().DoPurchaseAnim();
+            }
+            else _rerollButton.GetComponent<ShopRerollUIManager>().DoNotEnoughAnim();
+        });
+    }
+
     private void SetUpShopSell()
     {
         _shopUIManager.UpdateShopSellDisplays(_player.PlayerCharacter.Inventory);
@@ -295,6 +317,20 @@ public class ShopManager : RandomBehaviour
         if (_player.Essence >= item.Value && _player.PlayerCharacter.Inventory.AddItem(item))
         {
             _player.ChangeEssence(-item.Value);
+
+            return true;
+        }
+        
+        return false;
+    }
+
+    public bool BuyReroll()
+    {
+        if (_player.Essence >= _rerollPrice)
+        {
+            _player.ChangeEssence(-_rerollPrice);
+            ChooseShopItems();
+            SetUpShopBuy();
 
             return true;
         }
