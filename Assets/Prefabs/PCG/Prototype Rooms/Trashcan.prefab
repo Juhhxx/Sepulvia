@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4712788992855716129}
-  - component: {fileID: 3355380913645706398}
   - component: {fileID: 8302670666191639708}
+  - component: {fileID: 3355380913645706398}
+  - component: {fileID: 1114314531795695013}
   m_Layer: 9
   m_Name: Trashcan
   m_TagString: Untagged
@@ -34,25 +35,6 @@ Transform:
   - {fileID: 3590733833558517599}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3355380913645706398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5614372048390704734}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cbfd156de434744a928bf4339d78ccb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LootBox
-  _itemPool:
-  - {fileID: 11400000, guid: 3aca23ee82e5edb4ba35df96b54e492d, type: 2}
-  - {fileID: 11400000, guid: 751178ff55ef99146a53e2cc51c68658, type: 2}
-  - {fileID: 11400000, guid: 4ff8ef679ab7f1f4cb782e344a0edbc9, type: 2}
-  - {fileID: 11400000, guid: 71ca1f7b87642fb4d874d540c199f56c, type: 2}
-  _outline: {fileID: 2100000, guid: 517cd938833943f4c85d4ae58723962d, type: 2}
-  _renderer: {fileID: 2373049375305516796}
 --- !u!65 &8302670666191639708
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -74,6 +56,40 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.7367105, y: 2.5, z: 1.7186713}
   m_Center: {x: 0, y: 1.25, z: 0}
+--- !u!114 &3355380913645706398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5614372048390704734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cbfd156de434744a928bf4339d78ccb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LootBox
+  _uniqueID: 6f2e04ad-9114-41c2-a461-bdd33ad4a66f
+  _seed: 0
+  _uses: 1
+  _itemPool:
+  - {fileID: 11400000, guid: 3aca23ee82e5edb4ba35df96b54e492d, type: 2}
+  - {fileID: 11400000, guid: 751178ff55ef99146a53e2cc51c68658, type: 2}
+  - {fileID: 11400000, guid: 4ff8ef679ab7f1f4cb782e344a0edbc9, type: 2}
+  - {fileID: 11400000, guid: 71ca1f7b87642fb4d874d540c199f56c, type: 2}
+--- !u!114 &1114314531795695013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5614372048390704734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c013e2f86c695f54490ace1b6c835c12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlineManager
+  _outline: {fileID: 2100000, guid: 517cd938833943f4c85d4ae58723962d, type: 2}
+  _renderer: {fileID: 2373049375305516796}
 --- !u!1001 &1681210255056433327
 PrefabInstance:
   m_ObjectHideFlags: 0

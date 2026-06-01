@@ -7,28 +7,16 @@ public class MetroManager : MonoBehaviour, IInteractable
     [SerializeField] private ItemInfo _fuelitem;
     private PlayerOverworldUI _overworldUI;
     
-    [SerializeField] private Material _outline;
-    [SerializeField] private MeshRenderer _renderer;
-    private Material[] _defaultMaterials;
-    private Material[] _outlineMaterials;
-
     private PlayerController _player;
+    private OutlineManager _outline;
 
     private void Start()
     {
         CanInteract = true;
         _player = FindAnyObjectByType<PlayerController>();
+        _outline = GetComponent<OutlineManager>();
+
         _overworldUI = FindAnyObjectByType<PlayerOverworldUI>();
-
-        _defaultMaterials = _renderer.materials;
-        _outlineMaterials = new Material[_defaultMaterials.Length + 1];
-
-        for (int i = 0; i < _defaultMaterials.Length; i++)
-        {
-            _outlineMaterials[i] = _defaultMaterials[i];
-        }
-
-        _outlineMaterials[_outlineMaterials.Length - 1] = _outline;
     }
 
     public bool CanInteract { get; private set; }
@@ -53,13 +41,6 @@ public class MetroManager : MonoBehaviour, IInteractable
 
     public void ToggleSelected(bool onOff)
     {
-        if (onOff)
-        {
-            _renderer.materials = _outlineMaterials;
-        }
-        else
-        {
-            _renderer.materials = _defaultMaterials;
-        }
+        _outline.ToggleOutline(onOff);
     }
 }
