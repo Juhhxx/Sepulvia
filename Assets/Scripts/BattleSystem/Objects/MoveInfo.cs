@@ -103,6 +103,11 @@ public class Move
     }
     public void UsedMove() => _inCooldown = true;
     public bool CheckIfCooldown() => _inCooldown;
+    public void ResetCooldown()
+    {
+        _inCooldown = false;
+        _turnsPassed = 0;
+    }
 
     [Space(10)]
     [Header("Pull Move Parameters")]

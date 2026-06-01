@@ -6,6 +6,8 @@ using System.Collections;
 
 public class BarSection : MonoBehaviour
 {
+    [SerializeField] private Color _normalColor;
+    [SerializeField] private Color _heartColor;
     [field: SerializeField, ReadOnly] public BarModifier BarModifier { get; private set; }
     public bool HasModifier { get; private set; }
     private GameObject _modifierPrefab;
@@ -41,6 +43,9 @@ public class BarSection : MonoBehaviour
     public void SetHasHeart(bool has)
     {
         HasHeart = has;
+
+        if (HasHeart) _image.color = _heartColor;
+        else _image.color = _normalColor;
     }
 
     [field: SerializeField, ReadOnly] public Vector3 HeartPosition { get; private set; }
@@ -65,15 +70,8 @@ public class BarSection : MonoBehaviour
     {
         _image = GetComponent<Image>();
         _button = GetComponent<Button>();
-    }
 
-    private void Update()
-    {
-        if (!HasModifier)
-        {
-            if (HasHeart) _image.color = Color.yellow;
-            else _image.color = Color.white;
-        }
+        _image.color = _normalColor;
     }
 
     private void OnDestroy()

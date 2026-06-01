@@ -153,6 +153,8 @@ public class PullingManager : RandomBehaviour
                     IsMoving = false;
                     yield break;
                 }
+
+                _barSectionList[tmp].SetHasHeart(true);
                 
                 _currentHeartIndex = tmp;
 

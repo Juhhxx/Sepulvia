@@ -303,6 +303,13 @@ public class Character
     public void ResetMoves() => MoveSet = new List<Move>(_baseMoves);
     public void ResetMove(int index) => MoveSet[index] = _baseMoves[index];
     public void ChangeMove(int index, Move to) => MoveSet[index] = to;
+    public void ResetMoveCooldowns()
+    {
+        foreach (Move m in MoveSet)
+        {
+            m.ResetCooldown();
+        }
+    }
 
     [field: Space(10)]
     [field: Header("Character Inventory")]

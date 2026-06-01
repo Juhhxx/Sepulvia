@@ -262,6 +262,13 @@ public class BattleManager : MonoBehaviour
         _playerParty = playerParty;
         _enemyParty = enemyParty;
 
+        Player.ResetMoveCooldowns();
+
+        foreach (Character c in _enemyParty.PartyMembers)
+        {
+            c.ResetMoveCooldowns();
+        }
+
         _hasWinner = false;
         _doRun = false;
 
