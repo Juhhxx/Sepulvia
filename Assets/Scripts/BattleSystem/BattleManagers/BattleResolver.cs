@@ -62,21 +62,30 @@ public class BattleResolver : RandomBehaviour
 
     private void DoPull(Move move, Character user)
     {
-        DialogueManager.Instance.AddDialogue(
-        $"{user.Name} pushed the Soul to their side by {move.PullStrength + user.PullStrenghtBonus}.");
+        int pullStrenght = move.PullStrength + user.PullStrenghtBonus;
 
-        if (user is Player) user.Animator?.SetTrigger("Attack");
+        if (pullStrenght < 0) pullStrenght = 0;
 
-        
-        if (user is Player)
+        if (pullStrenght > 0)
         {
-            _pullManager.MoveHeart(-move.PullStrength -
-            user.PullStrenghtBonus);
+            DialogueManager.Instance.AddDialogue(
+            $"{user.Name} pulled the Soul to their side by {move.PullStrength + user.PullStrenghtBonus}.");
         }
         else
         {
-            _pullManager.MoveHeart(move.PullStrength +
-            user.PullStrenghtBonus);
+            DialogueManager.Instance.AddDialogue(
+            $"{user.Name} failed to pull the Soul to their side.");
+        }
+       
+        user.Animator?.SetTrigger("Attack");
+        
+        if (user is Player)
+        {
+            _pullManager.MoveHeart(-pullStrenght);
+        }
+        else
+        {
+            _pullManager.MoveHeart(pullStrenght);
         }
     }
 

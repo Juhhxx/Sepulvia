@@ -13,8 +13,10 @@ public class PlayerStatsUI : MonoBehaviour
     {
         _nameTMP.text = c.Name;
 
+        string pullBonus = c.PullStrenghtBonus >= 0 ? $"+{c.PullStrenghtBonus}" : $"{c.PullStrenghtBonus}";
+
         _statsTMP.text = 
-        $"Stance : {c.CurrentStance}/{c.MaxStance}\nStance Gain : {c.StanceRecover}\nSpeed : {c.Speed}\nPull Str. : +{c.PullStrenghtBonus}";
+        $"Stance : {c.CurrentStance}/{c.MaxStance}\nStance Gain : {c.StanceRecover}\nSpeed : {c.Speed}\nPull Str. : {pullBonus}";
 
         var tmp = _moveButtons.GetComponentsInChildren<TextMeshProUGUI>();
 

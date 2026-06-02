@@ -37,6 +37,13 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private GameObject _essencePrefab;
     [SerializeField] private RectTransform _decisionScreenHeart;
     private Vector3 _decisionHearthDefaultPos;
+    private Vector3 _decisionHearthDefaultScale;
+
+    private void Start()
+    {
+        _decisionHearthDefaultPos = _decisionScreenHeart.anchoredPosition;
+        _decisionHearthDefaultScale = _decisionScreenHeart.localScale;
+    }
 
     [SerializeField] private GameObject _loseBattleScreen;
 
@@ -129,7 +136,8 @@ public class BattleUIManager : MonoBehaviour
 
     public void ShowWinScreen()
     {
-        _decisionHearthDefaultPos = _decisionScreenHeart.anchoredPosition;
+        _decisionScreenHeart.anchoredPosition = _decisionHearthDefaultPos;
+        _decisionScreenHeart.localScale =  _decisionHearthDefaultScale;
 
         DoDecisionHeartDefaultAnim();
         _winBattleScreen.SetActive(true);
@@ -337,7 +345,7 @@ public class BattleUIManager : MonoBehaviour
 
         if (_moveTween != null) _moveTween.Kill();
 
-        _moveTween = _decisionScreenHeart.DOAnchorPosX(finalPos.x, 1.5f).SetEase(Ease.OutFlash);
+        _moveTween = _decisionScreenHeart.DOAnchorPosX(finalPos.x, 0.2f).SetEase(Ease.OutFlash);
     }
     public void DoDecisionHeartMoveDefault()
     {
@@ -350,7 +358,7 @@ public class BattleUIManager : MonoBehaviour
     {
         _decisionScreenHeart.DOKill();
 
-        _decisionScreenHeart.DOAnchorPos(_decisionHearthDefaultPos, 1.5f).SetEase(Ease.OutFlash).OnComplete(() =>
+        _decisionScreenHeart.DOAnchorPos(_decisionHearthDefaultPos, 0.2f).SetEase(Ease.OutFlash).OnComplete(() =>
         
             _decisionScreenHeart.DOAnchorPosY(_decisionHearthDefaultPos.y + 1000f, 2f).SetEase(Ease.InExpo).OnComplete(() => action())
         );
@@ -362,7 +370,7 @@ public class BattleUIManager : MonoBehaviour
         _decisionScreenHeart.DOKill();
         _decisionScreenHeart.DOShakeAnchorPos(10f, 50f);
 
-        _decisionScreenHeart.DOAnchorPos(_decisionHearthDefaultPos, 1.5f).SetEase(Ease.OutFlash).OnComplete(() =>
+        _decisionScreenHeart.DOAnchorPos(_decisionHearthDefaultPos, 0.2f).SetEase(Ease.OutFlash).OnComplete(() =>
 
             _decisionScreenHeart.DOScale(Vector3.one * _assimilationScale, 2f).SetEase(Ease.InExpo).OnComplete(() => action())
         );
