@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 
 [CreateAssetMenu(menuName = "PCG Rooms/Room")]
-public class RoomData : ScriptableObject
+public class RoomData : DataAsset
 {
     public GameObject RoomPrefab;
     public string RoomName;
