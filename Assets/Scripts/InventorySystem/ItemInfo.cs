@@ -2,7 +2,7 @@ using UnityEngine;
 using NaughtyAttributes;
 
 [CreateAssetMenu(fileName = "ItemInfo", menuName = "Inventory/New Item")]
-public class ItemInfo : ScriptableObject
+public class ItemInfo : DataAsset
 {
     [field: Header(" Base Item Parameters")]
     [field: Space(5)]
