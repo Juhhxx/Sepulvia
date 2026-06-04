@@ -44,7 +44,7 @@ public class RoomNode
 [System.Serializable] public class RoomConnection 
 { 
     public RoomSide DoorId;
-    public RoomNode TargetRoom;
+    [SerializeReference] public RoomNode TargetRoom;
     public RoomSide TargetDoorId;
 
     public RoomConnection(RoomSide doorId, RoomSide targetId, RoomNode node)

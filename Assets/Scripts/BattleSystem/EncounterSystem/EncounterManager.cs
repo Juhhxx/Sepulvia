@@ -7,7 +7,7 @@ public class EncounterManager : RandomBehaviour
 {
     [SerializeField] private BattleManager _battleManager;
     [SerializeField] private float _timeBeforeBattleStart = 0.5f;
-    [SerializeField] private List<PartyInfo> _possibleEncounters;
+    [SerializeField] private EnemyPartyDataBase _enemyPartyDataBase;
 
     PlayerController _player;
 
@@ -33,11 +33,11 @@ public class EncounterManager : RandomBehaviour
         entity.OnEncounterPlayer -= DoEncounter;
     }
 
-    private void DoEncounter(Party party, EncounterEntity entity = null)
+    private void DoEncounter(EnemyParty party, EncounterEntity entity = null)
     {
         StartCoroutine(DoEncounterCR(party, entity));
     }
-    private IEnumerator DoEncounterCR(Party party, EncounterEntity entity)
+    private IEnumerator DoEncounterCR(EnemyParty party, EncounterEntity entity)
     {
         yield return new WaitForSeconds(_timeBeforeBattleStart);
 
@@ -54,7 +54,7 @@ public class EncounterManager : RandomBehaviour
 
     public void DoRandomEncounter()
     {
-        Party party = _possibleEncounters[_random.Next(0, _possibleEncounters.Count)].Instantiate();
+        EnemyParty party = _enemyPartyDataBase.GetRandomParty(_random).Instantiate() as EnemyParty;
 
         DoEncounter(party);
     }

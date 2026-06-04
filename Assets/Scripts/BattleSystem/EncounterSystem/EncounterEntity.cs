@@ -5,19 +5,19 @@ using UnityEngine;
 public class EncounterEntity : MonoBehaviour
 {
     [SerializeField, Expandable] private PartyInfo _party;
-    public Party EnemyParty { get; private set; }
+    public EnemyParty EnemyParty { get; private set; }
 
     private bool _didEncounter = false;
     private EncounterManager _encounterManager;
 
-    public event Action<Party, EncounterEntity> OnEncounterPlayer;
+    public event Action<EnemyParty, EncounterEntity> OnEncounterPlayer;
 
     private void Start()
     {
         _encounterManager = FindAnyObjectByType<EncounterManager>();
 
         _encounterManager.RegisterEncounterable(this);
-        EnemyParty = _party.Instantiate();
+        EnemyParty = _party.Instantiate() as EnemyParty;
     }
 
     private void OnDestroy()

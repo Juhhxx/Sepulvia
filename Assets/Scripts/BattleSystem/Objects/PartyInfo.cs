@@ -4,7 +4,7 @@ using NaughtyAttributes;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Party", menuName = "Battle System/New Party")]
-public class PartyInfo : ScriptableObject
+public class PartyInfo : DataAsset
 {
     [field: SerializeField] public string PartyName { get; private set; }
     [SerializeField] private bool _isPlayerParty;
