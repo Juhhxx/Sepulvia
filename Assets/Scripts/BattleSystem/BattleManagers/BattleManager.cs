@@ -20,10 +20,10 @@ public class BattleManager : MonoBehaviour
     [Space(10)]
     [Header("Battlers Info")]
     [Space(5)]
-    [SerializeField] private Party _playerParty;
-    [SerializeField] private Party _enemyParty;
+    [SerializeField] private PlayerParty _playerParty;
+    [SerializeField] private EnemyParty _enemyParty;
 
-    private Character Player => _playerParty.PartyMembers[0];
+    private Character Player => _playerParty.Player;
     
     private int _numberOfBattlers;
 
@@ -85,7 +85,7 @@ public class BattleManager : MonoBehaviour
         _actionList.Add(action);
     }
 
-    public event Action<Party, Party> OnActionExecuted;
+    public event Action<PlayerParty, EnemyParty> OnActionExecuted;
 
     private void ExecuteAction(BattleAction action)
     {
@@ -93,7 +93,7 @@ public class BattleManager : MonoBehaviour
         {
             case ActionType.Move:
 
-                var party = action.Character is Player ? _enemyParty : _playerParty;
+                Party party = action.Character is Player ? _enemyParty : _playerParty;
                 // var target = ChooseTarget(party);
 
                 action.Move.UsedMove();
@@ -257,7 +257,7 @@ public class BattleManager : MonoBehaviour
 // #endif
     }
 
-    public void StartBattle(Party playerParty, Party enemyParty)
+    public void StartBattle(PlayerParty playerParty, EnemyParty enemyParty)
     {
         _playerParty = playerParty;
         _enemyParty = enemyParty;
@@ -604,15 +604,4 @@ public class BattleManager : MonoBehaviour
         OnBattleEnd?.Invoke();
     }
     
-    
-
-    private Character ChooseTarget(Party fromParty)
-    {
-        int rnd = UnityEngine.Random.Range(0, fromParty.PartySize);
-        Character c = fromParty.PartyMembers[rnd];
-
-        Debug.Log($"TARGETING {c.Name}");
-
-        return c;
-    }
 }

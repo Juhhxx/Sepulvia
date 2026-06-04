@@ -7,12 +7,21 @@ using UnityEngine;
 public class PartyInfo : ScriptableObject
 {
     [field: SerializeField] public string PartyName { get; private set; }
-    [field: SerializeField] public List<CharacterInfo> PartyMembers { get; private set; }
-    public int PartySize => (PartyMembers?.Count).Value;
+    [SerializeField] private bool _isPlayerParty;
+
+    // Player Party
+    [field: SerializeField, ShowIf(nameof(_isPlayerParty))]
+    public PlayerInfo Player { get; private set; }
+
+    // Enemy Party
+    [field: SerializeField, HideIf(nameof(_isPlayerParty))]
+    public List<EnemyInfo> PartyMembers { get; private set; }
+
+    public int PartySize => _isPlayerParty ? 1 : (PartyMembers?.Count).Value;
 
     public Party Instantiate()
     {
-        return new Party(this);
+        return _isPlayerParty ? new PlayerParty(this) : new EnemyParty(this);
     }
 }
 
@@ -22,15 +31,39 @@ public class Party
     public Party(PartyInfo info)
     {
         PartyName = info.PartyName;
-        PartyMembers = new List<Character>();
-
-        foreach (CharacterInfo c in info.PartyMembers)
-        {
-            PartyMembers.Add(c.Instantiate());
-        }
     }
 
     [field: SerializeField, ReadOnly] public string PartyName { get; private set; }
-    [field: SerializeField, ReadOnly] public List<Character> PartyMembers { get; private set; }
-    public int PartySize => PartyMembers.Count;
+    public virtual int PartySize { get; private set; }
+}
+
+public class EnemyParty : Party
+{
+    [SerializeField, ReadOnly] public List<Enemy> _partyMembers;
+
+    public IReadOnlyList<Enemy> PartyMembers => _partyMembers;
+    public override int PartySize => PartyMembers.Count;
+
+
+    public EnemyParty(PartyInfo info) : base(info)
+    {
+        _partyMembers = new List<Enemy>();
+
+        foreach (EnemyInfo c in info.PartyMembers)
+        {
+            _partyMembers.Add(c.Instantiate() as Enemy);
+        }
+    }
+}
+
+public class PlayerParty : Party
+{
+    private Player _player;
+    public Player Player => _player;
+    public override int PartySize => 1;
+
+    public PlayerParty(PartyInfo info) : base(info)
+    {
+        _player = info.Player.Instantiate() as Player;
+    }
 }

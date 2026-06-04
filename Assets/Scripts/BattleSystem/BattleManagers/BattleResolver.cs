@@ -18,13 +18,25 @@ public class BattleResolver : RandomBehaviour
 
         user.CurrentStance -= move.StanceCost;
 
-        foreach (Character c in target.PartyMembers)
+        if (target is PlayerParty)
         {
-            c.CurrentStance -= move.StanceDamage;
+            Character player = (target as PlayerParty).Player;
 
+            player.CurrentStance -= move.StanceDamage;
             if (move.StanceDamage > 0)
-                if (c is Player) c.Animator?.SetTrigger("Hurt");
+                    player.Animator?.SetTrigger("Hurt");
         }
+        else
+        {
+            foreach (Character c in (target as EnemyParty).PartyMembers)
+            {
+                c.CurrentStance -= move.StanceDamage;
+
+                if (move.StanceDamage > 0)
+                    c.Animator?.SetTrigger("Hurt");
+            }
+        }
+        
 
         switch(move.Type)
         {
@@ -52,8 +64,14 @@ public class BattleResolver : RandomBehaviour
 
     private Character ChooseTarget(Party fromParty)
     {
-        int rnd = _random.Next(0, fromParty.PartySize);
-        Character c = fromParty.PartyMembers[rnd];
+        Character c;
+
+        if (fromParty is PlayerParty) c = (fromParty as PlayerParty).Player;
+        else
+        {
+            int rnd = _random.Next(0, fromParty.PartySize);
+            c = (fromParty as EnemyParty).PartyMembers[rnd];
+        }
 
         Debug.Log($"TARGETING {c.Name}");
 
@@ -122,7 +140,7 @@ public class BattleResolver : RandomBehaviour
         _inventoryResolver.UseItem(item, user);
     }
 
-    public (List<ItemInfo>, int) GiveRewards(Party enemyParty, bool spared)
+    public (List<ItemInfo>, int) GiveRewards(EnemyParty enemyParty, bool spared)
     {
         // Return Values
         List<ItemInfo> items = new List<ItemInfo>();
@@ -159,7 +177,7 @@ public class BattleResolver : RandomBehaviour
         return (items, essence);
     }
 
-    public bool CanRun(Character user, Party enemyParty)
+    public bool CanRun(Character user, EnemyParty enemyParty)
     {
         float rnd = (float)_random.NextDouble();
 

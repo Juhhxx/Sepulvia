@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 
-public class CharacterInfo : ScriptableObject
+public class CharacterInfo : DataAsset
 {
     [field: Header("Character Cosmetics")]
     [field: Space(5)]

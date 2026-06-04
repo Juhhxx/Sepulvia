@@ -62,11 +62,11 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    public void InstantiateBattlePrefabs(Party playerParty, Party enemyParty)
+    public void InstantiateBattlePrefabs(PlayerParty playerParty, EnemyParty enemyParty)
     {
         _characterModels = new List<GameObject>();
 
-        Character player = playerParty.PartyMembers[0];
+        Character player = playerParty.Player;
 
         GameObject playerGO = Instantiate(player.BattlePrefab, _playerPivot.position, Quaternion.identity);
 
@@ -228,9 +228,9 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    public void SetUpStanceBars(Party playerParty, Party enemyParty)
+    public void SetUpStanceBars(PlayerParty playerParty, EnemyParty enemyParty)
     {        
-        Character player = playerParty.PartyMembers[0];
+        Character player = playerParty.Player;
 
         _playerStanceBar.SetUpBar(player.Name, "Stance", player.MaxStance);
 
@@ -252,9 +252,9 @@ public class BattleUIManager : MonoBehaviour
             enemyFillBar.SetUpBar(enemy.Name, "Stance", enemy.MaxStance);
         }
     }
-    public void UpdateStanceBars(Party playerParty, Party enemyParty)
+    public void UpdateStanceBars(PlayerParty playerParty, EnemyParty enemyParty)
     {
-        Character player = playerParty.PartyMembers[0];
+        Character player = playerParty.Player;
 
         _playerStanceBar.UpdateFillAmout(player.CurrentStance);
 
@@ -263,10 +263,10 @@ public class BattleUIManager : MonoBehaviour
             _enemyStanceBars[i].UpdateFillAmout(enemyParty.PartyMembers[i].CurrentStance);
         }
     }
-    
-    public void UpdateStatModifierDisplay(Party playerParty, Party enemyParty)
+
+    public void UpdateStatModifierDisplay(PlayerParty playerParty, EnemyParty enemyParty)
     {
-        _statModifierDisplay.UpdateDisplay(playerParty.PartyMembers[0].StatModifiers);
+        _statModifierDisplay.UpdateDisplay(playerParty.Player.StatModifiers);
 
         for (int i = 0; i < enemyParty.PartySize; i++)
         {
@@ -275,7 +275,7 @@ public class BattleUIManager : MonoBehaviour
     }
 
     private List<GameObject> _createdObjectsTurns = new List<GameObject>();
-    public void ShowTurnOrder(Party playerParty, Party enemyParty)
+    public void ShowTurnOrder(PlayerParty playerParty, EnemyParty enemyParty)
     {
         if (_createdObjectsTurns.Count > 0)
         {
@@ -287,7 +287,7 @@ public class BattleUIManager : MonoBehaviour
 
         TextMeshProUGUI prefab = _turnOrderIndicator.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
 
-        var battlers = new List<Character>(playerParty.PartyMembers);
+        var battlers = new List<Character>() { playerParty.Player };
 
         battlers.AddRange(enemyParty.PartyMembers);
 
