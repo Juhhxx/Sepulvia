@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemySpawnManager : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> _enemyPool;
+    [SerializeField] private EnemyPartyDataBase _enemyPartyDataBase;
     private List<GameObject> _createdEnemies = new List<GameObject>();
 
     public List<EnemyData> GenerateEnemies(List<Path> paths, int maxEnemies, System.Random random)
@@ -18,10 +18,10 @@ public class EnemySpawnManager : MonoBehaviour
             int pathIdx = random.Next(availablePaths.Count);
             Path path = availablePaths[pathIdx];
             
-            int enemyIdx = random.Next(_enemyPool.Count);
-            GameObject enemy = _enemyPool[enemyIdx];
+            PartyInfo enemyParty = _enemyPartyDataBase.GetRandomParty(random);
+            EnemyInfo enemyInfo = enemyParty.PartyMembers[0]; // Select prefab from first enemy of the party
 
-            generatedEnemies.Add(new EnemyData(enemy, path));
+            generatedEnemies.Add(new EnemyData(enemyInfo.OverworldPrefab, path));
         }
 
         return generatedEnemies;

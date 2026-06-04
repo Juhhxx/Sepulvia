@@ -5,6 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Character", menuName = "Battle System/New Enemy Character")]
 public class EnemyInfo : CharacterInfo
 {
+    [field: Header("Character Overworld Aesthetics")]
+    [field: Space(5)]
+    [field : SerializeField] public GameObject OverworldPrefab { get; private set; }
+
     [field: Header("Character Defeat Rewards")]
     [field: Space(5)]
     [field : SerializeField] public int DifficultyLevel { get; private set; }
