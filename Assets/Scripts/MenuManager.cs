@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
     [SerializeField] private Camera _uiCamera;
     [SerializeField] private GameObject _uiPostProcessingVolume;
     [SerializeField] private KeyCode _pauseKey;
+    [SerializeField] private GameObject _gameOverMenu;
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _optionsMenu;
     [SerializeField] private GameObject _confirmQuitMenu;
@@ -47,7 +48,7 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
 
     public void ResetMenus()
     {
-        PauseManager.Instance.UnPause();
+        if (PauseManager.Instance.IsPaused) PauseManager.Instance.UnPause();
         _uiPostProcessingVolume.SetActive(false);
 
 
@@ -56,6 +57,7 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
             _anim.SetTrigger("Reset");
         }
 
+        _gameOverMenu?.SetActive(false);
         _pauseMenu?.SetActive(false);
         _optionsMenu?.SetActive(false);
         _confirmQuitMenu?.SetActive(false);
@@ -113,6 +115,12 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
             }
             else TogglePauseMenu(true);
         }
+    }
+
+    public void ToggleGameOverMenu(bool onOff)
+    {
+        ResetSelection();
+        _gameOverMenu.SetActive(onOff);
     }
 
     public void TogglePauseMenu(bool onOff)

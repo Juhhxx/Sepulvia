@@ -45,8 +45,6 @@ public class BattleUIManager : MonoBehaviour
         _decisionHearthDefaultScale = _decisionScreenHeart.localScale;
     }
 
-    [SerializeField] private GameObject _loseBattleScreen;
-
     public void ClearCreatedObjects()
     {
         if (_characterModels != null)
@@ -187,15 +185,9 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    public void ShowLoseScreen()
-    {
-        _loseBattleScreen.SetActive(true);
-    }
-
     public void HideFinalScreens()
     {
         _winBattleScreen.SetActive(false);
-        _loseBattleScreen.SetActive(false);
     }
 
     public List<Button> GetActionButtons()

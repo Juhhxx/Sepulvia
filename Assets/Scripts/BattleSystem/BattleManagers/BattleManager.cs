@@ -552,7 +552,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            _uiManager.ShowLoseScreen();
+            MenuManager.Instance.ToggleGameOverMenu(true);
             OnBattleLost.Invoke();
         }
 

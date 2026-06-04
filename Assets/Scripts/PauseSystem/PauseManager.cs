@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class PauseManager : MonoBehaviourSingleton<PauseManager>
 {
     public Action<bool> OnTogglePause;
+    public bool IsPaused { get; private set; }
 
     private void Awake()
     {
@@ -28,10 +29,12 @@ public class PauseManager : MonoBehaviourSingleton<PauseManager>
     {
         Debug.Log("[Pause Manager] Paused Game", this);
         OnTogglePause?.Invoke(true);
+        IsPaused = true;
     }
     public void UnPause()
     {
         Debug.Log("[Pause Manager] Unpaused Game", this);
         OnTogglePause?.Invoke(false);
+        IsPaused = false;
     }
 }
