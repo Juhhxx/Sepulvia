@@ -33,6 +33,7 @@ Transform:
   - {fileID: 8504271712495408878}
   - {fileID: 7297091226817197218}
   - {fileID: 3613083728183657704}
+  - {fileID: 4406699532381657210}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6684847741235275767
@@ -47,6 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d46ff634ed26b4da7af23cd2688a43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HazardController
+  _uniqueID: 5aab9f0e-e261-459d-af0f-366866b2ce7b
+  _seed: 0
   _hazardEffect: {fileID: 6142112642752174914}
   _hazardCollider: {fileID: 1555145771559645718}
   _effectIntervalRange: {x: 4, y: 8}
@@ -4877,7 +4880,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &340359750523760457
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4923,6 +4926,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -4954,7 +4958,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
 --- !u!1 &8044444103687751219
 GameObject:
   m_ObjectHideFlags: 0
@@ -9793,7 +9796,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &5179509804436621059
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -9839,6 +9842,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -9870,7 +9874,74 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0
+--- !u!1 &8357171373927703571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4406699532381657210}
+  - component: {fileID: 2682448900361578264}
+  - component: {fileID: 790402639839716590}
+  m_Layer: 0
+  m_Name: Capsule (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4406699532381657210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357171373927703571}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7056213, y: -0, z: -0, w: 0.7085892}
+  m_LocalPosition: {x: 0, y: 2.54, z: -1.43}
+  m_LocalScale: {x: 2.8287, y: 3.768, z: 2.8482}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 679085769564153865}
+  m_LocalEulerAnglesHint: {x: -89.76, y: 0, z: 0}
+--- !u!65 &2682448900361578264
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357171373927703571}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.70155394, z: 1.426098}
+  m_Center: {x: 0, y: -0.55218893, z: -0.21304983}
+--- !u!114 &790402639839716590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357171373927703571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be075a595c20734488ecb8f97b68390f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hazard
+  _damageAmount: 5
+  _hazardLayer: 8
 --- !u!1001 &8182907953902022917
 PrefabInstance:
   m_ObjectHideFlags: 0
