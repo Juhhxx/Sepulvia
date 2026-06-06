@@ -66,7 +66,6 @@ public class PlayerOverworldUI : MonoBehaviour
     }
     public void ToggleEquipmentDash(bool onOff)
     {
-        Debug.Log($"ASDASDASDA {onOff}");
         _equipmentParent.SetActive(onOff);
         _dashParent.SetActive(onOff);
     }

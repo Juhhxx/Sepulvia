@@ -137,13 +137,6 @@ public class ShopManager : RandomBehaviour
         _shopUIManager.ToggleItemInfo(onOff, item);
     }
 
-    public void SetUpShop()
-    {
-        SetUpShopBuy();
-        SetUpShopSell();
-        SetUpShopUpgrades();
-    }
-
     public void ChooseShopItems()
     {
         // For now, just randomly choose items. Later can implement some sort of item progression based on player progression or something

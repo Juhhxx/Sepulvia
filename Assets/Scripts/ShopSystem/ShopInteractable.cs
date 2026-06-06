@@ -9,7 +9,6 @@ public class ShopInteractable : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        _shopManager.SetUpShop();
         _shopManager.ToggleShop(true);
     }
 

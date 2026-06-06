@@ -37,6 +37,7 @@ public class ShopDisplayManager : MonoBehaviour
 
     public void DoDisplaySelectAnim()
     {
+        Debug.Log($"{name} did select anim");
         transform.DOScale(Vector3.one * _scaleAmount, _animDuration).SetEase(Ease.Linear);
         _selectionImage.transform.DOScale(Vector3.one, _animDuration).SetEase(Ease.Linear);
     }
