@@ -22,6 +22,8 @@ public class OutlineManager : MonoBehaviour
 
     public void ToggleOutline(bool onOff)
     {
+        if (_renderer == null) return;
+        
         if (onOff)
         {
             _renderer.materials = _outlineMaterials;

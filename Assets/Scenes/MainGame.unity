@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 1
   m_FogColor: {r: 0.21960784, g: 0.023529412, b: 0.23921569, a: 1}
   m_FogMode: 2
-  m_FogDensity: 0.098
+  m_FogDensity: 0.065
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -622,7 +622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
       propertyPath: _gameScenes.Array.data[0].<FogDensity>k__BackingField
-      value: 0.098
+      value: 0.065
       objectReference: {fileID: 0}
     - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
       propertyPath: _gameScenes.Array.data[0].<SceneCamera>k__BackingField
@@ -793,18 +793,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3351051720530936997, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
-      propertyPath: _volume
-      value: 0.05
-      objectReference: {fileID: 0}
     - target: {fileID: 4742336046542537727, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
       propertyPath: _enemySpawner
       value: 
       objectReference: {fileID: 4913214925670747386}
-    - target: {fileID: 4742336046542537727, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
-      propertyPath: _startingRoom
-      value: 
-      objectReference: {fileID: 11400000, guid: 0e17b6826ad03fa40a40f44a7fd8888d, type: 2}
     - target: {fileID: 4742336046542537727, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
       propertyPath: _navMeshSurface
       value: 
@@ -812,10 +804,6 @@ PrefabInstance:
     - target: {fileID: 8072954173581285941, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
       propertyPath: m_Name
       value: Room Manager
-      objectReference: {fileID: 0}
-    - target: {fileID: 8072954173581285941, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1102,6 +1090,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6799848155335449431, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6799848155335449431, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: lengthInSec
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7498980921109840918, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1175,6 +1171,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3249903681144182330, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4956765064861076021, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: m_Name
       value: Battle System
@@ -1191,6 +1191,10 @@ PrefabInstance:
       propertyPath: _inventoryResolver
       value: 
       objectReference: {fileID: 1919745060}
+    - target: {fileID: 7126547466146119950, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8665088232080352009, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: _inventoryUIManager
       value: 
@@ -1627,6 +1631,10 @@ PrefabInstance:
       propertyPath: _rerollPrice
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 7309105193562637755, guid: cd5fc88e9075d3c42904144f6176b722, type: 3}
+      propertyPath: _itemDataBase
+      value: 
+      objectReference: {fileID: 11400000, guid: a44e1352049d76b4490a77e55261fa1f, type: 2}
     - target: {fileID: 7309105193562637755, guid: cd5fc88e9075d3c42904144f6176b722, type: 3}
       propertyPath: _rerollButton
       value: 

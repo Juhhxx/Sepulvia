@@ -7,15 +7,23 @@ public class HazardController : RandomBehaviour, IPausable
     [SerializeField] private ParticleSystem _hazardEffect;
     [SerializeField] private Collider _hazardCollider;
     [SerializeField, MinMaxSlider(0f, 10f)] private Vector2 _effectIntervalRange = new Vector2(2f, 5f);
+    [SerializeField] private bool _alwaysActive = true;
+
+    private DungeonManager _dungeonManager;
+
+    private void Awake()
+    {
+        _dungeonManager = FindAnyObjectByType<DungeonManager>();
+    }
 
     private void OnEnable()
     {
         PauseManager.Instance.RegisterPausable(this);
-        
         TryInitializeRandom();
 
         _hazardCollider.enabled = false;
-        StartCoroutine(PlayHazardCR());
+
+        if (!_alwaysActive && _dungeonManager.CoreTaken) StartCoroutine(PlayHazardCR());
     }
 
     private void OnDisable()

@@ -5,7 +5,7 @@ public class LootBox : RandomBehaviour, IInteractable
 {
     [SerializeField] private int _uses = 1;
     private int _currentUses = 0;
-    [SerializeField] private List<ItemInfo> _itemPool;
+    [SerializeField] private ItemDataBase _itemDB;
     private PlayerOverworldUI _overworldUI;
     private OutlineManager _outline;
     private PlayerController _player;
@@ -23,10 +23,10 @@ public class LootBox : RandomBehaviour, IInteractable
 
         if (rndGet < 0.5f)
         {
-            int rnd = _random.Next(0, _itemPool.Count);
-            _player.PlayerCharacter.Inventory.AddItem(_itemPool[rnd]);
+            ItemInfo item= _itemDB.GetRandomBuyableItem(_random);
+            _player.PlayerCharacter.Inventory.AddItem(item);
 
-            _overworldUI.AddScrollText($"Wow! You got {_itemPool[rnd].Name}!!!");
+            _overworldUI.AddScrollText($"Wow! You got {item.Name}!!!");
         }
         else
         {

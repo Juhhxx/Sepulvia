@@ -139,7 +139,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -5248,10 +5248,11 @@ GameObject:
   - component: {fileID: 9057019696532367986}
   - component: {fileID: 7108961713755761908}
   - component: {fileID: 8967336212676743552}
+  - component: {fileID: 8873060569878734397}
   - component: {fileID: 1508272504764424918}
   - component: {fileID: 6938475565895994930}
   - component: {fileID: 1197046777596630015}
-  - component: {fileID: 8873060569878734397}
+  - component: {fileID: 4755404336633325626}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -5328,6 +5329,28 @@ CapsuleCollider:
   m_Height: 4
   m_Direction: 1
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!95 &8873060569878734397
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7498980921109840918}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c876f9c51b546c34c92c647688b46b14, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1508272504764424918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5341,9 +5364,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _playerParty: {fileID: 11400000, guid: 89d2679380e72fe4d8e5112223a8279c, type: 2}
-  <PlayerParty>k__BackingField:
-    <PartyName>k__BackingField: 
-    <PartyMembers>k__BackingField: []
   _immunityTime: 2.5
   _excludeWhenImmune:
     serializedVersion: 2
@@ -5421,7 +5441,7 @@ MonoBehaviour:
   _canDash: 1
   _isDashing: 0
   _spr: {fileID: 5396310604835018956}
-  _trailEffect: {fileID: 4884208144393963108}
+  _dashEffect: {fileID: 6799848155335449431}
 --- !u!114 &1197046777596630015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5439,25 +5459,11 @@ MonoBehaviour:
   _interactableLayer:
     serializedVersion: 2
     m_Bits: 512
---- !u!95 &8873060569878734397
-Animator:
-  serializedVersion: 7
+--- !u!81 &4755404336633325626
+AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7498980921109840918}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c876f9c51b546c34c92c647688b46b14, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0

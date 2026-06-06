@@ -28,8 +28,7 @@ public class PlayerMovement : MonoBehaviour
     private Timer _dashCooldownTimer;
     private Animator _anim;
     [SerializeField] private SpriteRenderer _spr;
-    [SerializeField] private GameObject _trailEffect;
-
+    [SerializeField] private ParticleSystem _dashEffect;
     public bool CanDash => _canDash;
     public float DashCooldownTime => _dashCooldownTimer.CurrentTime / _dashCooldownTime;
 
@@ -38,8 +37,6 @@ public class PlayerMovement : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _anim = GetComponent<Animator>();
-
-        _trailEffect.SetActive(false);
 
         _dashCooldownTimer = new Timer(_dashCooldownTime);
         _dashCooldownTimer.OnTimerDone += () => _canDash = true;
@@ -102,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
         _isDashing = true;
         _canDash = false;
 
-        _trailEffect.SetActive(true);
+        _dashEffect.Play();
 
         _dashCooldownTimer.ResetTimer();
 
@@ -117,7 +114,6 @@ public class PlayerMovement : MonoBehaviour
 
         _rb.excludeLayers = LayerMask.GetMask();
 
-        _trailEffect.SetActive(false);
         _isDashing = false;
     }
 }

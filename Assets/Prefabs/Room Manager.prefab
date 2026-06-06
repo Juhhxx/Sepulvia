@@ -119,7 +119,7 @@ Light:
   serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 5
+  m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -249,12 +249,13 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: 2962dec242928e84cac8a9a8344d8a1c, type: 3}
   _group: 1
-  _volume: 0.02
+  _volume: 0.05
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
   _playOnStart: 0
   _loop: 1
+  _waitForFinish: 1
   _isMusic: 1
 --- !u!1 &6131577865856908398
 GameObject:
@@ -428,5 +429,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08951e4e433a33443930c4fba188a8e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomManager
-  startingRoom: {fileID: 11400000, guid: feaf942208c125848aebd0b04e0210e6, type: 2}
+  _enemySpawner: {fileID: 0}
   _navMeshSurface: {fileID: 0}

@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour, IPausable
     [SerializeField, Expandable] public PartyInfo _playerParty;
     [field: SerializeField] public PlayerParty PlayerParty { get; private set; }
 
-    // Player Party never has more than 1 character
     public Character PlayerCharacter => PlayerParty.Player;
 
     public void ChangeEssence(int amount)

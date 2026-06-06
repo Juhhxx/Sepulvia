@@ -2941,10 +2941,14 @@ MonoBehaviour:
   _uniqueID: c757f76d-7efd-4710-852c-c948da5912b3
   _seed: 0
   <RoomNode>k__BackingField:
+    RoomName: 
     RoomData: {fileID: 0}
     Connections: []
   <Spawnposition>k__BackingField: {fileID: 7169325255033571982}
   <EnemyParent>k__BackingField: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &7779098284598197226
 GameObject:
   m_ObjectHideFlags: 0
@@ -4023,6 +4027,10 @@ PrefabInstance:
     - target: {fileID: 2786382787488048364, guid: 3ac394adf241f2c4299236d98b75e435, type: 3}
       propertyPath: m_Name
       value: Has Pipe Hazard (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684847741235275767, guid: 3ac394adf241f2c4299236d98b75e435, type: 3}
+      propertyPath: _alwaysActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

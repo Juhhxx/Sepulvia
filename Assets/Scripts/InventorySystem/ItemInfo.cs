@@ -11,6 +11,7 @@ public class ItemInfo : DataAsset
 
     [field: SerializeField] public int StackMaximum { get; private set; }
     [field: SerializeField] public bool CanBeUsedInBattle { get; private set; }
+    [field: SerializeField] public bool CanBeBought{ get; private set; }
     [field: SerializeField] public bool CanBeSold { get; private set; }
 
     [field: SerializeField] public ItemTypes Type { get; private set; }
@@ -18,7 +19,7 @@ public class ItemInfo : DataAsset
     [field: Space(10)]
     [field: Header("Item Shop Value")]
     [field: Space(5)]
-    [field: ShowIf("CanBeSold")]
+    [field: ShowIf(EConditionOperator.Or, "CanBeBought", "CanBeSold")]
     [field: SerializeField] public int Value { get; private set; }
 
     [field: Space(10)]

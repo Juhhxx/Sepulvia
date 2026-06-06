@@ -22,7 +22,7 @@ public class ShopManager : RandomBehaviour
     [SerializeField] private ShopUIManager _shopUIManager;
     [SerializeField] private ShopSoulUpgradeManager _shopSoulUpgradeManager;
 
-    [SerializeField] private List<ItemInfo> _possibleItems;
+    [SerializeField] private ItemDataBase _itemDataBase;
     private List<ItemInfo> _shopItems = new List<ItemInfo>();
 
     private PlayerController _player;
@@ -151,8 +151,7 @@ public class ShopManager : RandomBehaviour
 
         for (int i = 0; i < _shopSize; i++)
         {
-            int rnd = _random.Next(0, _possibleItems.Count);
-            _shopItems.Add(_possibleItems[rnd]);
+            _shopItems.Add(_itemDataBase.GetRandomBuyableItem(_random));
         }
     }
 
