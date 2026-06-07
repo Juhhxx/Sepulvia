@@ -11295,7 +11295,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6275618903576476029}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.42261827, z: 0, w: 0.9063079}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11318,7 +11318,7 @@ Transform:
   - {fileID: 777126340137673613}
   - {fileID: 2656780993439353498}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -50, z: 0}
 --- !u!114 &3996913488984753856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11331,7 +11331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6e58a547115ca41906ca373b671e0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomInstance
-  _uniqueID: 26a1c7a4-4bd9-43e4-89d3-969c0989dbdb
+  _uniqueID: 62f8e048-ceb5-43c9-84a2-990ca7eaaad9
   _seed: 0
   <RoomNode>k__BackingField:
     RoomName: 
@@ -12299,8 +12299,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 20
-      minScalar: 10
+      scalar: 5
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -17135,6 +17135,10 @@ PrefabInstance:
     - target: {fileID: 4051731298372434088, guid: b3dc3d14e3ad37443be37381c8e52107, type: 3}
       propertyPath: m_Name
       value: Rock Debris
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785902998877688497, guid: b3dc3d14e3ad37443be37381c8e52107, type: 3}
+      propertyPath: _uniqueID
+      value: 80ca1e91-759d-43a9-9e81-b0351147364d
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
