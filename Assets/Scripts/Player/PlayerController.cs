@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour, IPausable
 
     public Character PlayerCharacter => PlayerParty.Player;
 
+    private Color _originalColor;
+
     public void ChangeEssence(int amount)
     {
         (PlayerCharacter as Player).ChangeEssence(amount);
@@ -27,6 +29,7 @@ public class PlayerController : MonoBehaviour, IPausable
     // Hurt
     [SerializeField] private float _hurtTime = 1f;
     [SerializeField] private float _hurtForce = 3f;
+    [SerializeField] private Color _hurtColor;
     private Timer _hurtTimer;
     private bool _isHurt = false;
     public bool IsHurt => _isHurt;
@@ -68,7 +71,7 @@ public class PlayerController : MonoBehaviour, IPausable
 
     // Player Components
     private Collider _collider;
-    private SpriteRenderer _spriteRenderer;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
     private Animator _anim;
 
     // Other Components
@@ -117,12 +120,12 @@ public class PlayerController : MonoBehaviour, IPausable
         _hurtTimer.OnTimerDone += () => ToggleHurt(false);
 
         _collider = GetComponent<Collider>();
-        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _anim = GetComponent<Animator>();
     }
 
     private void Start()
     {
+        _originalColor = _spriteRenderer.color;
         PauseManager.Instance?.RegisterPausable(this);
     }
 
@@ -198,6 +201,10 @@ public class PlayerController : MonoBehaviour, IPausable
 
             _playerMovement.SetVelocity(knockbackDir * _hurtForce);   
         }
+
+        _spriteRenderer.color = onOff ? _hurtColor : _originalColor;
+
+        if (!onOff) _spriteRenderer.enabled = true;
 
         _isHurt = onOff;
     }

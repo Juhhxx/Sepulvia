@@ -130,14 +130,14 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4884208144393963108}
   serializedVersion: 8
-  lengthInSec: 5
+  lengthInSec: 0.5
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -4936,6 +4936,7 @@ GameObject:
   - component: {fileID: 4708167323109291536}
   - component: {fileID: 5396310604835018956}
   - component: {fileID: 996717798067064146}
+  - component: {fileID: 3844786581677143684}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -5032,6 +5033,23 @@ MonoBehaviour:
   _followX: 1
   _followY: 0
   _followZ: 1
+--- !u!114 &3844786581677143684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5033148933559278643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c8e55fcd413fa9448d222278c56916b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteLightEffect
+  _intensity: 1
+  _maxRange: 5
+  _colorRange: 20
+  _originalColor: {r: 0, g: 0, b: 0, a: 0}
+  _medianColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &5443224467482815797
 GameObject:
   m_ObjectHideFlags: 0
@@ -5370,6 +5388,7 @@ MonoBehaviour:
     m_Bits: 1280
   _hurtTime: 0.5
   _hurtForce: 10
+  _hurtColor: {r: 1, g: 0.62, b: 0.62, a: 0.2509804}
   _inBattle: 0
   OnPlayerDamaged:
     m_PersistentCalls:
