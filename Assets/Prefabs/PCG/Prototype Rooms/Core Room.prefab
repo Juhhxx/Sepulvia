@@ -454,7 +454,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3382947072414074080}
   - component: {fileID: 8862937786823721385}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: MyraSoulShardsIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -785,7 +785,7 @@ GameObject:
   - component: {fileID: 2533799001614777613}
   - component: {fileID: 3854410126734944975}
   - component: {fileID: 6563520511484777947}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Particle System (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6027,7 +6027,7 @@ GameObject:
   - component: {fileID: 2668149961116874811}
   - component: {fileID: 8798124843126661529}
   - component: {fileID: 3522920427825778033}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Particle System (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11707,7 +11707,7 @@ GameObject:
   - component: {fileID: 4559930635183144226}
   - component: {fileID: 996278390277595039}
   - component: {fileID: 2581876242838583734}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17820,68 +17820,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
---- !u!1 &7998835444739598685
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2092881125161898667}
-  - component: {fileID: 1555065855480724678}
-  m_Layer: 0
-  m_Name: Light Probe Group (15)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2092881125161898667
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7998835444739598685}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.99, y: 3.37, z: -7.6499977}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 4222893216059338325}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!220 &1555065855480724678
-LightProbeGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7998835444739598685}
-  m_Enabled: 1
-  m_SourcePositions:
-  - {x: 1, y: 1, z: 1}
-  - {x: 1, y: 1, z: -1}
-  - {x: 1, y: -1, z: 1}
-  - {x: 1, y: -1, z: -1}
-  - {x: -1, y: 1, z: 1}
-  - {x: -1, y: 1, z: -1}
-  - {x: -1, y: -1, z: 1}
-  - {x: -1, y: -1, z: -1}
-  - {x: 0, y: 1.3116813, z: -3.9819777}
-  - {x: 0, y: 1.2332525, z: -6.5}
-  - {x: 0, y: -0.0111551285, z: -6.5}
-  - {x: -1.1704443, y: 0.00881958, z: -6.5}
-  - {x: -1.1487651, y: 1.2487617, z: -6.5}
-  - {x: 0, y: -0.10903883, z: -9.070273}
-  - {x: 0, y: 1.2576914, z: -9.046738}
-  - {x: -1.2198391, y: -0.0635581, z: -9.024258}
-  - {x: -1.1617188, y: 1.2218785, z: -9.293608}
-  - {x: 0, y: -0.5308857, z: -3.8886523}
-  - {x: -1.2024672, y: -0.61657953, z: -4.051776}
-  - {x: -1.5824649, y: 1.2689419, z: -3.98908}
-  m_Dering: 1
 --- !u!1 &8132828837803760211
 GameObject:
   m_ObjectHideFlags: 0
@@ -17891,10 +17829,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3129057947974782907}
+  - component: {fileID: 5608821429328119268}
   - component: {fileID: 1661148043510361365}
-  - component: {fileID: 2493525693537501377}
-  - component: {fileID: 8769348593507448465}
-  m_Layer: 9
+  - component: {fileID: 6926972236608190505}
+  m_Layer: 0
   m_Name: Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17961,7 +17899,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2493525693537501377
+--- !u!114 &6926972236608190505
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -17970,7 +17908,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8132828837803760211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aa837dbe00e5a64b8566077f521a051, type: 3}
+  m_Script: {fileID: 11500000, guid: 02dfd66aa93364d4291cf6f383917d1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GiveItem
   _itemToGive: {fileID: 11400000, guid: c7bb7a45d73f6654ab40512260c01750, type: 2}
@@ -18291,10 +18229,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fragment Ribbon
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: fb6031d7ce8ebd44d8db9179df235e33, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18384,10 +18318,6 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 8ee0cc2a56e23bc4d91f23044a07b37d, type: 3}
       propertyPath: m_Name
       value: Outer Core
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 8ee0cc2a56e23bc4d91f23044a07b37d, type: 3}
-      propertyPath: m_Layer
-      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8ee0cc2a56e23bc4d91f23044a07b37d, type: 3}
       propertyPath: m_IsActive
@@ -18543,10 +18473,6 @@ PrefabInstance:
       value: inner Core
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8ee0cc2a56e23bc4d91f23044a07b37d, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 8ee0cc2a56e23bc4d91f23044a07b37d, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -18555,11 +18481,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ee0cc2a56e23bc4d91f23044a07b37d, type: 3}
---- !u!23 &631227290058749392 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 8ee0cc2a56e23bc4d91f23044a07b37d, type: 3}
-  m_PrefabInstance: {fileID: 2234634521332509012}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1768152396537794239 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8ee0cc2a56e23bc4d91f23044a07b37d, type: 3}
@@ -18632,10 +18553,6 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: fb6031d7ce8ebd44d8db9179df235e33, type: 3}
       propertyPath: m_Name
       value: Fragment Ribbon (3)
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: fb6031d7ce8ebd44d8db9179df235e33, type: 3}
-      propertyPath: m_Layer
-      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18781,10 +18698,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fragment Ribbon (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: fb6031d7ce8ebd44d8db9179df235e33, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18874,10 +18787,6 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 8ee0cc2a56e23bc4d91f23044a07b37d, type: 3}
       propertyPath: m_Name
       value: Fragment
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 8ee0cc2a56e23bc4d91f23044a07b37d, type: 3}
-      propertyPath: m_Layer
-      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -7511558181221131132, guid: 8ee0cc2a56e23bc4d91f23044a07b37d, type: 3}
@@ -19115,10 +19024,6 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: fb6031d7ce8ebd44d8db9179df235e33, type: 3}
       propertyPath: m_Name
       value: Fragment Ribbon (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: fb6031d7ce8ebd44d8db9179df235e33, type: 3}
-      propertyPath: m_Layer
-      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
