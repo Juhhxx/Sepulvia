@@ -374,6 +374,7 @@ Transform:
   - {fileID: 8353237750043266934}
   - {fileID: 2451591468118571962}
   - {fileID: 6542720371717916201}
+  - {fileID: 4663331219200586800}
   m_Father: {fileID: 6553256313942158084}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7890710555847089868
@@ -394,6 +395,7 @@ MonoBehaviour:
   - {fileID: 8353237750043266934}
   - {fileID: 2451591468118571962}
   - {fileID: 6542720371717916201}
+  - {fileID: 4663331219200586800}
 --- !u!1 &3260178309910526759
 GameObject:
   m_ObjectHideFlags: 0
@@ -870,6 +872,9 @@ MonoBehaviour:
     Connections: []
   <Spawnposition>k__BackingField: {fileID: 8319405999069425765}
   <EnemyParent>k__BackingField: {fileID: 1265364680753350295}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &4882589132910838928
 GameObject:
   m_ObjectHideFlags: 0
@@ -1277,6 +1282,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 17.560966, y: 15.211382, z: 17.754986}
   m_Center: {x: -6.937458, y: 7.105691, z: -7.0373483}
+--- !u!1 &6033782474380580641
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4663331219200586800}
+  m_Layer: 0
+  m_Name: Waypoint_3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4663331219200586800
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6033782474380580641}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -10.5, y: 0, z: 8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3591096798613114016}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6140135181990822518
 GameObject:
   m_ObjectHideFlags: 0
