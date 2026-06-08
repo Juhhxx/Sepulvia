@@ -17,6 +17,8 @@ public class EnemySpawnManager : MonoBehaviour
         {
             int pathIdx = random.Next(availablePaths.Count);
             Path path = availablePaths[pathIdx];
+
+            availablePaths.RemoveAt(pathIdx);
             
             PartyInfo enemyParty = _enemyPartyDataBase.GetRandomParty(random);
             EnemyInfo enemyInfo = enemyParty.PartyMembers[0]; // Select prefab from first enemy of the party
