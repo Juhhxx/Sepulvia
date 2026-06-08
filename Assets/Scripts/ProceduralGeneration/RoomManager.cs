@@ -115,7 +115,9 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
 
             if (enemyDatas == null)
             {
-                enemyDatas = _enemySpawner.GenerateEnemies(paths, paths.Count, roomInstance.Random);
+                int minEnemies = roomInstance.RoomNode.RoomData.RoomType == RoomType.AmbushRoom ? 1 : 0;
+                
+                enemyDatas = _enemySpawner.GenerateEnemies(paths, paths.Count, roomInstance.Random, minEnemies);
 
                 roomInstance.SetRoomEnemyDatas(enemyDatas);
             }

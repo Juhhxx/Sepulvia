@@ -8,6 +8,7 @@ public class HazardController : RandomBehaviour, IPausable
     [SerializeField] private Collider _hazardCollider;
     [SerializeField, MinMaxSlider(0f, 10f)] private Vector2 _effectIntervalRange = new Vector2(2f, 5f);
     [SerializeField] private bool _alwaysActive = true;
+    [SerializeField, HideIf("_alwaysActive")] private bool _hideInactive = false;
 
     private DungeonManager _dungeonManager;
 
@@ -22,6 +23,8 @@ public class HazardController : RandomBehaviour, IPausable
         TryInitializeRandom();
 
         _hazardCollider.enabled = false;
+
+        // if (!_alwaysActive && _hideInactive && !_dungeonManager.CoreTaken) gameObject.SetActive(false);
 
         if (!_alwaysActive && _dungeonManager.CoreTaken) StartCoroutine(PlayHazardCR());
     }

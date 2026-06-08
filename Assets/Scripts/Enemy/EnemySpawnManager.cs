@@ -6,11 +6,11 @@ public class EnemySpawnManager : MonoBehaviour
     [SerializeField] private EnemyPartyDataBase _enemyPartyDataBase;
     private List<GameObject> _createdEnemies = new List<GameObject>();
 
-    public List<EnemyData> GenerateEnemies(List<Path> paths, int maxEnemies, System.Random random)
+    public List<EnemyData> GenerateEnemies(List<Path> paths, int maxEnemies, System.Random random, int minEnemies = 0)
     {
         List<EnemyData> generatedEnemies = new List<EnemyData>();
 
-        int numEnemies = random.Next(0, maxEnemies + 1);
+        int numEnemies = random.Next(minEnemies, maxEnemies + 1);
         var availablePaths = new List<Path>(paths);
 
         for (int i = 0; i < numEnemies; i++)

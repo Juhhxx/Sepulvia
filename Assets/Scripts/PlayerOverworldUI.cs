@@ -77,6 +77,9 @@ public class PlayerOverworldUI : MonoBehaviour
         _dashTimerImageRightHalf.fillAmount = 1 - _player.DashCooldownTime;
         _dashTimerImageLeftHalf.fillAmount = 1 - _player.DashCooldownTime;
 
+        _dashTimerImageRightHalf.gameObject.SetActive(!_player.CanDash);
+        _dashTimerImageLeftHalf.gameObject.SetActive(!_player.CanDash);
+
         if (_player.CanDash) _dashTimerImageRightHalf.fillAmount = 1;
         if (_player.CanDash) _dashTimerImageLeftHalf.fillAmount = 1;
 
