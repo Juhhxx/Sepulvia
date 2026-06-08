@@ -984,6 +984,7 @@ MonoBehaviour:
   _uniqueID: 65f61f59-6168-4810-8b83-2a0d5c2e8ee8
   _seed: 0
   _roomDataBase: {fileID: 11400000, guid: 2ca0f434ce93da247bab932d7cfb8d83, type: 2}
+  _roomTypeSettings: {fileID: 11400000, guid: 87d26c1965b54e949bffc34bebd26b21, type: 2}
   _maxDungeonSize: 5
 --- !u!114 &2046110141
 MonoBehaviour:
@@ -1093,6 +1094,62 @@ PrefabInstance:
     - target: {fileID: 7498980921109840918, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777876560958010494, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _intensity
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777876560958010494, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _colorRange
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777876560958010494, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _closestLight
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777876560958010494, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _medianColor.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777876560958010494, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _medianColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777876560958010494, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _medianColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777876560958010494, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _medianColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777876560958010494, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _originalColor.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777876560958010494, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _originalColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777876560958010494, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _originalColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777876560958010494, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _originalColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777876560958010494, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _nearbyLights.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777876560958010494, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: '_nearbyLights.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777876560958010494, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: '_nearbyLights.Array.data[1]'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9057019696532367986, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1452,7 +1509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7132023020944704281, guid: b73eded718488c54abbb56df165aacf5, type: 3}
       propertyPath: _seed
-      value: 6767
+      value: 67
       objectReference: {fileID: 0}
     - target: {fileID: 8389755908744335664, guid: b73eded718488c54abbb56df165aacf5, type: 3}
       propertyPath: m_Name

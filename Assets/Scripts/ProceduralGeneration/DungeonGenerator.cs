@@ -1,11 +1,13 @@
 using System.Collections.Generic;
+using System.Linq;
 using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class DungeonGenerator : RandomBehaviour
 {
-    [SerializeField, BoxGroup("Generation Settings")] private RoomDataBase _roomDataBase;
+    [SerializeField, Expandable,BoxGroup("Generation Settings")] private RoomDataBase _roomDataBase;
+    [SerializeField, Expandable, BoxGroup("Generation Settings")] private RoomTypeSettings _roomTypeSettings;
     [SerializeField, BoxGroup("Generation Settings")] private int _maxDungeonSize = 5;
 
     private void Start()
@@ -20,26 +22,50 @@ public class DungeonGenerator : RandomBehaviour
         var start = new RoomNode(_roomDataBase.GetRoomByType(RoomType.StartingRoom, _random), 0);
         var createdRooms = new List<RoomNode>() { start };
 
-        for (int i = 1; i < _maxDungeonSize; i++)
+        for (int i = 0; i < _maxDungeonSize + 1; i++)
         {
             // Create new room
 
             RoomData roomData = null;
 
-            if (i + 1 == _maxDungeonSize) roomData = _roomDataBase.GetRoomByType(RoomType.CoreRoom, _random);
-            else roomData = _roomDataBase.GetRoomByType(RoomType.DungeonRoom, _random);
+            if (i == _maxDungeonSize) roomData = _roomDataBase.GetRoomByType(RoomType.CoreRoom, _random, true);
+            else roomData = _roomDataBase.GetRoomByType(GetRoomType(), _random, true);
 
             RoomNode newRoom = new RoomNode(roomData, i);
 
             // Create Connections
 
-            createdRooms[i - 1].Connections.Add(new RoomConnection(RoomSide.North, RoomSide.South, newRoom));
-            newRoom.Connections.Add(new RoomConnection(RoomSide.South, RoomSide.North, createdRooms[i - 1]));
+            createdRooms.Last().Connections.Add(new RoomConnection(RoomSide.North, RoomSide.South, newRoom));
+            newRoom.Connections.Add(new RoomConnection(RoomSide.South, RoomSide.North, createdRooms.Last()));
 
             createdRooms.Add(newRoom);
         }
 
         return start;
+    }
+
+    private RoomType GetRoomType()
+    {
+        int totalWeight = 0;
+        foreach (RoomType type in System.Enum.GetValues(typeof(RoomType)))
+        {
+            totalWeight += _roomTypeSettings.GetWeightForRoomType(type);
+        }
+
+        int randomWeight = _random.Next(0, totalWeight);
+        int cumulativeWeight = 0;
+
+        foreach (RoomType type in System.Enum.GetValues(typeof(RoomType)))
+        {
+            cumulativeWeight += _roomTypeSettings.GetWeightForRoomType(type);
+
+            if (randomWeight <= cumulativeWeight)
+            {
+                return type;
+            }
+        }
+
+        return RoomType.DungeonRoom;
     }
 
     public void ShowGeneratedDungeon(RoomNode firstNode)

@@ -24,6 +24,9 @@ public enum RoomType
 {
     StartingRoom,
     DungeonRoom,
+    LootRoom,
+    AmbushRoom,
+    BossRoom,
     CoreRoom
 }
 
