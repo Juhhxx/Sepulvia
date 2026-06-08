@@ -31,6 +31,7 @@ public class DungeonGenerator : RandomBehaviour
             if (i == _maxDungeonSize) roomData = _roomDataBase.GetRoomByType(RoomType.CoreRoom, _random, true);
             else roomData = _roomDataBase.GetRoomByType(GetRoomType(), _random, true);
 
+            Debug.Log($"Selected Room: {roomData}");
             RoomNode newRoom = new RoomNode(roomData, i);
 
             // Create Connections
@@ -59,8 +60,9 @@ public class DungeonGenerator : RandomBehaviour
         {
             cumulativeWeight += _roomTypeSettings.GetWeightForRoomType(type);
 
-            if (randomWeight <= cumulativeWeight)
+            if (randomWeight < cumulativeWeight)
             {
+                Debug.Log($"Selected Room Type: {type}");
                 return type;
             }
         }
