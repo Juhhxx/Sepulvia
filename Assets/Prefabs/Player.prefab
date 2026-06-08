@@ -130,7 +130,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4884208144393963108}
   serializedVersion: 8
-  lengthInSec: 0.5
+  lengthInSec: 0.65
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -4936,7 +4936,7 @@ GameObject:
   - component: {fileID: 4708167323109291536}
   - component: {fileID: 5396310604835018956}
   - component: {fileID: 996717798067064146}
-  - component: {fileID: 3844786581677143684}
+  - component: {fileID: 7777876560958010494}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -5033,7 +5033,7 @@ MonoBehaviour:
   _followX: 1
   _followY: 0
   _followZ: 1
---- !u!114 &3844786581677143684
+--- !u!114 &7777876560958010494
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5046,10 +5046,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteLightEffect
   _intensity: 1
-  _maxRange: 5
+  _maxRange: 15
   _colorRange: 20
   _originalColor: {r: 0, g: 0, b: 0, a: 0}
   _medianColor: {r: 0, g: 0, b: 0, a: 0}
+  _nearbyLights: []
+  _closestLight: {fileID: 0}
 --- !u!1 &5443224467482815797
 GameObject:
   m_ObjectHideFlags: 0
@@ -5390,6 +5392,7 @@ MonoBehaviour:
   _hurtForce: 10
   _hurtColor: {r: 1, g: 0.62, b: 0.62, a: 0.2509804}
   _inBattle: 0
+  _spriteRenderer: {fileID: 5396310604835018956}
   OnPlayerDamaged:
     m_PersistentCalls:
       m_Calls:

@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class SpriteLightEffect : MonoBehaviour
 {
-    [SerializeField, Range(0, 2)] private float _intensity = 1f;
+    [SerializeField, Range(0, 1)] private float _intensity = 1f;
     [SerializeField] private float _maxRange = 15f;
     [SerializeField] private float _colorRange = 20f;
 
@@ -13,7 +13,8 @@ public class SpriteLightEffect : MonoBehaviour
     [SerializeField, ReadOnly] private Color _originalColor;
     [SerializeField, ReadOnly] private Color _medianColor;
 
-    private List<Light> _nearbyLights = new List<Light>();
+    [SerializeField, ReadOnly] private List<Light> _nearbyLights = new List<Light>();
+    [SerializeField, ReadOnly] private Light _closestLight;
 
     private void Start()
     {
@@ -23,23 +24,38 @@ public class SpriteLightEffect : MonoBehaviour
 
     private void FindLights()
     {
+        _nearbyLights.Clear();
+        
         var lightsTemp = FindObjectsByType<Light>(0);
 
         Debug.Log($"Found {lightsTemp.Length} lights in the scene.");
 
         foreach (Light light in lightsTemp)
         {
+            if (light.type == LightType.Directional) continue;
+
             if (Vector3.Distance(transform.position, light.transform.position) <= _maxRange)
             {
-                if (!_nearbyLights.Contains(light))
+                AddLight(light);
+
+                if (_nearbyLights.Count == 1)
                 {
-                    AddLight(light);
+                    _closestLight = light;
+                }
+                else
+                {
+                    if (Vector3.Distance(transform.position, light.transform.position) < Vector3.Distance(transform.position, _closestLight.transform.position))
+                    {
+                        _closestLight = light;
+                    }
                 }
             }
             else if (_nearbyLights.Contains(light))
             {
                 RemoveLight(light);
             }
+
+
         }
 
         Debug.Log($"There are {_nearbyLights.Count} nearby lights.");
@@ -63,9 +79,9 @@ public class SpriteLightEffect : MonoBehaviour
 
         foreach (Light light in _nearbyLights)
         {
-            r += light.color.r * (1 - (Vector3.Distance(transform.position, light.transform.position) / _colorRange));
-            g += light.color.g * (1 - (Vector3.Distance(transform.position, light.transform.position) / _colorRange));
-            b += light.color.b * (1 - (Vector3.Distance(transform.position, light.transform.position) / _colorRange));
+            r += light.color.r;
+            g += light.color.g;
+            b += light.color.b;
         }
 
         _medianColor = new Color(r / length, g / length, b / length, 1);
@@ -83,9 +99,12 @@ public class SpriteLightEffect : MonoBehaviour
             return;
         }
 
-        Debug.Log($"Applying light effect with median color: {CalculateMedianColor()} and intensity: {_intensity}");
+        Color distanceColor = CalculateMedianColor() * (1 - (Vector3.Distance(transform.position, _closestLight.transform.position) / _colorRange));
+        distanceColor.a = _spriteRenderer.color.a;
 
-        Color targetColor = Color.Lerp(_originalColor, CalculateMedianColor(), _intensity);
+        Debug.Log($"Applying light effect with median color: {distanceColor} and intensity: {_intensity}");
+
+        Color targetColor = Color.Lerp(_originalColor, distanceColor, _intensity);
 
         _spriteRenderer.DOColor(targetColor, 0.5f);
     }

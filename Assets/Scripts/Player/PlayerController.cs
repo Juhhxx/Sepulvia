@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour, IPausable
     private Collider _collider;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     private Animator _anim;
+    private SpriteLightEffect _lightEffect;
 
     // Other Components
     private EncounterManager _encounterManager;
@@ -121,6 +122,7 @@ public class PlayerController : MonoBehaviour, IPausable
 
         _collider = GetComponent<Collider>();
         _anim = GetComponent<Animator>();
+        _lightEffect = _spriteRenderer.GetComponent<SpriteLightEffect>();
     }
 
     private void Start()
@@ -173,6 +175,7 @@ public class PlayerController : MonoBehaviour, IPausable
         c.a = onOff ? 0.5f : 1f;
 
         _spriteRenderer.color = c;
+        if (_lightEffect != null) _lightEffect.enabled = !onOff;
 
         _isImmune = onOff;
     }
@@ -181,9 +184,9 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         PlayerCharacter.CurrentStance -= damage;
 
-        CameraEffectsUtility.DoCameraShake(0.5f, 1.5f);
-
         ToggleHurt(true, damageSource);
+
+        CameraEffectsUtility.DoCameraShake(0.5f, 1.5f);
     }
     private void ToggleHurt(bool onOff, Transform damageSource = null)
     {
@@ -203,8 +206,7 @@ public class PlayerController : MonoBehaviour, IPausable
         }
 
         _spriteRenderer.color = onOff ? _hurtColor : _originalColor;
-
-        if (!onOff) _spriteRenderer.enabled = true;
+        if (_lightEffect != null) _lightEffect.enabled = !onOff;
 
         _isHurt = onOff;
     }

@@ -426,11 +426,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!212 &757706701 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 5396310604835018956, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
-  m_PrefabInstance: {fileID: 3119119775086999342}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &780470817 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3351051720530936997, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
@@ -1095,14 +1090,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1508272504764424918, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
-      propertyPath: _spriteRenderer
-      value: 
-      objectReference: {fileID: 757706701}
-    - target: {fileID: 3844786581677143684, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7498980921109840918, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1462,6 +1449,10 @@ PrefabInstance:
     - target: {fileID: 6367747585085238351, guid: b73eded718488c54abbb56df165aacf5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7132023020944704281, guid: b73eded718488c54abbb56df165aacf5, type: 3}
+      propertyPath: _seed
+      value: 6767
       objectReference: {fileID: 0}
     - target: {fileID: 8389755908744335664, guid: b73eded718488c54abbb56df165aacf5, type: 3}
       propertyPath: m_Name

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 679085769564153865}
   - component: {fileID: 6684847741235275767}
   m_Layer: 0
-  m_Name: Has Pipe Hazard
+  m_Name: Gas Pipe Hazard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,6 +53,7 @@ MonoBehaviour:
   _hazardEffect: {fileID: 6142112642752174914}
   _hazardCollider: {fileID: 1555145771559645718}
   _effectIntervalRange: {x: 4, y: 8}
+  _alwaysActive: 1
 --- !u!1 &2940592181235657874
 GameObject:
   m_ObjectHideFlags: 0
@@ -9884,7 +9885,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4406699532381657210}
   - component: {fileID: 2682448900361578264}
-  - component: {fileID: 790402639839716590}
   m_Layer: 0
   m_Name: Capsule (1)
   m_TagString: Untagged
@@ -9928,20 +9928,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.5, y: 0.70155394, z: 1.426098}
   m_Center: {x: 0, y: -0.55218893, z: -0.21304983}
---- !u!114 &790402639839716590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8357171373927703571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be075a595c20734488ecb8f97b68390f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Hazard
-  _damageAmount: 5
-  _hazardLayer: 8
 --- !u!1001 &8182907953902022917
 PrefabInstance:
   m_ObjectHideFlags: 0
