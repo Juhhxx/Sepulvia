@@ -212,20 +212,23 @@ public class Character
 
         return (level, amount);
     }
-    public void LevelUpStat(Stats stat)
+    public void LevelUpStat(Stats stat, int level = 1)
     {
-        switch (stat)
+        for (int i = 0; i < level; i++)
         {
-            case Stats.Speed:
-                if (_speedLevel < _maxStatLevel) _speedLevel++;
-                break;
-            case Stats.Stance:
-                if (_stanceLevel < _maxStatLevel)
-                {
-                    _stanceLevel++;
-                    CurrentStance = MaxStance;
-                }
-                break;
+            switch (stat)
+            {
+                case Stats.Speed:
+                    if (_speedLevel < _maxStatLevel) _speedLevel++;
+                    break;
+                case Stats.Stance:
+                    if (_stanceLevel < _maxStatLevel)
+                    {
+                        _stanceLevel++;
+                        CurrentStance = MaxStance;
+                    }
+                    break;
+            }
         }
     }
 
