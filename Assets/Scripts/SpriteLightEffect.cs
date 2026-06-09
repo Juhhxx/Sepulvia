@@ -28,7 +28,7 @@ public class SpriteLightEffect : MonoBehaviour
         
         var lightsTemp = FindObjectsByType<Light>(0);
 
-        Debug.Log($"Found {lightsTemp.Length} lights in the scene.");
+        // Debug.Log($"Found {lightsTemp.Length} lights in the scene.");
 
         foreach (Light light in lightsTemp)
         {
@@ -58,7 +58,7 @@ public class SpriteLightEffect : MonoBehaviour
 
         }
 
-        Debug.Log($"There are {_nearbyLights.Count} nearby lights.");
+        // Debug.Log($"There are {_nearbyLights.Count} nearby lights.");
     }
 
     private void AddLight(Light light)
@@ -102,7 +102,7 @@ public class SpriteLightEffect : MonoBehaviour
         Color distanceColor = CalculateMedianColor() * (1 - (Vector3.Distance(transform.position, _closestLight.transform.position) / _colorRange));
         distanceColor.a = _spriteRenderer.color.a;
 
-        Debug.Log($"Applying light effect with median color: {distanceColor} and intensity: {_intensity}");
+        // Debug.Log($"Applying light effect with median color: {distanceColor} and intensity: {_intensity}");
 
         Color targetColor = Color.Lerp(_originalColor, distanceColor, _intensity);
 

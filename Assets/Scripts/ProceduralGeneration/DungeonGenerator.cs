@@ -31,8 +31,7 @@ public class DungeonGenerator : RandomBehaviour
             if (i == _maxDungeonSize) roomData = _roomDataBase.GetRoomByType(RoomType.CoreRoom, _random, true);
             else roomData = _roomDataBase.GetRoomByType(GetRoomType(), _random, true);
 
-            Debug.Log($"Selected Room: {roomData}");
-            RoomNode newRoom = new RoomNode(roomData, i);
+            RoomNode newRoom = new RoomNode(roomData, i + 1); // account for starting room
 
             // Create Connections
 

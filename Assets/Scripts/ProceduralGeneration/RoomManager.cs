@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
@@ -14,6 +15,8 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
 
     private List<RoomNode> _loadedRooms = new List<RoomNode>();
     private List<RoomInstance> _instantiatedRooms = new List<RoomInstance>();
+
+    public event Action OnRoomLoaded;
 
     private void Awake()
     {
@@ -97,6 +100,8 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
         yield return new WaitUntil(() => !_loadingRoom);
         
         SpawnEnemies(_currentRoom);
+
+        OnRoomLoaded?.Invoke();
 
         yield return new WaitForEndOfFrame();
 

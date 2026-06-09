@@ -11,10 +11,22 @@ public class HazardController : RandomBehaviour, IPausable
     [SerializeField, HideIf("_alwaysActive")] private bool _hideInactive = false;
 
     private DungeonManager _dungeonManager;
+    private RoomManager _roomManager;
 
     private void Awake()
     {
         _dungeonManager = FindAnyObjectByType<DungeonManager>();
+        _roomManager = FindAnyObjectByType<RoomManager>();
+    }
+
+    private void Start()
+    {
+        _roomManager.OnRoomLoaded += () => {
+            if (!_alwaysActive && _hideInactive && !_dungeonManager.CoreTaken) gameObject.SetActive(false);
+            else gameObject.SetActive(true);
+
+            Debug.Log("Room Loaded, Hazard Active: " + gameObject.activeSelf);
+        };
     }
 
     private void OnEnable()
@@ -23,8 +35,6 @@ public class HazardController : RandomBehaviour, IPausable
         TryInitializeRandom();
 
         _hazardCollider.enabled = false;
-
-        // if (!_alwaysActive && _hideInactive && !_dungeonManager.CoreTaken) gameObject.SetActive(false);
 
         if (!_alwaysActive && _dungeonManager.CoreTaken) StartCoroutine(PlayHazardCR());
     }
