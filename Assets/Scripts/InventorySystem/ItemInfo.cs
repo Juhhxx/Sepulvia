@@ -16,7 +16,7 @@ public class ItemInfo : DataAsset
 
     [field: SerializeField] public ItemTypes Type { get; private set; }
 
-    [field: SerializeField, ReadOnly] public int Level { get; private set; }
+    [field: SerializeField] public int Level { get; private set; }
 
     [field: Space(10)]
     [field: Header("Item Shop Value")]

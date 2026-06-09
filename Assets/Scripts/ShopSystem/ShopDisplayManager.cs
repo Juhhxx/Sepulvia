@@ -8,21 +8,34 @@ public class ShopDisplayManager : MonoBehaviour
     [SerializeField] private Image _image;
     [SerializeField] private GameObject _priceTag;
     [SerializeField] private TextMeshProUGUI _priceTMP;
+    [SerializeField] private TextMeshProUGUI _availableTMP;
+    [SerializeField] private GameObject _soldOut;
     [SerializeField] private Image _selectionImage;
 
     private void Start()
     {
         _selectionImage.transform.localScale = Vector3.zero;
+        _soldOut.SetActive(false);
     }
     
-    public void UpdateDisplay(Sprite sprite, int price)
+    public void UpdateDisplay(Sprite sprite, int price, int stock)
     {
         _image.sprite = sprite;
 
         _priceTMP.text = price.ToString();
         _priceTag.SetActive(true);
 
+        UpdateStock(stock);
+
         DoUpdateDisplayAnim();
+    }
+
+    public void UpdateStock(int stock)
+    {
+        _availableTMP.text = $"Available: {stock}";
+
+        if (stock <= 0) _soldOut.SetActive(true);
+        else _soldOut.SetActive(false);
     }
 
     // Animations
