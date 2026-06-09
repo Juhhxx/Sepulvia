@@ -7,6 +7,9 @@ public class DungeonManager : MonoBehaviour
 
     private bool _coreTaken = false;
     public bool CoreTaken => _coreTaken;
+
+    private int _currentDungeon = 0;
+
     public void SetCoreTaken()
     {
         _coreTaken = true;
@@ -20,6 +23,8 @@ public class DungeonManager : MonoBehaviour
     [Button]
     private void CreateDungeon()
     {
+        _currentDungeon++;
+        
         RoomNode startRoom = _dungeonGenerator.Generate();
         _dungeonGenerator.ShowGeneratedDungeon(startRoom);
 

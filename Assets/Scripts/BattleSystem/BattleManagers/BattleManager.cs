@@ -192,7 +192,7 @@ public class BattleManager : MonoBehaviour
             {
                 if (enemy.CurrentStance > 0)
                 {
-                    Move m = enemy.BattleAI.ChooseRandom();
+                    Move m = enemy.BattleAI.ChooseRandom(_pullManager.BarSections, _pullManager.CurrentHeartIndex);
                     AddAction(enemy, m);
                 }
                 Debug.Log("DID ENEMY AI");

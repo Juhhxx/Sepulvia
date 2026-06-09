@@ -22,6 +22,7 @@ public class PullingManager : RandomBehaviour
 
     // Hearth Variables
     private int _currentHeartIndex;
+    public int CurrentHeartIndex => _currentHeartIndex;
 
     // Bar Selection Logic
     [field: SerializeField, ReadOnly] public int SelectedIndex { get; private set; }
