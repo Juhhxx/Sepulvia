@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class ItemDataBase : DataBase<ItemInfo>
 {
@@ -9,7 +10,7 @@ public class ItemDataBase : DataBase<ItemInfo>
         if (buyableItems.Count == 0)
             return null;
 
-        return buyableItems[random.Next(0, buyableItems.Count)];
+        return GetItemWeighted(buyableItems, random);
     }
 
     public ItemInfo GetRandomItemOfType(System.Random random, ItemTypes type)
@@ -19,6 +20,33 @@ public class ItemDataBase : DataBase<ItemInfo>
         if (itemsOfType.Count == 0)
             return null;
 
-        return itemsOfType[random.Next(0, itemsOfType.Count)];
+        return GetItemWeighted(itemsOfType, random);
+    }
+
+    private ItemInfo GetItemWeighted(List<ItemInfo> weightedEntries, System.Random random)
+    {
+        ItemInfo selectedItem = null;
+
+        float totalWeight = 0;
+        foreach (ItemInfo item in weightedEntries)
+        {
+            totalWeight += 1f / item.Level;
+        }
+
+        float randomWeight = random.Next() * totalWeight;
+        float cumulativeWeight = 0;
+
+        foreach (ItemInfo item in weightedEntries)
+        {
+            cumulativeWeight += 1f / item.Level;
+            
+            if (randomWeight <= cumulativeWeight)
+            {
+                selectedItem = item;
+                break;
+            }
+        }
+
+        return selectedItem;
     }
 }
