@@ -114,7 +114,7 @@ public class ShopUIManager : MonoBehaviour
             _shopBuyDisplays.Add(display.GetComponent<ShopDisplayManager>());
         }
     }
-    public void UpdateShopBuyDisplays(List<ItemInfo> items)
+    public void UpdateShopBuyDisplays(List<ItemInfo> items, List<int> stock)
     {
         _buttonsBuy.Clear();
 
@@ -124,7 +124,7 @@ public class ShopUIManager : MonoBehaviour
 
             ShopDisplayManager display = _shopBuyDisplays[i];
 
-            display.UpdateDisplay(item.Sprite, item.Value);
+            display.UpdateDisplay(item.Sprite, item.Value, stock[i]);
 
             _buttonsBuy.Add(display.GetComponent<Button>());
         }

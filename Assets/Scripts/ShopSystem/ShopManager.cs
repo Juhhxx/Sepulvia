@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ShopManager : RandomBehaviour
 {
     [SerializeField] private int _shopSize = 4;
+    [SerializeField] private int _shopOfferAmount = 3;
 
     [SerializeField] private Canvas _shopCanvas;
 
@@ -24,6 +25,7 @@ public class ShopManager : RandomBehaviour
 
     [SerializeField] private ItemDataBase _itemDataBase;
     private List<ItemInfo> _shopItems = new List<ItemInfo>();
+    private List<int> _shopItemsStock = new List<int>();
 
     private PlayerController _player;
     private PlayerOverworldUI _overworldUI;
@@ -141,16 +143,20 @@ public class ShopManager : RandomBehaviour
     {
         // For now, just randomly choose items. Later can implement some sort of item progression based on player progression or something
         _shopItems.Clear();
+        _shopItemsStock.Clear();
 
         for (int i = 0; i < _shopSize; i++)
         {
-            _shopItems.Add(_itemDataBase.GetRandomBuyableItem(_random));
+            ItemInfo item = _itemDataBase.GetRandomBuyableItem(_random);
+
+            _shopItems.Add(item);
+            _shopItemsStock.Add(item.Type == ItemTypes.Save ? 1 : _shopOfferAmount);
         }
     }
 
     private void SetUpShopBuy()
     {
-        _shopUIManager.UpdateShopBuyDisplays(_shopItems);
+        _shopUIManager.UpdateShopBuyDisplays(_shopItems, _shopItemsStock);
 
         _shopUIManager.GetButtonsBuy().ForEach(button => button.onClick.RemoveAllListeners());
 
@@ -158,13 +164,20 @@ public class ShopManager : RandomBehaviour
         for (int i = 0; i < buttons.Count; i++)
         {
             int index = i;
+
+            buttons[i].interactable = true;
+
             buttons[i].onClick.AddListener(() => {
 
-                bool hasBought = BuyItem(_shopItems[index]);
+                bool hasBought = BuyItem(_shopItems[index], _shopItemsStock[index]);
 
                 if (hasBought)
                 {
+                    _shopItemsStock[index]--;
+
                     buttons[index].GetComponent<ShopDisplayManager>().DoDisplayPurchaseAnim();
+                    buttons[index].GetComponent<ShopDisplayManager>().UpdateStock(_shopItemsStock[index]);
+
                     _shopUIManager.SpawnItemAnim(_shopItems[index].Sprite, ScreenToCanvas(Input.mousePosition));
                 }
                 else buttons[index].GetComponent<ShopDisplayManager>().DoDisplayNotEnoughAnim();
@@ -304,8 +317,10 @@ public class ShopManager : RandomBehaviour
     }
 
 
-    public bool BuyItem(ItemInfo item)
+    public bool BuyItem(ItemInfo item, int stock)
     {
+        if (stock <= 0) return false;
+
         if (_player.Essence >= item.Value && _player.PlayerCharacter.Inventory.AddItem(item))
         {
             _player.ChangeEssence(-item.Value);

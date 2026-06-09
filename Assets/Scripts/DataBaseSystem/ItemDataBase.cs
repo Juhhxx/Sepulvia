@@ -30,15 +30,15 @@ public class ItemDataBase : DataBase<ItemInfo>
         float totalWeight = 0;
         foreach (ItemInfo item in weightedEntries)
         {
-            totalWeight += 1f / item.Level;
+            totalWeight += 1f / (float)item.Level;
         }
 
-        float randomWeight = random.Next() * totalWeight;
+        float randomWeight = ((float)random.NextDouble()) * totalWeight;
         float cumulativeWeight = 0;
 
         foreach (ItemInfo item in weightedEntries)
         {
-            cumulativeWeight += 1f / item.Level;
+            cumulativeWeight += 1f / (float)item.Level;
             
             if (randomWeight <= cumulativeWeight)
             {
