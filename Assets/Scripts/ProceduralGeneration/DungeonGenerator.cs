@@ -19,7 +19,7 @@ public class DungeonGenerator : RandomBehaviour
     {
         if (_roomDataBase.IsEmpty) return null;
 
-        var start = new RoomNode(_roomDataBase.GetRoomByType(RoomType.StartingRoom, _random), 0);
+        var start = new RoomNode(_roomDataBase.GetRoomByType(RoomType.StartingRoom, _random, true), 0);
         var createdRooms = new List<RoomNode>() { start };
 
         for (int i = 0; i < _maxDungeonSize + 1; i++)
@@ -28,7 +28,7 @@ public class DungeonGenerator : RandomBehaviour
 
             RoomData roomData = null;
 
-            if (i == _maxDungeonSize) roomData = _roomDataBase.GetRoomByType(RoomType.CoreRoom, _random, true);
+            if (i == _maxDungeonSize) roomData = _roomDataBase.GetRoomByType(RoomType.BossRoom, _random, true);
             else roomData = _roomDataBase.GetRoomByType(GetRoomType(), _random, true);
 
             RoomNode newRoom = new RoomNode(roomData, i + 1); // account for starting room
@@ -40,6 +40,13 @@ public class DungeonGenerator : RandomBehaviour
 
             createdRooms.Add(newRoom);
         }
+
+        var end = new RoomNode(_roomDataBase.GetRoomByType(RoomType.CoreRoom, _random, true), createdRooms.Count);
+
+        createdRooms.Last().Connections.Add(new RoomConnection(RoomSide.North, RoomSide.South, end));
+        end.Connections.Add(new RoomConnection(RoomSide.South, RoomSide.North, createdRooms.Last()));
+
+        createdRooms.Add(end);
 
         return start;
     }

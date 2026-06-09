@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b2a18b978b0aa94d8e3e05c29121187, type: 3}
-  m_Name: Beartrap
+  m_Name: SoulPitEnemy
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
-  <Name>k__BackingField: Beartrap
+  <Name>k__BackingField: Soul Pit
   <Type>k__BackingField: 4096
-  <PriorityLevel>k__BackingField: 3
-  <StanceCost>k__BackingField: 4
-  <StanceDamage>k__BackingField: 2
+  <PriorityLevel>k__BackingField: 2
+  <StanceCost>k__BackingField: 5
+  <StanceDamage>k__BackingField: 0
   <Cooldown>k__BackingField: 5
-  <Level>k__BackingField: 1
+  <Level>k__BackingField: 3
   _pullStrength: 0
   <StatModifiers>k__BackingField: []
   <Modifier>k__BackingField:
-    <Type>k__BackingField: 1
-    <Trigger>k__BackingField: 2
-    <BarEffectPrefab>k__BackingField: {fileID: 4202190986578470864, guid: 0e4be101fc62be34e980c5c8a0856400, type: 3}
-    <TurnDuration>k__BackingField: 3
+    <Type>k__BackingField: 2
+    <Trigger>k__BackingField: 0
+    <BarEffectPrefab>k__BackingField: {fileID: 4202190986578470864, guid: be4d7b8c05d2d97488cb4ac1f32389a8, type: 3}
+    <TurnDuration>k__BackingField: 2
     <DestroyOnUse>k__BackingField: 0
-    <GraviyStrength>k__BackingField: 0
-  <Description>k__BackingField: 'Traps the Soul in place once it passes throught
-    it.
+    <GraviyStrength>k__BackingField: 1
+  <Description>k__BackingField: 'Pulls the Soul towards itself.
 
-    Lasts for 3 turns.'
+    Lasts for 4
+    turns.'

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BattleResolver : RandomBehaviour
@@ -193,6 +194,8 @@ public class BattleResolver : RandomBehaviour
         float chance = (1 / difficultyAverage) + 0.25f;
 
         bool result = rnd <= chance;
+
+        if (enemyParty.PartyMembers.Any(e => !e.CanRun)) result = false;
 
         if (result) DialogueManager.Instance.AddDialogue($"{user.Name} ran away!");
         else DialogueManager.Instance.AddDialogue($"{user.Name} couldn't run from battle.");

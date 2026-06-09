@@ -33,6 +33,7 @@ public class Enemy : Character
     [field: Header("Character Defeat Rewards")]
     [field: Space(5)]
     [field : SerializeField, ReadOnly] public int DifficultyLevel { get; private set; }
+    [field : SerializeField, ReadOnly] public bool CanRun{ get; private set; }
     [field : SerializeField, ReadOnly] public List<ItemInfo> PossibleRewards { get; private set; }
 
     [field: Space(10)]

@@ -21,10 +21,10 @@ public class DungeonManager : MonoBehaviour
     }
 
     [Button]
-    private void CreateDungeon()
+    public void CreateDungeon()
     {
         _currentDungeon++;
-        
+
         RoomNode startRoom = _dungeonGenerator.Generate();
         _dungeonGenerator.ShowGeneratedDungeon(startRoom);
 
