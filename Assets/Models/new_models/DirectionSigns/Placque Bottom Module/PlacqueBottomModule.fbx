@@ -1,0 +1,832 @@
+; FBX 7.3.0 project file
+; Created by the Blockbench FBX Exporter
+; ----------------------------------------------------
+; 
+
+FBXHeaderExtension:  {
+	FBXHeaderVersion: 1003
+	FBXVersion: 7300
+	EncryptionType: 0
+	CreationTimeStamp:  {
+		Version: 1000
+		Year: 2026
+		Month: 6
+		Day: 9
+		Hour: 5
+		Minute: 7
+		Second: 56
+		Millisecond: 938
+	}
+	Creator: "Blockbench 5.1.4"
+	SceneInfo: "SceneInfo::GlobalInfo", "UserData" {
+		Type: "UserData"
+		Version: 100
+		MetaData:  {
+			Version: 100
+			Title: ""
+			Subject: ""
+			Author: ""
+			Keywords: ""
+			Revision: ""
+			Comment: ""
+		}
+		Properties70:  {
+			P: "DocumentUrl", "KString", "Url", "", "C:\Users\Blockbench\foobar.fbx"
+			P: "SrcDocumentUrl", "KString", "Url", "", "C:\Users\Blockbench\foobar.fbx"
+			P: "Original", "Compound", "", ""
+			P: "Original|ApplicationVendor", "KString", "", "", "Blockbench"
+			P: "Original|ApplicationName", "KString", "", "", "Blockbench FBX Exporter"
+			P: "Original|ApplicationVersion", "KString", "", "", "5.1.4"
+			P: "Original|DateTime_GMT", "DateTime", "", "", "01/01/1970 00:00:00.000"
+			P: "Original|FileName", "KString", "", "", "/foobar.fbx"
+			P: "LastSaved", "Compound", "", ""
+			P: "LastSaved|ApplicationVendor", "KString", "", "", "Blockbench"
+			P: "LastSaved|ApplicationName", "KString", "", "", "Blockbench FBX Exporter"
+			P: "LastSaved|ApplicationVersion", "KString", "", "", "5.1.4"
+			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "01/01/1970 00:00:00.000"
+			P: "Original|ApplicationNativeFile", "KString", "", "", ""
+		}
+	}
+}
+FileId: "iVFoobar"
+CreationTime: "2026-06-09 04:07:56:938"
+Creator: "Made with Blockbench"
+GlobalSettings:  {
+	Version: 1000
+	Properties70:  {
+		P: "UpAxis", "int", "Integer", "",1
+		P: "UpAxisSign", "int", "Integer", "",1
+		P: "FrontAxis", "int", "Integer", "",2
+		P: "FrontAxisSign", "int", "Integer", "",1
+		P: "CoordAxis", "int", "Integer", "",0
+		P: "CoordAxisSign", "int", "Integer", "",1
+		P: "OriginalUpAxis", "int", "Integer", "",-1
+		P: "OriginalUpAxisSign", "int", "Integer", "",1
+		P: "UnitScaleFactor", "double", "Number", "",1
+		P: "OriginalUnitScaleFactor", "double", "Number", "",1
+		P: "AmbientColor", "ColorRGB", "Color", "",0,0,0
+		P: "DefaultCamera", "KString", "", "", "Producer Perspective"
+		P: "TimeMode", "enum", "", "",0
+		P: "TimeSpanStart", "KTime", "Time", "",0
+		P: "TimeSpanStop", "KTime", "Time", "",46186158000
+		P: "CustomFrameRate", "double", "Number", "",24
+	}
+}
+
+; Documents Description
+;------------------------------------------------------------------
+
+Documents:  {
+	Count: 1
+	Document: 1647612724 {
+		Scene: "Scene"
+		Properties70:  {
+			P: "SourceObject", "object", "", ""
+			P: "ActiveAnimStackName", "KString", "", "", ""
+		}
+		RootNode: 0
+	}
+}
+
+; Document References
+;------------------------------------------------------------------
+
+References: 
+
+; Object definitions
+;------------------------------------------------------------------
+
+Definitions:  {
+	Version: 100
+	Count: 40
+	ObjectType: "GlobalSettings" {
+		Count: 1
+	}
+	ObjectType: "Model" {
+		Count: 2
+		PropertyTemplate: "FbxNode" {
+			Properties70:  {
+				P: "QuaternionInterpolate", "enum", "", "",0
+				P: "RotationOffset", "Vector3D", "Vector", "",0,0,0
+				P: "RotationPivot", "Vector3D", "Vector", "",0,0,0
+				P: "ScalingOffset", "Vector3D", "Vector", "",0,0,0
+				P: "ScalingPivot", "Vector3D", "Vector", "",0,0,0
+				P: "TranslationActive", "bool", "", "",0
+				P: "TranslationMin", "Vector3D", "Vector", "",0,0,0
+				P: "TranslationMax", "Vector3D", "Vector", "",0,0,0
+				P: "TranslationMinX", "bool", "", "",0
+				P: "TranslationMinY", "bool", "", "",0
+				P: "TranslationMinZ", "bool", "", "",0
+				P: "TranslationMaxX", "bool", "", "",0
+				P: "TranslationMaxY", "bool", "", "",0
+				P: "TranslationMaxZ", "bool", "", "",0
+				P: "RotationOrder", "enum", "", "",5
+				P: "RotationSpaceForLimitOnly", "bool", "", "",0
+				P: "RotationStiffnessX", "double", "Number", "",0
+				P: "RotationStiffnessY", "double", "Number", "",0
+				P: "RotationStiffnessZ", "double", "Number", "",0
+				P: "AxisLen", "double", "Number", "",10
+				P: "PreRotation", "Vector3D", "Vector", "",0,0,0
+				P: "PostRotation", "Vector3D", "Vector", "",0,0,0
+				P: "RotationActive", "bool", "", "",0
+				P: "RotationMin", "Vector3D", "Vector", "",0,0,0
+				P: "RotationMax", "Vector3D", "Vector", "",0,0,0
+				P: "RotationMinX", "bool", "", "",0
+				P: "RotationMinY", "bool", "", "",0
+				P: "RotationMinZ", "bool", "", "",0
+				P: "RotationMaxX", "bool", "", "",0
+				P: "RotationMaxY", "bool", "", "",0
+				P: "RotationMaxZ", "bool", "", "",0
+				P: "InheritType", "enum", "", "",0
+				P: "ScalingActive", "bool", "", "",0
+				P: "ScalingMin", "Vector3D", "Vector", "",0,0,0
+				P: "ScalingMax", "Vector3D", "Vector", "",1,1,1
+				P: "ScalingMinX", "bool", "", "",0
+				P: "ScalingMinY", "bool", "", "",0
+				P: "ScalingMinZ", "bool", "", "",0
+				P: "ScalingMaxX", "bool", "", "",0
+				P: "ScalingMaxY", "bool", "", "",0
+				P: "ScalingMaxZ", "bool", "", "",0
+				P: "GeometricTranslation", "Vector3D", "Vector", "",0,0,0
+				P: "GeometricRotation", "Vector3D", "Vector", "",0,0,0
+				P: "GeometricScaling", "Vector3D", "Vector", "",1,1,1
+				P: "MinDampRangeX", "double", "Number", "",0
+				P: "MinDampRangeY", "double", "Number", "",0
+				P: "MinDampRangeZ", "double", "Number", "",0
+				P: "MaxDampRangeX", "double", "Number", "",0
+				P: "MaxDampRangeY", "double", "Number", "",0
+				P: "MaxDampRangeZ", "double", "Number", "",0
+				P: "MinDampStrengthX", "double", "Number", "",0
+				P: "MinDampStrengthY", "double", "Number", "",0
+				P: "MinDampStrengthZ", "double", "Number", "",0
+				P: "MaxDampStrengthX", "double", "Number", "",0
+				P: "MaxDampStrengthY", "double", "Number", "",0
+				P: "MaxDampStrengthZ", "double", "Number", "",0
+				P: "PreferedAngleX", "double", "Number", "",0
+				P: "PreferedAngleY", "double", "Number", "",0
+				P: "PreferedAngleZ", "double", "Number", "",0
+				P: "LookAtProperty", "object", "", ""
+				P: "UpVectorProperty", "object", "", ""
+				P: "Show", "bool", "", "",1
+				P: "NegativePercentShapeSupport", "bool", "", "",1
+				P: "DefaultAttributeIndex", "int", "Integer", "",-1
+				P: "Freeze", "bool", "", "",0
+				P: "LODBox", "bool", "", "",0
+				P: "Lcl Translation", "Lcl Translation", "", "A",0,0,0
+				P: "Lcl Rotation", "Lcl Rotation", "", "A",0,0,0
+				P: "Lcl Scaling", "Lcl Scaling", "", "A",1,1,1
+				P: "Visibility", "Visibility", "", "A",1
+				P: "Visibility Inheritance", "Visibility Inheritance", "", "",1
+			}
+		}
+	}
+	ObjectType: "Geometry" {
+		Count: 1
+		PropertyTemplate: "FbxMesh" {
+			Properties70:  {
+				P: "Color", "ColorRGB", "Color", "",0.8,0.8,0.8
+				P: "BBoxMin", "Vector3D", "Vector", "",0,0,0
+				P: "BBoxMax", "Vector3D", "Vector", "",0,0,0
+				P: "Primary Visibility", "bool", "", "",1
+				P: "Casts Shadows", "bool", "", "",1
+				P: "Receive Shadows", "bool", "", "",1
+			}
+		}
+	}
+	ObjectType: "Material" {
+		Count: 12
+		PropertyTemplate: "FbxSurfaceLambert" {
+			Properties70:  {
+				P: "ShadingModel", "KString", "", "", "Lambert"
+				P: "MultiLayer", "bool", "", "",0
+				P: "EmissiveColor", "Color", "", "A",0,0,0
+				P: "EmissiveFactor", "Number", "", "A",1
+				P: "AmbientColor", "Color", "", "A",0.2,0.2,0.2
+				P: "AmbientFactor", "Number", "", "A",1
+				P: "DiffuseColor", "Color", "", "A",0.8,0.8,0.8
+				P: "DiffuseFactor", "Number", "", "A",1
+				P: "Bump", "Vector3D", "Vector", "",0,0,0
+				P: "NormalMap", "Vector3D", "Vector", "",0,0,0
+				P: "BumpFactor", "double", "Number", "",1
+				P: "TransparentColor", "Color", "", "A",0,0,0
+				P: "TransparencyFactor", "Number", "", "A",0
+				P: "DisplacementColor", "ColorRGB", "Color", "",0,0,0
+				P: "DisplacementFactor", "double", "Number", "",1
+				P: "VectorDisplacementColor", "ColorRGB", "Color", "",0,0,0
+				P: "VectorDisplacementFactor", "double", "Number", "",1
+			}
+		}
+	}
+	ObjectType: "Texture" {
+		Count: 12
+		PropertyTemplate: "FbxFileTexture" {
+			Properties70:  {
+				P: "TextureTypeUse", "enum", "", "",0
+				P: "Texture alpha", "Number", "", "A",1
+				P: "CurrentMappingType", "enum", "", "",0
+				P: "WrapModeU", "enum", "", "",0
+				P: "WrapModeV", "enum", "", "",0
+				P: "UVSwap", "bool", "", "",0
+				P: "PremultiplyAlpha", "bool", "", "",1
+				P: "Translation", "Vector", "", "A",0,0,0
+				P: "Rotation", "Vector", "", "A",0,0,0
+				P: "Scaling", "Vector", "", "A",1,1,1
+				P: "TextureRotationPivot", "Vector3D", "Vector", "",0,0,0
+				P: "TextureScalingPivot", "Vector3D", "Vector", "",0,0,0
+				P: "CurrentTextureBlendMode", "enum", "", "",1
+				P: "UVSet", "KString", "", "", "default"
+				P: "UseMaterial", "bool", "", "",0
+				P: "UseMipMap", "bool", "", "",0
+			}
+		}
+	}
+	ObjectType: "Video" {
+		Count: 12
+		PropertyTemplate: "FbxVideo" {
+			Properties70:  {
+				P: "ImageSequence", "bool", "", "",0
+				P: "ImageSequenceOffset", "int", "Integer", "",0
+				P: "FrameRate", "double", "Number", "",0
+				P: "LastFrame", "int", "Integer", "",0
+				P: "Width", "int", "Integer", "",0
+				P: "Height", "int", "Integer", "",0
+				P: "Path", "KString", "XRefUrl", "", ""
+				P: "StartFrame", "int", "Integer", "",0
+				P: "StopFrame", "int", "Integer", "",0
+				P: "PlaySpeed", "double", "Number", "",0
+				P: "Offset", "KTime", "Time", "",0
+				P: "InterlaceMode", "enum", "", "",0
+				P: "FreeRunning", "bool", "", "",0
+				P: "Loop", "bool", "", "",0
+				P: "AccessMode", "enum", "", "",0
+			}
+		}
+	}
+}
+
+; Object properties
+;------------------------------------------------------------------
+
+Objects:  {
+	Model: 76444235, "Model::placque 2", "Null" {
+		Version: 232
+		Properties70:  {
+			P: "RotationActive", "bool", "", "",1
+			P: "InheritType", "enum", "", "",1
+			P: "ScalingMax", "Vector3D", "Vector", "",0,0,0
+			P: "Lcl Translation", "Lcl Translation", "", "A",0,350,-781.25
+			P: "RotationPivot", "Vector3D", "Vector", "",0,0,0
+			P: "Lcl Rotation", "Lcl Rotation", "", "A",0,0,0
+			P: "RotationOrder", "enum", "", "",0
+		}
+		Shading: Y
+		Culling: "CullingOff"
+	}
+	Model: 75794559, "Model::Placque", "Mesh" {
+		Version: 232
+		Properties70:  {
+			P: "RotationActive", "bool", "", "",1
+			P: "InheritType", "enum", "", "",1
+			P: "ScalingMax", "Vector3D", "Vector", "",0,0,0
+			P: "Lcl Translation", "Lcl Translation", "", "A",0,-350,781.25
+			P: "RotationPivot", "Vector3D", "Vector", "",0,0,0
+			P: "Lcl Rotation", "Lcl Rotation", "", "A",0,0,0
+			P: "RotationOrder", "enum", "", "",5
+			P: "DefaultAttributeIndex", "int", "Integer", "",0
+		}
+		Shading: Y
+		Culling: "CullingOff"
+	}
+	Geometry: 72368627, "Geometry::Placque", "Mesh" {
+		Vertices: *120 {
+			a: 3.125,65.625,109.375,3.125,65.625,-109.375,3.125,34.375,109.375,3.125,34.375,-109.375,-3.125,65.625,109.375,-3.125,65.625,-109.375,-3.125,34.375,109.375,-3.125,34.375,-109.375,-3.125,65.625,36.45834375,-3.125,34.375,36.45834375,-3.125,65.625,-36.45834375,-3.125,34.375,-36.45834375,3.125,34.375,36.45834375,3.125,34.375,-36.45834375,3.125,65.625,36.45834375,3.125,65.625,-36.45834375,-1.5625,65.625,-78.64584375,1.5625,65.625,-67.1875,-1.5625,65.625,-67.1875,1.5625,65.625,-78.64584375,-1.5625,75,-78.64584375,1.5625,75,-67.1875,-1.5625,75,-67.1875,1.5625,75,-78.64584375,1.5625,65.625,78.64584375,1.5625,65.625,67.1875,-1.5625,65.625,67.1875,-1.5625,65.625,78.64584375,1.5625,75,78.64584375,1.5625,75,67.1875,-1.5625,75,67.1875,-1.5625,75,78.64584375,-3.125,50,-36.45834375,-3.125,50,36.45834375,-3.125,50,109.375,3.125,50,109.375,3.125,50,36.45834375,3.125,50,-36.45834375,3.125,50,-109.375,-3.125,50,-109.375
+		}
+		PolygonVertexIndex: *152 {
+			a: 3,38,37,-14,11,32,39,-8,20,22,21,-24,3,13,11,-8,2,35,34,-7,7,39,38,-4,6,34,33,-10,9,33,32,-12,6,9,12,-3,9,11,13,-13,12,36,35,-3,13,37,36,-13,28,29,30,-32,14,15,10,-9,18,16,5,-11,17,18,10,-16,19,17,15,-2,16,19,1,-6,22,20,16,-19,21,22,18,-18,23,21,17,-20,20,23,19,-17,25,24,0,-15,26,25,14,-9,27,26,8,-5,24,27,4,-1,29,28,24,-26,30,29,25,-27,31,30,26,-28,28,31,27,-25,10,32,33,-9,8,33,34,-5,4,34,35,-1,0,35,36,-15,14,36,37,-16,15,37,38,-2,1,38,39,-6,5,39,32,-11
+		}
+		GeometryVersion: 124
+		LayerElementNormal: 0 {
+			Version: 101
+			Name: ""
+			MappingInformationType: "ByPolygon"
+			ReferenceInformationType: "Direct"
+			Normals: *114 {
+				a: 1,0,0,-1,0,0,0,1,0,0,-1,0,0,0,1,0,0,-1,-1,0,0,-1,0,0,0,-1,0,0,-1,0,1,0,0,1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,-1,0,0,0,0,1,1,0,0,0,0,-1,0,1,0,0,1,0,0,1,0,0,1,0,1,0,0,0,0,-1,-1,0,0,0,0,1,-1,0,0,-1,0,0,0,0,1,1,0,0,1,0,0,1,0,0,0,0,-1,-1,0,0
+			}
+		}
+		LayerElementUV: 0 {
+			Version: 101
+			Name: ""
+			MappingInformationType: "ByPolygonVertex"
+			ReferenceInformationType: "Direct"
+			UV: *304 {
+				a: 0.546875,0.921875,0.546875,0.9609375,0.36458359375,0.9609375,0.36458359375,0.921875,0.18229140625,0.8359375,0.18229140625,0.875,0,0.875,0,0.8359375,0.1328125,0.796875,0.1328125,0.76953125,0.140625,0.76953125,0.140625,0.796875,0.015625,0.28125,0.015625,0.46354140625000007,0,0.46354140625000007,0,0.28125,0.0625,0.75,0.0625,0.7890625,0.046875,0.7890625,0.046875,0.75,0.0859375,0.75,0.0859375,0.7890625,0.0703125,0.7890625,0.0703125,0.75,0.546875,0.8359375,0.546875,0.875,0.36458359375,0.875,0.36458359375,0.8359375,0.36458359375,0.8359375,0.36458359375,0.875,0.18229140625,0.875,0.18229140625,0.8359375,0,0.828125,0,0.6458335937499999,0.015625,0.6458335937499999,0.015625,0.828125,0,0.6458335937499999,0,0.46354140625000007,0.015625,0.46354140625000007,0.015625,0.6458335937499999,0.18229140625,0.921875,0.18229140625,0.9609375,0,0.9609375,0,0.921875,0.36458359375,0.921875,0.36458359375,0.9609375,0.18229140625,0.9609375,0.18229140625,0.921875,0.15625,0.76953125,0.15625,0.796875,0.1484375,0.796875,0.1484375,0.76953125,0.0390625,0.46354140625000007,0.0390625,0.6458335937499999,0.0234375,0.6458335937499999,0.0234375,0.46354140625000007,0.02734375,0.72265625,0.02734375,0.7513023437499999,0.0234375,0.828125,0.0234375,0.6458335937499999,0.03515625,0.72265625,0.02734375,0.72265625,0.0234375,0.6458335937499999,0.0390625,0.6458335937499999,0.03515625,0.7513023437499999,0.03515625,0.72265625,0.0390625,0.6458335937499999,0.0390625,0.828125,0.02734375,0.7513023437499999,0.03515625,0.7513023437499999,0.0390625,0.828125,0.0234375,0.828125,0.12109375,0.828125,0.09375,0.828125,0.09375,0.8046875,0.12109375,0.8046875,0.171875,0.796875,0.1640625,0.796875,0.1640625,0.7734375,0.171875,0.7734375,0.16015625,0.828125,0.1328125,0.828125,0.1328125,0.8046875,0.16015625,0.8046875,0.1875,0.796875,0.1796875,0.796875,0.1796875,0.7734375,0.1875,0.7734375,0.03515625,0.38671875,0.03515625,0.35807265625000007,0.0390625,0.28125,0.0390625,0.46354140625000007,0.02734375,0.38671875,0.03515625,0.38671875,0.0390625,0.46354140625000007,0.0234375,0.46354140625000007,0.02734375,0.35807265625000007,0.02734375,0.38671875,0.0234375,0.46354140625000007,0.0234375,0.28125,0.03515625,0.35807265625000007,0.02734375,0.35807265625000007,0.0234375,0.28125,0.0390625,0.28125,0.19921875,0.828125,0.171875,0.828125,0.171875,0.8046875,0.19921875,0.8046875,0.203125,0.796875,0.1953125,0.796875,0.1953125,0.7734375,0.203125,0.7734375,0.12109375,0.796875,0.09375,0.796875,0.09375,0.7734375,0.12109375,0.7734375,0.21875,0.828125,0.2109375,0.828125,0.2109375,0.8046875,0.21875,0.8046875,0.18229140625,0.9140625,0.18229140625,0.875,0.36458359375,0.875,0.36458359375,0.9140625,0.36458359375,0.9140625,0.36458359375,0.875,0.546875,0.875,0.546875,0.9140625,0.046875,0.828125,0.046875,0.7890625,0.0625,0.7890625,0.0625,0.828125,0,1,0,0.9609375,0.18229140625,0.9609375,0.18229140625,1,0.18229140625,1,0.18229140625,0.9609375,0.36458359375,0.9609375,0.36458359375,1,0.36458359375,1,0.36458359375,0.9609375,0.546875,0.9609375,0.546875,1,0.0703125,0.828125,0.0703125,0.7890625,0.0859375,0.7890625,0.0859375,0.828125,0,0.9140625,0,0.875,0.18229140625,0.875,0.18229140625,0.9140625
+			}
+		}
+		LayerElementMaterial: 0 {
+			Version: 101
+			Name: ""
+			MappingInformationType: "AllSame"
+			ReferenceInformationType: "IndexToDirect"
+			Materials: *1 {
+				a: 0
+			}
+		}
+		Layer: 0 {
+			Version: 100
+			LayerElement:  {
+				Type: "LayerElementNormal"
+				TypedIndex: 0
+			}
+			LayerElement:  {
+				Type: "LayerElementMaterial"
+				TypedIndex: 0
+			}
+			LayerElement:  {
+				Type: "LayerElementUV"
+				TypedIndex: 0
+			}
+		}
+	}
+	Material: 78801109, "Material::PillarBase.png", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties70:  {
+			P: "Emissive", "Vector3D", "Vector", "",0,0,0
+			P: "Ambient", "Vector3D", "Vector", "",0.2,0.2,0.2
+			P: "Diffuse", "Vector3D", "Vector", "",0.8,0.8,0.8
+			P: "Opacity", "double", "Number", "",1
+		}
+	}
+	Texture: 72856968, "Texture::PillarBase.png", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::PillarBase.png"
+		Media: "Video::PillarBase.png"
+		FileName: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\PillarBase.png"
+		RelativeFilename: "PillarBase.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Video: 70386414, "Video::PillarBase.png", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\PillarBase.png"
+		}
+		UseMipMap: 0
+		Filename: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\PillarBase.png"
+		RelativeFilename: "PillarBase.png"
+	}
+	Material: 74671942, "Material::Bolt.png", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties70:  {
+			P: "Emissive", "Vector3D", "Vector", "",0,0,0
+			P: "Ambient", "Vector3D", "Vector", "",0.2,0.2,0.2
+			P: "Diffuse", "Vector3D", "Vector", "",0.8,0.8,0.8
+			P: "Opacity", "double", "Number", "",1
+		}
+	}
+	Texture: 72656916, "Texture::Bolt.png", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::Bolt.png"
+		Media: "Video::Bolt.png"
+		FileName: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\Bolt.png"
+		RelativeFilename: "Bolt.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Video: 79022800, "Video::Bolt.png", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\Bolt.png"
+		}
+		UseMipMap: 0
+		Filename: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\Bolt.png"
+		RelativeFilename: "Bolt.png"
+	}
+	Material: 77441118, "Material::WetFloorSign.png", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties70:  {
+			P: "Emissive", "Vector3D", "Vector", "",0,0,0
+			P: "Ambient", "Vector3D", "Vector", "",0.2,0.2,0.2
+			P: "Diffuse", "Vector3D", "Vector", "",0.8,0.8,0.8
+			P: "Opacity", "double", "Number", "",1
+		}
+	}
+	Texture: 71360876, "Texture::WetFloorSign.png", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::WetFloorSign.png"
+		Media: "Video::WetFloorSign.png"
+		FileName: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\WetFloorSign.png"
+		RelativeFilename: "WetFloorSign.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Video: 78379002, "Video::WetFloorSign.png", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\WetFloorSign.png"
+		}
+		UseMipMap: 0
+		Filename: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\WetFloorSign.png"
+		RelativeFilename: "WetFloorSign.png"
+	}
+	Material: 76113577, "Material::VLightSmall.png", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties70:  {
+			P: "Emissive", "Vector3D", "Vector", "",0,0,0
+			P: "Ambient", "Vector3D", "Vector", "",0.2,0.2,0.2
+			P: "Diffuse", "Vector3D", "Vector", "",0.8,0.8,0.8
+			P: "Opacity", "double", "Number", "",1
+		}
+	}
+	Texture: 77711256, "Texture::VLightSmall.png", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::VLightSmall.png"
+		Media: "Video::VLightSmall.png"
+		FileName: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\VLightSmall.png"
+		RelativeFilename: "VLightSmall.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Video: 77527580, "Video::VLightSmall.png", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\VLightSmall.png"
+		}
+		UseMipMap: 0
+		Filename: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\VLightSmall.png"
+		RelativeFilename: "VLightSmall.png"
+	}
+	Material: 79671659, "Material::ExitSign.png", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties70:  {
+			P: "Emissive", "Vector3D", "Vector", "",0,0,0
+			P: "Ambient", "Vector3D", "Vector", "",0.2,0.2,0.2
+			P: "Diffuse", "Vector3D", "Vector", "",0.8,0.8,0.8
+			P: "Opacity", "double", "Number", "",1
+		}
+	}
+	Texture: 70766448, "Texture::ExitSign.png", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::ExitSign.png"
+		Media: "Video::ExitSign.png"
+		FileName: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\ExitSign.png"
+		RelativeFilename: "ExitSign.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Video: 72172788, "Video::ExitSign.png", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\ExitSign.png"
+		}
+		UseMipMap: 0
+		Filename: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\ExitSign.png"
+		RelativeFilename: "ExitSign.png"
+	}
+	Material: 73285322, "Material::ExitSign2.png", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties70:  {
+			P: "Emissive", "Vector3D", "Vector", "",0,0,0
+			P: "Ambient", "Vector3D", "Vector", "",0.2,0.2,0.2
+			P: "Diffuse", "Vector3D", "Vector", "",0.8,0.8,0.8
+			P: "Opacity", "double", "Number", "",1
+		}
+	}
+	Texture: 71076012, "Texture::ExitSign2.png", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::ExitSign2.png"
+		Media: "Video::ExitSign2.png"
+		FileName: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\ExitSign2.png"
+		RelativeFilename: "ExitSign2.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Video: 74313241, "Video::ExitSign2.png", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\ExitSign2.png"
+		}
+		UseMipMap: 0
+		Filename: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\ExitSign2.png"
+		RelativeFilename: "ExitSign2.png"
+	}
+	Material: 78730843, "Material::DirectionSignTop.png", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties70:  {
+			P: "Emissive", "Vector3D", "Vector", "",0,0,0
+			P: "Ambient", "Vector3D", "Vector", "",0.2,0.2,0.2
+			P: "Diffuse", "Vector3D", "Vector", "",0.8,0.8,0.8
+			P: "Opacity", "double", "Number", "",1
+		}
+	}
+	Texture: 78036103, "Texture::DirectionSignTop.png", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::DirectionSignTop.png"
+		Media: "Video::DirectionSignTop.png"
+		FileName: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\DirectionSignTop.png"
+		RelativeFilename: "DirectionSignTop.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Video: 75880336, "Video::DirectionSignTop.png", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\DirectionSignTop.png"
+		}
+		UseMipMap: 0
+		Filename: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\DirectionSignTop.png"
+		RelativeFilename: "DirectionSignTop.png"
+	}
+	Material: 78848708, "Material::DirectionSignModule1.png", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties70:  {
+			P: "Emissive", "Vector3D", "Vector", "",0,0,0
+			P: "Ambient", "Vector3D", "Vector", "",0.2,0.2,0.2
+			P: "Diffuse", "Vector3D", "Vector", "",0.8,0.8,0.8
+			P: "Opacity", "double", "Number", "",1
+		}
+	}
+	Texture: 70063872, "Texture::DirectionSignModule1.png", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::DirectionSignModule1.png"
+		Media: "Video::DirectionSignModule1.png"
+		FileName: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\DirectionSignModule1.png"
+		RelativeFilename: "DirectionSignModule1.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Video: 73538651, "Video::DirectionSignModule1.png", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\DirectionSignModule1.png"
+		}
+		UseMipMap: 0
+		Filename: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\DirectionSignModule1.png"
+		RelativeFilename: "DirectionSignModule1.png"
+	}
+	Material: 70459556, "Material::PosterBigFrame.png", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties70:  {
+			P: "Emissive", "Vector3D", "Vector", "",0,0,0
+			P: "Ambient", "Vector3D", "Vector", "",0.2,0.2,0.2
+			P: "Diffuse", "Vector3D", "Vector", "",0.8,0.8,0.8
+			P: "Opacity", "double", "Number", "",1
+		}
+	}
+	Texture: 76190919, "Texture::PosterBigFrame.png", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::PosterBigFrame.png"
+		Media: "Video::PosterBigFrame.png"
+		FileName: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\PosterBigFrame.png"
+		RelativeFilename: "PosterBigFrame.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Video: 73520802, "Video::PosterBigFrame.png", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\PosterBigFrame.png"
+		}
+		UseMipMap: 0
+		Filename: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\PosterBigFrame.png"
+		RelativeFilename: "PosterBigFrame.png"
+	}
+	Material: 75038911, "Material::PosterBigFrameBroken.png", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties70:  {
+			P: "Emissive", "Vector3D", "Vector", "",0,0,0
+			P: "Ambient", "Vector3D", "Vector", "",0.2,0.2,0.2
+			P: "Diffuse", "Vector3D", "Vector", "",0.8,0.8,0.8
+			P: "Opacity", "double", "Number", "",1
+		}
+	}
+	Texture: 72596177, "Texture::PosterBigFrameBroken.png", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::PosterBigFrameBroken.png"
+		Media: "Video::PosterBigFrameBroken.png"
+		FileName: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\PosterBigFrameBroken.png"
+		RelativeFilename: "PosterBigFrameBroken.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Video: 76591789, "Video::PosterBigFrameBroken.png", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\PosterBigFrameBroken.png"
+		}
+		UseMipMap: 0
+		Filename: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\PosterBigFrameBroken.png"
+		RelativeFilename: "PosterBigFrameBroken.png"
+	}
+	Material: 79688078, "Material::Finalizer.png", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties70:  {
+			P: "Emissive", "Vector3D", "Vector", "",0,0,0
+			P: "Ambient", "Vector3D", "Vector", "",0.2,0.2,0.2
+			P: "Diffuse", "Vector3D", "Vector", "",0.8,0.8,0.8
+			P: "Opacity", "double", "Number", "",1
+		}
+	}
+	Texture: 74262000, "Texture::Finalizer.png", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::Finalizer.png"
+		Media: "Video::Finalizer.png"
+		FileName: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\Finalizer.png"
+		RelativeFilename: "Finalizer.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Video: 71548041, "Video::Finalizer.png", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\Finalizer.png"
+		}
+		UseMipMap: 0
+		Filename: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\Finalizer.png"
+		RelativeFilename: "Finalizer.png"
+	}
+	Material: 74811297, "Material::MiddleCables.png", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties70:  {
+			P: "Emissive", "Vector3D", "Vector", "",0,0,0
+			P: "Ambient", "Vector3D", "Vector", "",0.2,0.2,0.2
+			P: "Diffuse", "Vector3D", "Vector", "",0.8,0.8,0.8
+			P: "Opacity", "double", "Number", "",1
+		}
+	}
+	Texture: 79718123, "Texture::MiddleCables.png", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::MiddleCables.png"
+		Media: "Video::MiddleCables.png"
+		FileName: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\MiddleCables.png"
+		RelativeFilename: "MiddleCables.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Video: 79813178, "Video::MiddleCables.png", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\MiddleCables.png"
+		}
+		UseMipMap: 0
+		Filename: "C:\Users\cunha\Desktop\SepulviaNewSpriteStuff\3ª Entrega\texturas\MiddleCables.png"
+		RelativeFilename: "MiddleCables.png"
+	}
+}
+
+; Object connections
+;------------------------------------------------------------------
+
+Connections:  {
+
+	;Model::placque 2, Model::RootNode
+	C: "OO",76444235,0
+
+	;Model::Placque, Model::placque 2
+	C: "OO",75794559,76444235
+
+	;Geometry::Placque, Model::Placque
+	C: "OO",72368627,75794559
+
+	;Material::DirectionSignModule1.png, Model::Placque
+	C: "OO",78848708,75794559
+
+	;Texture::PillarBase.png, Material::PillarBase.png
+	C: "OP",72856968,78801109, "DiffuseColor"
+
+	;Video::PillarBase.png, Texture::PillarBase.png
+	C: "OO",70386414,72856968
+
+	;Texture::Bolt.png, Material::Bolt.png
+	C: "OP",72656916,74671942, "DiffuseColor"
+
+	;Video::Bolt.png, Texture::Bolt.png
+	C: "OO",79022800,72656916
+
+	;Texture::WetFloorSign.png, Material::WetFloorSign.png
+	C: "OP",71360876,77441118, "DiffuseColor"
+
+	;Video::WetFloorSign.png, Texture::WetFloorSign.png
+	C: "OO",78379002,71360876
+
+	;Texture::VLightSmall.png, Material::VLightSmall.png
+	C: "OP",77711256,76113577, "DiffuseColor"
+
+	;Video::VLightSmall.png, Texture::VLightSmall.png
+	C: "OO",77527580,77711256
+
+	;Texture::ExitSign.png, Material::ExitSign.png
+	C: "OP",70766448,79671659, "DiffuseColor"
+
+	;Video::ExitSign.png, Texture::ExitSign.png
+	C: "OO",72172788,70766448
+
+	;Texture::ExitSign2.png, Material::ExitSign2.png
+	C: "OP",71076012,73285322, "DiffuseColor"
+
+	;Video::ExitSign2.png, Texture::ExitSign2.png
+	C: "OO",74313241,71076012
+
+	;Texture::DirectionSignTop.png, Material::DirectionSignTop.png
+	C: "OP",78036103,78730843, "DiffuseColor"
+
+	;Video::DirectionSignTop.png, Texture::DirectionSignTop.png
+	C: "OO",75880336,78036103
+
+	;Texture::DirectionSignModule1.png, Material::DirectionSignModule1.png
+	C: "OP",70063872,78848708, "DiffuseColor"
+
+	;Video::DirectionSignModule1.png, Texture::DirectionSignModule1.png
+	C: "OO",73538651,70063872
+
+	;Texture::PosterBigFrame.png, Material::PosterBigFrame.png
+	C: "OP",76190919,70459556, "DiffuseColor"
+
+	;Video::PosterBigFrame.png, Texture::PosterBigFrame.png
+	C: "OO",73520802,76190919
+
+	;Texture::PosterBigFrameBroken.png, Material::PosterBigFrameBroken.png
+	C: "OP",72596177,75038911, "DiffuseColor"
+
+	;Video::PosterBigFrameBroken.png, Texture::PosterBigFrameBroken.png
+	C: "OO",76591789,72596177
+
+	;Texture::Finalizer.png, Material::Finalizer.png
+	C: "OP",74262000,79688078, "DiffuseColor"
+
+	;Video::Finalizer.png, Texture::Finalizer.png
+	C: "OO",71548041,74262000
+
+	;Texture::MiddleCables.png, Material::MiddleCables.png
+	C: "OP",79718123,74811297, "DiffuseColor"
+
+	;Video::MiddleCables.png, Texture::MiddleCables.png
+	C: "OO",79813178,79718123
+}
+
+; Takes section
+;------------------------------------------------------------------
+
+Takes:  {
+	Current: ""
+}
