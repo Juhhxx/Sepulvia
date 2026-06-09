@@ -2,8 +2,9 @@ using NaughtyAttributes;
 using UnityEngine;
 using System;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
-public class PlayerController : MonoBehaviour, IPausable
+public class PlayerController : MonoBehaviour, IPausable, ISaveable
 {
     [SerializeField, Expandable] public PartyInfo _playerParty;
     [field: SerializeField] public PlayerParty PlayerParty { get; private set; }
@@ -129,6 +130,7 @@ public class PlayerController : MonoBehaviour, IPausable
     {
         _originalColor = _spriteRenderer.color;
         PauseManager.Instance?.RegisterPausable(this);
+        SaveManager.Instance.RegsiterSaveable("PlayerInfo", this);
     }
 
     private void OnEnable()
@@ -222,5 +224,36 @@ public class PlayerController : MonoBehaviour, IPausable
         {
             _playerMovement.SetVelocity(Vector3.zero);
         }
+    }
+
+    public object GetSaveData()
+    {
+        SaveData saveData;
+
+        saveData.PlayerStanceLevel = PlayerCharacter.StanceLevel;
+        saveData.PlayerSpeedLevel = PlayerCharacter.SpeedLevel;
+        saveData.PlayerCurrentStance = PlayerCharacter.CurrentStance;
+        saveData.PlayerEssence = (PlayerCharacter as Player).Essence;
+
+        return saveData;
+    }
+
+    public void LoadSaveData(object data)
+    {
+        SaveData saveData = (SaveData)data;
+
+        PlayerCharacter.LevelUpStat(Stats.Stance, saveData.PlayerStanceLevel);
+        PlayerCharacter.LevelUpStat(Stats.Speed, saveData.PlayerSpeedLevel);
+        PlayerCharacter.CurrentStance = saveData.PlayerCurrentStance;
+        (PlayerCharacter as Player).Essence = saveData.PlayerEssence;
+    }
+
+    [Serializable]
+    private struct SaveData
+    {
+        public int PlayerCurrentStance;
+        public int PlayerStanceLevel;
+        public int PlayerSpeedLevel;
+        public int PlayerEssence;
     }
 }

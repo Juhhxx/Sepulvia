@@ -9347,6 +9347,7 @@ GameObject:
   - component: {fileID: 1715159912447394973}
   - component: {fileID: 3471194618692145266}
   - component: {fileID: 395753244699323410}
+  - component: {fileID: 6995783373153574008}
   m_Layer: 0
   m_Name: Menu Manager
   m_TagString: Untagged
@@ -9441,6 +9442,20 @@ MonoBehaviour:
   _resetButton: {fileID: 8023402476813020538}
   _gammaSlider: {fileID: 7963568627763930344}
   _gamma: 0
+--- !u!114 &6995783373153574008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8389755908744335664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d9f708e19532c44be96062210db6c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
+  _saveFileName: save
+  _prettyPrint: 1
 --- !u!1 &8424576240931691645
 GameObject:
   m_ObjectHideFlags: 0
