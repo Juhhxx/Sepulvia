@@ -19,6 +19,17 @@ public class PartyInfo : DataAsset
 
     public int PartySize => _isPlayerParty ? 1 : (PartyMembers?.Count).Value;
 
+    public int Difficulty => CalculatePartyDifficulty();
+
+    private int CalculatePartyDifficulty()
+    {
+        int difficulty = 0;
+
+        foreach (EnemyInfo e in PartyMembers) difficulty += e.DifficultyLevel;
+
+        return difficulty;
+    }
+
     public Party Instantiate()
     {
         return _isPlayerParty ? new PlayerParty(this) : new EnemyParty(this);
@@ -43,7 +54,6 @@ public class EnemyParty : Party
 
     public IReadOnlyList<Enemy> PartyMembers => _partyMembers;
     public override int PartySize => PartyMembers.Count;
-
 
     public EnemyParty(PartyInfo info) : base(info)
     {

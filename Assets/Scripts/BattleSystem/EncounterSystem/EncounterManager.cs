@@ -54,7 +54,7 @@ public class EncounterManager : RandomBehaviour
 
     public void DoRandomEncounter()
     {
-        EnemyParty party = _enemyPartyDataBase.GetRandomParty(_random).Instantiate() as EnemyParty;
+        EnemyParty party = _enemyPartyDataBase.GetRandomParty(_random, (_player.PlayerCharacter as Player).Level).Instantiate() as EnemyParty;
 
         DoEncounter(party);
     }

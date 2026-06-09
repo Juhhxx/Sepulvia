@@ -29,4 +29,23 @@ public class Player : Character
     public void ChangeEssence(int amount) => Essence += amount;
 
     public Action<int> OnEssenceChange;
+
+    public int Level => CalculatePlayerLevel();
+
+    private int CalculatePlayerLevel()
+    {
+        float statLevelsMedian = (StanceLevel + SpeedLevel) / 2f;
+
+        float moveLevelsMedian  = 0;
+
+        foreach (Move move in MoveSet) moveLevelsMedian += move.Level;
+
+        moveLevelsMedian /= 4f;
+
+        int finalLevel = Mathf.FloorToInt((statLevelsMedian + moveLevelsMedian) / 2f);
+
+        Debug.Log($"LEVEL PLAYER: {finalLevel}");
+
+        return finalLevel;
+    }
 }

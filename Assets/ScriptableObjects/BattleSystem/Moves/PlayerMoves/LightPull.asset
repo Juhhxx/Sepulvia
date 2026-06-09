@@ -14,18 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
   <Name>k__BackingField: Light Pull
   <Type>k__BackingField: 1
+  <PriorityLevel>k__BackingField: 0
   <StanceCost>k__BackingField: 0
   <StanceDamage>k__BackingField: 3
   <Cooldown>k__BackingField: 0
-  _turnsPassed: 0
-  _inCooldown: 0
+  <Level>k__BackingField: 1
   _pullStrength: 1
   <StatModifiers>k__BackingField: []
   <Modifier>k__BackingField:
     <Type>k__BackingField: 0
-    <Color>k__BackingField: {r: 0, g: 0, b: 0, a: 0}
+    <Trigger>k__BackingField: 0
+    <BarEffectPrefab>k__BackingField: {fileID: 0}
     <TurnDuration>k__BackingField: 0
     <DestroyOnUse>k__BackingField: 0
+    <GraviyStrength>k__BackingField: 0
   <Description>k__BackingField: 'Pulls the soul to the users side by 1 space.
 
     Target

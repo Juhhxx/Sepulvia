@@ -19,6 +19,7 @@ public class MoveInfo : ScriptableObject
     [field: SerializeField] public int StanceDamage { get; private set; }
 
     [field: SerializeField] public int Cooldown { get; private set; }
+    [field: SerializeField] public int Level { get; private set; }
 
     [Space(10)]
     [Header("Pull Move Parameters")]
@@ -71,7 +72,7 @@ public class Move
 
         StatModifiers = new List<StatModifier>(info.StatModifiers);
         Modifier = info.Modifier;
-        
+        Level = info.Level;
         Description = info.Description;
     }
 
@@ -108,6 +109,9 @@ public class Move
         _inCooldown = false;
         _turnsPassed = 0;
     }
+
+    [field: SerializeField, ReadOnly] public int Level { get; private set; }
+
 
     [Space(10)]
     [Header("Pull Move Parameters")]

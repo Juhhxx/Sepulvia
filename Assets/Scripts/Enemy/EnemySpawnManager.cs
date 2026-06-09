@@ -5,6 +5,12 @@ public class EnemySpawnManager : MonoBehaviour
 {
     [SerializeField] private EnemyPartyDataBase _enemyPartyDataBase;
     private List<GameObject> _createdEnemies = new List<GameObject>();
+    private PlayerController _playerController;
+
+    private void Start()
+    {
+        _playerController = FindAnyObjectByType<PlayerController>();
+    }
 
     public List<EnemyData> GenerateEnemies(List<Path> paths, int maxEnemies, System.Random random, int minEnemies = 0)
     {
@@ -20,7 +26,7 @@ public class EnemySpawnManager : MonoBehaviour
 
             availablePaths.RemoveAt(pathIdx);
             
-            PartyInfo enemyParty = _enemyPartyDataBase.GetRandomParty(random);
+            PartyInfo enemyParty = _enemyPartyDataBase.GetRandomParty(random, (_playerController.PlayerCharacter as Player).Level);
             EnemyInfo enemyInfo = enemyParty.PartyMembers[0]; // Select prefab from first enemy of the party
 
             generatedEnemies.Add(new EnemyData(enemyInfo.OverworldPrefab, path));
