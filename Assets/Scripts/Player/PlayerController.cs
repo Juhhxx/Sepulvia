@@ -3,10 +3,13 @@ using UnityEngine;
 using System;
 using UnityEngine.Events;
 using System.Collections.Generic;
+using System.Collections;
+using Newtonsoft.Json;
 
 public class PlayerController : MonoBehaviour, IPausable, ISaveable
 {
     [SerializeField, Expandable] public PartyInfo _playerParty;
+    [SerializeField, Expandable] public ItemDataBase _itemDataBase;
     [field: SerializeField] public PlayerParty PlayerParty { get; private set; }
 
     public Character PlayerCharacter => PlayerParty.Player;
@@ -86,7 +89,15 @@ public class PlayerController : MonoBehaviour, IPausable, ISaveable
 
     private void Awake()
     {
-        PlayerParty = _playerParty.Instantiate() as PlayerParty;
+        if (PlayerParty == null)
+        {
+            PlayerParty = _playerParty.Instantiate() as PlayerParty;
+            Debug.Log("INSTANTIATING PLAYER");
+        }
+        else
+        {
+            Debug.Log("PLAYER ALREADY INSTANTIATED");
+        }
 
         Debug.Log($"[Player Controller] Player Character : {PlayerCharacter.Name}", this);
 
@@ -235,17 +246,67 @@ public class PlayerController : MonoBehaviour, IPausable, ISaveable
         saveData.PlayerCurrentStance = PlayerCharacter.CurrentStance;
         saveData.PlayerEssence = (PlayerCharacter as Player).Essence;
 
+        saveData.PlayerInventory = new List<ValueTuple<int, int>>();
+
+        foreach(ItemStack stack in PlayerCharacter.Inventory.ItemSlots)
+        {
+            saveData.PlayerInventory.Add(new (stack.Item.ID, stack.Amount));
+        }
+
+        saveData.PlayerEquipment = new List<int>();
+
+        foreach(ItemInfo item in PlayerCharacter.Inventory.EquipmentSlots)
+        {
+            saveData.PlayerEquipment.Add(item.ID);
+        }
+
         return saveData;
     }
 
-    public void LoadSaveData(object data)
+    public void LoadSaveData(string json)
     {
-        SaveData saveData = (SaveData)data;
+        Debug.Log($"LOADING PLAYER");
 
-        PlayerCharacter.LevelUpStat(Stats.Stance, saveData.PlayerStanceLevel);
-        PlayerCharacter.LevelUpStat(Stats.Speed, saveData.PlayerSpeedLevel);
+        SaveData saveData = JsonConvert.DeserializeObject<SaveData>(json);
+
+        if (loadCoroutine != null) StopCoroutine(loadCoroutine);
+        loadCoroutine = StartCoroutine(LoadSaveDataCR(saveData));
+    }
+
+    Coroutine loadCoroutine;
+
+    private IEnumerator LoadSaveDataCR(SaveData saveData)
+    {
+        Debug.Log("WAITING FOR PLAYER INSTANCE");
+        yield return new WaitUntil(() => PlayerParty != null);
+
+        Debug.Log("PLAYER READY");
+
+        PlayerCharacter.ResetLevels();
+        PlayerCharacter.ResetModifiers();
+        PlayerCharacter.ResetMoves();
+        PlayerCharacter.ResetMoveCooldowns();
+
+        PlayerCharacter.LevelUpStat(Stats.Stance, saveData.PlayerStanceLevel - 1);
+        PlayerCharacter.LevelUpStat(Stats.Speed, saveData.PlayerSpeedLevel - 1);
         PlayerCharacter.CurrentStance = saveData.PlayerCurrentStance;
         (PlayerCharacter as Player).Essence = saveData.PlayerEssence;
+
+        PlayerCharacter.Inventory.ItemSlots.Clear();
+
+        foreach ((int, int) itemData in saveData.PlayerInventory)
+        {
+            for (int i = 0; i < itemData.Item2; i++) PlayerCharacter.Inventory.AddItem(_itemDataBase.GetValue(itemData.Item1));
+        }
+
+        PlayerCharacter.Inventory.EquipmentSlots.Clear();
+
+        foreach (int itemData in saveData.PlayerEquipment)
+        {
+            PlayerCharacter.Inventory.AddItem(_itemDataBase.GetValue(itemData));
+        }
+
+        Debug.Log($"PLAYER LOADED");        
     }
 
     [Serializable]
@@ -255,5 +316,7 @@ public class PlayerController : MonoBehaviour, IPausable, ISaveable
         public int PlayerStanceLevel;
         public int PlayerSpeedLevel;
         public int PlayerEssence;
+        public List<ValueTuple<int, int>> PlayerInventory;
+        public List<int> PlayerEquipment;
     }
 }

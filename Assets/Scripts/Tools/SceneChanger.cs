@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -46,5 +47,20 @@ public class SceneChanger : MonoBehaviour
     {
         return animator.GetCurrentAnimatorStateInfo(0).length >
                 animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+    }
+
+    public async Task ChangeSceneAsync(string scene, Action onLoad, bool doFade = true)
+    {
+        _image.raycastTarget = true;
+
+        if (doFade) _anim.SetTrigger("FadeOut");
+
+        await SceneManager.LoadSceneAsync(scene);
+
+        onLoad?.Invoke();
+
+        if (doFade) _anim.SetTrigger("FadeIn");
+
+        _image.raycastTarget = false;
     }
 }

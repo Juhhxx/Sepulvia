@@ -1019,6 +1019,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1508272504764424918, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
+      propertyPath: _itemDataBase
+      value: 
+      objectReference: {fileID: 11400000, guid: a44e1352049d76b4490a77e55261fa1f, type: 2}
     - target: {fileID: 7498980921109840918, guid: 278c4dcad355df3468856e28aa2c0358, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1343,6 +1347,10 @@ PrefabInstance:
       propertyPath: _cheatCodes.Array.data[2].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 3119119775086999347}
+    - target: {fileID: 1455640184061612057, guid: 387eb2b3d87409249a524cb0b1255b8a, type: 3}
+      propertyPath: _cheatCodes.Array.data[3].Cheat.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 80876026}
     - target: {fileID: 3798565629377872166, guid: 387eb2b3d87409249a524cb0b1255b8a, type: 3}
       propertyPath: m_Name
       value: Cheat Manager
@@ -1444,10 +1452,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7132023020944704281, guid: b73eded718488c54abbb56df165aacf5, type: 3}
-      propertyPath: _seed
-      value: 67
-      objectReference: {fileID: 0}
     - target: {fileID: 8389755908744335664, guid: b73eded718488c54abbb56df165aacf5, type: 3}
       propertyPath: m_Name
       value: Menu Manager
@@ -1455,30 +1459,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8389755908744335664, guid: b73eded718488c54abbb56df165aacf5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6227151378590199372}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b73eded718488c54abbb56df165aacf5, type: 3}
---- !u!1 &6227151378590199371 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8389755908744335664, guid: b73eded718488c54abbb56df165aacf5, type: 3}
-  m_PrefabInstance: {fileID: 6227151378590199370}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6227151378590199372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6227151378590199371}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25d9f708e19532c44be96062210db6c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
-  _saveFileName: save
-  _prettyPrint: 1
 --- !u!1001 &6305003758615971593
 PrefabInstance:
   m_ObjectHideFlags: 0

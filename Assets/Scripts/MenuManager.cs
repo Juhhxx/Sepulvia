@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviourSingleton<MenuManager>
 {
@@ -17,6 +19,7 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
     [SerializeField] private GameObject _optionsMenu;
     [SerializeField] private GameObject _confirmQuitMenu;
     [SerializeField] private GameObject _confirmMainMenu;
+    [SerializeField] private Button _loadSaveButton;
 
     private Animator _anim;
     private SceneChanger _sceneChanger;
@@ -71,6 +74,10 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
     {
         _sceneChanger.ChangeScene(scene, onLoad += () => AudioManager.Instance.MusicPlayer.PlaySong(null, 0), doFade);
     }
+    public async Task LoadSceneAsync(string scene)
+    {
+        await _sceneChanger.ChangeSceneAsync(scene, null, true);
+    }
 
     public void ResetSelection() => EventSystem.current.SetSelectedGameObject(null);
 
@@ -96,6 +103,11 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
 
             cameraData.cameraStack.Add(_uiCamera);
         }
+    }
+
+    public void LoadSave()
+    {
+        _ = SaveManager.Instance.LoadGame();
     }
 
     private void CheckPause()
@@ -138,6 +150,8 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
 
             return;
         }
+
+        if (onOff) _loadSaveButton.interactable = SaveManager.Instance.SaveExists;
 
         _anim.ResetTrigger("Reset");
 

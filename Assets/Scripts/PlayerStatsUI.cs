@@ -22,11 +22,6 @@ public class PlayerStatsUI : MonoBehaviour
 
         for (int i = 0; i < tmp.Length; i++)
         {
-            Debug.Log($"{c.MoveSet.Count}");
-            Debug.Log($"{i}");
-            Debug.Log($"{tmp[i]}");
-            Debug.Log($"{c.MoveSet[i].Name}");
-            
             tmp[i].text = c.MoveSet[i].Name;
         }
     }

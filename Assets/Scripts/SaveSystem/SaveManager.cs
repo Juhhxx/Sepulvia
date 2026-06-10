@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NaughtyAttributes;
 
-public class SaveManager : MonoBehaviour
+public class SaveManager : MonoBehaviourSingleton<SaveManager>
 {
     [SerializeField] private string _saveFileName;
     [SerializeField] private bool _prettyPrint;
-    private string _saveFilePath;
+    private string _saveFilePath = "";
+    public bool SaveExists => _saveFilePath != "" && File.Exists(_saveFilePath);
 
     // Save Sytem Events
     public event Action OnGameSaveStart;
@@ -23,22 +24,9 @@ public class SaveManager : MonoBehaviour
     // Saving Information
     private Dictionary<string, ISaveable> _saveData;
 
-    // Singleton Pattern Instance
-    public static SaveManager Instance; 
-
-    private void SingletonCheck()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-            Destroy(gameObject);
-    }
-
     private void Awake()
     {
-        SingletonCheck();
+        base.SingletonCheck(this);
 
         _saveFilePath = System.IO.Path.Combine(Application.persistentDataPath, _saveFileName) + ".savedata";
         _saveData = new Dictionary<string, ISaveable>();
@@ -49,7 +37,8 @@ public class SaveManager : MonoBehaviour
     {
         Debug.Log($"REGISTERED {name}");
 
-        _saveData.Add(name, saveable);
+        if (!_saveData.ContainsKey(name)) _saveData.Add(name, saveable);
+        else _saveData[name] = saveable;
     }
 
     // Save and Load Game
@@ -67,7 +56,9 @@ public class SaveManager : MonoBehaviour
         {
             SaveData saveData;
             saveData.name = name;
-            saveData.data = _saveData[name].GetSaveData();
+
+            object rawData = _saveData[name].GetSaveData();
+            saveData.data = JsonConvert.SerializeObject(rawData);
 
             Debug.Log($"SAVING {saveData.name}");
 
@@ -84,13 +75,16 @@ public class SaveManager : MonoBehaviour
         Debug.Log($"GAME SAVED TI {_saveFilePath}");
         OnGameSaveEnd?.Invoke();
     }
-    
+
     [Button]
     public async Task LoadGame()
     {
-        if (File.Exists(_saveFilePath))
+        if (SaveExists)
         {
             OnGameLoadStart?.Invoke();
+
+            await MenuManager.Instance.LoadSceneAsync("MainGame");
+
             // Wait until the file is read without freezing the game
             string jsonSaveData = await File.ReadAllTextAsync(_saveFilePath);
 
@@ -114,7 +108,7 @@ public class SaveManager : MonoBehaviour
     {
         public string name;
         [SerializeReference]
-        public object data;
+        public string data;
     }
     [Serializable]
     private struct GameSave

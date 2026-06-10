@@ -83,6 +83,17 @@ public class InventoryManager : MonoBehaviour
                         $"Are you sure you want to use {stack.Item.Name}?";
                     });
                 }
+                else if (stack.Item.Type == ItemTypes.Save)
+                {
+                    tmp[i].onClick.AddListener(() =>
+                    {
+                        UpdatedSelectedStack(stack);
+                        _raycastBlockerPanel.SetActive(true);
+                        _confirmUsePanel.SetActive(true);
+                        _confirmUsePanel.GetComponentInChildren<TextMeshProUGUI>().text =
+                        $"Are you sure you want to use {stack.Item.Name} to save your progress?";
+                    });
+                }
                 else
                 {
                     tmp[i].onClick.AddListener(() =>
@@ -162,8 +173,10 @@ public class InventoryManager : MonoBehaviour
     {
         if (!_player.PlayerCharacter.Inventory.Contains(stack.Item)) return;
 
-        _inventoryResolver.UseItem(stack.Item, _player.PlayerCharacter);
         _player.PlayerCharacter.Inventory.RemoveItem(stack);
+        _inventoryResolver.UseItem(stack.Item, _player.PlayerCharacter);
+
+        if (stack.Item.Type == ItemTypes.Save) _inventoryUIManager.HideInventory();
     }
 
     public void EquipItem(ItemStack stack)

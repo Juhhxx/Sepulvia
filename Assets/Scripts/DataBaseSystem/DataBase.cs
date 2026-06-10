@@ -13,6 +13,8 @@ public abstract class DataBase<T> : ScriptableObject where T : DataAsset
 
     protected Dictionary<int, T> _lookup;
 
+    public T GetValue(int id) => _lookup[id];
+
     public bool IsEmpty => _entries.Count == 0;
 
     private void OnEnable()

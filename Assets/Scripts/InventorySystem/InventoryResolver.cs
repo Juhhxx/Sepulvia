@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InventoryResolver : MonoBehaviour
@@ -17,6 +18,12 @@ public class InventoryResolver : MonoBehaviour
 
                 user.AddModifier(item.Modifier.Instantiate());
                 break;
+            
+            case ItemTypes.Save:
+            
+                SaveManager.Instance.SaveGame();
+                break;
+
         }
     }
 

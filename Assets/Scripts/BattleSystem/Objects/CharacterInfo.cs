@@ -192,7 +192,11 @@ public class Character
 
     // Stat Levels
     private int _maxStatLevel = 10;
-
+    public void ResetLevels()
+    {
+        _stanceLevel = 1;
+        _speedLevel = 1;
+    }
     public (int, int) GetStatLevelValue(Stats stat)
     {
         int level = 0;

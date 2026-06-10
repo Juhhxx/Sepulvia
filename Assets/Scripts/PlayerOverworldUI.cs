@@ -53,6 +53,9 @@ public class PlayerOverworldUI : MonoBehaviour
         if (!_showDashTimer) _dashTimerImageRightHalf.gameObject.SetActive(false);
         if (!_showDashTimer) _dashTimerImageLeftHalf.gameObject.SetActive(false);
 
+        SaveManager.Instance.OnGameSaveStart += () => AddScrollText("Saving Game Progress...");
+        SaveManager.Instance.OnGameSaveEnd += () => AddScrollText("Progress Saved!");
+
     }
 
     private void Update()

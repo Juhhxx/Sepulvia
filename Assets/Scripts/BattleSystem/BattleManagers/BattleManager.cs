@@ -526,6 +526,12 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
     }
 
+    public void WinCheat()
+    {
+        _playerWon = true;
+        _hasWinner = true;
+    }
+
     // Win Logic
     private void Win(bool playerWon)
     {
