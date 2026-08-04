@@ -19,9 +19,6 @@ public class CharacterInfo : DataAsset
     [SerializeField] private int _baseStance;
     public int MaxStance => _baseStance;
 
-    [SerializeField] private int _baseStanceRecover;
-    public int StanceRecover => _baseStanceRecover;
-
     [field: Space(10)]
     [field: Header("Character Moves")]
     [field: Space(5)]
@@ -49,8 +46,6 @@ public class Character
         _baseSpeed = info.Speed;
         _baseStance = info.MaxStance;
         _currentStance = info.MaxStance;
-        _baseStanceRecover = info.StanceRecover;
-        
 
         _statModifiers = new List<StatModifier>();
 
@@ -83,20 +78,32 @@ public class Character
     private int _speedLevel = 1;
     public int SpeedLevel => _speedLevel;
 
+    // Recovery turns
+    [SerializeField, ReadOnly] private int _recoveryTurns = 0;
+    public int RecoveryTurns
+    {
+        get => _recoveryTurns;
+        set
+        {
+            if (value < 0) _recoveryTurns = 0;
+            else _recoveryTurns = value;
+        }
+    }
+
     // Base Stance
-    [SerializeField] private int _baseStance;
-    public int MaxStance => _baseStance + GetModifierBonus(Stats.Stance) + GetEquipmentBonus(Stats.Stance) + GetStatLevelBonus(Stats.Stance);
+    [SerializeField] private float _baseStance;
+    public float MaxStance => _baseStance + GetModifierBonus(Stats.Stance) + GetEquipmentBonus(Stats.Stance) + GetStatLevelBonus(Stats.Stance);
     private int _stanceLevel = 1;
     public int StanceLevel => _stanceLevel;
 
-    public void SetBaseStance(int stance)
+    public void SetBaseStance(float stance)
     {
         _baseStance = stance;
     }
 
     // Current Stance
-    [SerializeField, ReadOnly] private int _currentStance;
-    public int CurrentStance
+    [SerializeField, ReadOnly] private float _currentStance;
+    public float CurrentStance
     {
         get => _currentStance;
         set
@@ -113,12 +120,9 @@ public class Character
         }
     }
 
-    public Action<int, int, int> OnStanceChange;
+    // new amount, max amount, old amount
+    public Action<float, float, float> OnStanceChange;
     public Action OnStanceLost;
-
-    // Stance Recover
-    [SerializeField] private int _baseStanceRecover;
-    public int StanceRecover => _baseStanceRecover + GetModifierBonus(Stats.StanceGain) + GetEquipmentBonus(Stats.StanceGain);
 
     // Pull Strength
     public int PullStrenghtBonus => GetModifierBonus(Stats.PullStrength) + GetEquipmentBonus(Stats.PullStrength);
@@ -210,7 +214,7 @@ public class Character
                 break;
             case Stats.Stance:
                 level = _stanceLevel;
-                amount = MaxStance;
+                amount = (int)MaxStance;
                 break;
         }
 
@@ -248,8 +252,8 @@ public class Character
                 amountGained = LevelBonusFormula(_speedLevel + 1, _baseSpeed, 50) - LevelBonusFormula(_speedLevel, _baseSpeed, 50);
                 break;
             case Stats.Stance:
-                cost = LevelUpCostFormula(_stanceLevel, _baseStance, 100);
-                amountGained = LevelBonusFormula(_stanceLevel + 1, _baseStance, 100) - LevelBonusFormula(_stanceLevel, _baseStance, 100);
+                cost = LevelUpCostFormula(_stanceLevel, (int)_baseStance, 100);
+                amountGained = LevelBonusFormula(_stanceLevel + 1, (int)_baseStance, 100) - LevelBonusFormula(_stanceLevel, (int)_baseStance, 100);
                 break;
         }
 
@@ -266,7 +270,7 @@ public class Character
                 bonus = LevelBonusFormula(_speedLevel, _baseSpeed, 50); // Assuming 50 is the max amount for Speed
                 break;
             case Stats.Stance:
-                bonus = LevelBonusFormula(_stanceLevel, _baseStance, 100); // Assuming 100 is the max amount for Stance
+                bonus = LevelBonusFormula(_stanceLevel, (int)_baseStance, 100); // Assuming 100 is the max amount for Stance
                 break;
         }
 

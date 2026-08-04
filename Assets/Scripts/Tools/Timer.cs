@@ -10,6 +10,7 @@ public class Timer
     public enum TimerReset { Automatic, Manual }
     private TimerReset _timerReset;
 
+    public Action OnTimerBegin;
     public event Action OnTimerDone;
     private bool _done = false;
     public bool Done => _done;
@@ -28,6 +29,10 @@ public class Timer
                 _done = true;
                 OnTimerDone?.Invoke();
             }          
+        }
+        else if (_time == _maxTime)
+        {
+            OnTimerBegin?.Invoke();
         }
     }
     public void ResetTimer()

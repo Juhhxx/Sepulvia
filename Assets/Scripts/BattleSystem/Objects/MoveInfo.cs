@@ -14,11 +14,12 @@ public class MoveInfo : ScriptableObject
 
     [field: SerializeField] public int PriorityLevel { get; private set; }
 
+    [field: SerializeField] public int RecoveryCost { get; private set; }
+
     [field: SerializeField] public int StanceCost { get; private set; }
 
-    [field: SerializeField] public int StanceDamage { get; private set; }
-
     [field: SerializeField] public int Cooldown { get; private set; }
+
     [field: SerializeField] public int Level { get; private set; }
 
     [Space(10)]
@@ -64,12 +65,11 @@ public class Move
         PriorityLevel = info.PriorityLevel;
 
         StanceCost = info.StanceCost;
-        StanceDamage = info.StanceDamage;
 
         Cooldown = info.Cooldown;
 
         _pullStrength = info.PullStrength;
-
+        RecoveryCost = info.RecoveryCost;
         StatModifiers = new List<StatModifier>(info.StatModifiers);
         Modifier = info.Modifier;
         Level = info.Level;
@@ -84,10 +84,9 @@ public class Move
 
     [field: SerializeField, ReadOnly] public int PriorityLevel { get; private set; }
 
-    [field: SerializeField, ReadOnly] public int StanceCost { get; private set; }
+    [field: SerializeField] public int RecoveryCost { get; private set; }
+    [field: SerializeField] public int StanceCost { get; private set; }
     public bool CheckStanceCost(Character character) => character.CurrentStance >= StanceCost;
-
-    [field: SerializeField, ReadOnly] public int StanceDamage { get; private set; }
 
     [field: SerializeField, ReadOnly] public int Cooldown { get; private set; }
     [SerializeField, ReadOnly] private int _turnsPassed = 0;
