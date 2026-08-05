@@ -10,6 +10,8 @@ public class TimelineManager : MonoBehaviour
     public Action OnTurnEnd;
 
     private bool _countTurn = false;
+    private int _currentTurn = 0;
+    public int CurrentTurn => _currentTurn;
 
     public void ToggleTurnCounting(bool onOff)
     {
@@ -20,7 +22,11 @@ public class TimelineManager : MonoBehaviour
     {
         _timer = new Timer(_turnDuration);
 
-        _timer.OnTimerBegin += () => OnTurnBegin?.Invoke();
+        _timer.OnTimerBegin += () => {
+            _currentTurn++;
+            OnTurnBegin?.Invoke();
+        };
+        
         _timer.OnTimerDone += () => OnTurnEnd?.Invoke();
     }
 
