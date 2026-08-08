@@ -79,14 +79,14 @@ public class Character
     public int SpeedLevel => _speedLevel;
 
     // Recovery turns
-    [SerializeField, ReadOnly] private int _recoveryTurns = 0;
-    public int RecoveryTurns
+    [SerializeField, ReadOnly] private int _recoveryTime = 0;
+    public int RecoveryTime
     {
-        get => _recoveryTurns;
+        get => _recoveryTime;
         set
         {
-            if (value < 0) _recoveryTurns = 0;
-            else _recoveryTurns = value;
+            if (value < 0) _recoveryTime = 0;
+            else _recoveryTime = value;
         }
     }
 
@@ -326,4 +326,21 @@ public class Character
     [field: Header("Character Inventory")]
     [field: Space(5)]
     [field: SerializeField] public Inventory Inventory { get; private set; }
+
+    // Actions
+    private Queue<BattleAction> _queuedActions = new Queue<BattleAction>();
+
+    public void QueueAction(BattleAction action)
+    {
+        _queuedActions.Enqueue(action);
+    }
+
+    public BattleAction GetAction() => _queuedActions.Dequeue();
+
+    public bool HasActions() => _queuedActions.Count > 0;
+
+    public void ClearActions()
+    {
+        _queuedActions.Clear();
+    }
 }

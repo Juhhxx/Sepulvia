@@ -4,7 +4,6 @@ using NaughtyAttributes;
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using UnityEngine.UI;
 using UnityEngine.Events;
 
 public class BattleManager : MonoBehaviour
@@ -13,6 +12,7 @@ public class BattleManager : MonoBehaviour
     [Space(5)]
     [SerializeField] private BattleResolver _battleResolver;
     [SerializeField] private BattleUIManager _uiManager;
+    [SerializeField] private TimelineManager _timelineManager;
     [SerializeField] private InventoryUIManager _inventoryUIManager;
     [SerializeField] private PullingManager _pullManager;
     [SerializeField] private DialogueManager _dialogueManager;
@@ -23,55 +23,16 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private PlayerParty _playerParty;
     [SerializeField] private EnemyParty _enemyParty;
 
-    private Character Player => _playerParty.Player;
+    public Character Player => _playerParty.Player;
     
-    private int _numberOfBattlers;
+    private List<Character> _battlersList;
 
     // Battle Actions
-    [SerializeField, ReadOnly] private List<BattleAction> _actionList;
+    [SerializeField, ReadOnly] private List<BattleAction> _actionList = new List<BattleAction>();
 
-    public enum ActionType { Move, Item, Run, Empty }
-
-    [Serializable]
-    public class BattleAction
+    public void AddAction(Character character)
     {
-        [field: SerializeField] public Character Character { get; private set; }
-        [field: SerializeField] public ActionType Type { get; private set;}
-        [field: SerializeField] public Move Move { get; private set; }
-        [field: SerializeField] public ItemInfo Item { get; private set;}
-        [field: SerializeField] public int Priority { get; private set; }
-
-        public BattleAction(Character character, Move move)
-        {
-            Character = character;
-            Type = ActionType.Move;
-            Move = move;
-            Item = null;
-            Priority = Move.PriorityLevel;
-        }
-
-        public BattleAction(Character character, ItemInfo item)
-        {
-            Character = character;
-            Type = ActionType.Item;
-            Move = null;
-            Item = item;
-            Priority = 5;
-        }
-
-        public BattleAction(Character character, bool isRun = false)
-        {
-            Character = character;
-            Type = isRun ? ActionType.Run : ActionType.Empty;
-            Move = null;
-            Item = null;
-            Priority = isRun ? 8 : 7;
-        }
-    }
-
-    public void AddAction(Character character, bool isRun = false)
-    {
-        var action = new BattleAction(character, isRun);
+        var action = new BattleAction(character);
         _actionList.Add(action);
     }
     public void AddAction(Character character, Move move)
@@ -113,27 +74,21 @@ public class BattleManager : MonoBehaviour
                 _dialogueManager.AddDialogue($"{Player.Name} tried to run.");
                 Run();
                 break;
-
-            case ActionType.Empty:
-
-                _dialogueManager.AddDialogue($"{action.Character.Name} lost their stance and took a turn to recover their balance.");
-                action.Character.CurrentStance = action.Character.MaxStance;
-                break;
         }
     }
-    private void OrganizeActions()
+
+    private void OrganizeBattlers()
     {
-        Debug.Log($"PLAYER SPEED: {Player.Speed} ENEMY SPEED: {_enemyParty.PartyMembers[0].Speed}");
+        _battlersList = _enemyParty.PartyMembers.Concat(new List<Character> { Player }).ToList();
 
-        _actionList = _actionList
-                        .OrderByDescending(a => a.Priority)
-                        .ThenByDescending(a => a.Character.Speed)
+        _battlersList = _battlersList
+                        .OrderByDescending(b => b.Speed)
                         .ToList();
-
-        Debug.Log("ACTION ORDER:");
-        for (int i = 0; i < _actionList.Count; i++)
+        
+        Debug.Log("BATTLER ORDER:");
+        for (int i = 0; i < _battlersList.Count; i++)
         {
-            Debug.Log($"{_actionList[i].Character.Name}, Speed: {_actionList[i].Character.Speed}, Priority: {_actionList[i].Priority}");
+            Debug.Log($"{_battlersList[i].Name}, Speed: {_battlersList[i].Speed}");
         }
     }
 
@@ -148,18 +103,6 @@ public class BattleManager : MonoBehaviour
         _pullManager.ToggleBarButtons(false);
     }
 
-    // Battle Turns
-    public event Action OnBeginTurn;
-    public event Action OnEndTurn;
-    
-    private int _currentTurn;
-    public int CurrentTurn { get; set; }
-
-    // Other Variables
-    private WaitForDialogueEnd _wfd;
-
-    private bool _hasWinner = false;
-    private bool _playerWon = false;
 
     public event Action OnBattleEnd;
     public UnityEvent OnBattleWon;
@@ -167,12 +110,67 @@ public class BattleManager : MonoBehaviour
 
 
     // Run logic
-    public void DoRun() => AddAction(Player, true);
-    bool _doRun = false;
+    public void DoRun() => AddAction(Player);
     public void Run()
     {
         bool result = _battleResolver.CanRun(Player, _enemyParty);
 
-        _doRun = result;
+        if (result)
+        {
+            EndBattle();
+        }
+    }
+
+    // Battle logic
+    public void StartBattle(PlayerParty playerParty, EnemyParty enemyParty)
+    {
+        _playerParty = playerParty;
+        _enemyParty = enemyParty;
+
+
+    }
+    private void EndBattle()
+    {
+        
+    }
+
+    private IEnumerator ResolveTurn()
+    {
+        OrganizeBattlers();
+
+        foreach (var battler in _battlersList)
+        {
+            if (battler.RecoveryTime <= 0)
+            {
+                BattleAction action = null;
+
+                
+                if (!battler.HasActions())
+                {
+                    if (battler is Player)
+                    {
+                        _timelineManager.ToggleTurnCounting(false);
+
+                        // Show ui to player
+                    }
+                    else
+                    {
+                        var tmp = (battler as Enemy).BattleAI.ChooseRandom(_pullManager.BarSections, _pullManager.CurrentHeartIndex);
+
+                        battler.QueueAction(tmp);
+                    }
+                }
+
+                action = battler.GetAction();
+
+                yield return new WaitUntil(() => action != null);
+
+                _timelineManager.ToggleTurnCounting(true);
+
+                // Hide ui from player
+
+                ExecuteAction(action);
+            }
+        }
     }
 }

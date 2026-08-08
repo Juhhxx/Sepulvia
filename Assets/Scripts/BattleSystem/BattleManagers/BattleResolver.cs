@@ -23,17 +23,14 @@ public class BattleResolver : RandomBehaviour
         {
             Character player = (target as PlayerParty).Player;
 
-            player.CurrentStance -= move.StanceDamage;
-            if (move.StanceDamage > 0)
+            if (move.PullStrength > 0)
                     player.Animator?.SetTrigger("Hurt");
         }
         else
         {
             foreach (Character c in (target as EnemyParty).PartyMembers)
             {
-                c.CurrentStance -= move.StanceDamage;
-
-                if (move.StanceDamage > 0)
+                if (move.PullStrength > 0)
                     c.Animator?.SetTrigger("Hurt");
             }
         }

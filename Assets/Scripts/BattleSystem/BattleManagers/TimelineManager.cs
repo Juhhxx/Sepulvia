@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TimelineManager : MonoBehaviour
 {
-    [SerializeField] private float _turnDuration = 1f; // Duration of a turn in seconds
+    [SerializeField, Range(0.5f,10)] private float _turnDuration = 1f; // Duration of a turn in seconds
     private Timer _timer;
 
     public Action OnTurnBegin;
@@ -12,6 +12,11 @@ public class TimelineManager : MonoBehaviour
     private bool _countTurn = false;
     private int _currentTurn = 0;
     public int CurrentTurn => _currentTurn;
+    public void SetTurn(int turn)
+    {
+        _currentTurn = turn;
+        _timer.ResetTimer();
+    }
 
     public void ToggleTurnCounting(bool onOff)
     {
@@ -26,7 +31,7 @@ public class TimelineManager : MonoBehaviour
             _currentTurn++;
             OnTurnBegin?.Invoke();
         };
-        
+
         _timer.OnTimerDone += () => OnTurnEnd?.Invoke();
     }
 

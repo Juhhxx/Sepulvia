@@ -12,7 +12,7 @@ public class EnemyBattleAI
         _character = character;
     }
     
-    public Move ChooseRandom(List<BarSection> sections, int soulPosition)
+    public BattleAction ChooseRandom(List<BarSection> sections, int soulPosition)
     {
         Random rnd = new Random();
         Move move = null;
@@ -45,7 +45,7 @@ public class EnemyBattleAI
             move.SetBarSection(ChooseBarSection(rnd, move.Modifier, sections.Count, soulPosition, occupiedBars.ToArray()));
         }
 
-        return move;
+        return new BattleAction(_character, move);
     }
 
     public int ChooseBarSection(Random rnd, BarModifier modifier, int totalBars, int soulPosition, int[] occupied)

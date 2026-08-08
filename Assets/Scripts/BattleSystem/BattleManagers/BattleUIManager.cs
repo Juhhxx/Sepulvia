@@ -220,41 +220,41 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    public void SetUpStanceBars(PlayerParty playerParty, EnemyParty enemyParty)
-    {        
-        Character player = playerParty.Player;
+    // public void SetUpStanceBars(PlayerParty playerParty, EnemyParty enemyParty)
+    // {        
+    //     Character player = playerParty.Player;
 
-        _playerStanceBar.SetUpBar(player.Name, "Stance", player.MaxStance);
+    //     _playerStanceBar.SetUpBar(player.Name, "Stance", player.MaxStance);
 
-        _enemyStanceBars = new List<FillBar>();
-        _enemyStatDisplay = new List<StatModifierDisplay>();
+    //     _enemyStanceBars = new List<FillBar>();
+    //     _enemyStatDisplay = new List<StatModifierDisplay>();
 
-        for (int i = 0; i < enemyParty.PartySize; i++)
-        {
-            Character enemy = enemyParty.PartyMembers[i];
+    //     for (int i = 0; i < enemyParty.PartySize; i++)
+    //     {
+    //         Character enemy = enemyParty.PartyMembers[i];
 
-            Vector3 pos = _characterModels[i + 1].transform.position;
+    //         Vector3 pos = _characterModels[i + 1].transform.position;
 
-            GameObject bar = Instantiate(_enemyStanceBarPrefab, pos + (Vector3.up * 7), Quaternion.identity);
-            FillBar enemyFillBar = bar.GetComponent<FillBar>();
-            StatModifierDisplay enemyStat = bar.GetComponent<StatModifierDisplay>();
+    //         GameObject bar = Instantiate(_enemyStanceBarPrefab, pos + (Vector3.up * 7), Quaternion.identity);
+    //         FillBar enemyFillBar = bar.GetComponent<FillBar>();
+    //         StatModifierDisplay enemyStat = bar.GetComponent<StatModifierDisplay>();
 
-            _enemyStanceBars.Add(enemyFillBar);
-            _enemyStatDisplay.Add(enemyStat);
-            enemyFillBar.SetUpBar(enemy.Name, "Stance", enemy.MaxStance);
-        }
-    }
-    public void UpdateStanceBars(PlayerParty playerParty, EnemyParty enemyParty)
-    {
-        Character player = playerParty.Player;
+    //         _enemyStanceBars.Add(enemyFillBar);
+    //         _enemyStatDisplay.Add(enemyStat);
+    //         enemyFillBar.SetUpBar(enemy.Name, "Stance", enemy.MaxStance);
+    //     }
+    // }
+    // public void UpdateStanceBars(PlayerParty playerParty, EnemyParty enemyParty)
+    // {
+    //     Character player = playerParty.Player;
 
-        _playerStanceBar.UpdateFillAmout(player.CurrentStance);
+    //     _playerStanceBar.UpdateFillAmout(player.CurrentStance);
 
-        for (int i = 0; i < enemyParty.PartySize; i++)
-        {
-            _enemyStanceBars[i].UpdateFillAmout(enemyParty.PartyMembers[i].CurrentStance);
-        }
-    }
+    //     for (int i = 0; i < enemyParty.PartySize; i++)
+    //     {
+    //         _enemyStanceBars[i].UpdateFillAmout(enemyParty.PartyMembers[i].CurrentStance);
+    //     }
+    // }
 
     public void UpdateStatModifierDisplay(PlayerParty playerParty, EnemyParty enemyParty)
     {

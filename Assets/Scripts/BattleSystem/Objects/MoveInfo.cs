@@ -9,10 +9,10 @@ public class MoveInfo : ScriptableObject
     [field: Header("Base Move Parameters")]
     [field: Space(5)]
     [field: SerializeField] public string Name { get; private set; }
+    [field: SerializeField, ShowAssetPreview] public Sprite Icon { get; private set; }
 
     [field: SerializeField] public MoveTypes Type { get; private set; }
 
-    [field: SerializeField] public int PriorityLevel { get; private set; }
 
     [field: SerializeField] public int RecoveryCost { get; private set; }
 
@@ -60,9 +60,9 @@ public class Move
     public Move(MoveInfo info)
     {
         Name = info.Name;
+        Icon = info.Icon;
 
         Type = info.Type;
-        PriorityLevel = info.PriorityLevel;
 
         StanceCost = info.StanceCost;
 
@@ -79,10 +79,9 @@ public class Move
     [field: Header("Base Move Parameters")]
     [field: Space(5)]
     [field: SerializeField, ReadOnly] public string Name { get; private set; }
+    [field: SerializeField, ReadOnly] public Sprite Icon { get; private set; }
 
     [field: SerializeField, ReadOnly] public MoveTypes Type { get; private set; }
-
-    [field: SerializeField, ReadOnly] public int PriorityLevel { get; private set; }
 
     [field: SerializeField] public int RecoveryCost { get; private set; }
     [field: SerializeField] public int StanceCost { get; private set; }

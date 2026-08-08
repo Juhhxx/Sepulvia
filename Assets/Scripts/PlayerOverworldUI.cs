@@ -41,7 +41,7 @@ public class PlayerOverworldUI : MonoBehaviour
 
         _player.OnBattleEnterExit += (bool inBattle) => ToggleOverworldUI(!inBattle);
 
-        _player.PlayerCharacter.OnStanceChange += (int current, int max, int previous) => UpdateValue(_stanceTMP, $"{current} / {max}");
+        // _player.PlayerCharacter.OnStanceChange += (int current, int max, int previous) => UpdateValue(_stanceTMP, $"{current} / {max}");
         _player.PlayerCharacter.Inventory.OnChangeEqupipment += UpdateEquipmentSlots;
         (_player.PlayerCharacter as Player).OnEssenceChange += (int essence) => UpdateValue(_essenceTMP, essence);
 

@@ -35,7 +35,7 @@ public class InventoryResolver : MonoBehaviour
 
                 user.CurrentStance += item.Amount;
 
-                int realAmount = item.Amount > user.MaxStance ? user.MaxStance : item.Amount;
+                float realAmount = item.Amount > user.MaxStance ? user.MaxStance : item.Amount;
 
                 DialogueManager.Instance?.AddDialogue($"{user.Name} recovered {realAmount} stance.");
                 break;

@@ -104,23 +104,23 @@ public class PlayerController : MonoBehaviour, IPausable, ISaveable
         _playerMovement = GetComponent<PlayerMovement>();
         _encounterManager = FindAnyObjectByType<EncounterManager>();
 
-        PlayerCharacter.OnStanceLost += () =>
-        {
-            if (!InBattle)
-            {
-                Debug.Log("[Player Controller] Player has fallen unconscious!", this);
-                _encounterManager.DoRandomEncounter();   
-            }
-        };
+        // PlayerCharacter.OnStanceLost += () =>
+        // {
+        //     if (!InBattle)
+        //     {
+        //         Debug.Log("[Player Controller] Player has fallen unconscious!", this);
+        //         _encounterManager.DoRandomEncounter();   
+        //     }
+        // };
 
-        PlayerCharacter.OnStanceChange += (int current, int max, int previous) =>
-        {
-            if (!InBattle)
-            {
-                if (previous > current) OnPlayerDamaged?.Invoke();
-                else if (previous < current) OnPlayerHealed?.Invoke();
-            }
-        };
+        // PlayerCharacter.OnStanceChange += (int current, int max, int previous) =>
+        // {
+        //     if (!InBattle)
+        //     {
+        //         if (previous > current) OnPlayerDamaged?.Invoke();
+        //         else if (previous < current) OnPlayerHealed?.Invoke();
+        //     }
+        // };
 
         // Immunity Timer
         _immunityTimer = new Timer(_immunityTime);
@@ -243,7 +243,6 @@ public class PlayerController : MonoBehaviour, IPausable, ISaveable
 
         saveData.PlayerStanceLevel = PlayerCharacter.StanceLevel;
         saveData.PlayerSpeedLevel = PlayerCharacter.SpeedLevel;
-        saveData.PlayerCurrentStance = PlayerCharacter.CurrentStance;
         saveData.PlayerEssence = (PlayerCharacter as Player).Essence;
 
         saveData.PlayerInventory = new List<ValueTuple<int, int>>();
@@ -289,7 +288,6 @@ public class PlayerController : MonoBehaviour, IPausable, ISaveable
 
         PlayerCharacter.LevelUpStat(Stats.Stance, saveData.PlayerStanceLevel - 1);
         PlayerCharacter.LevelUpStat(Stats.Speed, saveData.PlayerSpeedLevel - 1);
-        PlayerCharacter.CurrentStance = saveData.PlayerCurrentStance;
         (PlayerCharacter as Player).Essence = saveData.PlayerEssence;
 
         PlayerCharacter.Inventory.ItemSlots.Clear();
@@ -312,7 +310,6 @@ public class PlayerController : MonoBehaviour, IPausable, ISaveable
     [Serializable]
     private struct SaveData
     {
-        public int PlayerCurrentStance;
         public int PlayerStanceLevel;
         public int PlayerSpeedLevel;
         public int PlayerEssence;
