@@ -9,6 +9,10 @@ public class MoveButton : MonoBehaviour
     public void SetMove(Move move)
     {
         Move = move;
+
+        _button.onClick.AddListener(() => OnMovePressed?.Invoke(Move));
+
+        OnMovePressed += move => _battleManager.Player.QueueAction(new BattleAction(_battleManager.Player, move));
     }
 
     private BattleManager _battleManager;
@@ -23,12 +27,4 @@ public class MoveButton : MonoBehaviour
         _battleManager = FindAnyObjectByType<BattleManager>();
         _button = GetComponent<Button>();
     }
-
-    public void SetUpButton(Move move)
-    {
-        _button.onClick.AddListener(() => OnMovePressed?.Invoke(Move));
-
-        OnMovePressed += move => _battleManager.Player.QueueAction(new BattleAction(_battleManager.Player, move));
-    }
-
 }
