@@ -17,6 +17,11 @@ public class Timer
 
     public void CountTimer()
     {
+        if (_time == _maxTime)
+        {
+            OnTimerBegin?.Invoke();
+        }
+
         if (_time > 0)
         {
             _time -= Time.deltaTime;
@@ -30,10 +35,7 @@ public class Timer
                 OnTimerDone?.Invoke();
             }          
         }
-        else if (_time == _maxTime)
-        {
-            OnTimerBegin?.Invoke();
-        }
+        
     }
     public void ResetTimer()
     {

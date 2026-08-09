@@ -10,13 +10,19 @@ public class MoveButton : MonoBehaviour
     {
         Move = move;
 
+        _button.onClick.RemoveAllListeners();
+        OnMovePressed = null;
+
         _button.onClick.AddListener(() => OnMovePressed?.Invoke(Move));
 
-        OnMovePressed += move => _battleManager.Player.QueueAction(new BattleAction(_battleManager.Player, move));
+        OnMovePressed += _battleManager.AddActionPlayer;
+
+        OnMoveSetUp?.Invoke(Move);
     }
 
     private BattleManager _battleManager;
 
+    public Action<Move> OnMoveSetUp;
     public Action<Move> OnMoveSelected;
     public Action<Move> OnMovePressed;
 

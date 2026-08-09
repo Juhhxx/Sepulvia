@@ -18,6 +18,7 @@ public class BattleResolver : RandomBehaviour
         Debug.Log($"{user.Name} USED {move.Name} AGAINST {target.PartyName}");
 
         user.CurrentStance -= move.StanceCost;
+        user.RecoveryTime += move.RecoveryCost;
 
         if (target is PlayerParty)
         {
