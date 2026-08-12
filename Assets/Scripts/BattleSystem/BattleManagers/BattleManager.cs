@@ -451,10 +451,15 @@ public class BattleManager : MonoBehaviour
     private IEnumerator ResolveTurn()
     {
         OrganizeBattlers();
+        
         _timelineManager.ToggleTurnCounting(false);
 
-        _timelineUIManager.UpdateTimelineIndicators(Player.RecoveryTime, _enemyParty.PartyMembers[0].RecoveryTime);
+        foreach (var battler in _battlersList)
+        {
+            battler.RecoveryTime -= 1;
+        }
 
+        _timelineUIManager.UpdateTimelineIndicators(Player.RecoveryTime, _enemyParty.PartyMembers[0].RecoveryTime);
 
         foreach (var battler in _battlersList)
         {
@@ -495,8 +500,6 @@ public class BattleManager : MonoBehaviour
 
                 if (_hasWinner || _doRun) yield break; 
             }
-
-            battler.RecoveryTime -= 1;
 
             _timelineUIManager.UpdateTimelineIndicators(Player.RecoveryTime, _enemyParty.PartyMembers[0].RecoveryTime);
         }
