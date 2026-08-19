@@ -19,13 +19,20 @@ public class MoveInfo : MoveBaseInfo
     [SerializeField] private int _pullStrength;
     public int PullStrength => _pullStrength;
 
-    private bool IsEffect => Type == MoveTypes.Buff || Type == MoveTypes.Nerf;
-
     [field: Space(10)]
     [field: Header("Buff/Nerf Move Parameters")]
     [field: Space(5)]
     [field: ShowIf("IsEffect")]
     [field: SerializeField] public List<StatModifier> StatModifiers { get; private set; }
+
+    private bool IsEffect => Type == MoveTypes.Buff || Type == MoveTypes.Nerf;
+
+    [Space(10)]
+    [Header("Block Move Parameters")]
+    [Space(5)]
+    [ShowIf("Type", MoveTypes.Block)]
+    [SerializeField] private int _stunTime;
+    public int StunTime => _stunTime;
 
     public Move Instantiate()
     {

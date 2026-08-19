@@ -5,6 +5,7 @@ public enum MoveTypes
     Pull,
     Buff,
     Nerf,
+    Block
 }
 
 // [Flags]
