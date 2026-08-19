@@ -69,12 +69,8 @@ public class TimelineUIManager : MonoBehaviour
             var pos = _timelineSections[position].rectTransform.anchoredPosition;
             pos.y = indicator.anchoredPosition.y;
 
-            indicator.anchoredPosition = pos;
-
-            float nextPosX = _timelineSections[position - 1].rectTransform.anchoredPosition.x;
-
-            // indicator.DOKill();
-            // indicator.DOAnchorPosX(nextPosX, 1);
+            indicator.DOKill();
+            indicator.DOAnchorPosX(pos.x, 0.5f);
         }
         else if (position == 0)
         {
