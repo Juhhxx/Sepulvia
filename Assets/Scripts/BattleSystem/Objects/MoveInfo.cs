@@ -6,11 +6,10 @@ using System;
 [CreateAssetMenu(fileName = "Move", menuName = "Battle System/New Move")]
 public class MoveInfo : MoveBaseInfo
 {
+    [field: Space(10)]
+    [field: Header("Move Type Parameters")]
+    [field: Space(5)]
     [field: SerializeField] public MoveTypes Type { get; private set; }
-
-
-    [field: SerializeField] public int StanceCost { get; private set; }
-
 
     [Space(10)]
     [Header("Pull Move Parameters")]
@@ -47,16 +46,11 @@ public class Move : MoveBase
     {
         Type = info.Type;
 
-        StanceCost = info.StanceCost;
-
         _pullStrength = info.PullStrength;
         StatModifiers = new List<StatModifier>(info.StatModifiers);
     }
 
     [field: SerializeField, ReadOnly] public MoveTypes Type { get; private set; }
-
-    [field: SerializeField] public int StanceCost { get; private set; }
-    public bool CheckStanceCost(Character character) => character.CurrentStance >= StanceCost;
 
     [ShowIf("Type", MoveTypes.Pull)]
     [SerializeField, ReadOnly] private int _pullStrength;

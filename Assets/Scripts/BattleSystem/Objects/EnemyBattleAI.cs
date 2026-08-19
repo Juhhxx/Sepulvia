@@ -25,7 +25,7 @@ public class EnemyBattleAI
         {
             move = _character.MoveSet[rnd.Next(_character.MoveSet.Count)];
 
-            ok = !move.CheckIfCooldown() && move.CheckStanceCost(_character);
+            ok = !move.CheckIfCooldown();
 
             iteration++;
         }
