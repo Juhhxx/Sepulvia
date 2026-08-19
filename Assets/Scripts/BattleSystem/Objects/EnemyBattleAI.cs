@@ -36,14 +36,14 @@ public class EnemyBattleAI
             move = _character.MoveSet[0];
         }
 
-        if (move.Type == MoveTypes.Modifier)
-        {
-            var occupiedBars = sections.FindAll(s => s.HasModifier).Select(s => sections.IndexOf(s));
+        // if (move.Type == MoveTypes.Modifier)
+        // {
+        //     var occupiedBars = sections.FindAll(s => s.HasModifier).Select(s => sections.IndexOf(s));
 
-            if (move.Modifier.Type == BarModifierType.GravityPull && occupiedBars.Contains(0)) return ChooseRandom(sections, soulPosition);
+        //     if (move.Modifier.Type == BarModifierType.GravityPull && occupiedBars.Contains(0)) return ChooseRandom(sections, soulPosition);
 
-            move.SetBarSection(ChooseBarSection(rnd, move.Modifier, sections.Count, soulPosition, occupiedBars.ToArray()));
-        }
+        //     move.SetBarSection(ChooseBarSection(rnd, move.Modifier, sections.Count, soulPosition, occupiedBars.ToArray()));
+        // }
 
         return new BattleAction(_character, move);
     }
