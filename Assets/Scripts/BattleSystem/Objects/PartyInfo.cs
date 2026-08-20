@@ -13,11 +13,7 @@ public class PartyInfo : DataAsset
     [field: SerializeField, ShowIf(nameof(_isPlayerParty))]
     public PlayerInfo Player { get; private set; }
 
-    // Enemy Party
-    [field: SerializeField, HideIf(nameof(_isPlayerParty))]
-    public List<EnemyInfo> PartyMembers { get; private set; }
-
-    public int PartySize => _isPlayerParty ? 1 : (PartyMembers?.Count).Value;
+    public List<CharacterInfo> PartyMembers { get; private set; }
 
     public int Difficulty => CalculatePartyDifficulty();
 
@@ -42,38 +38,50 @@ public class Party
     public Party(PartyInfo info)
     {
         PartyName = info.PartyName;
-    }
+        
+        _partyMembers = new List<Character>();
 
-    [field: SerializeField, ReadOnly] public string PartyName { get; private set; }
-    public virtual int PartySize { get; private set; }
-}
-
-public class EnemyParty : Party
-{
-    [SerializeField, ReadOnly] public List<Enemy> _partyMembers;
-
-    public IReadOnlyList<Enemy> PartyMembers => _partyMembers;
-    public override int PartySize => PartyMembers.Count;
-
-    public EnemyParty(PartyInfo info) : base(info)
-    {
-        _partyMembers = new List<Enemy>();
-
-        foreach (EnemyInfo c in info.PartyMembers)
+        foreach (CharacterInfo c in info.PartyMembers)
         {
             _partyMembers.Add(c.Instantiate() as Enemy);
         }
     }
+
+    [field: SerializeField, ReadOnly] public string PartyName { get; private set; }
+    [SerializeField, ReadOnly] public List<Character> _partyMembers;
+
+    public IReadOnlyList<Character> PartyMembers => _partyMembers;
+    public int PartySize => PartyMembers.Count;
+
+    public event Action<Character> OnAddMember;
+    public event Action<Character> OnRemoveMember;
+
+    public void AddPartyMember(Character character)
+    {
+        _partyMembers.Add(character);
+        OnAddMember?.Invoke(character);
+    }
+    public void RemovePartyMember(Character character)
+    {
+        _partyMembers.Remove(character);
+        OnRemoveMember?.Invoke(character);
+    }
+}
+
+public class EnemyParty : Party
+{
+    public EnemyParty(PartyInfo info) : base(info) {}
 }
 
 public class PlayerParty : Party
 {
     private Player _player;
     public Player Player => _player;
-    public override int PartySize => 1;
 
     public PlayerParty(PartyInfo info) : base(info)
     {
         _player = info.Player.Instantiate() as Player;
+
+        _partyMembers.Add(_player);
     }
 }
