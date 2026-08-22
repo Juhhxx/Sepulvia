@@ -25,7 +25,7 @@ public class BattleResolver : RandomBehaviour
 
             player.CurrentStance -= move.StanceDamage;
             if (move.StanceDamage > 0)
-                    player.Animator?.SetTrigger("Hurt");
+                player.Animator?.SetTrigger("Hurt");
         }
         else
         {
@@ -37,9 +37,9 @@ public class BattleResolver : RandomBehaviour
                     c.Animator?.SetTrigger("Hurt");
             }
         }
-        
 
-        switch(move.Type)
+
+        switch (move.Type)
         {
             case MoveTypes.Pull:
 
@@ -95,9 +95,9 @@ public class BattleResolver : RandomBehaviour
             DialogueManager.Instance.AddDialogue(
             $"{user.Name} failed to pull the Soul to their side.");
         }
-       
+
         user.Animator?.SetTrigger("Attack");
-        
+
         if (user is Player)
         {
             _pullManager.MoveHeart(-pullStrenght);
@@ -174,7 +174,7 @@ public class BattleResolver : RandomBehaviour
                 items.Add(possibleRewards[rnd]);
             }
         }
-        
+
         return (items, essence);
     }
 
