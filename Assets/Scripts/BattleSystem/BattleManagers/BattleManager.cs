@@ -37,17 +37,9 @@ public class BattleManager : MonoBehaviour
         var action = new BattleAction(Player);
         Player.QueueAction(action);
     }
-    public void AddActionPlayer(Move move)
+    public void AddActionPlayer(Move move, Character[] targets)
     {
-        var action = new BattleAction(Player, move);
-        Player.QueueAction(action);
-    }
-    private void AddActionPlayer(Move move, int index)
-    {
-        move.SetBarSection(index);
-
-        var action = new BattleAction(Player, move);
-
+        var action = new BattleAction(Player, targets, move);
         Player.QueueAction(action);
     }
     public void AddActionPlayer(ItemInfo item)
@@ -56,36 +48,7 @@ public class BattleManager : MonoBehaviour
         Player.QueueAction(action);
     }
 
-    public event Action<PlayerParty, EnemyParty> OnActionExecuted;
-
-    private void ExecuteAction(BattleAction action)
-    {
-        switch (action.Type)
-        {
-            case ActionType.Move:
-
-                Party party = action.Character is Player ? _enemyParty : _playerParty;
-                // var target = ChooseTarget(party);
-
-                action.Move.UsedMove();
-
-                _dialogueManager.AddDialogue($"{action.Character.Name} used {action.Move.Name}.");
-                _battleResolver.DoMove(action.Move, action.Character, party);
-                break;
-
-            case ActionType.Item:
-
-                _dialogueManager.AddDialogue($"{action.Character.Name} used {action.Item.Name}.");
-                _battleResolver.UseItem(action.Item, action.Character);
-                break;
-
-            case ActionType.Run:
-
-                _dialogueManager.AddDialogue($"{Player.Name} tried to run.");
-                Run();
-                break;
-        }
-    }
+    public event Action<BattleAction> OnActionExecuted;
 
     // Battler Order
     
@@ -96,13 +59,53 @@ public class BattleManager : MonoBehaviour
         _battlersList = _battlersList
                         .OrderByDescending(b => b.Speed)
                         .ToList();
-        
-        Debug.LogWarning("BATTLER ORDER:");
-        for (int i = 0; i < _battlersList.Count; i++)
+
+        PrintBattlerOrder();
+    }
+
+    private void PrintBattlerOrder()
+    {
+        string order = "BATTLE ORDER: ";
+
+        foreach (var battler in _battlersList)
         {
-            Debug.LogWarning($"{_battlersList[i].Name}, Speed: {_battlersList[i].Speed}, Recovery: {_battlersList[i].RecoveryTime}");
+            order += battler.Name + $"({battler.Speed})" + " -> ";
+        }
+
+        Debug.Log(order, this);
+    }
+
+    // Battle States
+    public enum BattleState
+    {
+        None,
+        SetUp,
+        BattleTurnBegin,
+        PlayerTurnBegin,
+        PlayerChooseBar,
+        PlayerTurnEnd,
+        EnemyTurnBegin,
+        EnemyTurnEnd,
+        BattleTurnEnd,
+        BattleEnd
+    }
+
+    private BattleState _currentState = BattleState.None;
+    public BattleState CurrentState
+    {
+        get => _currentState;
+        private set
+        {
+            if (value != _currentState)
+            {
+                OnBattleStateChanged?.Invoke(value);
+
+                Debug.Log($"Battle State Changed: {_currentState} -> {value}", this);
+            }
+            _currentState = value;
         }
     }
+    public event Action<BattleState> OnBattleStateChanged;
 
     // Events
     public event Action OnBattleEnd;
@@ -145,6 +148,8 @@ public class BattleManager : MonoBehaviour
         _hasWinner = false;
         _doRun = false;
 
+        _currentState = BattleState.SetUp;
+
         _uiManager.ClearCreatedObjects();
 
         _uiManager.InstantiateBattlePrefabs(_playerParty, _enemyParty);
@@ -155,13 +160,11 @@ public class BattleManager : MonoBehaviour
         _pullManager.ResetEvents();
 
         // Pull Bar Events
-        _pullManager.OnSelectBar += (int index) => AddActionPlayer(Player.MoveSet[3], index);
+        _pullManager.OnSelectBar += (int index) => AddActionPlayer(Player.MoveSet[3], null);
         _pullManager.OnHeartEnd += Win;
 
         // On Action Executed Events
-        // OnActionExecuted += _uiManager.UpdateStanceBars;
-        OnActionExecuted += _uiManager.UpdateStatModifierDisplay;
-        OnActionExecuted += (_,_) => _dialogueManager.StartDialogues();
+        OnActionExecuted += (_) => _dialogueManager.StartDialogues();
 
         // Instantiate Variables
         // _wfd = new WaitForDialogueEnd(_dialogueManager);
@@ -195,16 +198,16 @@ public class BattleManager : MonoBehaviour
         _timelineManager.OnTurnBegin += StartTurn;
 
         // Count Turns in Modifiers and Check Them
-        _timelineManager.OnTurnEnd += () =>
-        {
-            Player.CheckModifier();
+        // _timelineManager.OnTurnEnd += () =>
+        // {
+        //     Player.CheckModifier();
 
-            foreach (Character e in _enemyParty.PartyMembers)
-            {
-                e.CheckModifier();
-            }
-            Debug.Log("DID MODIFIERS COUNT");
-        };
+        //     foreach (Character e in _enemyParty.PartyMembers)
+        //     {
+        //         e.CheckModifier();
+        //     }
+        //     Debug.Log("DID MODIFIERS COUNT");
+        // };
 
         // Check Bar Modifiers
         _timelineManager.OnTurnEnd += _pullManager.CheckBarModifiers;
@@ -224,8 +227,6 @@ public class BattleManager : MonoBehaviour
 
     private void SetUpBattleUI()
     {
-        // _uiManager.SetUpStanceBars(_playerParty, _enemyParty);
-
         SetUpButtons();
     }
 
@@ -242,16 +243,7 @@ public class BattleManager : MonoBehaviour
                 moveButtons[i].gameObject.SetActive(true);
                 moveButtons[i].onClick.RemoveAllListeners();
 
-                if (move.Type == MoveTypes.Modifier)
-                {
-                    moveButtons[i].onClick.AddListener(() => {
-                        // Show Choose Bar UI
-                        _uiManager.ToggleSelecBar(true);
-                        _pullManager.ToggleBarButtons(true);
-                    });
-                }
-                else
-                    moveButtons[i].onClick.AddListener(() => AddActionPlayer(move));
+                moveButtons[i].onClick.AddListener(() => AddActionPlayer(move));
 
                 _uiManager.SetUpButton(moveButtons[i], move);
 
@@ -271,8 +263,7 @@ public class BattleManager : MonoBehaviour
 
             if (move != null)
             {
-                _uiManager.UpdateButton(moveButtons[i],
-                !move.CheckIfCooldown() && move.CheckStanceCost(Player));
+                _uiManager.UpdateButton(moveButtons[i], !move.CheckIfCooldown());
 
                 Debug.Log($"UPDATE MOVE BUTON FOR {move.Name}");
             }
@@ -347,7 +338,7 @@ public class BattleManager : MonoBehaviour
 
     }
 
-     public void WinCheat()
+    public void WinCheat()
     {
         _playerWon = true;
         _hasWinner = true;
@@ -362,64 +353,6 @@ public class BattleManager : MonoBehaviour
     }
 
     // End Battle logic, Assimilation and Sparing
-    private void ShowEnd()
-    {
-        Debug.Log("END BATTLE NOW");
-        _uiManager.ToggleMoveButtons(false);
-        _uiManager.ToggleActionButtons(false);
-        _uiManager.ToggleMoveInfo(false);
-        _dialogueManager.HideDialogue();
-        _inventoryUIManager.HideInventory();
-        _pullManager.TogglePullUI(false);
-
-        if (_playerWon)
-        {
-            _uiManager.ShowWinScreen();
-            OnBattleWon?.Invoke();
-        }
-        else
-        {
-            MenuManager.Instance.ToggleGameOverMenu(true);
-            OnBattleLost.Invoke();
-        }
-
-    }
-
-    public void DoAssimilation()
-    {
-        (List<ItemInfo> items, int essence) = _battleResolver.GiveRewards(_enemyParty, false);
-
-        (Player as Player).Essence += essence;
-
-        if (items.Count > 0)
-        {
-            foreach (ItemInfo i in items) Player.Inventory.AddItem(i);
-        }
-
-        _uiManager.DoDecisionHeartAssimilateAnim(() =>
-        {
-            _uiManager.ShowRewards(items, essence);
-            _uiManager.ShowRewardsScreen();
-        });
-    }
-    public void DoSpare()
-    {
-        (List<ItemInfo> items, int essence) = _battleResolver.GiveRewards(_enemyParty, true);
-
-        (Player as Player).Essence += essence;
-
-        if (items.Count > 0)
-        {
-            foreach (ItemInfo i in items) Player.Inventory.AddItem(i);
-        }
-
-        _uiManager.DoDecisionHeartSpareAnim(() =>
-        {
-            _uiManager.ShowRewards(items, essence);
-            _uiManager.ShowRewardsScreen();
-        });
-    }
-
     [Button(enabledMode: EButtonEnableMode.Playmode)]
     public void EndBattle()
     {
@@ -444,14 +377,16 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            ShowEnd();
+            // ShowEnd();
         }
     }
 
     private IEnumerator ResolveTurn()
     {
         OrganizeBattlers();
-        
+
+        _currentState = BattleState.BattleTurnBegin;
+
         _timelineManager.ToggleTurnCounting(false);
 
         foreach (var battler in _battlersList)
@@ -463,6 +398,8 @@ public class BattleManager : MonoBehaviour
 
         foreach (var battler in _battlersList)
         {
+            Debug.Log($"TURN { _timelineManager.CurrentTurn} - {battler.Name} ({battler.RecoveryTime})", this);
+
             if (battler.RecoveryTime <= 0)
             {
                 BattleAction action = null;
@@ -471,6 +408,7 @@ public class BattleManager : MonoBehaviour
                 {
                     if (battler is Player)
                     {
+                        _currentState = BattleState.PlayerTurnBegin;
                         UpdateButtons();
                         _uiManager.ToggleActionButtons(true);
                         _uiManager.ShowTurnOrder(_playerParty, _enemyParty);
@@ -481,12 +419,17 @@ public class BattleManager : MonoBehaviour
                         _uiManager.ToggleActionButtons(false);
                         _uiManager.ToggleMoveInfo(false);
                         _inventoryUIManager.HideInventory();
+                        _currentState = BattleState.PlayerTurnEnd;
                     }
                     else
                     {
+                        _currentState = BattleState.EnemyTurnBegin;
+
                         var tmp = (battler as Enemy).BattleAI.ChooseRandom(_pullManager.BarSections, _pullManager.CurrentHeartIndex);
 
                         battler.QueueAction(tmp);
+
+                        _currentState = BattleState.EnemyTurnEnd;
                     }
                 }
 
@@ -494,7 +437,7 @@ public class BattleManager : MonoBehaviour
 
                 yield return new WaitUntil(() => action != null);
                 
-                ExecuteAction(action);
+                OnActionExecuted?.Invoke(action);
 
                 yield return new WaitUntil(() => !_pullManager.IsMoving);
 
@@ -505,5 +448,7 @@ public class BattleManager : MonoBehaviour
         }
 
         _timelineManager.ToggleTurnCounting(true);
+
+        _currentState = BattleState.BattleTurnEnd;
     }
 }

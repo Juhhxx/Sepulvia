@@ -1,64 +1,77 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class BattleResolver : RandomBehaviour
 {
+    [SerializeField] private BattleManager _battleManager;
     [SerializeField] private PullingManager _pullManager;
     [SerializeField] private InventoryResolver _inventoryResolver;
 
     private void Start()
     {
         TryInitializeRandom();
+
+        _battleManager = FindAnyObjectByType<BattleManager>();
+        _pullManager = FindAnyObjectByType<PullingManager>();
+        _inventoryResolver = FindAnyObjectByType<InventoryResolver>();
+
+        _battleManager.OnActionExecuted += ExecuteAction;
     }
 
-    public void DoMove(Move move, Character user, Party target)
+    private void ExecuteAction(BattleAction action)
     {
-        Debug.Log($"{user.Name} USED {move.Name} AGAINST {target.PartyName}");
+        switch (action.Type)
+        {
+            case ActionType.Move:
 
-        user.CurrentStance -= move.StanceCost;
+                DoMove(action.Move, action.Character, action.Targets);
+                break;
+
+            case ActionType.Item:
+
+                UseItem(action.Item, action.Character);
+                break;
+
+            case ActionType.Run:
+
+                _battleManager.Run();
+                break;
+        }
+    }
+
+    public void DoMove(Move move, Character user, Character[] targets)
+    {
+        Debug.Log($"{user.Name} USED {move.Name} AGAINST {targets[0].Name}");
+
+        move.UsedMove();
+
         user.RecoveryTime += move.RecoveryCost;
 
-        if (target is PlayerParty)
-        {
-            Character player = (target as PlayerParty).Player;
+        // Change this in future (add target selection)
+        // if (target is PlayerParty)
+        // {
+        //     Character player = (target as PlayerParty).Player;
 
-            if (move.PullStrength > 0)
-                    player.Animator?.SetTrigger("Hurt");
-        }
-        else
-        {
-            foreach (Character c in (target as EnemyParty).PartyMembers)
-            {
-                if (move.PullStrength > 0)
-                    c.Animator?.SetTrigger("Hurt");
-            }
-        }
-        
+        //     if (move.PullStrength > 0)
+        //             player.Animator?.SetTrigger("Hurt");
+        // }
+        // else
+        // {
+        //     foreach (Character c in (target as EnemyParty).PartyMembers)
+        //     {
+        //         if (move.PullStrength > 0)
+        //             c.Animator?.SetTrigger("Hurt");
+        //     }
+        // }
 
-        switch(move.Type)
-        {
-            case MoveTypes.Pull:
+        // On hold 
+        // if (CheckBlock(target))
+        // {
+        //     user.RecoveryTime += 
+        // }
 
-                DoPull(move, user);
-                break;
-
-            case MoveTypes.Buff:
-
-                DoStatModifier(move, user);
-                break;
-
-            case MoveTypes.Nerf:
-
-                DoStatModifier(move, ChooseTarget(target));
-                break;
-
-            case MoveTypes.Modifier:
-
-                ApplyBarModifier(move);
-                break;
-        }
+        move.MoveLogic.OnDoMove(user, targets);
     }
 
     private Character ChooseTarget(Party fromParty)
@@ -77,16 +90,26 @@ public class BattleResolver : RandomBehaviour
         return c;
     }
 
-    private void DoPull(Move move, Character user)
+    private bool CheckBlock(Party target)
     {
-        int pullStrenght = move.PullStrength + user.PullStrenghtBonus;
+        foreach (Character c in target.PartyMembers)
+        {
+            // if (c.IsBlocking) return true;
+        }
+
+        return false;
+    }
+
+    public void DoPull(int strenght, Character user)
+    {
+        int pullStrenght = strenght + user.PullStrenghtBonus;
 
         if (pullStrenght < 0) pullStrenght = 0;
 
         if (pullStrenght > 0)
         {
             DialogueManager.Instance.AddDialogue(
-            $"{user.Name} pulled the Soul to their side by {move.PullStrength + user.PullStrenghtBonus}.");
+            $"{user.Name} pulled the Soul to their side by {pullStrenght}.");
         }
         else
         {
@@ -99,40 +122,40 @@ public class BattleResolver : RandomBehaviour
         if (user is Player)
         {
             _pullManager.MoveHeart(-pullStrenght);
-        }
+        } 
         else
         {
             _pullManager.MoveHeart(pullStrenght);
         }
     }
 
-    private void DoStatModifier(Move move, Character target)
+    private void DoStatusEffect(StatusEffect statusEffect, Character[] targets)
     {
-        foreach (StatModifier sm in move.StatModifiers)
+        foreach (Character target in targets)
         {
             target.AddModifier(sm.Instantiate());
 
-            if (move.Type == MoveTypes.Buff)
-            {
-                if (target is Player) target.Animator?.SetTrigger("Buff");
+            // if (move.Type == MoveTypes.Buff)
+            // {
+            //     if (target is Player) target.Animator?.SetTrigger("Buff");
 
-                DialogueManager.Instance.AddDialogue(
-                $"{target.Name} {sm.StatAffected.ToTitle()} Rose.");
-            }
-            else if (move.Type == MoveTypes.Nerf)
-            {
-                if (target is Player) target.Animator?.SetTrigger("Nerf");
+            //     DialogueManager.Instance.AddDialogue(
+            //     $"{target.Name} {sm.StatAffected.ToTitle()} Rose.");
+            // }
+            // else if (move.Type == MoveTypes.Nerf)
+            // {
+            //     if (target is Player) target.Animator?.SetTrigger("Nerf");
 
-                DialogueManager.Instance.AddDialogue(
-                $"{target.Name} {sm.StatAffected.ToTitle()} Fell.");
-            }
+            //     DialogueManager.Instance.AddDialogue(
+            //     $"{target.Name} {sm.StatAffected.ToTitle()} Fell.");
+            // }
         }
     }
 
-    private void ApplyBarModifier(Move move)
-    {
-        _pullManager.BarSections[move.BarSection].AddBarModifier(move.Modifier);
-    }
+    // private void ApplyBarModifier(StanceMove move)
+    // {
+    //     _pullManager.BarSections[move.BarSection].AddBarModifier(move.Modifier);
+    // }
 
     public void UseItem(ItemInfo item, Character user)
     {
@@ -193,7 +216,7 @@ public class BattleResolver : RandomBehaviour
 
         bool result = rnd <= chance;
 
-        if (enemyParty.PartyMembers.Any(e => !e.CanRun)) result = false;
+        if (enemyParty.PartyMembers.Any(e => !(e as Enemy).CanRun)) result = false;
 
         if (result) DialogueManager.Instance.AddDialogue($"{user.Name} ran away!");
         else DialogueManager.Instance.AddDialogue($"{user.Name} couldn't run from battle.");

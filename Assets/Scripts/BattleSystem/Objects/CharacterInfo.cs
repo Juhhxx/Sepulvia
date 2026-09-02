@@ -139,15 +139,11 @@ public class Character
     {
         _statModifiers.Add(modifier);
     }
-    public void CheckModifier()
+    public void RemoveModifier(StatModifier modifier)
     {
-        foreach (StatModifier m in _statModifiers)
-        {
-            m.TurnPassed();
-        }
-
-        _statModifiers.RemoveAll(m => m.CheckIfDone());
+        _statModifiers.Remove(modifier);
     }
+
     public int GetModifierBonus(Stats stat)
     {
         if (_statModifiers.Count == 0) return 0;
@@ -326,21 +322,4 @@ public class Character
     [field: Header("Character Inventory")]
     [field: Space(5)]
     [field: SerializeField] public Inventory Inventory { get; private set; }
-
-    // Actions
-    private Queue<BattleAction> _queuedActions = new Queue<BattleAction>();
-
-    public void QueueAction(BattleAction action)
-    {
-        _queuedActions.Enqueue(action);
-    }
-
-    public BattleAction GetAction() => _queuedActions.Dequeue();
-
-    public bool HasActions() => _queuedActions.Count > 0;
-
-    public void ClearActions()
-    {
-        _queuedActions.Clear();
-    }
 }

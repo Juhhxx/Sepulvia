@@ -27,7 +27,7 @@ public class EnemySpawnManager : MonoBehaviour
             availablePaths.RemoveAt(pathIdx);
             
             PartyInfo enemyParty = _enemyPartyDataBase.GetRandomParty(random, (_playerController.PlayerCharacter as Player).Level);
-            EnemyInfo enemyInfo = enemyParty.PartyMembers[0]; // Select prefab from first enemy of the party
+            EnemyInfo enemyInfo = enemyParty.PartyMembers[0] as EnemyInfo; // Select prefab from first enemy of the party
 
             generatedEnemies.Add(new EnemyData(enemyInfo.OverworldPrefab, path));
         }

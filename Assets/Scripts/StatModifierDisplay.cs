@@ -18,7 +18,7 @@ public class StatModifierDisplay : MonoBehaviour
         {
             Image image = Instantiate(_statModifierPrefab, _statModifierDisplay).GetComponent<Image>();
 
-            image.sprite = sm.Sprite;
+            // image.sprite = sm.Sprite;
         }
     }
 }

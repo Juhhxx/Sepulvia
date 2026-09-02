@@ -13,6 +13,7 @@ public class PartyInfo : DataAsset
     [field: SerializeField, ShowIf(nameof(_isPlayerParty))]
     public PlayerInfo Player { get; private set; }
 
+    [field: SerializeField, HideIf(nameof(_isPlayerParty))]
     public List<CharacterInfo> PartyMembers { get; private set; }
 
     public int Difficulty => CalculatePartyDifficulty();
