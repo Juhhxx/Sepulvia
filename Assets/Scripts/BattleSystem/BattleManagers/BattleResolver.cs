@@ -25,12 +25,12 @@ public class BattleResolver : RandomBehaviour
         {
             case ActionType.Move:
 
-                DoMove(action.Move, action.Character, action.Targets);
+                DoMove(action.Move, action.User, action.Targets);
                 break;
 
             case ActionType.Item:
 
-                UseItem(action.Item, action.Character);
+                UseItem(action.Item, action.User);
                 break;
 
             case ActionType.Run:
@@ -40,13 +40,13 @@ public class BattleResolver : RandomBehaviour
         }
     }
 
-    public void DoMove(Move move, Character user, Character[] targets)
+    public void DoMove(Move move, BattlerController user, BattlerController[] targets)
     {
-        Debug.Log($"{user.Name} USED {move.Name} AGAINST {targets[0].Name}");
+        Debug.Log($"{user.Character.Name} USED {move.Name} AGAINST {targets[0].Character.Name}");
 
         move.UsedMove();
 
-        user.RecoveryTime += move.RecoveryCost;
+        user.Character.RecoveryTime += move.RecoveryCost;
 
         // Change this in future (add target selection)
         // if (target is PlayerParty)
@@ -100,26 +100,26 @@ public class BattleResolver : RandomBehaviour
         return false;
     }
 
-    public void DoPull(int strenght, Character user)
+    public void DoPull(int strenght, BattlerController user)
     {
-        int pullStrenght = strenght + user.PullStrenghtBonus;
+        int pullStrenght = strenght + user.Character.PullStrenghtBonus;
 
         if (pullStrenght < 0) pullStrenght = 0;
 
         if (pullStrenght > 0)
         {
             DialogueManager.Instance.AddDialogue(
-            $"{user.Name} pulled the Soul to their side by {pullStrenght}.");
+            $"{user.Character.Name} pulled the Soul to their side by {pullStrenght}.");
         }
         else
         {
             DialogueManager.Instance.AddDialogue(
-            $"{user.Name} failed to pull the Soul to their side.");
+            $"{user.Character.Name} failed to pull the Soul to their side.");
         }
        
-        user.Animator?.SetTrigger("Attack");
+        user.Character.Animator?.SetTrigger("Attack");
         
-        if (user is Player)
+        if (user.IsPlayer())
         {
             _pullManager.MoveHeart(-pullStrenght);
         } 
@@ -129,26 +129,11 @@ public class BattleResolver : RandomBehaviour
         }
     }
 
-    private void DoStatusEffect(StatusEffect statusEffect, Character[] targets)
+    public void DoStatusEffect(StatusEffect statusEffect, BattlerController[] targets)
     {
-        foreach (Character target in targets)
+        foreach (BattlerController target in targets)
         {
-            target.AddModifier(sm.Instantiate());
-
-            // if (move.Type == MoveTypes.Buff)
-            // {
-            //     if (target is Player) target.Animator?.SetTrigger("Buff");
-
-            //     DialogueManager.Instance.AddDialogue(
-            //     $"{target.Name} {sm.StatAffected.ToTitle()} Rose.");
-            // }
-            // else if (move.Type == MoveTypes.Nerf)
-            // {
-            //     if (target is Player) target.Animator?.SetTrigger("Nerf");
-
-            //     DialogueManager.Instance.AddDialogue(
-            //     $"{target.Name} {sm.StatAffected.ToTitle()} Fell.");
-            // }
+            target.StatusEffectManager.AddStatusEffect(statusEffect);
         }
     }
 
@@ -157,9 +142,9 @@ public class BattleResolver : RandomBehaviour
     //     _pullManager.BarSections[move.BarSection].AddBarModifier(move.Modifier);
     // }
 
-    public void UseItem(ItemInfo item, Character user)
+    public void UseItem(ItemInfo item, BattlerController user)
     {
-        _inventoryResolver.UseItem(item, user);
+        _inventoryResolver.UseItem(item, user.Character);
     }
 
     public (List<ItemInfo>, int) GiveRewards(EnemyParty enemyParty, bool spared)

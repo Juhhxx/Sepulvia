@@ -4,24 +4,24 @@ using UnityEngine;
 [Serializable]
 public class BattleAction
 {
-    [field: SerializeField] public Character Character { get; private set; }
-    [field: SerializeField] public Character[] Targets { get; private set; }
+    [field: SerializeField] public BattlerController User { get; private set; }
+    [field: SerializeField] public BattlerController[] Targets { get; private set; }
     [field: SerializeField] public ActionType Type { get; private set;}
     [field: SerializeField] public Move Move { get; private set; }
     [field: SerializeField] public ItemInfo Item { get; private set;}
 
-    public BattleAction(Character character, Character[] targets, Move move)
+    public BattleAction(BattlerController user, BattlerController[] targets, Move move)
     {
-        Character = character;
+        User = user;
         Targets = targets;
         Type = ActionType.Move;
         Move = move;
         Item = null;
     }
 
-    public BattleAction(Character character, ItemInfo item)
+    public BattleAction(BattlerController user, ItemInfo item)
     {
-        Character = character;
+        User = user;
         Targets = null;
         Type = ActionType.Item;
         Move = null;
@@ -29,9 +29,9 @@ public class BattleAction
     }
 
     // Empty action is run
-    public BattleAction(Character character)
+    public BattleAction(BattlerController user)
     {
-        Character = character;
+        User = user;
         Targets = null;
         Type = ActionType.Run;
         Move = null;
