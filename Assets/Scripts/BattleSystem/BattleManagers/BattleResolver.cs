@@ -40,13 +40,13 @@ public class BattleResolver : RandomBehaviour
         }
     }
 
-    public void DoMove(Move move, BattlerController user, BattlerController[] targets)
+    public void DoMove(Move move, Character user, Character[] targets)
     {
-        Debug.Log($"{user.Character.Name} USED {move.Name} AGAINST {targets[0].Character.Name}");
+        Debug.Log($"{user.Name} USED {move.Name} AGAINST {targets[0].Name}");
 
         move.UsedMove();
 
-        user.Character.RecoveryTime += move.RecoveryCost;
+        user.RecoveryTime += move.RecoveryCost;
 
         // Change this in future (add target selection)
         // if (target is PlayerParty)
@@ -100,26 +100,26 @@ public class BattleResolver : RandomBehaviour
         return false;
     }
 
-    public void DoPull(int strenght, BattlerController user)
+    public void DoPull(int strenght, Character user)
     {
-        int pullStrenght = strenght + user.Character.PullStrenghtBonus;
+        int pullStrenght = strenght + user.PullStrenghtBonus;
 
         if (pullStrenght < 0) pullStrenght = 0;
 
         if (pullStrenght > 0)
         {
             DialogueManager.Instance.AddDialogue(
-            $"{user.Character.Name} pulled the Soul to their side by {pullStrenght}.");
+            $"{user.Name} pulled the Soul to their side by {pullStrenght}.");
         }
         else
         {
             DialogueManager.Instance.AddDialogue(
-            $"{user.Character.Name} failed to pull the Soul to their side.");
+            $"{user.Name} failed to pull the Soul to their side.");
         }
        
-        user.Character.Animator?.SetTrigger("Attack");
+        user.Animator?.SetTrigger("Attack");
         
-        if (user.IsPlayer())
+        if (user is Player)
         {
             _pullManager.MoveHeart(-pullStrenght);
         } 
@@ -142,9 +142,9 @@ public class BattleResolver : RandomBehaviour
     //     _pullManager.BarSections[move.BarSection].AddBarModifier(move.Modifier);
     // }
 
-    public void UseItem(ItemInfo item, BattlerController user)
+    public void UseItem(ItemInfo item, Character user)
     {
-        _inventoryResolver.UseItem(item, user.Character);
+        _inventoryResolver.UseItem(item, user);
     }
 
     public (List<ItemInfo>, int) GiveRewards(EnemyParty enemyParty, bool spared)

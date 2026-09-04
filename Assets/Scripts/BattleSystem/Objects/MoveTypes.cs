@@ -10,4 +10,5 @@ public enum MoveTargeting
 {
     Single,
     All,
+    Self,
 }

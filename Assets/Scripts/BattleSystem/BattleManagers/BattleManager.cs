@@ -38,21 +38,21 @@ public class BattleManager : MonoBehaviour
     public void AddActionPlayerRun()
     {
         var controller = GetBattlerController(Player);
-        var action = new BattleAction(controller);
+        var action = new BattleAction(Player);
 
         controller.QueueAction(action);
     }
-    public void AddActionPlayer(Move move, BattlerController[] targets)
+    public void AddActionPlayer(Move move, Character[] targets)
     {
         var controller = GetBattlerController(Player);
-        var action = new BattleAction(controller, targets, move);
+        var action = new BattleAction(Player, targets, move);
 
         controller.QueueAction(action);
     }
     public void AddActionPlayer(ItemInfo item)
     {
         var controller = GetBattlerController(Player);
-        var action = new BattleAction(controller, item);
+        var action = new BattleAction(Player, item);
 
         controller.QueueAction(action);
     }

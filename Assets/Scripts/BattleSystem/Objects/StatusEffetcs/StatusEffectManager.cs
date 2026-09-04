@@ -9,7 +9,7 @@ public class StatusEffectManager : ScriptableObject
     {
         _activeStatusEffects.Add(se);
 
-        se.StatusEffectLogic.OnEnterEffect(gameObject);
+        // se.StatusEffectLogic.OnEnterEffect(gameObject);
     }
 
     public void RemoveStatusEffect(StatusEffect se)

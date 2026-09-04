@@ -4,13 +4,13 @@ using UnityEngine;
 [Serializable]
 public class BattleAction
 {
-    [field: SerializeField] public BattlerController User { get; private set; }
-    [field: SerializeField] public BattlerController[] Targets { get; private set; }
+    [field: SerializeField] public Character User { get; private set; }
+    [field: SerializeField] public Character[] Targets { get; private set; }
     [field: SerializeField] public ActionType Type { get; private set;}
     [field: SerializeField] public Move Move { get; private set; }
     [field: SerializeField] public ItemInfo Item { get; private set;}
 
-    public BattleAction(BattlerController user, BattlerController[] targets, Move move)
+    public BattleAction(Character user, Character[] targets, Move move)
     {
         User = user;
         Targets = targets;
@@ -19,7 +19,7 @@ public class BattleAction
         Item = null;
     }
 
-    public BattleAction(BattlerController user, ItemInfo item)
+    public BattleAction(Character user, ItemInfo item)
     {
         User = user;
         Targets = null;
@@ -29,7 +29,7 @@ public class BattleAction
     }
 
     // Empty action is run
-    public BattleAction(BattlerController user)
+    public BattleAction(Character user)
     {
         User = user;
         Targets = null;
