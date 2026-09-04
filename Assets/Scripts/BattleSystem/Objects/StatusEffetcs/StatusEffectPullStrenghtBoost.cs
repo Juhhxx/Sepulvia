@@ -5,7 +5,7 @@ public class StatusEffectPullStrenghtBoost : IStatusEffect
 {
     [SerializeField] private int _boostAmount;
 
-    public void OnEnterEffect(GameObject go)
+    public void OnEnterEffect(BattlerController target)
     {
         // Implementation for when the status effect is applied
     }

@@ -38,7 +38,7 @@ public class CharacterInfo : DataAsset
 [Serializable]
 public class Character
 {
-    public Character(CharacterInfo info)
+    public Character(CharacterInfo info, StatusEffectManager statusEffectManager = null)
     {
         Name = info.Name;
         BattlePrefab = info.BattlePrefab;
@@ -61,6 +61,8 @@ public class Character
         CheckEquipment();
 
         Inventory = info.Inventory?.Instantiate();
+
+        _statusEffectManager = statusEffectManager ?? new StatusEffectManager();
     }
 
     [field: Header("Character Cosmetics")]
@@ -322,4 +324,10 @@ public class Character
     [field: Header("Character Inventory")]
     [field: Space(5)]
     [field: SerializeField] public Inventory Inventory { get; private set; }
+    
+    [Space(10)]
+    [Header("Character Status Effects")]
+    [Space(5)]
+    [SerializeField] private StatusEffectManager _statusEffectManager;
+    public StatusEffectManager StatusEffectManager => _statusEffectManager;
 }

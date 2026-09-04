@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class StatusEffectManager : MonoBehaviour
+public class StatusEffectManager : ScriptableObject
 {
     private List<StatusEffect> _activeStatusEffects = new List<StatusEffect>();
 

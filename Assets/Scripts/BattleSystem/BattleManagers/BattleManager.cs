@@ -37,18 +37,24 @@ public class BattleManager : MonoBehaviour
 
     public void AddActionPlayerRun()
     {
-        var action = new BattleAction(Player);
-        GetBattlerController(Player).QueueAction(action);
+        var controller = GetBattlerController(Player);
+        var action = new BattleAction(controller);
+
+        controller.QueueAction(action);
     }
-    public void AddActionPlayer(Move move, Character[] targets)
+    public void AddActionPlayer(Move move, BattlerController[] targets)
     {
-        var action = new BattleAction(Player, targets, move);
-        GetBattlerController(Player).QueueAction(action);
+        var controller = GetBattlerController(Player);
+        var action = new BattleAction(controller, targets, move);
+
+        controller.QueueAction(action);
     }
     public void AddActionPlayer(ItemInfo item)
     {
-        var action = new BattleAction(Player, item);
-        GetBattlerController(Player).QueueAction(action);
+        var controller = GetBattlerController(Player);
+        var action = new BattleAction(controller, item);
+
+        controller.QueueAction(action);
     }
 
     public event Action<BattleAction> OnActionExecuted;
@@ -186,7 +192,7 @@ public class BattleManager : MonoBehaviour
 
         SetUpTurnEvents();
 
-        SetUpBattleUI();
+        // SetUpBattleUI();
 
         _timelineManager.SetTurn(0);
         _timelineManager.ToggleTurnCounting(true);
@@ -412,7 +418,7 @@ public class BattleManager : MonoBehaviour
                     if (GetBattlerController(battler).IsPlayer())
                     {
                         _currentState = BattleState.PlayerTurnBegin;
-                        UpdateButtons();
+                        // UpdateButtons();
                         _uiManager.ToggleActionButtons(true);
                         _uiManager.ShowTurnOrder(_playerParty, _enemyParty);
 
