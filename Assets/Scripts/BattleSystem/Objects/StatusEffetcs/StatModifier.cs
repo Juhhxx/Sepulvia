@@ -14,4 +14,9 @@ public class StatModifier
         return this.MemberwiseClone() as StatModifier;
     }
 
+    public StatModifier (Stats stat, int amount)
+    {
+        StatAffected = stat;
+        AmountAffected = amount;
+    }
 }

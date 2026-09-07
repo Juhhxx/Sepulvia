@@ -18,7 +18,7 @@ public class PassiveEffectInfo : ScriptableObject
 
 public interface IPassiveEffect
 {
-    public void OnEnterEffect(BattlerController target);
+    public void OnEnterEffect(Character target);
     public void OnUpdateEffect();
     public void OnTriggerEffect();
     public void OnExitEffect();

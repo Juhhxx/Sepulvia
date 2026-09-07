@@ -37,7 +37,7 @@ public class StatusEffect
 
 public interface IStatusEffect
 {
-    public void OnEnterEffect(BattlerController target);
+    public void OnEnterEffect(Character target);
     public void OnUpdateEffect();
     public void OnTriggerEffect();
     public void OnExitEffect();

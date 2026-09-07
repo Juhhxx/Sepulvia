@@ -15,7 +15,6 @@ public class MoveButton : MonoBehaviour
 
         _button.onClick.AddListener(() => OnMovePressed?.Invoke(Move));
 
-        OnMovePressed += _battleManager.AddActionPlayer;
 
         OnMoveSetUp?.Invoke(Move);
     }

@@ -1,15 +1,18 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
-public class StatusEffectManager : ScriptableObject
+[Serializable]
+public class StatusEffectManager
 {
-    private List<StatusEffect> _activeStatusEffects = new List<StatusEffect>();
+    [SerializeField] private List<StatusEffect> _activeStatusEffects = new List<StatusEffect>();
+    private Character _character;
 
     public void AddStatusEffect(StatusEffect se)
     {
         _activeStatusEffects.Add(se);
 
-        // se.StatusEffectLogic.OnEnterEffect(gameObject);
+        se.StatusEffectLogic.OnEnterEffect(_character);
     }
 
     public void RemoveStatusEffect(StatusEffect se)
@@ -38,6 +41,11 @@ public class StatusEffectManager : ScriptableObject
         }
 
         se.StatusEffectLogic.OnUpdateEffect();
+    }
+
+    public StatusEffectManager (Character character)
+    {
+        _character = character;
     }
 
 }

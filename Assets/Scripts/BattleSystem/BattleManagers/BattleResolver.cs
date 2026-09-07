@@ -137,10 +137,10 @@ public class BattleResolver : RandomBehaviour
         }
     }
 
-    // private void ApplyBarModifier(StanceMove move)
-    // {
-    //     _pullManager.BarSections[move.BarSection].AddBarModifier(move.Modifier);
-    // }
+    public void DoBarModifier(int section, BarModifier modifier)
+    {
+        _pullManager.BarSections[section].AddBarModifier(modifier);
+    }
 
     public void UseItem(ItemInfo item, Character user)
     {

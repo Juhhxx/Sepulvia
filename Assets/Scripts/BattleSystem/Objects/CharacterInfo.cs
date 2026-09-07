@@ -29,6 +29,11 @@ public class CharacterInfo : DataAsset
     [field: Space(5)]
     [field: SerializeField, Expandable] public InventoryInfo Inventory { get; private set; }
 
+    [field: Space(10)]
+    [field: Header("Character Status Effects")]
+    [field: Space(5)]
+    [field: SerializeField, Expandable] public StatusEffectManager StatusEffectManager { get; private set; }
+
     public Character Instantiate()
     {
         return this is PlayerInfo ? new Player(this as PlayerInfo) : new Enemy(this as EnemyInfo);
@@ -62,7 +67,7 @@ public class Character
 
         Inventory = info.Inventory?.Instantiate();
 
-        _statusEffectManager = statusEffectManager ?? new StatusEffectManager();
+        _statusEffectManager = statusEffectManager ?? new StatusEffectManager(this);
     }
 
     [field: Header("Character Cosmetics")]

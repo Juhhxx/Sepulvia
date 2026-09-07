@@ -4,24 +4,26 @@ using System;
 public class StatusEffectPullStrenghtBoost : IStatusEffect
 {
     [SerializeField] private int _boostAmount;
+    private StatModifier _modifier;
+    private Character _target;
 
-    public void OnEnterEffect(BattlerController target)
+    public void OnEnterEffect(Character target)
     {
-        // Implementation for when the status effect is applied
-    }
+        _target = target;
+        _modifier = new StatModifier(Stats.PullStrength, _boostAmount);
+        target.AddModifier(_modifier);
+    }   
 
     public void OnUpdateEffect()
     {
         // Implementation for when the status effect is updated
     }
 
-    public void OnTriggerEffect()
-    {
-        // Implementation for when the status effect is triggered
+    public void OnTriggerEffect() {
     }
 
     public void OnExitEffect()
     {
-        // Implementation for when the status effect is removed
+        _target.RemoveModifier(_modifier);
     }
 }
