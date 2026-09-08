@@ -26,37 +26,17 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private EnemyParty _enemyParty;
 
     public Character Player => _playerParty.Player;
+    public PlayerParty PlayerParty => _playerParty;
+    public EnemyParty EnemyParty => _enemyParty;
     
     private List<Character> _battlersList;
     private Dictionary<Character, BattlerController> _battlerControllers;
     public BattlerController GetBattlerController(Character character) => _battlerControllers[character];
 
 
-    // Add Player Battle Actions
     [SerializeField, ReadOnly] private List<BattleAction> _actionList = new List<BattleAction>();
 
-    public void AddActionPlayerRun()
-    {
-        var controller = GetBattlerController(Player);
-        var action = new BattleAction(Player);
-
-        controller.QueueAction(action);
-    }
-    public void AddActionPlayer(Move move, Character[] targets)
-    {
-        var controller = GetBattlerController(Player);
-        var action = new BattleAction(Player, targets, move);
-
-        controller.QueueAction(action);
-    }
-    public void AddActionPlayer(ItemInfo item)
-    {
-        var controller = GetBattlerController(Player);
-        var action = new BattleAction(Player, item);
-
-        controller.QueueAction(action);
-    }
-
+    
     public event Action<BattleAction> OnActionExecuted;
 
     // Battler Order
@@ -169,7 +149,7 @@ public class BattleManager : MonoBehaviour
         _pullManager.ResetEvents();
 
         // Pull Bar Events
-        _pullManager.OnSelectBar += (int index) => AddActionPlayer(Player.MoveSet[3], null);
+        // _pullManager.OnSelectBar += (int index) => AddActionPlayer(Player.MoveSet[3], null);
         _pullManager.OnHeartEnd += Win;
 
         // On Action Executed Events
@@ -298,7 +278,7 @@ public class BattleManager : MonoBehaviour
                     invButtons[i].onClick.RemoveAllListeners();
                     invButtons[i].onClick.AddListener(() =>
                     {
-                        AddActionPlayer(stack.Item);
+                        GetBattlerController(Player).AddAction(stack.Item);
                         Player.Inventory.RemoveItem(stack);
                     });
                 }

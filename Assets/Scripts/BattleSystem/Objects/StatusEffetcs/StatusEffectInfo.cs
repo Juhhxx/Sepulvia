@@ -14,12 +14,28 @@ public class StatusEffectInfo : ScriptableObject
     [field: SerializeField] public int TurnDuration { get; private set; }
 
     [SerializeField] private SerializableInterface<IStatusEffect> _statusEffect;
-    public IStatusEffect StatusEffectLogic => _statusEffect.Value;
+    public SerializableInterface<IStatusEffect> StatusEffectLogic => _statusEffect;
 
+    public StatusEffect Instantiate()
+    {
+        return new StatusEffect(this);
+    }
 }
+
 
 public class StatusEffect
 {
+    public StatusEffect (StatusEffectInfo info)
+    {
+        Name = info.Name;
+        Icon = info.Icon;
+        Description = info.Description;
+
+        TurnDuration = info.TurnDuration;
+
+        _statusEffect = info.StatusEffectLogic;
+    }
+
     [field: Header("Base Status Effect Parameters")]
     [field: Space(5)]
     [field: SerializeField, ReadOnly] public string Name { get; private set; }

@@ -1,25 +1,15 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MoveButton : MonoBehaviour
 {
-    public Move Move { get; private set; }
-
-    public void SetMove(Move move)
-    {
-        Move = move;
-
-        _button.onClick.RemoveAllListeners();
-        OnMovePressed = null;
-
-        _button.onClick.AddListener(() => OnMovePressed?.Invoke(Move));
-
-
-        OnMoveSetUp?.Invoke(Move);
-    }
+    [SerializeField] private int _buttonNumber;
+    [SerializeField, ReadOnly] private Move _move;
 
     private BattleManager _battleManager;
+    private BattlerController _playerController;
 
     public Action<Move> OnMoveSetUp;
     public Action<Move> OnMoveSelected;
@@ -31,5 +21,13 @@ public class MoveButton : MonoBehaviour
     {
         _battleManager = FindAnyObjectByType<BattleManager>();
         _button = GetComponent<Button>();
+
+        if (_battleManager != null)
+        {
+            Character player = _battleManager.Player;
+            _playerController = _battleManager.GetBattlerController(player);
+
+            _move = player.MoveSet[_buttonNumber - 1];
+        }
     }
 }

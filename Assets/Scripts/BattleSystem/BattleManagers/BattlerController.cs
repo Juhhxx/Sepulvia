@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class BattlerController : MonoBehaviour
 {
@@ -9,19 +10,13 @@ public class BattlerController : MonoBehaviour
     public bool IsPlayer() => _character is Player;
 
     // Set Up
-    private void Awake()
-    {
-        _statusEffectManager = GetComponent<StatusEffectManager>();
-    }
+    private BattleManager _battleManager;
 
-    public void SetUp(CharacterInfo characterInfo)
+    public void SetUp(Character character, BattleManager battleManager)
     {
-        _character = new Character(characterInfo);
+        _character = character;
+        _battleManager = battleManager;
     }
-
-    // Status Effects
-    private StatusEffectManager _statusEffectManager;
-    public StatusEffectManager StatusEffectManager => _statusEffectManager;
 
     // Actions
     private Queue<BattleAction> _queuedActions = new Queue<BattleAction>();
@@ -39,4 +34,70 @@ public class BattlerController : MonoBehaviour
     {
         _queuedActions.Clear();
     }
+
+    // Creating Actions
+    private IEnumerator CreateAction()
+    {
+        yield return new WaitUntil(() => _actionMove != null || _actionItem != null);
+
+        if (_actionMove != null)
+        {
+            if (_actionMove.Targeting == MoveTargeting.Single)
+            {
+                yield return new WaitUntil(() => _actionTargets.Count == 1);
+
+                AddAction(_actionMove, _actionTargets.ToArray());
+            }
+            else
+            {
+                if (_actionMove.Targeting == MoveTargeting.Self)
+                {
+                    _actionTargets.Add(_character);
+                }
+                else
+                {
+                    _actionTargets.AddRange(_battleManager.EnemyParty.PartyMembers);
+                }
+
+                AddAction(_actionMove, _actionTargets.ToArray());
+            }
+        }
+        else if(_actionItem != null)
+        {
+            AddAction(_actionItem);
+        }
+
+        _actionMove = null;
+        _actionTargets.Clear();
+        _actionItem = null;
+    }
+
+    private Move _actionMove = null;
+    private List<Character> _actionTargets = new List<Character>();
+    public void AddTarget(Character character)
+    {
+        _actionTargets.Add(character);
+    }
+    public void AddAction(Move move, Character[] targets)
+    {
+        var action = new BattleAction(_character, targets, move);
+
+        QueueAction(action);
+    }
+
+    private ItemInfo _actionItem = null;
+    public void AddAction(ItemInfo item)
+    {
+        var action = new BattleAction(_character, item);
+
+        QueueAction(action);
+    }
+
+    public void AddActionRun()
+    {
+        var action = new BattleAction(_character);
+
+        QueueAction(action);
+    }
+
 }

@@ -1,16 +1,17 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MoveButtonUI : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer _iconSpr;
+    [SerializeField] private Image _iconImage;
     [SerializeField] private TextMeshProUGUI _nameTMP;
 
     private MoveButton _moveButton;
 
     private void UpdateButton(Move move)
     {
-        _iconSpr.sprite = move.Icon;
+        _iconImage.sprite = move.Icon;
         _nameTMP.text = move.Name;
     }
 

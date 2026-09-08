@@ -14,13 +14,9 @@ public class StatusEffectPullStrenghtBoost : IStatusEffect
         target.AddModifier(_modifier);
     }   
 
-    public void OnUpdateEffect()
-    {
-        // Implementation for when the status effect is updated
-    }
+    public void OnUpdateEffect() {}
 
-    public void OnTriggerEffect() {
-    }
+    public void OnTriggerEffect() {}
 
     public void OnExitEffect()
     {

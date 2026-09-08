@@ -71,7 +71,7 @@ public class BattleResolver : RandomBehaviour
         //     user.RecoveryTime += 
         // }
 
-        move.MoveLogic.OnDoMove(user, targets);
+        move.MoveLogic.OnDoMove(user, targets, this);
     }
 
     private Character ChooseTarget(Party fromParty)
@@ -129,9 +129,9 @@ public class BattleResolver : RandomBehaviour
         }
     }
 
-    public void DoStatusEffect(StatusEffect statusEffect, BattlerController[] targets)
+    public void DoStatusEffect(StatusEffect statusEffect, Character[] targets)
     {
-        foreach (BattlerController target in targets)
+        foreach (Character target in targets)
         {
             target.StatusEffectManager.AddStatusEffect(statusEffect);
         }
