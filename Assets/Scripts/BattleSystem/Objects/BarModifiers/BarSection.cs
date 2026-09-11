@@ -71,7 +71,7 @@ public class BarSection : MonoBehaviour
         _image = GetComponent<Image>();
         _button = GetComponent<Button>();
 
-        _image.color = _normalColor;
+        if (_image != null) _image.color = _normalColor;
     }
 
     private void OnDestroy()

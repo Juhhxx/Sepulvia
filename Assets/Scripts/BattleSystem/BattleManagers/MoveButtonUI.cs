@@ -15,7 +15,7 @@ public class MoveButtonUI : MonoBehaviour
         _nameTMP.text = move.Name;
     }
 
-    private void Start()
+    private void Awake()
     {
         _moveButton = GetComponent<MoveButton>();
 

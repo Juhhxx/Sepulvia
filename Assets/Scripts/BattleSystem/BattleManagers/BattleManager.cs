@@ -32,6 +32,22 @@ public class BattleManager : MonoBehaviour
     private List<Character> _battlersList;
     private Dictionary<Character, BattlerController> _battlerControllers;
     public BattlerController GetBattlerController(Character character) => _battlerControllers[character];
+    public void RegisterBattlerController(Character character, BattlerController controller)
+    {
+        Debug.Log($"Registering Battler Controller for {character.Name}", this);
+        controller.SetUp(character, this);
+
+        if (_battlerControllers == null)
+            _battlerControllers = new Dictionary<Character, BattlerController>();
+
+        if (!_battlerControllers.ContainsKey(character))
+            _battlerControllers.Add(character, controller);
+    }
+    private void ClearBattlerControllers()
+    {
+        if (_battlerControllers != null)
+            _battlerControllers.Clear();
+    }
 
 
     [SerializeField, ReadOnly] private List<BattleAction> _actionList = new List<BattleAction>();
@@ -71,6 +87,7 @@ public class BattleManager : MonoBehaviour
         SetUp,
         BattleTurnBegin,
         PlayerTurnBegin,
+        PlayerChooseTarget,
         PlayerChooseBar,
         PlayerTurnEnd,
         EnemyTurnBegin,
@@ -83,7 +100,7 @@ public class BattleManager : MonoBehaviour
     public BattleState CurrentState
     {
         get => _currentState;
-        private set
+        set
         {
             if (value != _currentState)
             {
@@ -128,10 +145,12 @@ public class BattleManager : MonoBehaviour
         _battlersList.AddRange(enemyParty.PartyMembers);
 
         Player.ResetMoveCooldowns();
+        Player.CurrentStance = 0;
 
         foreach (Character c in _enemyParty.PartyMembers)
         {
             c.ResetMoveCooldowns();
+            c.CurrentStance = 0;
         }
 
         _hasWinner = false;
@@ -164,15 +183,15 @@ public class BattleManager : MonoBehaviour
 
         // Set UI
         _uiManager.ToggleMoveButtons(false);
+        _uiManager.ToggleTargetButtons(false);
         _uiManager.ToggleActionButtons(false);
         _uiManager.ToggleMoveInfo(false);
+        _uiManager.SetUpStanceBars(Player);
         _dialogueManager.HideDialogue();
         _inventoryUIManager.HideInventory();
         _inventoryUIManager.ResetInventory();
 
         SetUpTurnEvents();
-
-        // SetUpBattleUI();
 
         _timelineManager.SetTurn(0);
         _timelineManager.ToggleTurnCounting(true);
@@ -214,51 +233,6 @@ public class BattleManager : MonoBehaviour
         };
     }
 
-    // private void SetUpBattleUI()
-    // {
-    //     SetUpButtons();
-    // }
-
-    // private void SetUpButtons()
-    // {
-    //     var moveButtons = _uiManager.GetMoveButtons();
-
-    //     for (int i = 0; i < moveButtons.Count; i++)
-    //     {
-    //         Move move = (i < Player.MoveSet.Count) ? Player.MoveSet?[i] : null;
-
-    //         if (move != null)
-    //         {
-    //             moveButtons[i].gameObject.SetActive(true);
-    //             moveButtons[i].onClick.RemoveAllListeners();
-
-    //             moveButtons[i].onClick.AddListener(() => AddActionPlayer(move));
-
-    //             _uiManager.SetUpButton(moveButtons[i], move);
-
-    //             Debug.Log($"SET MOVE BUTON FOR {move.Name}");
-    //         }
-    //         else moveButtons[i].gameObject.SetActive(false);
-
-    //     }
-    // }
-    // private void UpdateButtons()
-    // {
-    //     var moveButtons = _uiManager.GetMoveButtons();
-
-    //     for (int i = 0; i < moveButtons.Count; i++)
-    //     {
-    //         Move move = (i < Player.MoveSet.Count) ? Player.MoveSet?[i] : null;
-
-    //         if (move != null)
-    //         {
-    //             _uiManager.UpdateButton(moveButtons[i], !move.CheckIfCooldown());
-
-    //             Debug.Log($"UPDATE MOVE BUTON FOR {move.Name}");
-    //         }
-    //     }
-    // }
-
     // Inventory UI
     public void SetUpInventoryButtons()
     {
@@ -278,7 +252,7 @@ public class BattleManager : MonoBehaviour
                     invButtons[i].onClick.RemoveAllListeners();
                     invButtons[i].onClick.AddListener(() =>
                     {
-                        GetBattlerController(Player).AddAction(stack.Item);
+                        GetBattlerController(Player).SetItem(stack.Item);
                         Player.Inventory.RemoveItem(stack);
                     });
                 }
@@ -353,6 +327,8 @@ public class BattleManager : MonoBehaviour
         _timelineManager.ToggleTurnCounting(false);
         _timelineManager.OnTurnBegin -= StartTurn;
 
+        ClearBattlerControllers();
+
         OnBattleEnd?.Invoke();
     }
 
@@ -398,15 +374,23 @@ public class BattleManager : MonoBehaviour
                     if (GetBattlerController(battler).IsPlayer())
                     {
                         _currentState = BattleState.PlayerTurnBegin;
-                        // UpdateButtons();
+
+                        _dialogueManager.HideDialogue();
                         _uiManager.ToggleActionButtons(true);
-                        _uiManager.ShowTurnOrder(_playerParty, _enemyParty);
+
+                        GetBattlerController(battler).RequestAction();
+
+                        yield return new WaitUntil(() => _currentState == BattleState.PlayerChooseTarget);
+
+                        _uiManager.ToggleMoveButtons(false);
+                        _uiManager.ToggleTargetButtons(true);
 
                         yield return new WaitUntil(() => GetBattlerController(battler).HasActions());
 
-                        _uiManager.ToggleMoveButtons(false);
+                        _uiManager.ToggleTargetButtons(false);
                         _uiManager.ToggleActionButtons(false);
                         _uiManager.ToggleMoveInfo(false);
+                        _uiManager.UpdateStanceBars(Player);
                         _inventoryUIManager.HideInventory();
                         _currentState = BattleState.PlayerTurnEnd;
                     }

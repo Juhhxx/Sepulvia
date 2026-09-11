@@ -10,7 +10,21 @@ public class StatusEffectManager
 
     public void AddStatusEffect(StatusEffect se)
     {
-        _activeStatusEffects.Add(se);
+        if (se.StatusEffectLogic is IStackableEffect)
+        {
+            var stackableEffect = _activeStatusEffects.Find((s) => s.StatusEffectLogic is IStackableEffect);
+
+            if (stackableEffect != null)
+            {
+                (stackableEffect.StatusEffectLogic as IStackableEffect)?.AddStack();
+                return;
+            }
+            else
+            {
+                _activeStatusEffects.Add(se);
+            }
+        }
+        else _activeStatusEffects.Add(se);
 
         se.StatusEffectLogic.OnEnterEffect(_character);
     }
@@ -41,6 +55,32 @@ public class StatusEffectManager
         }
 
         se.StatusEffectLogic.OnUpdateEffect();
+    }
+
+    public bool HasStatusEffect<T>() where T : IStatusEffect
+    {
+        foreach (StatusEffect se in _activeStatusEffects)
+        {
+            if (se.StatusEffectLogic is T)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public StatusEffect GetStatusEffect<T>() where T : IStatusEffect
+    {
+        foreach (StatusEffect se in _activeStatusEffects)
+        {
+            if (se.StatusEffectLogic is T)
+            {
+                return se;
+            }
+        }
+
+        return null;
     }
 
     public StatusEffectManager (Character character)

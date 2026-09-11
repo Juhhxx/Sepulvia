@@ -26,14 +26,14 @@ public class FillBar : MonoBehaviour
         }
 
         _barNameTMP.text = name;
-        _barInfoTMP.text = $"{info} ({maxValue}/{maxValue})";
-        _barFillImage.fillAmount = 1f; 
+        _barInfoTMP.text = $"{info} (0/{maxValue})";
+        _barFillImage.fillAmount = 0f; 
 
         _infoName = info;
         _maxValue = maxValue;
     }
 
-    public void UpdateFillAmout(int newAmount)
+    public void UpdateFillAmout(float newAmount)
     {
         Debug.Log($"CURRENT HP : {newAmount}");
         StopAllCoroutines();

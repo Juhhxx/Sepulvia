@@ -46,6 +46,7 @@ public class StatusEffect
     [SerializeField, ReadOnly] private int _turnsPassed = 0;
     public void TurnPassed() => _turnsPassed++;
     public bool CheckIfDone() => _turnsPassed == TurnDuration + 1; // Don't count the first turn
+    public void ResetTurnsPassed() => _turnsPassed = 0;
 
     [SerializeField, ReadOnly] private SerializableInterface<IStatusEffect> _statusEffect;
     public IStatusEffect StatusEffectLogic => _statusEffect.Value;

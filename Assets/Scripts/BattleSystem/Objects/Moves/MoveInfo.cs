@@ -27,6 +27,11 @@ public class MoveInfo : ScriptableObject
     public int StanceCost => _stanceCost;
 
     [field: Space(10)]
+    [field: Header("Move Rewards Parameters")]
+    [field: Space(5)]
+    [field: SerializeField, MinMaxSlider(0, 1)] public Vector2 StanceRewardRange { get; private set; }
+
+    [field: Space(10)]
     [field: Header("Move Type Parameters")]
     [field: Space(5)]
     [field: SerializeField] public MoveTypes Type { get; private set; }
@@ -58,6 +63,7 @@ public class Move
         Targeting = info.Targeting;
 
         StanceCost = info.StanceCost;
+        StanceRewardRange = info.StanceRewardRange;
 
         _moveLogic = info.MoveLogic;
     }
@@ -93,6 +99,8 @@ public class Move
     [field: SerializeField] public MoveTargeting Targeting { get; private set; }
 
     [field: SerializeField, ReadOnly] public int StanceCost { get; private set; }
+    [field: SerializeField, MinMaxSlider(0, 1)] public Vector2 StanceRewardRange { get; private set; }
+
     public bool CheckIfStanceCost(Character user) => user.CurrentStance >= StanceCost;
 
     public bool CheckIfCanUseMove(Character user)

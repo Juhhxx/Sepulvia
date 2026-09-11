@@ -44,7 +44,7 @@ public class Party
 
         foreach (CharacterInfo c in info.PartyMembers)
         {
-            _partyMembers.Add(c.Instantiate() as Enemy);
+            _partyMembers.Add(c.Instantiate());
         }
     }
 

@@ -12,9 +12,9 @@ public class BattleResolver : RandomBehaviour
     {
         TryInitializeRandom();
 
-        _battleManager = FindAnyObjectByType<BattleManager>();
-        _pullManager = FindAnyObjectByType<PullingManager>();
-        _inventoryResolver = FindAnyObjectByType<InventoryResolver>();
+        // _battleManager = FindAnyObjectByType<BattleManager>();
+        // _pullManager = FindAnyObjectByType<PullingManager>();
+        // _inventoryResolver = FindAnyObjectByType<InventoryResolver>();
 
         _battleManager.OnActionExecuted += ExecuteAction;
     }
@@ -42,62 +42,54 @@ public class BattleResolver : RandomBehaviour
 
     public void DoMove(Move move, Character user, Character[] targets)
     {
+        int blockStun = CheckBlock(targets);
+
+        if (blockStun > 0)
+        {
+            user.RecoveryTime += blockStun;
+
+            DialogueManager.Instance.AddDialogue(
+                $"{user.Name} was blocked and stunned for {blockStun} turns.");
+            
+            return;
+        }
+
         Debug.Log($"{user.Name} USED {move.Name} AGAINST {targets[0].Name}");
 
         move.UsedMove();
 
         user.RecoveryTime += move.RecoveryCost;
+        user.CurrentStance += GetStanceBoost(move);
 
-        // Change this in future (add target selection)
-        // if (target is PlayerParty)
-        // {
-        //     Character player = (target as PlayerParty).Player;
-
-        //     if (move.PullStrength > 0)
-        //             player.Animator?.SetTrigger("Hurt");
-        // }
-        // else
-        // {
-        //     foreach (Character c in (target as EnemyParty).PartyMembers)
-        //     {
-        //         if (move.PullStrength > 0)
-        //             c.Animator?.SetTrigger("Hurt");
-        //     }
-        // }
-
-        // On hold 
-        // if (CheckBlock(target))
-        // {
-        //     user.RecoveryTime += 
-        // }
+        DialogueManager.Instance.AddDialogue(
+            $"{user.Name} used {move.Name} against {string.Join(", ", targets.Select(t => t.Name))}.");
 
         move.MoveLogic.OnDoMove(user, targets, this);
     }
 
-    private Character ChooseTarget(Party fromParty)
+    private float GetStanceBoost(Move move)
     {
-        Character c;
+        float rnd = (float)_random.NextDouble();
 
-        if (fromParty is PlayerParty) c = (fromParty as PlayerParty).Player;
-        else
-        {
-            int rnd = _random.Next(0, fromParty.PartySize);
-            c = (fromParty as EnemyParty).PartyMembers[rnd];
-        }
-
-        Debug.Log($"TARGETING {c.Name}");
-
-        return c;
+        return Mathf.Lerp(move.StanceRewardRange.x, move.StanceRewardRange.y, rnd);
     }
 
-    private bool CheckBlock(Party target)
+    private int CheckBlock(Character[] targets)
     {
-        foreach (Character c in target.PartyMembers)
+        int result = 0;
+
+        foreach (Character c in targets)
         {
-            // if (c.IsBlocking) return true;
+            if (c.StatusEffectManager.HasStatusEffect<StatusEffectBlock>())
+            {
+                var se = c.StatusEffectManager.GetStatusEffect<StatusEffectBlock>();
+
+                result += (se.StatusEffectLogic as StatusEffectBlock).StunAmount;
+                c.CurrentStance += (se.StatusEffectLogic as StatusEffectBlock).RewardAmount;
+            }
         }
 
-        return false;
+        return result;
     }
 
     public void DoPull(int strenght, Character user)
@@ -119,6 +111,7 @@ public class BattleResolver : RandomBehaviour
        
         user.Animator?.SetTrigger("Attack");
         
+        Debug.Log($"{_pullManager}");
         if (user is Player)
         {
             _pullManager.MoveHeart(-pullStrenght);

@@ -9,10 +9,6 @@ using UnityEngine.UI;
 public class BattleUIManager : MonoBehaviour
 {
     [SerializeField] private FillBar _playerStanceBar;
-    [SerializeField] private StatModifierDisplay _statModifierDisplay;
-    [SerializeField] private GameObject _enemyStanceBarPrefab;
-    private List<FillBar> _enemyStanceBars;
-    private List<StatModifierDisplay> _enemyStatDisplay;
 
     [SerializeField] private Transform _playerPivot;
     [SerializeField] private Transform _enemyPivot;
@@ -20,6 +16,7 @@ public class BattleUIManager : MonoBehaviour
 
     [SerializeField] private GameObject _actionButtons;
     [SerializeField] private GameObject _moveButtons;
+    [SerializeField] private GameObject _targetButtons;
 
     [SerializeField] private GameObject _seletBarCanvas;
 
@@ -39,6 +36,13 @@ public class BattleUIManager : MonoBehaviour
     private Vector3 _decisionHearthDefaultPos;
     private Vector3 _decisionHearthDefaultScale;
 
+    private BattleManager _battleManager;
+
+    private void Awake()
+    {
+        _battleManager = FindAnyObjectByType<BattleManager>();
+    }
+
     private void Start()
     {
         _decisionHearthDefaultPos = _decisionScreenHeart.anchoredPosition;
@@ -52,12 +56,6 @@ public class BattleUIManager : MonoBehaviour
             foreach (GameObject go in _characterModels) Destroy(go);
             _characterModels.Clear();
         }
-       
-        if (_enemyStanceBars != null)
-        {
-            foreach (FillBar f in _enemyStanceBars) Destroy(f.gameObject);
-            _enemyStanceBars.Clear();
-        }
     }
 
     public void InstantiateBattlePrefabs(PlayerParty playerParty, EnemyParty enemyParty)
@@ -69,8 +67,11 @@ public class BattleUIManager : MonoBehaviour
         GameObject playerGO = Instantiate(player.BattlePrefab, _playerPivot.position, Quaternion.identity);
 
         player.Animator = playerGO.GetComponent<Animator>();
+        BattlerController playerController = playerGO.GetComponent<BattlerController>();
 
         _characterModels.Add(playerGO);
+        _battleManager.RegisterBattlerController(player, playerController);
+        Debug.Log($"Instantiated player prefab for {player.Name}", this);
 
         List<Vector3> positions = GetSpawnPoints(enemyParty.PartySize, _enemyPivot);
 
@@ -79,7 +80,10 @@ public class BattleUIManager : MonoBehaviour
             Character c = enemyParty.PartyMembers[i];
 
             GameObject enemyGO = Instantiate(c.BattlePrefab, positions[i], Quaternion.identity);
+
             _characterModels.Add(enemyGO);
+            _battleManager.RegisterBattlerController(c, enemyGO.GetComponent<BattlerController>());
+            Debug.Log($"Instantiated enemy prefab for {c.Name}", this);
         }
     }
 
@@ -130,6 +134,7 @@ public class BattleUIManager : MonoBehaviour
     
     public void ToggleActionButtons(bool onOff) => _actionButtons.SetActive(onOff);
     public void ToggleMoveButtons(bool onOff) => _moveButtons.SetActive(onOff);
+    public void ToggleTargetButtons(bool onOff) => _targetButtons.SetActive(onOff);
     public void ToggleSelecBar(bool onOff) => _seletBarCanvas.SetActive(onOff);
 
     public void ShowWinScreen()
@@ -220,50 +225,13 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    // public void SetUpStanceBars(PlayerParty playerParty, EnemyParty enemyParty)
-    // {        
-    //     Character player = playerParty.Player;
-
-    //     _playerStanceBar.SetUpBar(player.Name, "Stance", player.MaxStance);
-
-    //     _enemyStanceBars = new List<FillBar>();
-    //     _enemyStatDisplay = new List<StatModifierDisplay>();
-
-    //     for (int i = 0; i < enemyParty.PartySize; i++)
-    //     {
-    //         Character enemy = enemyParty.PartyMembers[i];
-
-    //         Vector3 pos = _characterModels[i + 1].transform.position;
-
-    //         GameObject bar = Instantiate(_enemyStanceBarPrefab, pos + (Vector3.up * 7), Quaternion.identity);
-    //         FillBar enemyFillBar = bar.GetComponent<FillBar>();
-    //         StatModifierDisplay enemyStat = bar.GetComponent<StatModifierDisplay>();
-
-    //         _enemyStanceBars.Add(enemyFillBar);
-    //         _enemyStatDisplay.Add(enemyStat);
-    //         enemyFillBar.SetUpBar(enemy.Name, "Stance", enemy.MaxStance);
-    //     }
-    // }
-    // public void UpdateStanceBars(PlayerParty playerParty, EnemyParty enemyParty)
-    // {
-    //     Character player = playerParty.Player;
-
-    //     _playerStanceBar.UpdateFillAmout(player.CurrentStance);
-
-    //     for (int i = 0; i < enemyParty.PartySize; i++)
-    //     {
-    //         _enemyStanceBars[i].UpdateFillAmout(enemyParty.PartyMembers[i].CurrentStance);
-    //     }
-    // }
-
-    public void UpdateStatModifierDisplay(PlayerParty playerParty, EnemyParty enemyParty)
+    public void SetUpStanceBars(Character player)
+    {        
+        _playerStanceBar.SetUpBar(player.Name, "Stance", player.MaxStance);
+    }
+    public void UpdateStanceBars(Character player)
     {
-        _statModifierDisplay.UpdateDisplay(playerParty.Player.StatModifiers);
-
-        for (int i = 0; i < enemyParty.PartySize; i++)
-        {
-            _enemyStatDisplay[i].UpdateDisplay(enemyParty.PartyMembers[i].StatModifiers);
-        }
+        _playerStanceBar.UpdateFillAmout(player.CurrentStance);
     }
 
     private List<GameObject> _createdObjectsTurns = new List<GameObject>();

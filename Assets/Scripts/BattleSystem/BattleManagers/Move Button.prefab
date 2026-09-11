@@ -575,7 +575,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 5508529204610484082}
+  m_TargetGraphic: {fileID: 658974603930106840}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -603,6 +603,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 775dc7887576c5a4b8f12b39844081cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveButton
+  _buttonNumber: 0
+  _move:
+    <Name>k__BackingField: 
+    <Icon>k__BackingField: {fileID: 0}
+    <Description>k__BackingField: 
+    <Level>k__BackingField: 0
+    <RecoveryCost>k__BackingField: 0
+    <Cooldown>k__BackingField: 0
+    _turnsPassed: 0
+    _inCooldown: 0
+    <Type>k__BackingField: 0
+    <Targeting>k__BackingField: 0
+    <StanceCost>k__BackingField: 0
+    _moveLogic:
+      mode: 0
+      unityReference: {fileID: 0}
+      rawReference:
+        rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!114 &8175773928679106197
 MonoBehaviour:
   m_ObjectHideFlags: 0

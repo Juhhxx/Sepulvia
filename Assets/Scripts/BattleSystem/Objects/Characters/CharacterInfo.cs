@@ -23,11 +23,17 @@ public class CharacterInfo : DataAsset
     [field: Header("Character Moves")]
     [field: Space(5)]
     [field: SerializeField, Expandable] public List<MoveInfo> MoveSet { get; private set; }
+    [field: SerializeField, Expandable] public List<MoveInfo> StanceMoveSet { get; private set; }
 
     [field: Space(10)]
     [field: Header("Character Inventory")]
     [field: Space(5)]
     [field: SerializeField, Expandable] public InventoryInfo Inventory { get; private set; }
+
+    [field: Space(10)]
+    [field: Header("Character Passive Effects")]
+    [field: Space(5)]
+    [field: SerializeField, Expandable] public List<PassiveEffectInfo> PassiveEffects { get; private set; }
 
     public Character Instantiate()
     {
@@ -45,7 +51,6 @@ public class Character
 
         _baseSpeed = info.Speed;
         _baseStance = info.MaxStance;
-        _currentStance = info.MaxStance;
 
         _statModifiers = new List<StatModifier>();
 
@@ -54,6 +59,13 @@ public class Character
         foreach (MoveInfo m in info.MoveSet)
         {
             MoveSet.Add(m.Instantiate());
+        }
+
+        StanceMoveSet = new List<Move>();
+
+        foreach (MoveInfo m in info.StanceMoveSet)
+        {
+            StanceMoveSet.Add(m.Instantiate());
         }
 
         SetBaseMoves();
@@ -76,7 +88,7 @@ public class Character
     [Space(5)]
     // Base Speed
     [SerializeField] private int _baseSpeed;
-    public int Speed => _baseSpeed + GetModifierBonus(Stats.Speed) + GetEquipmentBonus(Stats.Speed) + GetStatLevelBonus(Stats.Speed);
+    public int Speed => _baseSpeed + GetModifierBonus(Stats.Speed) + GetStatLevelBonus(Stats.Speed);
     private int _speedLevel = 1;
     public int SpeedLevel => _speedLevel;
 
@@ -94,7 +106,7 @@ public class Character
 
     // Base Stance
     [SerializeField] private float _baseStance;
-    public float MaxStance => _baseStance + GetModifierBonus(Stats.Stance) + GetEquipmentBonus(Stats.Stance) + GetStatLevelBonus(Stats.Stance);
+    public float MaxStance => _baseStance + GetModifierBonus(Stats.Stance) + GetStatLevelBonus(Stats.Stance);
     private int _stanceLevel = 1;
     public int StanceLevel => _stanceLevel;
 
@@ -127,7 +139,7 @@ public class Character
     public Action OnStanceLost;
 
     // Pull Strength
-    public int PullStrenghtBonus => GetModifierBonus(Stats.PullStrength) + GetEquipmentBonus(Stats.PullStrength);
+    public int PullStrenghtBonus => GetModifierBonus(Stats.PullStrength);
 
     // Modifiers
     [Space(10)]
@@ -145,7 +157,6 @@ public class Character
     {
         _statModifiers.Remove(modifier);
     }
-
     public int GetModifierBonus(Stats stat)
     {
         if (_statModifiers.Count == 0) return 0;
@@ -174,22 +185,6 @@ public class Character
                 MoveSet[e.MoveIndex] = e.ChangeTo.Instantiate();
             }
         }
-    }
-    public int GetEquipmentBonus(Stats stat)
-    {
-        if (Inventory == null) return 0;
-
-        if (Inventory.EquipmentSlots.Count == 0) return 0;
-
-        int bonus = 0;
-
-        foreach (ItemInfo e in Inventory.EquipmentSlots)
-        {
-            if (e.EquipmentType == EquipmentType.StatModifier && e.StatEquip == stat)
-                bonus += e.AmountEquip;
-        }
-
-        return bonus;
     }
 
     // Stat Levels
@@ -307,14 +302,36 @@ public class Character
     [field: Header("Character Moves")]
     [field: Space(5)]
     [field: SerializeField] public List<Move> MoveSet { get; private set; }
+    [field: SerializeField] public List<Move> StanceMoveSet { get; private set; }
     private List<Move> _baseMoves;
-    public void SetBaseMoves() => _baseMoves = new List<Move>(MoveSet);
-    public void ResetMoves() => MoveSet = new List<Move>(_baseMoves);
-    public void ResetMove(int index) => MoveSet[index] = _baseMoves[index];
-    public void ChangeMove(int index, Move to) => MoveSet[index] = to;
+    private List<Move> _baseStanceMoves;
+    public void SetBaseMoves()
+    {
+        _baseMoves = new List<Move>(MoveSet);
+        _baseStanceMoves = new List<Move>(StanceMoveSet);
+    }
+    public void ResetMoves()
+    {
+        MoveSet = new List<Move>(_baseMoves);
+        StanceMoveSet = new List<Move>(_baseStanceMoves);
+    }
+    public void ResetMove(int index, MoveTypes type)
+    {
+        if (type == MoveTypes.Normal) MoveSet[index] = _baseMoves[index];
+        else StanceMoveSet[index] = _baseStanceMoves[index];
+    }
+    public void ChangeMove(int index, Move to, MoveTypes type)
+    {
+        if (type == MoveTypes.Normal) MoveSet[index] = to;
+        else StanceMoveSet[index] = to;
+    }
     public void ResetMoveCooldowns()
     {
         foreach (Move m in MoveSet)
+        {
+            m.ResetCooldown();
+        }
+        foreach (Move m in StanceMoveSet)
         {
             m.ResetCooldown();
         }

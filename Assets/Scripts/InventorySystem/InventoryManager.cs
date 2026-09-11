@@ -224,7 +224,7 @@ public class InventoryManager : MonoBehaviour
         if (canAdd)
         {
             _player.PlayerCharacter.Inventory.RemoveEquipment(item);
-            _player.PlayerCharacter.ResetMove(item.MoveIndex);
+            _player.PlayerCharacter.ResetMove(item.MoveIndex, MoveTypes.Normal);
         }
         else
         {

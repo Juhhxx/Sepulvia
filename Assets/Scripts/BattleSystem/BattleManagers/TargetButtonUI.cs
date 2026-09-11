@@ -1,16 +1,32 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TargetButtonUI : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private TextMeshProUGUI _characterNameTMP;
+    [SerializeField] private Image _characterIconImage;
+    [SerializeField] private Image _selectionBorder;
+
+    private bool _isSelected = false;
+
+    public void SetUp(Character c)
     {
-        
+        _characterNameTMP.text = c.Name;
+
+        ToggleSelect(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ToggleSelect()
     {
-        
+        _isSelected = !_isSelected;
+
+        _selectionBorder.enabled = _isSelected;
+    }
+    private void ToggleSelect(bool onOff)
+    {
+        _isSelected = onOff;
+
+        _selectionBorder.enabled = _isSelected;
     }
 }

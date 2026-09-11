@@ -11,11 +11,14 @@ public class BattlerController : MonoBehaviour
 
     // Set Up
     private BattleManager _battleManager;
+    private TargetButtonManager _targetButtonManager;
 
     public void SetUp(Character character, BattleManager battleManager)
     {
         _character = character;
         _battleManager = battleManager;
+
+        _targetButtonManager = FindAnyObjectByType<TargetButtonManager>(FindObjectsInactive.Include);
     }
 
     // Actions
@@ -35,7 +38,11 @@ public class BattlerController : MonoBehaviour
         _queuedActions.Clear();
     }
 
-    // Creating Actions
+    // Creating Action
+    public void RequestAction()
+    {
+        StartCoroutine(CreateAction());
+    }
     private IEnumerator CreateAction()
     {
         yield return new WaitUntil(() => _actionMove != null || _actionItem != null);
@@ -44,6 +51,8 @@ public class BattlerController : MonoBehaviour
         {
             if (_actionMove.Targeting == MoveTargeting.Single)
             {
+                _targetButtonManager.RequestTargets(1);
+
                 yield return new WaitUntil(() => _actionTargets.Count == 1);
 
                 AddAction(_actionMove, _actionTargets.ToArray());
@@ -74,6 +83,12 @@ public class BattlerController : MonoBehaviour
 
     private Move _actionMove = null;
     private List<Character> _actionTargets = new List<Character>();
+
+    public void SetMove(Move move)
+    {
+        _actionMove = move;
+        _battleManager.CurrentState = BattleManager.BattleState.PlayerChooseTarget;
+    }
     public void AddTarget(Character character)
     {
         _actionTargets.Add(character);
@@ -86,6 +101,8 @@ public class BattlerController : MonoBehaviour
     }
 
     private ItemInfo _actionItem = null;
+
+    public void SetItem(ItemInfo item) => _actionItem = item;
     public void AddAction(ItemInfo item)
     {
         var action = new BattleAction(_character, item);

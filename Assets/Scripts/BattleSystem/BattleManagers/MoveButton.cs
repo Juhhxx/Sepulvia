@@ -29,5 +29,20 @@ public class MoveButton : MonoBehaviour
 
             _move = player.MoveSet[_buttonNumber - 1];
         }
+
+        _button.onClick.AddListener(() => SendMoveInput());
+
+        OnMoveSetUp?.Invoke(_move);
+    }
+
+    private void SendMoveInput()
+    {
+        if (_move != null)
+        {
+            if (_move.CheckIfCanUseMove(_playerController.Character))
+            {
+                _playerController.SetMove(_move);
+            }
+        }
     }
 }
