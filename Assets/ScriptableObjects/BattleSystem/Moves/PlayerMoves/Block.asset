@@ -13,15 +13,27 @@ MonoBehaviour:
   m_Name: Block
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
   <Name>k__BackingField: Stunning Block
-  <Icon>k__BackingField: {fileID: 0}
-  <Level>k__BackingField: 1
-  <RecoveryCost>k__BackingField: 2
-  <Cooldown>k__BackingField: 10
+  <Icon>k__BackingField: {fileID: 21300000, guid: 1b862f82f47452541bb8fbb72cba1b6d, type: 3}
   <Description>k__BackingField: 'Ignores the next attack taken during recovery time.
 
     Stun
     the enemy for 3s if successful.'
-  <Type>k__BackingField: 3
-  _pullStrength: 0
-  <StatModifiers>k__BackingField: []
-  _stunTime: 3
+  <Level>k__BackingField: 1
+  <RecoveryCost>k__BackingField: 2
+  <Cooldown>k__BackingField: 10
+  _stanceCost: 0
+  <StanceRewardRange>k__BackingField: {x: 0.1, y: 0.5}
+  <Type>k__BackingField: 0
+  <Targeting>k__BackingField: 2
+  _moveLogic:
+    mode: 1
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: 3144097684244398300
+  references:
+    version: 2
+    RefIds:
+    - rid: 3144097684244398300
+      type: {class: MoveApplyStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffect: {fileID: 11400000, guid: 899ac622312b43c4eabfec18914da677, type: 2}

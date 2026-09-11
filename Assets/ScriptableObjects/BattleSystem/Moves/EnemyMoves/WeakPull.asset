@@ -14,10 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
   <Name>k__BackingField: Weak Pull
   <Icon>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: 
   <Level>k__BackingField: 1
   <RecoveryCost>k__BackingField: 3
   <Cooldown>k__BackingField: 0
-  <Description>k__BackingField: 
+  _stanceCost: 0
+  <StanceRewardRange>k__BackingField: {x: 0, y: 0}
   <Type>k__BackingField: 0
-  _pullStrength: 1
-  _statusEffect: {fileID: 0}
+  <Targeting>k__BackingField: 0
+  _moveLogic:
+    mode: 1
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: 3144097684244398176
+  references:
+    version: 2
+    RefIds:
+    - rid: 3144097684244398176
+      type: {class: MovePull, ns: , asm: Assembly-CSharp}
+      data:
+        _pullAmount: 1

@@ -14,11 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
   <Name>k__BackingField: Heavy Pull
   <Icon>k__BackingField: {fileID: 21300000, guid: 362160c3fda58174fb93e9a7a0ddad18, type: 3}
+  <Description>k__BackingField: Pulls the soul to your side by 3.
   <Level>k__BackingField: 2
   <RecoveryCost>k__BackingField: 4
   <Cooldown>k__BackingField: 8
-  <Description>k__BackingField: Pulls the soul to your side by 3.
+  _stanceCost: 0
+  <StanceRewardRange>k__BackingField: {x: 0.1, y: 0.5}
   <Type>k__BackingField: 0
-  _pullStrength: 3
-  <StatModifiers>k__BackingField: []
-  _stunTime: 0
+  <Targeting>k__BackingField: 0
+  _moveLogic:
+    mode: 1
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: 3144097642165305447
+  references:
+    version: 2
+    RefIds:
+    - rid: 3144097642165305447
+      type: {class: MovePull, ns: , asm: Assembly-CSharp}
+      data:
+        _pullAmount: 3

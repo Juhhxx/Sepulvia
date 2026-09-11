@@ -14,16 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
   <Name>k__BackingField: Enhance Strength
   <Icon>k__BackingField: {fileID: 21300000, guid: 6d942d9abce6ae4489755790b994815b, type: 3}
+  <Description>k__BackingField: Enhances the users PULL STRENGTH by 2 for 9 turns.
   <Level>k__BackingField: 1
   <RecoveryCost>k__BackingField: 2
   <Cooldown>k__BackingField: 20
-  <Description>k__BackingField: Enhances the users PULL STRENGTH by 2 for 9 turns.
-  <Type>k__BackingField: 1
-  _pullStrength: 0
-  <StatModifiers>k__BackingField:
-  - <StatAffected>k__BackingField: 0
-    <AmountAffected>k__BackingField: 2
-    <TurnDuration>k__BackingField: 9
-    _turnsPassed: 0
-    <Sprite>k__BackingField: {fileID: 21300000, guid: fdf48565870c41e4e98603c35525efbe, type: 3}
-  _stunTime: 0
+  _stanceCost: 0
+  <StanceRewardRange>k__BackingField: {x: 0.1, y: 0.5}
+  <Type>k__BackingField: 0
+  <Targeting>k__BackingField: 2
+  _moveLogic:
+    mode: 1
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: 3144097642165305448
+  references:
+    version: 2
+    RefIds:
+    - rid: 3144097642165305448
+      type: {class: MoveApplyStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffect: {fileID: 11400000, guid: 81bdaa300ca07004db813ad0a2c04036, type: 2}

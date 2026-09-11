@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03a070f015bc16e44a14b9cb5f58d178, type: 3}
+  m_Name: Block
+  m_EditorClassIdentifier: Assembly-CSharp::StatusEffectInfo
+  <Name>k__BackingField: Block
+  <Icon>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: 
+  <TurnDuration>k__BackingField: 2
+  _statusEffect:
+    mode: 1
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: 3144097684244398301
+  references:
+    version: 2
+    RefIds:
+    - rid: 3144097684244398301
+      type: {class: StatusEffectBlock, ns: , asm: Assembly-CSharp}
+      data:
+        _stunAmount: 3
+        _rewardAmount: 1

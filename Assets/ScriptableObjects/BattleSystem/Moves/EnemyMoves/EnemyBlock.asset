@@ -14,10 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
   <Name>k__BackingField: Block
   <Icon>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: 
   <Level>k__BackingField: 0
   <RecoveryCost>k__BackingField: 2
   <Cooldown>k__BackingField: 10
-  <Description>k__BackingField: 
-  <Type>k__BackingField: 3
-  _pullStrength: 0
-  _statusEffect: {fileID: 0}
+  _stanceCost: 0
+  <StanceRewardRange>k__BackingField: {x: 0.1, y: 0.5}
+  <Type>k__BackingField: 0
+  <Targeting>k__BackingField: 0
+  _moveLogic:
+    mode: 1
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: 3144097684244398311
+  references:
+    version: 2
+    RefIds:
+    - rid: 3144097684244398311
+      type: {class: MoveApplyStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffect: {fileID: 11400000, guid: 899ac622312b43c4eabfec18914da677, type: 2}
