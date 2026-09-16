@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,17 +7,21 @@ public class BattleResolver : RandomBehaviour
 {
     [SerializeField] private BattleManager _battleManager;
     [SerializeField] private PullingManager _pullManager;
+    private int _playerSelectedBar = -1;
+    private void SetPlayerSelectedBar(int bar)
+    {
+        Debug.Log($"Player Selected Bar Section {bar}");
+        _playerSelectedBar = bar;
+    }
+
     [SerializeField] private InventoryResolver _inventoryResolver;
 
     private void Start()
     {
         TryInitializeRandom();
 
-        // _battleManager = FindAnyObjectByType<BattleManager>();
-        // _pullManager = FindAnyObjectByType<PullingManager>();
-        // _inventoryResolver = FindAnyObjectByType<InventoryResolver>();
-
         _battleManager.OnActionExecuted += ExecuteAction;
+        _pullManager.OnSelectBar += SetPlayerSelectedBar;
     }
 
     private void ExecuteAction(BattleAction action)
@@ -114,11 +119,11 @@ public class BattleResolver : RandomBehaviour
         Debug.Log($"{_pullManager}");
         if (user is Player)
         {
-            _pullManager.MoveHeart(-pullStrenght);
+            _pullManager.MoveHeart(-pullStrenght, user);
         } 
         else
         {
-            _pullManager.MoveHeart(pullStrenght);
+            _pullManager.MoveHeart(pullStrenght, user);
         }
     }
 
@@ -130,8 +135,29 @@ public class BattleResolver : RandomBehaviour
         }
     }
 
-    public void DoBarModifier(int section, BarModifier modifier)
+    private bool _applyingBarModifier = false;
+    public bool ApplyingBarModifier => _applyingBarModifier;
+    public void DoBarModifier(BarModifierInfo modifier)
     {
+        _applyingBarModifier = true;
+        StartCoroutine(DoBarModifierCR(modifier));
+    }
+
+    private IEnumerator DoBarModifierCR(BarModifierInfo modifier)
+    {
+        _battleManager.CurrentState = BattleManager.BattleState.PlayerChooseBar;
+
+        yield return new WaitUntil(() => _playerSelectedBar >= 0);
+
+        ApplyBarModifier(_playerSelectedBar, modifier);
+
+        _playerSelectedBar = -1;
+        _applyingBarModifier = false;
+    }
+
+    public void ApplyBarModifier(int section, BarModifierInfo modifier)
+    {
+        Debug.Log($"Applying Bar Modifier {modifier.Name} to Section {section}");
         _pullManager.BarSections[section].AddBarModifier(modifier);
     }
 

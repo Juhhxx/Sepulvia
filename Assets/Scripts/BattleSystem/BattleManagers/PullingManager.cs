@@ -94,12 +94,15 @@ public class PullingManager : RandomBehaviour
 
     // Moving Logic
     public bool IsMoving { get; private set; }
+    private Coroutine _moveHeartCoroutine;
 
-    public void MoveHeart(int pushForce)
+    public void MoveHeart(int pushForce, Character user)
     {
-        StartCoroutine(MoveHeartCR(Mathf.Abs(pushForce), pushForce > 0));
+        if (_moveHeartCoroutine != null) StopCoroutine(_moveHeartCoroutine);
+
+        _moveHeartCoroutine = StartCoroutine(MoveHeartCR(Mathf.Abs(pushForce), pushForce > 0, user));
     }
-    private IEnumerator MoveHeartCR(int pushForce, bool positive)
+    private IEnumerator MoveHeartCR(int pushForce, bool positive, Character user)
     {
         IsMoving = true;
 
@@ -108,11 +111,7 @@ public class PullingManager : RandomBehaviour
             BarSection section = _barSectionList[_currentHeartIndex];
 
             // Check Modifier in Current Bar Section
-            if (DoBarModifier(section, BarModifierTrigger.OnInside)) 
-            {
-                IsMoving = false;
-                yield break;
-            }
+            DoBarModifier(section, BarModifierTrigger.OnInside, user); 
 
             var tmp = _currentHeartIndex;
 
@@ -140,20 +139,12 @@ public class PullingManager : RandomBehaviour
             else
             {
                 // Check Modifier in Next Bar Section
-                if (DoBarModifier(_barSectionList[tmp], BarModifierTrigger.OnEnter)) 
-                {
-                    IsMoving = false;
-                    yield break;
-                }
+                DoBarModifier(_barSectionList[tmp], BarModifierTrigger.OnEnter, user);
 
                 section.SetHasHeart(false);
 
                 // Check Modifier in Exiting Bar Section
-                if (DoBarModifier(section, BarModifierTrigger.OnExit)) 
-                {
-                    IsMoving = false;
-                    yield break;
-                }
+                DoBarModifier(section, BarModifierTrigger.OnExit, user);
 
                 _barSectionList[tmp].SetHasHeart(true);
                 
@@ -166,11 +157,12 @@ public class PullingManager : RandomBehaviour
         }
 
         IsMoving = false;
+        _moveHeartCoroutine = null;
     }
 
     public void StopMovement()
     {
-        StopAllCoroutines();
+        StopCoroutine(_moveHeartCoroutine);
         IsMoving = false;
     }
 
@@ -184,55 +176,28 @@ public class PullingManager : RandomBehaviour
 
             section.BarModifier.TurnPassed();
 
-            // if (section.BarModifier.CheckIfAlmostDone()) DialogueManager.Instance.AddDialogue($"{section.BarModifier.Type.ToTitle()} was destroyed.");
-
             if (section.BarModifier.CheckIfDone())
             {
                 section.RemoveBarModifier();
-                // DialogueManager.Instance.StartDialogues($"{section.BarModifier.Type.ToTitle()} was destroyed.");
             }
         }
     }
-    public bool DoBarModifier(BarSection section, BarModifierTrigger trigger)
+    public void DoBarModifier(BarSection section, BarModifierTrigger trigger, Character user)
     {
-        if (!section.HasModifier) return false;
+        if (!section.HasModifier) return;
 
-        if (section.BarModifier.Trigger != trigger) return false;
+        if (section.BarModifier.Trigger != trigger) return;
 
-        bool stopMovement = false;
-
-        switch (section.BarModifier.Type)
-        {
-            case BarModifierType.Barrier:
-                
-                stopMovement = true;
-                DialogueManager.Instance.AddDialogue($"A Barrier Stopped the Movement.");
-                break;
-            
-            case BarModifierType.Beartrap:
-                stopMovement = true;
-                DialogueManager.Instance.AddDialogue($"A Beartrap Trapped the Soul in Place.");
-                break;
-            
-            case BarModifierType.GravityPull:
-                bool positive = _barSectionList.IndexOf(section) > _currentHeartIndex;
-                int force = section.BarModifier.GraviyStrength;
-                DialogueManager.Instance.AddDialogue($"Something is moving the Soul.");
-
-                MoveHeart(positive ? force : -force);
-                break;
-        }
+        section.BarModifier.BarModifierLogic.OnBarModifierTriggered(_barSectionList.IndexOf(section), user, this);
 
         if (section.BarModifier.DestroyOnUse) section.RemoveBarModifier();
-
-        return stopMovement;
     }
 
     public void DoBarModifiers(BarModifierTrigger trigger)
     {
         foreach (BarSection section in _barSectionList)
         {
-            DoBarModifier(section, trigger);
+            DoBarModifier(section, trigger, null);
         }
     }
 

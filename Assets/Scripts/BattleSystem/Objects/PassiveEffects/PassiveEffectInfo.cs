@@ -37,6 +37,9 @@ public class PassiveEffect
     [field: SerializeField] public Sprite Icon { get; private set; }
     [field: SerializeField, TextArea] public string Description { get; private set; }
 
+    [field: Space(10)]
+    [field: Header("Passive Effect Duration Parameters")]
+    [field: Space(5)]
     [SerializeField] private SerializableInterface<IPassiveEffect> _passiveEffect;
     public IPassiveEffect PassiveEffectLogic => _passiveEffect.Value;
 }
@@ -45,7 +48,6 @@ public class PassiveEffect
 public interface IPassiveEffect
 {
     public void OnEnterEffect(Character target);
-    public void OnUpdateEffect();
     public void OnTriggerEffect();
     public void OnExitEffect();
 }

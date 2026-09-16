@@ -8,11 +8,14 @@ public class BarSection : MonoBehaviour
 {
     [SerializeField] private Color _normalColor;
     [SerializeField] private Color _heartColor;
+    [SerializeField] private Image[] _barImages;
+
+
     [field: SerializeField, ReadOnly] public BarModifier BarModifier { get; private set; }
     public bool HasModifier { get; private set; }
     private GameObject _modifierPrefab;
 
-    public void AddBarModifier(BarModifier barModifier)
+    public void AddBarModifier(BarModifierInfo barModifier)
     {
         BarModifier = barModifier.Instantiate();
         _modifierPrefab = Instantiate(barModifier.BarEffectPrefab, GetComponentInParent<Canvas>().transform);
@@ -44,8 +47,8 @@ public class BarSection : MonoBehaviour
     {
         HasHeart = has;
 
-        if (HasHeart) _image.color = _heartColor;
-        else _image.color = _normalColor;
+        if (HasHeart) ChangeImagesColor(_heartColor);
+        else ChangeImagesColor(_normalColor);
     }
 
     [field: SerializeField, ReadOnly] public Vector3 HeartPosition { get; private set; }
@@ -71,7 +74,15 @@ public class BarSection : MonoBehaviour
         _image = GetComponent<Image>();
         _button = GetComponent<Button>();
 
-        if (_image != null) _image.color = _normalColor;
+        if (_barImages.Length > 0) ChangeImagesColor(_normalColor);
+    }
+
+    private void ChangeImagesColor(Color color)
+    {
+        foreach (Image i in _barImages)
+        {
+            i.color = color;
+        }
     }
 
     private void OnDestroy()

@@ -6862,8 +6862,6 @@ RectTransform:
   - {fileID: 3305799212098151097}
   - {fileID: 4498846126237521126}
   - {fileID: 8973676813640451681}
-  - {fileID: 628277731868085940}
-  - {fileID: 4986479219726818397}
   - {fileID: 5137803609339499054}
   m_Father: {fileID: 7726786593673979498}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7143,7 +7141,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 524268695943680546}
+  m_Father: {fileID: 3976620733106163628}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -32811,7 +32809,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4986479219726818397}
+  - {fileID: 628277731868085940}
   m_Father: {fileID: 3158645575358003240}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -41641,7 +41641,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 524268695943680546}
+  m_Father: {fileID: 3976620733106163628}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -58645,7 +58645,7 @@ MonoBehaviour:
   _canvas: {fileID: 1362937764630524425}
   _heartPrefab: {fileID: 4202190986578470864, guid: 6a2db4eb242664b44a1ee32dde88ca73, type: 3}
   _pullBarPrefab: {fileID: 4491539405369718068, guid: 6cc0252a73eb1b04e91d957150862e6e, type: 3}
-  _barsTotalWidth: 1350
+  _barsTotalWidth: 1400
   _barY: -365
   _divNumb: 20
   _padding: 0

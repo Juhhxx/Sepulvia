@@ -53,20 +53,20 @@ public class EnemyBattleAI
         int section = 0;
         int middle = totalBars / 2;
 
-        switch (modifier.Type)
-        {
-            case BarModifierType.Barrier:
-                section = rnd.Next(0, soulPosition);
-                break;
+        // switch (modifier.Type)
+        // {
+        //     case BarModifierType.Barrier:
+        //         section = rnd.Next(0, soulPosition);
+        //         break;
             
-            case BarModifierType.Beartrap:
-                section = rnd.Next(soulPosition + 1, totalBars);
-                break;
+        //     case BarModifierType.Beartrap:
+        //         section = rnd.Next(soulPosition + 1, totalBars);
+        //         break;
             
-            case BarModifierType.GravityPull:
-                section = totalBars - 1;
-                break;
-        }
+        //     case BarModifierType.GravityPull:
+        //         section = totalBars - 1;
+        //         break;
+        // }
 
         if (occupied.Contains(section)) return ChooseBarSection(rnd, modifier, totalBars, soulPosition, occupied);
 

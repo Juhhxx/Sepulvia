@@ -284,7 +284,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 0, b: 0.6132345, a: 1}
@@ -305,7 +305,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 2139012404572541732}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -323,13 +323,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BarSection
   _normalColor: {r: 1, g: 1, b: 1, a: 1}
   _heartColor: {r: 1, g: 0.86062825, b: 0, a: 1}
-  <BarModifier>k__BackingField:
-    <Type>k__BackingField: 0
-    <Trigger>k__BackingField: 0
-    <BarEffectPrefab>k__BackingField: {fileID: 0}
-    <TurnDuration>k__BackingField: 0
-    <DestroyOnUse>k__BackingField: 0
-    <GraviyStrength>k__BackingField: 0
+  _barImages:
+  - {fileID: 2716270183767887571}
+  - {fileID: 2139012404572541732}
+  - {fileID: 5759139222162089664}
   <ConnectRight>k__BackingField: {fileID: 0}
   <ConnectLeft>k__BackingField: {fileID: 0}
   <HasHeart>k__BackingField: 0

@@ -11,8 +11,14 @@ public class StatusEffectInfo : ScriptableObject
     [field: SerializeField] public Sprite Icon { get; private set; }
     [field: SerializeField, TextArea] public string Description { get; private set; }
 
+    [field: Space(10)]
+    [field: Header("Status Effect Duration Parameters")]
+    [field: Space(5)]
     [field: SerializeField] public int TurnDuration { get; private set; }
 
+    [field: Space(10)]
+    [field: Header("Status Effect Logic Parameters")]
+    [field: Space(5)]
     [SerializeField] private SerializableInterface<IStatusEffect> _statusEffect;
     public SerializableInterface<IStatusEffect> StatusEffectLogic => _statusEffect;
 

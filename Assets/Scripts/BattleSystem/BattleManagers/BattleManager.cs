@@ -158,14 +158,13 @@ public class BattleManager : MonoBehaviour
 
         _currentState = BattleState.SetUp;
 
-        _uiManager.ClearCreatedObjects();
+        
 
         _uiManager.InstantiateBattlePrefabs(_playerParty, _enemyParty);
         _dialogueManager.SetUpDialogueManager();
 
         _pullManager.TogglePullUI(true);
         _pullManager.SetUp(enemyParty);
-        _pullManager.ResetEvents();
 
         // Pull Bar Events
         // _pullManager.OnSelectBar += (int index) => AddActionPlayer(Player.MoveSet[3], null);
@@ -322,6 +321,9 @@ public class BattleManager : MonoBehaviour
         _uiManager.HideFinalScreens();
         _dialogueManager.HideDialogue();
 
+        _uiManager.ClearCreatedObjects();
+        _pullManager.ResetEvents();
+
         Player.ResetModifiers();
 
         _timelineManager.ToggleTurnCounting(false);
@@ -380,13 +382,17 @@ public class BattleManager : MonoBehaviour
 
                         GetBattlerController(battler).RequestAction();
 
-                        yield return new WaitUntil(() => _currentState == BattleState.PlayerChooseTarget);
+                        while (!GetBattlerController(battler).HasActions())
+                        {
+                            if (_currentState == BattleState.PlayerChooseTarget)
+                            {
+                                _uiManager.ToggleMoveButtons(false);
+                                _uiManager.ToggleTargetButtons(true);
+                            }
+                            yield return null;
+                        }
 
                         _uiManager.ToggleMoveButtons(false);
-                        _uiManager.ToggleTargetButtons(true);
-
-                        yield return new WaitUntil(() => GetBattlerController(battler).HasActions());
-
                         _uiManager.ToggleTargetButtons(false);
                         _uiManager.ToggleActionButtons(false);
                         _uiManager.ToggleMoveInfo(false);
@@ -411,6 +417,17 @@ public class BattleManager : MonoBehaviour
                 yield return new WaitUntil(() => action != null);
                 
                 OnActionExecuted?.Invoke(action);
+
+                if (_currentState == BattleState.PlayerChooseBar)
+                {
+                    _pullManager.ToggleBarButtons(true);
+                    _uiManager.ToggleSelecBar(true);
+
+                    yield return new WaitUntil(() => !_battleResolver.ApplyingBarModifier);
+
+                    _pullManager.ToggleBarButtons(false);
+                    _uiManager.ToggleSelecBar(false);
+                }
 
                 yield return new WaitUntil(() => !_pullManager.IsMoving);
 
