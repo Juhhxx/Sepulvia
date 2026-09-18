@@ -6,27 +6,15 @@ using System;
 public class StatusEffectManager
 {
     [SerializeField] private List<StatusEffect> _activeStatusEffects = new List<StatusEffect>();
+    public IReadOnlyList<StatusEffect> ActiveStatusEffects => _activeStatusEffects;
+    
     private Character _character;
 
     public void AddStatusEffect(StatusEffect se)
     {
-        if (se.StatusEffectLogic is IStackableEffect)
-        {
-            var stackableEffect = _activeStatusEffects.Find((s) => s.StatusEffectLogic is IStackableEffect);
+        _activeStatusEffects.Add(se);
 
-            if (stackableEffect != null)
-            {
-                (stackableEffect.StatusEffectLogic as IStackableEffect)?.AddStack();
-                return;
-            }
-            else
-            {
-                _activeStatusEffects.Add(se);
-            }
-        }
-        else _activeStatusEffects.Add(se);
-
-        se.StatusEffectLogic.OnEnterEffect(_character);
+        se.StatusEffectLogic.OnEnterEffect(_character, se);
     }
 
     public void RemoveStatusEffect(StatusEffect se)

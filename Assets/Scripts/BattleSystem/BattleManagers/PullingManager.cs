@@ -141,10 +141,14 @@ public class PullingManager : RandomBehaviour
                 // Check Modifier in Next Bar Section
                 DoBarModifier(_barSectionList[tmp], BarModifierTrigger.OnEnter, user);
 
+                if (!IsMoving) yield break; // If the modifier stopped the movement, exit the coroutine
+
                 section.SetHasHeart(false);
 
                 // Check Modifier in Exiting Bar Section
                 DoBarModifier(section, BarModifierTrigger.OnExit, user);
+
+                if (!IsMoving) yield break; // If the modifier stopped the movement, exit the coroutine
 
                 _barSectionList[tmp].SetHasHeart(true);
                 
@@ -157,12 +161,10 @@ public class PullingManager : RandomBehaviour
         }
 
         IsMoving = false;
-        _moveHeartCoroutine = null;
     }
 
     public void StopMovement()
     {
-        StopCoroutine(_moveHeartCoroutine);
         IsMoving = false;
     }
 

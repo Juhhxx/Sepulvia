@@ -7,7 +7,7 @@ public class StatusEffectPullStrenghtBoost : IStatusEffect
     private StatModifier _modifier;
     private Character _target;
 
-    public void OnEnterEffect(Character target)
+    public void OnEnterEffect(Character target, StatusEffect statusEffect)
     {
         _target = target;
         _modifier = new StatModifier(Stats.PullStrength, _boostAmount);

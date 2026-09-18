@@ -25,6 +25,18 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private PlayerParty _playerParty;
     [SerializeField] private EnemyParty _enemyParty;
 
+    [Space(10)]
+    [Header("Player Buttons")]
+    [Space(5)]
+    [SerializeField] private Button _moveButton;
+    public Button MoveButton => _moveButton;
+    [SerializeField] private Button _stanceMoveButton;
+    public Button StanceMoveButton => _stanceMoveButton;
+    [SerializeField] private Button _itemsButton;
+    public Button ItemsButton => _itemsButton;
+    [SerializeField] private Button _runButton;
+    public Button RunButton => _runButton;
+
     public Character Player => _playerParty.Player;
     public PlayerParty PlayerParty => _playerParty;
     public EnemyParty EnemyParty => _enemyParty;
@@ -48,10 +60,6 @@ public class BattleManager : MonoBehaviour
         if (_battlerControllers != null)
             _battlerControllers.Clear();
     }
-
-
-    [SerializeField, ReadOnly] private List<BattleAction> _actionList = new List<BattleAction>();
-
     
     public event Action<BattleAction> OnActionExecuted;
 
@@ -134,6 +142,13 @@ public class BattleManager : MonoBehaviour
     private bool _hasWinner = false;
     private bool _doRun = false;
 
+    private void Start()
+    {
+        _moveButton.onClick.AddListener(() => _uiManager.SetUIState(BattleUIManager.BattleUIState.Move));
+        _stanceMoveButton.onClick.AddListener(() => _uiManager.SetUIState(BattleUIManager.BattleUIState.StanceMove));
+        _runButton.onClick.AddListener(() => GetBattlerController(Player).AddActionRun());
+    }
+
     public void StartBattle(PlayerParty playerParty, EnemyParty enemyParty)
     {
         _playerParty = playerParty;
@@ -175,16 +190,12 @@ public class BattleManager : MonoBehaviour
 
         // Instantiate Variables
         // _wfd = new WaitForDialogueEnd(_dialogueManager);
-        _actionList = new List<BattleAction>();
 
         // Set Number of Battlers
         // _numberOfBattlers = playerParty.PartySize + enemyParty.PartySize;
 
         // Set UI
-        _uiManager.ToggleMoveButtons(false);
-        _uiManager.ToggleTargetButtons(false);
-        _uiManager.ToggleActionButtons(false);
-        _uiManager.ToggleMoveInfo(false);
+        _uiManager.SetUIState(BattleUIManager.BattleUIState.None);
         _uiManager.SetUpStanceBars(Player);
         _dialogueManager.HideDialogue();
         _inventoryUIManager.HideInventory();
@@ -378,7 +389,7 @@ public class BattleManager : MonoBehaviour
                         _currentState = BattleState.PlayerTurnBegin;
 
                         _dialogueManager.HideDialogue();
-                        _uiManager.ToggleActionButtons(true);
+                        _uiManager.SetUIState(BattleUIManager.BattleUIState.Action);
 
                         GetBattlerController(battler).RequestAction();
 
@@ -386,16 +397,12 @@ public class BattleManager : MonoBehaviour
                         {
                             if (_currentState == BattleState.PlayerChooseTarget)
                             {
-                                _uiManager.ToggleMoveButtons(false);
-                                _uiManager.ToggleTargetButtons(true);
+                                _uiManager.SetUIState(BattleUIManager.BattleUIState.Target);
                             }
                             yield return null;
                         }
 
-                        _uiManager.ToggleMoveButtons(false);
-                        _uiManager.ToggleTargetButtons(false);
-                        _uiManager.ToggleActionButtons(false);
-                        _uiManager.ToggleMoveInfo(false);
+                        _uiManager.SetUIState(BattleUIManager.BattleUIState.None);
                         _uiManager.UpdateStanceBars(Player);
                         _inventoryUIManager.HideInventory();
                         _currentState = BattleState.PlayerTurnEnd;
@@ -421,12 +428,12 @@ public class BattleManager : MonoBehaviour
                 if (_currentState == BattleState.PlayerChooseBar)
                 {
                     _pullManager.ToggleBarButtons(true);
-                    _uiManager.ToggleSelecBar(true);
+                    _uiManager.SetUIState(BattleUIManager.BattleUIState.SelectBar);
 
                     yield return new WaitUntil(() => !_battleResolver.ApplyingBarModifier);
 
                     _pullManager.ToggleBarButtons(false);
-                    _uiManager.ToggleSelecBar(false);
+                    _uiManager.SetUIState(BattleUIManager.BattleUIState.None);
                 }
 
                 yield return new WaitUntil(() => !_pullManager.IsMoving);

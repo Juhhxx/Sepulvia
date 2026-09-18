@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 414a112c3afd4d44dbc93673cfc77efe, type: 3}
-  m_Name: Barrier
+  m_Name: Malicious
   m_EditorClassIdentifier: Assembly-CSharp::BarModifierInfo
-  <Name>k__BackingField: Barrier Knot
+  <Name>k__BackingField: Malicious Knot
   <Icon>k__BackingField: {fileID: 0}
-  <BarEffectPrefab>k__BackingField: {fileID: 4202190986578470864, guid: 3616f33027eb2a848b7f37b85f660fc7, type: 3}
+  <BarEffectPrefab>k__BackingField: {fileID: 0}
   <Description>k__BackingField: 
   <Trigger>k__BackingField: 1
   <TurnDuration>k__BackingField: 10
@@ -23,10 +23,11 @@ MonoBehaviour:
     mode: 1
     unityReference: {fileID: 0}
     rawReference:
-      rid: 3144097833895329897
+      rid: 3144097840028713141
   references:
     version: 2
     RefIds:
-    - rid: 3144097833895329897
-      type: {class: BarModifierBarrier, ns: , asm: Assembly-CSharp}
-      data: 
+    - rid: 3144097840028713141
+      type: {class: BarModifierStun, ns: , asm: Assembly-CSharp}
+      data:
+        _stunAmount: 7

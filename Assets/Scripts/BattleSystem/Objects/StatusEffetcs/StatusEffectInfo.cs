@@ -1,6 +1,7 @@
 using TNRD;
 using UnityEngine;
 using NaughtyAttributes;
+using System;
 
 [CreateAssetMenu(fileName = "StatusEffect", menuName = "Battle System/New Status Effect")]
 public class StatusEffectInfo : ScriptableObject
@@ -28,7 +29,7 @@ public class StatusEffectInfo : ScriptableObject
     }
 }
 
-
+[Serializable]
 public class StatusEffect
 {
     public StatusEffect (StatusEffectInfo info)
@@ -60,7 +61,7 @@ public class StatusEffect
 
 public interface IStatusEffect
 {
-    public void OnEnterEffect(Character target);
+    public void OnEnterEffect(Character target, StatusEffect statusEffect);
     public void OnUpdateEffect();
     public void OnTriggerEffect();
     public void OnExitEffect();

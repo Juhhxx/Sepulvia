@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using NaughtyAttributes;
 
 public class BattlerController : MonoBehaviour
 {
     // Character
-    private Character _character;
+    [SerializeField] private Character _character;
     public Character Character => _character;
     public bool IsPlayer() => _character is Player;
 

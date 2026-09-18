@@ -16,11 +16,20 @@ public class BattleUIManager : MonoBehaviour
 
     [SerializeField] private GameObject _actionButtons;
     [SerializeField] private GameObject _moveButtons;
+    [SerializeField] private GameObject _stanceMoveButtons;
     [SerializeField] private GameObject _targetButtons;
 
-    [SerializeField] private GameObject _seletBarCanvas;
+    public enum BattleUIState
+    {
+        Action,
+        Move,
+        StanceMove,
+        Target,
+        SelectBar,
+        None
+    }
 
-    [SerializeField] private GameObject _turnOrderIndicator;
+    [SerializeField] private GameObject _selectBarCanvas;
 
     [SerializeField] private GameObject _moveInfoPanel;
     [SerializeField] private TextMeshProUGUI _panelTitle;
@@ -131,11 +140,36 @@ public class BattleUIManager : MonoBehaviour
     {
         return useLocalSpace ? pivot.TransformPoint(offset) : pivot.position + offset;
     }
+
+
+    // UI States
+    public void SetUIState(BattleUIState state)
+    {
+        ToggleActionButtons(state == BattleUIState.Action);
+        ToggleMoveButtons(state == BattleUIState.Move);
+        ToggleStanceMoveButtons(state == BattleUIState.StanceMove);
+        ToggleTargetButtons(state == BattleUIState.Target);
+        ToggleSelectBar(state == BattleUIState.SelectBar);
+        ToggleMoveInfo(false); //Always toggle move info panel off when changing states
+    }
     
-    public void ToggleActionButtons(bool onOff) => _actionButtons.SetActive(onOff);
-    public void ToggleMoveButtons(bool onOff) => _moveButtons.SetActive(onOff);
-    public void ToggleTargetButtons(bool onOff) => _targetButtons.SetActive(onOff);
-    public void ToggleSelecBar(bool onOff) => _seletBarCanvas.SetActive(onOff);
+    private void ToggleActionButtons(bool onOff) => _actionButtons.SetActive(onOff);
+    private void ToggleMoveButtons(bool onOff) => _moveButtons.SetActive(onOff);
+    private void ToggleStanceMoveButtons(bool onOff) => _stanceMoveButtons.SetActive(onOff);
+    private void ToggleTargetButtons(bool onOff) => _targetButtons.SetActive(onOff);
+    private void ToggleSelectBar(bool onOff) => _selectBarCanvas.SetActive(onOff);
+    public void ToggleMoveInfo(bool onOff, Move move = null)
+    {
+        if (onOff)
+        {
+            _panelTitle.text = $"{move.Name}";
+            _panelDescription.text = $"Cooldown: {move.Cooldown} turn(s)\n\n{move.Description}";
+
+            if (move.CheckIfCooldown()) _panelTitle.text += $" (cooldown)";
+        }
+        
+        _moveInfoPanel.SetActive(onOff);
+    }
 
     public void ShowWinScreen()
     {
@@ -195,36 +229,6 @@ public class BattleUIManager : MonoBehaviour
         _winBattleScreen.SetActive(false);
     }
 
-    public List<Button> GetActionButtons()
-    => _actionButtons.GetComponentsInChildren<Button>().ToList();
-
-    public List<Button> GetMoveButtons()
-    => _moveButtons.transform.GetChild(0).GetComponentsInChildren<Button>().ToList();
-
-    public void SetUpButton(Button button, Move move)
-    {
-        button.GetComponentInChildren<TextMeshProUGUI>().text = move.Name;
-
-        button.GetComponent<MoveHoverInfo>().SetUpHover(move, this);
-    }
-
-    public void UpdateButton(Button button, bool activated)
-    {
-        if (activated)
-        {
-            button.enabled = true;
-            button.GetComponent<Image>().color = Color.white;
-        }
-        else
-        {
-            button.enabled = false;
-            Color transparent = Color.red;
-            transparent.a = 0.5f;
-
-            button.GetComponent<Image>().color = transparent;
-        }
-    }
-
     public void SetUpStanceBars(Character player)
     {        
         _playerStanceBar.SetUpBar(player.Name, "Stance", player.MaxStance);
@@ -234,53 +238,7 @@ public class BattleUIManager : MonoBehaviour
         _playerStanceBar.UpdateFillAmout(player.CurrentStance);
     }
 
-    private List<GameObject> _createdObjectsTurns = new List<GameObject>();
-    public void ShowTurnOrder(PlayerParty playerParty, EnemyParty enemyParty)
-    {
-        if (_createdObjectsTurns.Count > 0)
-        {
-            foreach (GameObject go in _createdObjectsTurns) Destroy(go);
-            _createdObjectsTurns.Clear();
-        }
-
-        _turnOrderIndicator.transform.parent.gameObject.SetActive(true);
-
-        TextMeshProUGUI prefab = _turnOrderIndicator.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-
-        var battlers = new List<Character>() { playerParty.Player };
-
-        battlers.AddRange(enemyParty.PartyMembers);
-
-        battlers.Sort((a, b) => b.Speed.CompareTo(a.Speed));
-
-        foreach (Character c in battlers)
-        {
-            TextMeshProUGUI tmp = Instantiate(prefab, _turnOrderIndicator.transform);
-
-            tmp.text = c.Name;
-
-            tmp.gameObject.SetActive(true);
-
-            _createdObjectsTurns.Add(tmp.gameObject);
-        }
-    }
-    public void HideTurnOrder()
-    {
-        _turnOrderIndicator.transform.parent.gameObject.SetActive(false);
-    }
-
-    public void ToggleMoveInfo(bool onOff, Move move = null)
-    {
-        if (onOff)
-        {
-            _panelTitle.text = $"{move.Name}";
-            _panelDescription.text = $"Cooldown: {move.Cooldown} turn(s)\n\n{move.Description}";
-
-            if (move.CheckIfCooldown()) _panelTitle.text += $" (cooldown)";
-        }
-        
-        _moveInfoPanel.SetActive(onOff);
-    }
+    
 
     // Animations
 

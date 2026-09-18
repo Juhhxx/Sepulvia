@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MoveButton : MonoBehaviour
 {
     [SerializeField] private int _buttonNumber;
+    [SerializeField] private MoveTypes _buttonType;
     [SerializeField, ReadOnly] private Move _move;
 
     private BattleManager _battleManager;
@@ -27,12 +28,19 @@ public class MoveButton : MonoBehaviour
             Character player = _battleManager.Player;
             _playerController = _battleManager.GetBattlerController(player);
 
-            _move = player.MoveSet[_buttonNumber - 1];
+            var moveList = _buttonType == MoveTypes.Normal ? player.MoveSet : player.StanceMoveSet;
+
+            if (moveList.Count >= _buttonNumber)
+            {
+                _move = moveList[_buttonNumber - 1];
+                gameObject.SetActive(true);
+            }
+            else gameObject.SetActive(false);
         }
 
         _button.onClick.AddListener(() => SendMoveInput());
 
-        OnMoveSetUp?.Invoke(_move);
+        if (_move != null) OnMoveSetUp?.Invoke(_move);
     }
 
     private void SendMoveInput()

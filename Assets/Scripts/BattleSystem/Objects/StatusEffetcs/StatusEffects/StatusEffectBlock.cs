@@ -8,7 +8,7 @@ public class StatusEffectBlock : IStatusEffect
     [SerializeField] private int _rewardAmount;
     public int RewardAmount => _rewardAmount;
 
-    public void OnEnterEffect(Character target) {}
+    public void OnEnterEffect(Character target, StatusEffect statusEffect) {}
 
     public void OnExitEffect() {}
 
