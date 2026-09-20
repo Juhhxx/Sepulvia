@@ -8,7 +8,7 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
     [field: SerializeField, ReadOnly] public int CurrentStack { get; private set; }
 
     [SerializeField] private int _stunAmount = 2;
-    private Character _target;
+    private BattlerController _target;
     private StatusEffect _effect;
 
     public void AddStack()
@@ -34,12 +34,12 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
 
     public void OnAddMaxStackReached()
     {
-        _target.RecoveryTime += _stunAmount;
+        _target.Character.RecoveryTime += _stunAmount;
 
         _target.StatusEffectManager.RemoveStatusEffect(_effect);
     }
 
-    public bool CheckForStacking(Character target, StatusEffect statusEffect)
+    public bool CheckForStacking(BattlerController target, StatusEffect statusEffect)
     {
         var tmp = new List<StatusEffect>(target.StatusEffectManager.ActiveStatusEffects);
 
@@ -57,7 +57,7 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
         return false;
     }
 
-    public void OnEnterEffect(Character target, StatusEffect statusEffect)
+    public void OnEnterEffect(BattlerController target, StatusEffect statusEffect)
     {
         if (CheckForStacking(target, statusEffect))
         {

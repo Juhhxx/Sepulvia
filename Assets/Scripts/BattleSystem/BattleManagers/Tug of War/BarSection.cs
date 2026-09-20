@@ -6,11 +6,6 @@ using System.Collections;
 
 public class BarSection : MonoBehaviour
 {
-    [SerializeField] private Color _normalColor;
-    [SerializeField] private Color _heartColor;
-    [SerializeField] private Image[] _barImages;
-
-
     [field: SerializeField, ReadOnly] public BarModifier BarModifier { get; private set; }
     public bool HasModifier { get; private set; }
     private GameObject _modifierPrefab;
@@ -39,16 +34,36 @@ public class BarSection : MonoBehaviour
         Destroy(modifier);
     }
 
-    [field: SerializeField, ReadOnly] public BarSection ConnectRight { get; set; }
-    [field: SerializeField, ReadOnly] public BarSection ConnectLeft { get; set; }
+    public event Action OnChangeConnections;
 
+    [SerializeField, ReadOnly] private BarSection _connectRight;
+    public BarSection ConnectRight
+    {
+        get => _connectRight;
+        set
+        {
+            _connectRight = value;
+            OnChangeConnections?.Invoke();
+        }
+    }
+
+    [SerializeField, ReadOnly] private BarSection _connectLeft;
+    public BarSection ConnectLeft
+    {
+        get => _connectLeft;
+        set
+        {
+            _connectLeft = value;
+            OnChangeConnections?.Invoke();
+        }
+    }
+
+    public event Action<bool> OnHeartChange;
     [field: SerializeField, ReadOnly] public bool HasHeart { get; private set; }
     public void SetHasHeart(bool has)
     {
         HasHeart = has;
-
-        if (HasHeart) ChangeImagesColor(_heartColor);
-        else ChangeImagesColor(_normalColor);
+        OnHeartChange?.Invoke(has);
     }
 
     [field: SerializeField, ReadOnly] public Vector3 HeartPosition { get; private set; }
@@ -58,31 +73,14 @@ public class BarSection : MonoBehaviour
     }
 
     [field: SerializeField, ReadOnly] public RectTransform RectTransform { get; private set; }
-    public void SetTransform(RectTransform rectTrans)
-    {
-        RectTransform = rectTrans;
-    }
-
-    private Image _image;
-    public Image Image => _image;
 
     private Button _button;
     public Button Button => _button;
 
     private void Awake()
     {
-        _image = GetComponent<Image>();
         _button = GetComponent<Button>();
-
-        if (_barImages.Length > 0) ChangeImagesColor(_normalColor);
-    }
-
-    private void ChangeImagesColor(Color color)
-    {
-        foreach (Image i in _barImages)
-        {
-            i.color = color;
-        }
+        RectTransform = GetComponent<RectTransform>();
     }
 
     private void OnDestroy()

@@ -27,7 +27,6 @@ public class Enemy : Character
         DifficultyLevel = info.DifficultyLevel;
         PossibleRewards = info.PossibleRewards;
         Inteligence = info.Inteligence;
-        BattleAI = new EnemyBattleAI(this);
     }
 
     [field: Header("Character Defeat Rewards")]
@@ -41,5 +40,4 @@ public class Enemy : Character
     [field: Space(5)]
     [field : SerializeField, ReadOnly] public int Inteligence { get; private set; }
 
-    public EnemyBattleAI BattleAI { get; private set; }
 }

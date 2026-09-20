@@ -72,5 +72,5 @@ public class BarModifier
 
 public interface IBarModifier
 {
-    public void OnBarModifierTriggered(int position, Character user, PullingManager pullManager);
+    public void OnBarModifierTriggered(int position, BattlerController user, PullingManager pullManager);
 }

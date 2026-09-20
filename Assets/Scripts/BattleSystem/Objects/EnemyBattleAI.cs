@@ -1,20 +1,14 @@
+using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 [Serializable]
-public class EnemyBattleAI
+public class EnemyBattleAI : MonoBehaviour
 {
-    private Character _character;
-
-    public EnemyBattleAI(Character character)
+    public void ChooseRandom(BattlerController battler, BattlerController[] possibleTargets, List<BarSection> sections, int soulPosition)
     {
-        _character = character;
-    }
-    
-    public BattleAction ChooseRandom(PlayerParty playerParty, List<BarSection> sections, int soulPosition)
-    {
-        Random rnd = new Random();
+        System.Random rnd = new System.Random();
         Move move = null;
 
         bool ok = false;
@@ -23,7 +17,7 @@ public class EnemyBattleAI
 
         while (!ok && iteration < maxIteration)
         {
-            move = _character.MoveSet[rnd.Next(_character.MoveSet.Count)];
+            move = battler.Character.MoveSet[rnd.Next(battler.Character.MoveSet.Count)];
 
             ok = !move.CheckIfCooldown();
 
@@ -33,7 +27,7 @@ public class EnemyBattleAI
         if (move == null)
         {
             UnityEngine.Debug.Log("MAX ITERATION REACHED, CHOOSING FIRST AVAILABLE MOVE");
-            move = _character.MoveSet[0];
+            move = battler.Character.MoveSet[0];
         }
 
         // if (move.Type == MoveTypes.Modifier)
@@ -45,10 +39,26 @@ public class EnemyBattleAI
         //     move.SetBarSection(ChooseBarSection(rnd, move.Modifier, sections.Count, soulPosition, occupiedBars.ToArray()));
         // }
 
-        return new BattleAction(_character, playerParty.PartyMembers.ToArray(), move);
+        var targets = ChooseTargets(battler, possibleTargets, move.Targeting);
+
+        battler.QueueAction(new BattleAction(battler, targets, move));
+    }
+    private BattlerController[] ChooseTargets(BattlerController battler, BattlerController[] possibleTargets, MoveTargeting targeting)
+    {
+        if (targeting == MoveTargeting.Self) return new BattlerController[1] {battler};
+        else if (targeting == MoveTargeting.All) return possibleTargets;
+        else if (targeting == MoveTargeting.Single)
+        {
+            System.Random rnd = new System.Random();
+            int targetIndex = rnd.Next(0, possibleTargets.Length);
+
+            return new BattlerController[1] {possibleTargets[targetIndex]};
+        }
+
+        return new BattlerController[0];
     }
 
-    public int ChooseBarSection(Random rnd, BarModifier modifier, int totalBars, int soulPosition, int[] occupied)
+    public int ChooseBarSection(System.Random rnd, BarModifier modifier, int totalBars, int soulPosition, int[] occupied)
     {
         int section = 0;
         int middle = totalBars / 2;

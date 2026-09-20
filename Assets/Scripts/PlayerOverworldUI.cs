@@ -10,7 +10,6 @@ using DG.Tweening;
 public class PlayerOverworldUI : MonoBehaviour
 {
     [SerializeField] private GameObject _overworldUICanvas;
-    [SerializeField] private TextMeshProUGUI _stanceTMP;
     [SerializeField] private TextMeshProUGUI _essenceTMP;
     [SerializeField] private TextMeshProUGUI _soulFragmentsTMP;
     [SerializeField] private GameObject _equipmentParent;
@@ -41,7 +40,6 @@ public class PlayerOverworldUI : MonoBehaviour
 
         _player.OnBattleEnterExit += (bool inBattle) => ToggleOverworldUI(!inBattle);
 
-        // _player.PlayerCharacter.OnStanceChange += (int current, int max, int previous) => UpdateValue(_stanceTMP, $"{current} / {max}");
         _player.PlayerCharacter.Inventory.OnChangeEqupipment += UpdateEquipmentSlots;
         (_player.PlayerCharacter as Player).OnEssenceChange += (int essence) => UpdateValue(_essenceTMP, essence);
 

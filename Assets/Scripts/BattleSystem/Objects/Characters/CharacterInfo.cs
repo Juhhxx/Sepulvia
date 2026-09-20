@@ -73,8 +73,6 @@ public class Character
         CheckEquipment();
 
         Inventory = info.Inventory?.Instantiate();
-
-        _statusEffectManager = statusEffectManager ?? new StatusEffectManager(this);
     }
 
     [field: Header("Character Cosmetics")]
@@ -342,9 +340,4 @@ public class Character
     [field: Space(5)]
     [field: SerializeField] public Inventory Inventory { get; private set; }
     
-    [Space(10)]
-    [Header("Character Status Effects")]
-    [Space(5)]
-    [SerializeField] private StatusEffectManager _statusEffectManager;
-    public StatusEffectManager StatusEffectManager => _statusEffectManager;
 }

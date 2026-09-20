@@ -45,29 +45,29 @@ public class BattleResolver : RandomBehaviour
         }
     }
 
-    public void DoMove(Move move, Character user, Character[] targets)
+    public void DoMove(Move move, BattlerController user, BattlerController[] targets)
     {
         int blockStun = CheckBlock(targets);
 
         if (blockStun > 0)
         {
-            user.RecoveryTime += blockStun;
+            user.Character.RecoveryTime += blockStun;
 
             DialogueManager.Instance.AddDialogue(
-                $"{user.Name} was blocked and stunned for {blockStun} turns.");
+                $"{user.Character.Name} was blocked and stunned for {blockStun} turns.");
             
             return;
         }
 
-        Debug.Log($"{user.Name} USED {move.Name} AGAINST {targets[0].Name}");
+        Debug.Log($"{user.Character.Name} USED {move.Name} AGAINST {targets[0].Character.Name}");
 
         move.UsedMove();
 
-        user.RecoveryTime += move.RecoveryCost;
-        user.CurrentStance += GetStanceBoost(move);
+        user.Character.RecoveryTime += move.RecoveryCost;
+        user.Character.CurrentStance += GetStanceBoost(move);
 
         DialogueManager.Instance.AddDialogue(
-            $"{user.Name} used {move.Name} against {string.Join(", ", targets.Select(t => t.Name))}.");
+            $"{user.Character.Name} used {move.Name} against {string.Join(", ", targets.Select(t => t.Character.Name))}.");
 
         move.MoveLogic.OnDoMove(user, targets, this);
     }
@@ -79,45 +79,45 @@ public class BattleResolver : RandomBehaviour
         return Mathf.Lerp(move.StanceRewardRange.x, move.StanceRewardRange.y, rnd);
     }
 
-    private int CheckBlock(Character[] targets)
+    private int CheckBlock(BattlerController[] targets)
     {
         int result = 0;
 
-        foreach (Character c in targets)
+        foreach (BattlerController bc in targets)
         {
-            if (c.StatusEffectManager.HasStatusEffect<StatusEffectBlock>())
+            if (bc.StatusEffectManager.HasStatusEffect<StatusEffectBlock>())
             {
-                var se = c.StatusEffectManager.GetStatusEffect<StatusEffectBlock>();
+                var se = bc.StatusEffectManager.GetStatusEffect<StatusEffectBlock>();
 
                 result += (se.StatusEffectLogic as StatusEffectBlock).StunAmount;
-                c.CurrentStance += (se.StatusEffectLogic as StatusEffectBlock).RewardAmount;
+                bc.Character.CurrentStance += (se.StatusEffectLogic as StatusEffectBlock).RewardAmount;
             }
         }
 
         return result;
     }
 
-    public void DoPull(int strenght, Character user)
+    public void DoPull(int strenght, BattlerController user)
     {
-        int pullStrenght = strenght + user.PullStrenghtBonus;
+        int pullStrenght = strenght + user.Character.PullStrenghtBonus;
 
         if (pullStrenght < 0) pullStrenght = 0;
 
         if (pullStrenght > 0)
         {
             DialogueManager.Instance.AddDialogue(
-            $"{user.Name} pulled the Soul to their side by {pullStrenght}.");
+            $"{user.Character.Name} pulled the Soul to their side by {pullStrenght}.");
         }
         else
         {
             DialogueManager.Instance.AddDialogue(
-            $"{user.Name} failed to pull the Soul to their side.");
+            $"{user.Character.Name} failed to pull the Soul to their side.");
         }
        
-        user.Animator?.SetTrigger("Attack");
+        user.Character.Animator?.SetTrigger("Attack");
         
         Debug.Log($"{_pullManager}");
-        if (user is Player)
+        if (user.IsPlayer())
         {
             _pullManager.MoveHeart(-pullStrenght, user);
         } 
@@ -127,11 +127,11 @@ public class BattleResolver : RandomBehaviour
         }
     }
 
-    public void DoStatusEffect(StatusEffect statusEffect, Character[] targets)
+    public void DoStatusEffect(StatusEffect statusEffect, BattlerController[] targets)
     {
-        foreach (Character target in targets)
+        foreach (BattlerController target in targets)
         {
-            target.StatusEffectManager.AddStatusEffect(statusEffect);
+            target.StatusEffectManager.AddStatusEffect(statusEffect, target);
         }
     }
 
@@ -161,9 +161,9 @@ public class BattleResolver : RandomBehaviour
         _pullManager.BarSections[section].AddBarModifier(modifier);
     }
 
-    public void UseItem(ItemInfo item, Character user)
+    public void UseItem(ItemInfo item, BattlerController user)
     {
-        _inventoryResolver.UseItem(item, user);
+        _inventoryResolver.UseItem(item, user.Character);
     }
 
     public (List<ItemInfo>, int) GiveRewards(EnemyParty enemyParty, bool spared)
@@ -203,7 +203,7 @@ public class BattleResolver : RandomBehaviour
         return (items, essence);
     }
 
-    public bool CanRun(Character user, EnemyParty enemyParty)
+    public bool CanRun(BattlerController user, EnemyParty enemyParty)
     {
         float rnd = (float)_random.NextDouble();
 
@@ -222,8 +222,8 @@ public class BattleResolver : RandomBehaviour
 
         if (enemyParty.PartyMembers.Any(e => !(e as Enemy).CanRun)) result = false;
 
-        if (result) DialogueManager.Instance.AddDialogue($"{user.Name} ran away!");
-        else DialogueManager.Instance.AddDialogue($"{user.Name} couldn't run from battle.");
+        if (result) DialogueManager.Instance.AddDialogue($"{user.Character.Name} ran away!");
+        else DialogueManager.Instance.AddDialogue($"{user.Character.Name} couldn't run from battle.");
 
         return result;
     }

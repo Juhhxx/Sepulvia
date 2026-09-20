@@ -118,5 +118,5 @@ public class Move
 
 public interface IMove
 {
-    public void OnDoMove(Character user, Character[] targets, BattleResolver resolver);
+    public void OnDoMove(BattlerController user, BattlerController[] targets, BattleResolver resolver);
 }

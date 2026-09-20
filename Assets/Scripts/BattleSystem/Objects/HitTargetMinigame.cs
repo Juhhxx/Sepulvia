@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HitTargetMinigame : MonoBehaviour
+public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

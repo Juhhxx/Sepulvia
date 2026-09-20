@@ -5,8 +5,8 @@ public class BarModifierStun : IBarModifier
 {
     [SerializeField] private int _stunAmount;
 
-    public void OnBarModifierTriggered(int position, Character user, PullingManager pullManager)
+    public void OnBarModifierTriggered(int position, BattlerController user, PullingManager pullManager)
     {
-        user.RecoveryTime += _stunAmount;
+        user.Character.RecoveryTime += _stunAmount;
     }
 }

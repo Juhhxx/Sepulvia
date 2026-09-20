@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 968678963572831631}
   - component: {fileID: 5889781329858984861}
   - component: {fileID: 5403012844992204506}
+  - component: {fileID: 1497577000219287179}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -176,6 +177,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29beeee81c87d814ab45d009d1668b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattlerController
+  _character:
+    <Name>k__BackingField: 
+    <BattlePrefab>k__BackingField: {fileID: 0}
+    Animator: {fileID: 0}
+    _baseSpeed: 0
+    _recoveryTime: 0
+    _baseStance: 0
+    _currentStance: 0
+    _statModifiers: []
+    <MoveSet>k__BackingField: []
+    <StanceMoveSet>k__BackingField: []
+    <Inventory>k__BackingField:
+      <MaxInventorySpaces>k__BackingField: 0
+      <ItemSlots>k__BackingField: []
+      <MaxEquipmentSpaces>k__BackingField: 0
+      <EquipmentSlots>k__BackingField: []
+  _enemyBattleAI: {fileID: 0}
+  _statusEffectManager: {fileID: 1497577000219287179}
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1497577000219287179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383824495953575252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea778cfa800b1944b896306f8a175819, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatusEffectManager
+  _activeStatusEffects: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &4086019358235449706
 GameObject:
   m_ObjectHideFlags: 0

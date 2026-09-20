@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System;
 
 [Serializable]
-public class StatusEffectManager
+public class StatusEffectManager : MonoBehaviour
 {
     [SerializeField] private List<StatusEffect> _activeStatusEffects = new List<StatusEffect>();
     public IReadOnlyList<StatusEffect> ActiveStatusEffects => _activeStatusEffects;
-    
-    private Character _character;
 
-    public void AddStatusEffect(StatusEffect se)
+
+    public void AddStatusEffect(StatusEffect se, BattlerController character)
     {
         _activeStatusEffects.Add(se);
 
-        se.StatusEffectLogic.OnEnterEffect(_character, se);
+        se.StatusEffectLogic.OnEnterEffect(character, se);
     }
 
     public void RemoveStatusEffect(StatusEffect se)
@@ -69,11 +68,6 @@ public class StatusEffectManager
         }
 
         return null;
-    }
-
-    public StatusEffectManager (Character character)
-    {
-        _character = character;
     }
 
 }

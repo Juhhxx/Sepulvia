@@ -11,7 +11,7 @@ public class TargetButtonManager : MonoBehaviour
     private BattleManager _battleManager;
     private EnemyParty _enemyParty;
 
-    private List<Character> _selectedEnemies = new List<Character>();
+    private List<BattlerController> _selectedEnemies = new List<BattlerController>();
     private int _numberOfTargets;
 
     private List<Button> _createdButtons = new List<Button>();
@@ -56,7 +56,8 @@ public class TargetButtonManager : MonoBehaviour
             if (i < _enemyParty.PartySize)
             {
                 _createdButtons[i].gameObject.SetActive(true);
-                UpdateTargetButton(_createdButtons[i], _enemyParty.PartyMembers[i]);
+                UpdateTargetButton(_createdButtons[i], 
+                _battleManager.GetBattlerController(_enemyParty.PartyMembers[i]));
             }
             else
             {
@@ -65,35 +66,35 @@ public class TargetButtonManager : MonoBehaviour
         }
         
     }
-    private void UpdateTargetButton(Button b, Character c)
+    private void UpdateTargetButton(Button b, BattlerController bc)
     {
         TargetButtonUI tbui = b.GetComponent<TargetButtonUI>();
 
-        tbui.SetUp(c);
+        tbui.SetUp(bc.Character);
 
         b.onClick.RemoveAllListeners();
         b.onClick.AddListener(() =>
         {
-            ToggleTarget(c);
+            ToggleTarget(bc);
             tbui.ToggleSelect();
         });
     }
 
     private void SendTargetedEnemies()
     {
-        foreach (Character c in _selectedEnemies)
+        foreach (BattlerController c in _selectedEnemies)
         {
             _battleManager.GetBattlerController(_battleManager.Player).AddTarget(c);
         }
     }
 
-    private void ToggleTarget(Character character)
+    private void ToggleTarget(BattlerController BattlerController)
     {
-        if (_selectedEnemies.Contains(character))
+        if (_selectedEnemies.Contains(BattlerController))
         {
-            _selectedEnemies.Remove(character);
+            _selectedEnemies.Remove(BattlerController);
         }
-        else _selectedEnemies.Add(character);
+        else _selectedEnemies.Add(BattlerController);
 
         Debug.Log($"SELECTED ENEMIE {_selectedEnemies.Count} ENEMIES REQUESTED {_numberOfTargets}");
 

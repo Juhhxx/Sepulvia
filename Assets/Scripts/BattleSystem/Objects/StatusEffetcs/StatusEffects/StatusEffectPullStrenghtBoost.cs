@@ -5,13 +5,13 @@ public class StatusEffectPullStrenghtBoost : IStatusEffect
 {
     [SerializeField] private int _boostAmount;
     private StatModifier _modifier;
-    private Character _target;
+    private BattlerController _target;
 
-    public void OnEnterEffect(Character target, StatusEffect statusEffect)
+    public void OnEnterEffect(BattlerController target, StatusEffect statusEffect)
     {
         _target = target;
         _modifier = new StatModifier(Stats.PullStrength, _boostAmount);
-        target.AddModifier(_modifier);
+        target.Character.AddModifier(_modifier);
     }   
 
     public void OnUpdateEffect() {}
@@ -20,6 +20,6 @@ public class StatusEffectPullStrenghtBoost : IStatusEffect
 
     public void OnExitEffect()
     {
-        _target.RemoveModifier(_modifier);
+        _target.Character.RemoveModifier(_modifier);
     }
 }

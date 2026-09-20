@@ -9,6 +9,7 @@ public class PullingUIManager : MonoBehaviour
 {
     [Header("UI Parameters")]
     [SerializeField] Canvas _canvas;
+    [SerializeField] Transform _pullBarParent;
     [SerializeField] GameObject _heartPrefab;
     [SerializeField] GameObject _pullBarPrefab;
     [SerializeField, Range(0, 1920), OnValueChanged("SpawnBarSections")] float _barsTotalWidth;
@@ -91,9 +92,8 @@ public class PullingUIManager : MonoBehaviour
 
         for (int i = 0; i < _divNumb; i++)
         {
-            GameObject spawnedBar = Instantiate(_pullBarPrefab, _canvas.transform);
+            GameObject spawnedBar = Instantiate(_pullBarPrefab, _pullBarParent);
 
-            Image image = spawnedBar.GetComponent<Image>();
             BarSection section = spawnedBar.GetComponent<BarSection>();
 
            _barSectionList.Add(section);
@@ -107,26 +107,23 @@ public class PullingUIManager : MonoBehaviour
             _lastBar = section;
 
             // Resize each section
-            image.rectTransform.sizeDelta = new Vector2(sectionWidth, image.rectTransform.sizeDelta.y);
+            section.RectTransform.sizeDelta = new Vector2(sectionWidth, section.RectTransform.sizeDelta.y);
 
             // Anchor to middle
-            image.rectTransform.pivot = new Vector2(0.5f, 0.5f);
-            image.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-            image.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            section.RectTransform.pivot = new Vector2(0.5f, 0.5f);
+            section.RectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            section.RectTransform.anchorMax = new Vector2(0.5f, 0.5f);
 
             // Calculate position
             float x = -_barsTotalWidth / 2f + (i * (sectionWidth + _padding)) + (sectionWidth / 2f);
-            image.rectTransform.anchoredPosition = new Vector2(x, _barY);
+            section.RectTransform.anchoredPosition = new Vector2(x, _barY);
 
-            section.SetTransform(image.rectTransform);
-
-            //Add new bar position to a list that you can use as anchor points to move the _heart around
-            section.SetHeartPosition(new Vector3(image.rectTransform.anchoredPosition.x, image.rectTransform.anchoredPosition.y + _heartHeightPadding, 0));
+            section.SetHeartPosition(new Vector3(section.RectTransform.anchoredPosition.x, section.RectTransform.anchoredPosition.y + _heartHeightPadding, 0));
 
             _spawnedObjects.Add(spawnedBar.gameObject);
         }
 
-        _sectionWidth = _barSectionList[0].Image.rectTransform.sizeDelta.x;
+        _sectionWidth = _barSectionList[0].RectTransform.sizeDelta.x;
 
     }
 

@@ -10,6 +10,14 @@ public class BattlerController : MonoBehaviour
     public Character Character => _character;
     public bool IsPlayer() => _character is Player;
 
+    // Enemy Battle AI
+    [SerializeField] private EnemyBattleAI _enemyBattleAI;
+    public EnemyBattleAI BattleAI => _enemyBattleAI;
+
+    // Status Effect Manager
+    [SerializeField] private StatusEffectManager _statusEffectManager;
+    public StatusEffectManager StatusEffectManager => _statusEffectManager;
+
     // Set Up
     private BattleManager _battleManager;
     private TargetButtonManager _targetButtonManager;
@@ -19,7 +27,12 @@ public class BattlerController : MonoBehaviour
         _character = character;
         _battleManager = battleManager;
 
-        _targetButtonManager = FindAnyObjectByType<TargetButtonManager>(FindObjectsInactive.Include);
+        _enemyBattleAI = GetComponent<EnemyBattleAI>();
+
+        if (IsPlayer())
+        {
+            _targetButtonManager = FindAnyObjectByType<TargetButtonManager>(FindObjectsInactive.Include);
+        }
     }
 
     // Actions
@@ -62,11 +75,14 @@ public class BattlerController : MonoBehaviour
             {
                 if (_actionMove.Targeting == MoveTargeting.Self)
                 {
-                    _actionTargets.Add(_character);
+                    _actionTargets.Add(this);
                 }
                 else
                 {
-                    _actionTargets.AddRange(_battleManager.EnemyParty.PartyMembers);
+                    foreach (Character c in _battleManager.EnemyParty.PartyMembers)
+                    {
+                        _actionTargets.Add(_battleManager.GetBattlerController(c));
+                    }
                 }
 
                 AddAction(_actionMove, _actionTargets.ToArray());
@@ -83,20 +99,20 @@ public class BattlerController : MonoBehaviour
     }
 
     private Move _actionMove = null;
-    private List<Character> _actionTargets = new List<Character>();
+    private List<BattlerController> _actionTargets = new List<BattlerController>();
 
     public void SetMove(Move move)
     {
         _actionMove = move;
         _battleManager.CurrentState = BattleManager.BattleState.PlayerChooseTarget;
     }
-    public void AddTarget(Character character)
+    public void AddTarget(BattlerController target)
     {
-        _actionTargets.Add(character);
+        _actionTargets.Add(target);
     }
-    public void AddAction(Move move, Character[] targets)
+    public void AddAction(Move move, BattlerController[] targets)
     {
-        var action = new BattleAction(_character, targets, move);
+        var action = new BattleAction(this, targets, move);
 
         QueueAction(action);
     }
@@ -106,14 +122,14 @@ public class BattlerController : MonoBehaviour
     public void SetItem(ItemInfo item) => _actionItem = item;
     public void AddAction(ItemInfo item)
     {
-        var action = new BattleAction(_character, item);
+        var action = new BattleAction(this, item);
 
         QueueAction(action);
     }
 
     public void AddActionRun()
     {
-        var action = new BattleAction(_character);
+        var action = new BattleAction(this);
 
         QueueAction(action);
     }

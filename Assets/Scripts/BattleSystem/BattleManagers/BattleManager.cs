@@ -129,7 +129,7 @@ public class BattleManager : MonoBehaviour
     // Run logic
     public void Run()
     {
-        bool result = _battleResolver.CanRun(Player, _enemyParty);
+        bool result = _battleResolver.CanRun(GetBattlerController(Player), _enemyParty);
 
         if (result)
         {
@@ -380,20 +380,21 @@ public class BattleManager : MonoBehaviour
 
             if (battler.RecoveryTime <= 0)
             {
+                BattlerController controller = GetBattlerController(battler);
                 BattleAction action = null;
 
-                if (!GetBattlerController(battler).HasActions())
+                if (!controller.HasActions())
                 {
-                    if (GetBattlerController(battler).IsPlayer())
+                    if (controller.IsPlayer())
                     {
                         _currentState = BattleState.PlayerTurnBegin;
 
                         _dialogueManager.HideDialogue();
                         _uiManager.SetUIState(BattleUIManager.BattleUIState.Action);
 
-                        GetBattlerController(battler).RequestAction();
+                        controller.RequestAction();
 
-                        while (!GetBattlerController(battler).HasActions())
+                        while (!controller.HasActions())
                         {
                             if (_currentState == BattleState.PlayerChooseTarget)
                             {
@@ -410,16 +411,17 @@ public class BattleManager : MonoBehaviour
                     else
                     {
                         _currentState = BattleState.EnemyTurnBegin;
+                        
+                        BattlerController[] playerControllers = _playerParty.PartyMembers.Select(c => GetBattlerController(c)).ToArray();
 
-                        var tmp = (battler as Enemy).BattleAI.ChooseRandom(_playerParty, _pullManager.BarSections, _pullManager.CurrentHeartIndex);
-
-                        GetBattlerController(battler).QueueAction(tmp);
+                        controller.BattleAI.ChooseRandom(controller, playerControllers, 
+                                _pullManager.BarSections, _pullManager.CurrentHeartIndex);
 
                         _currentState = BattleState.EnemyTurnEnd;
                     }
                 }
 
-                action = GetBattlerController(battler).GetAction();
+                action = controller.GetAction();
 
                 yield return new WaitUntil(() => action != null);
                 

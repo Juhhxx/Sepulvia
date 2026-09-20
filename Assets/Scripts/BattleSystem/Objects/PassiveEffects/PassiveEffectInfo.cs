@@ -47,7 +47,8 @@ public class PassiveEffect
 
 public interface IPassiveEffect
 {
-    public void OnEnterEffect(Character target);
+    public void OnEnterBattleEffect(BattlerController target);
     public void OnTriggerEffect();
-    public void OnExitEffect();
+    public void OnBeginTurnEffect();
+    public void OnEndTurnEffect();
 }

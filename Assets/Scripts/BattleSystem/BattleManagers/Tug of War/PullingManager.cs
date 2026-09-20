@@ -79,16 +79,13 @@ public class PullingManager : RandomBehaviour
             int rnd = _random.Next(0, 1);
 
             _currentHeartIndex = (_sectionsNumber / 2) + rnd;
-
-            _pullingUIManager.MoveHeart(_currentHeartIndex, doAnim: false);
         }
         else
         {
             _currentHeartIndex = (_sectionsNumber / 2) + 1;
-
-            _pullingUIManager.MoveHeart(_currentHeartIndex, doAnim: false);
         }
 
+        _pullingUIManager.MoveHeart(_currentHeartIndex, doAnim: false);
         _barSectionList[_currentHeartIndex].SetHasHeart(true);
     }
 
@@ -96,13 +93,13 @@ public class PullingManager : RandomBehaviour
     public bool IsMoving { get; private set; }
     private Coroutine _moveHeartCoroutine;
 
-    public void MoveHeart(int pushForce, Character user)
+    public void MoveHeart(int pushForce, BattlerController user)
     {
         if (_moveHeartCoroutine != null) StopCoroutine(_moveHeartCoroutine);
 
         _moveHeartCoroutine = StartCoroutine(MoveHeartCR(Mathf.Abs(pushForce), pushForce > 0, user));
     }
-    private IEnumerator MoveHeartCR(int pushForce, bool positive, Character user)
+    private IEnumerator MoveHeartCR(int pushForce, bool positive, BattlerController user)
     {
         IsMoving = true;
 
@@ -184,7 +181,7 @@ public class PullingManager : RandomBehaviour
             }
         }
     }
-    public void DoBarModifier(BarSection section, BarModifierTrigger trigger, Character user)
+    public void DoBarModifier(BarSection section, BarModifierTrigger trigger, BattlerController user)
     {
         if (!section.HasModifier) return;
 

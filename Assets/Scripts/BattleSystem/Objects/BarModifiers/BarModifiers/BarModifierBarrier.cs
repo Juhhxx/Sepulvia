@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BarModifierBarrier : IBarModifier
 {
-    public void OnBarModifierTriggered(int position, Character user, PullingManager pullManager)
+    public void OnBarModifierTriggered(int position, BattlerController user, PullingManager pullManager)
     {
         pullManager.StopMovement();
     }
