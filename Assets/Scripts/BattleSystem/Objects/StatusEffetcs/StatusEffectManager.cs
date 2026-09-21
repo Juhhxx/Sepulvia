@@ -25,7 +25,7 @@ public class StatusEffectManager : MonoBehaviour
 
     public void UpdateStatusEffects()
     {
-        foreach (StatusEffect se in _activeStatusEffects)
+        foreach (StatusEffect se in new List<StatusEffect>(_activeStatusEffects))
         {
             UpdateStatusEffect(se);
         }

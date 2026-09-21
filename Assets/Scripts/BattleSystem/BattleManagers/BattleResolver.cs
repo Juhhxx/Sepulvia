@@ -161,6 +161,29 @@ public class BattleResolver : RandomBehaviour
         _pullManager.BarSections[section].AddBarModifier(modifier);
     }
 
+    private bool _playingMinigame = false;
+    public bool PlayingMinigame => _playingMinigame;
+    private GameObject _activeMinigame;
+    public IMoveMinigame DoMinigame(GameObject minigamePrefab)
+    {
+        _playingMinigame = true;
+        _activeMinigame = Instantiate(minigamePrefab);
+
+        return _activeMinigame.GetComponent<IMoveMinigame>();
+    }
+    public void FinishedMinigame()
+    {
+        _playingMinigame = false;
+
+        Destroy(_activeMinigame);
+        _activeMinigame = null;
+    }
+
+    public void DoChainShatter(int number, bool right)
+    {
+        _pullManager.BreakBarSections(number, !right);
+    }
+
     public void UseItem(ItemInfo item, BattlerController user)
     {
         _inventoryResolver.UseItem(item, user.Character);

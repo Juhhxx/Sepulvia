@@ -436,6 +436,8 @@ public class BattleManager : MonoBehaviour
                     _uiManager.SetUIState(BattleUIManager.BattleUIState.None);
                 }
 
+                yield return new WaitUntil(() => !_battleResolver.PlayingMinigame);
+
                 yield return new WaitUntil(() => !_pullManager.IsMoving);
 
                 if (_hasWinner || _doRun) yield break; 
