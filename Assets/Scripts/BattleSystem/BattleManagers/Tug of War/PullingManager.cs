@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Collections;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 
 public class PullingManager : RandomBehaviour
 {
@@ -20,9 +21,50 @@ public class PullingManager : RandomBehaviour
     public List<BarSection> BarSections => _barSectionList;
     private int _sectionsNumber;
 
+    public void BreakBarSection(BarSection section)
+    {
+        if (section.HasModifier) section.RemoveBarModifier();
+
+        if (section.ConnectLeft != null) section.ConnectLeft.ConnectRight = section.ConnectRight;
+        if (section.ConnectRight != null) section.ConnectRight.ConnectLeft = section.ConnectLeft;
+
+        _barSectionList.Remove(section);
+        section.gameObject.SetActive(false);
+    }
+
+    public void BreakBarSections(int number, bool fromLeft)
+    {
+        StartCoroutine(BreakBarSectionsCR(number, fromLeft));
+    }
+
+    private IEnumerator BreakBarSectionsCR(int number, bool fromLeft)
+    {
+        int startIndex = fromLeft ? 0 : _barSectionList.Count - 1;
+        
+        var sections = new List<BarSection>(_barSectionList);
+
+        if (!fromLeft) sections.Reverse();
+
+        for (int i = 0; i < number; i++)
+        {
+            if (i >= sections.Count) yield break;
+
+            BreakBarSection(sections[i]);
+
+            yield return new WaitForSeconds(0.5f);
+        }
+
+    }
+
+    [Button("Break Bar Section Test")]
+    public void RemoveBarSectionTest()
+    {
+        BreakBarSections(3, true);
+    }
+
     // Hearth Variables
-    private int _currentHeartIndex;
-    public int CurrentHeartIndex => _currentHeartIndex;
+    private BarSection _currentHeartSection = null;
+    public int CurrentHeartIndex => _barSectionList.IndexOf(_currentHeartSection);
 
     // Bar Selection Logic
     [field: SerializeField, ReadOnly] public int SelectedIndex { get; private set; }
@@ -74,19 +116,24 @@ public class PullingManager : RandomBehaviour
 
     private void SetHeartInMiddle()
     {
+        int index = 0;
+
         if (_sectionsNumber % 2 == 0)
         {
             int rnd = _random.Next(0, 1);
 
-            _currentHeartIndex = (_sectionsNumber / 2) + rnd;
+            index = (_sectionsNumber / 2) + rnd;
         }
         else
         {
-            _currentHeartIndex = (_sectionsNumber / 2) + 1;
+            index = (_sectionsNumber / 2) + 1;
         }
 
-        _pullingUIManager.MoveHeart(_currentHeartIndex, doAnim: false);
-        _barSectionList[_currentHeartIndex].SetHasHeart(true);
+        _currentHeartSection = _barSectionList[index];
+        _currentHeartSection.SetHasHeart(true);
+
+        _pullingUIManager.MoveHeart(index, doAnim: false);
+
     }
 
     // Moving Logic
@@ -105,38 +152,17 @@ public class PullingManager : RandomBehaviour
 
         for (int i = 0; i < pushForce; i++)
         {
-            BarSection section = _barSectionList[_currentHeartIndex];
+            BarSection section = _currentHeartSection;
 
             // Check Modifier in Current Bar Section
             DoBarModifier(section, BarModifierTrigger.OnInside, user); 
 
-            var tmp = _currentHeartIndex;
+            var nextSection = positive ? section.ConnectLeft : section.ConnectRight;
 
-            if (positive) tmp++;
-            else tmp--;
-
-            Debug.Log($"GOING TO {tmp}");
-
-            if (tmp < 0)
-            {
-                // Tip over to the left
-                _pullingUIManager.MoveHeart(tmp);
-                OnHeartEnd?.Invoke(true);
-                IsMoving = false;
-                yield break;
-            }
-            else if (tmp >= _barSectionList.Count)
-            {
-                // Tip over to the right
-                _pullingUIManager.MoveHeart(tmp);
-                OnHeartEnd?.Invoke(false);
-                IsMoving = false;
-                yield break;
-            }
-            else
+            if (nextSection != null)
             {
                 // Check Modifier in Next Bar Section
-                DoBarModifier(_barSectionList[tmp], BarModifierTrigger.OnEnter, user);
+                DoBarModifier(nextSection, BarModifierTrigger.OnEnter, user);
 
                 if (!IsMoving) yield break; // If the modifier stopped the movement, exit the coroutine
 
@@ -147,11 +173,27 @@ public class PullingManager : RandomBehaviour
 
                 if (!IsMoving) yield break; // If the modifier stopped the movement, exit the coroutine
 
-                _barSectionList[tmp].SetHasHeart(true);
+                nextSection.SetHasHeart(true);
                 
-                _currentHeartIndex = tmp;
+                _currentHeartSection = nextSection;
 
-                _pullingUIManager.MoveHeart(_currentHeartIndex, () => OnSoulMove?.Invoke());
+                _pullingUIManager.MoveHeart(CurrentHeartIndex, () => OnSoulMove?.Invoke());
+            }
+            else if (positive)
+            {
+                // Tip over to the right
+                _pullingUIManager.MoveHeartTipOver(true);
+                OnHeartEnd?.Invoke(false);
+                IsMoving = false;
+                yield break;
+            }
+            else
+            {
+                // Tip over to the left
+                _pullingUIManager.MoveHeartTipOver(false);
+                OnHeartEnd?.Invoke(true);
+                IsMoving = false;
+                yield break;
             }
 
             yield return new WaitForSeconds(_pullSpeed);

@@ -216,16 +216,13 @@ public class BattleManager : MonoBehaviour
         _timelineManager.OnTurnBegin += StartTurn;
 
         // Count Turns in Modifiers and Check Them
-        // _timelineManager.OnTurnEnd += () =>
-        // {
-        //     Player.CheckModifier();
-
-        //     foreach (Character e in _enemyParty.PartyMembers)
-        //     {
-        //         e.CheckModifier();
-        //     }
-        //     Debug.Log("DID MODIFIERS COUNT");
-        // };
+        _timelineManager.OnTurnEnd += () =>
+        {
+            foreach (Character c in _battlersList)
+            {
+                GetBattlerController(c).StatusEffectManager.UpdateStatusEffects();
+            }
+        };
 
         // Check Bar Modifiers
         _timelineManager.OnTurnEnd += _pullManager.CheckBarModifiers;
@@ -329,6 +326,7 @@ public class BattleManager : MonoBehaviour
     [Button(enabledMode: EButtonEnableMode.Playmode)]
     public void EndBattle()
     {
+        Debug.Log("ENDING BATTLE");
         _uiManager.HideFinalScreens();
         _dialogueManager.HideDialogue();
 

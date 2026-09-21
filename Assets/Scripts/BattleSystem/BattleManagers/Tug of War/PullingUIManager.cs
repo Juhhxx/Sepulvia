@@ -4,6 +4,7 @@ using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using System.Linq;
 
 public class PullingUIManager : MonoBehaviour
 {
@@ -55,12 +56,15 @@ public class PullingUIManager : MonoBehaviour
     {
         if (doAnim)
         {
-            if (position < 0) DoHeartMoveAnim(_barSectionList[position + 1].HeartPosition + (Vector3.left * _sectionWidth), action);
-            else if (position > _barSectionList.Count - 1) DoHeartMoveAnim(_barSectionList[position - 1].HeartPosition + (Vector3.right * _sectionWidth), action);
-            else DoHeartMoveAnim(_barSectionList[position].HeartPosition, action);
+            DoHeartMoveAnim(_barSectionList[position].HeartPosition, action);
         }
         else _heartTrans.anchoredPosition = _barSectionList[position].HeartPosition;
         
+    }
+    public void MoveHeartTipOver(bool right, Action action = null)
+    {
+        if (right) DoHeartMoveAnim(_barSectionList.Last().HeartPosition + (Vector3.right * _sectionWidth), action);
+        else DoHeartMoveAnim(_barSectionList.First().HeartPosition + (Vector3.left * _sectionWidth), action);
     }
 
     private BarSection _lastBar = null;
