@@ -19,7 +19,7 @@ MonoBehaviour:
   <Level>k__BackingField: 0
   <RecoveryCost>k__BackingField: 2
   <Cooldown>k__BackingField: 5
-  _stanceCost: 3
+  _stanceCost: 0
   <StanceRewardRange>k__BackingField: {x: 0.5, y: 1}
   <Type>k__BackingField: 1
   <Targeting>k__BackingField: 1
@@ -36,7 +36,9 @@ MonoBehaviour:
     - rid: 3144097947894415499
       type: {class: MoveChainShatter, ns: , asm: Assembly-CSharp}
       data:
-        _minigame:
+        _maxChainShatter: 3
+        _right: 0
+        _minigamePrefab:
           mode: 0
           unityReference: {fileID: 8381942013227094544, guid: 52438d0f955bc2146935ab738c8a213d, type: 3}
           rawReference:

@@ -28,7 +28,6 @@ public class PullingManager : RandomBehaviour
         if (section.ConnectLeft != null) section.ConnectLeft.ConnectRight = section.ConnectRight;
         if (section.ConnectRight != null) section.ConnectRight.ConnectLeft = section.ConnectLeft;
 
-        _barSectionList.Remove(section);
         section.gameObject.SetActive(false);
     }
 

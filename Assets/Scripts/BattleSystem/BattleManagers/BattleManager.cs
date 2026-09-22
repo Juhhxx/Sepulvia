@@ -376,7 +376,7 @@ public class BattleManager : MonoBehaviour
         {
             Debug.Log($"TURN { _timelineManager.CurrentTurn} - {battler.Name} ({battler.RecoveryTime})", this);
 
-            if (battler.RecoveryTime <= 0)
+            while (battler.RecoveryTime <= 0)
             {
                 BattlerController controller = GetBattlerController(battler);
                 BattleAction action = null;
@@ -439,6 +439,8 @@ public class BattleManager : MonoBehaviour
                 yield return new WaitUntil(() => !_battleResolver.PlayingMinigame);
 
                 yield return new WaitUntil(() => !_pullManager.IsMoving);
+
+                yield return new WaitForSeconds(0.5f);
 
                 if (_hasWinner || _doRun) yield break; 
             }

@@ -17,6 +17,7 @@ public class MoveInfo : ScriptableObject
     [field: Space(5)]
     [field: SerializeField] public int RecoveryCost { get; private set; }
     [field: SerializeField] public int Cooldown { get; private set; }
+    [field: SerializeField] public float MoveWaitTime { get; private set; } = 0.5f;
 
     [Space(10)]
     [Header("Stance Move Parameters")]
@@ -58,6 +59,7 @@ public class Move
 
         Cooldown = info.Cooldown;
         RecoveryCost = info.RecoveryCost;
+        MoveWaitTime = info.MoveWaitTime;
 
         Type = info.Type;
         Targeting = info.Targeting;
@@ -94,6 +96,8 @@ public class Move
         _inCooldown = false;
         _turnsPassed = 0;
     }
+
+    [field: SerializeField, ReadOnly] public float MoveWaitTime { get; private set; }
 
     [field: SerializeField, ReadOnly] public MoveTypes Type { get; private set; }
     [field: SerializeField] public MoveTargeting Targeting { get; private set; }
