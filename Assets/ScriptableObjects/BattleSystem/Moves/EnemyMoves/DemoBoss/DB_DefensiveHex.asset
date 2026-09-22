@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b2a18b978b0aa94d8e3e05c29121187, type: 3}
   m_Name: DB_DefensiveHex
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
-  <Name>k__BackingField: Inevitability
+  <Name>k__BackingField: Defensive Hex
   <Icon>k__BackingField: {fileID: 0}
   <Description>k__BackingField: 
   <Level>k__BackingField: 0
-  <RecoveryCost>k__BackingField: 3
+  <RecoveryCost>k__BackingField: 0
   <Cooldown>k__BackingField: 10
   _stanceCost: 0
   <StanceRewardRange>k__BackingField: {x: 0, y: 0}
@@ -26,11 +26,13 @@ MonoBehaviour:
     mode: 1
     unityReference: {fileID: 0}
     rawReference:
-      rid: 3144097899053318236
+      rid: 9062265491848167520
   references:
     version: 2
     RefIds:
-    - rid: 3144097899053318236
-      type: {class: MoveApplyStatusEffect, ns: , asm: Assembly-CSharp}
+    - rid: 9062265491848167520
+      type: {class: MoveCombo, ns: , asm: Assembly-CSharp}
       data:
-        _statusEffect: {fileID: 0}
+        _movesToCombo:
+        - {fileID: 11400000, guid: 85f01d565cc2df64f905f4a1770ff6d3, type: 2}
+        - {fileID: 11400000, guid: 2a9faff9b167dd44686df31bde25904d, type: 2}

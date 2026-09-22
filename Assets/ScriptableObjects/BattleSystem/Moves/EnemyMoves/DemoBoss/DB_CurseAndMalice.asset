@@ -16,7 +16,7 @@ MonoBehaviour:
   <Icon>k__BackingField: {fileID: 0}
   <Description>k__BackingField: 
   <Level>k__BackingField: 0
-  <RecoveryCost>k__BackingField: 5
+  <RecoveryCost>k__BackingField: 0
   <Cooldown>k__BackingField: 15
   _stanceCost: 0
   <StanceRewardRange>k__BackingField: {x: 0, y: 0}
@@ -26,11 +26,14 @@ MonoBehaviour:
     mode: 1
     unityReference: {fileID: 0}
     rawReference:
-      rid: 3144097899053318236
+      rid: 9062265491848167518
   references:
     version: 2
     RefIds:
-    - rid: 3144097899053318236
-      type: {class: MoveApplyStatusEffect, ns: , asm: Assembly-CSharp}
+    - rid: 9062265491848167518
+      type: {class: MoveCombo, ns: , asm: Assembly-CSharp}
       data:
-        _statusEffect: {fileID: 0}
+        _movesToCombo:
+        - {fileID: 11400000, guid: 2d75f8f17787b64498c774a8795c236f, type: 2}
+        - {fileID: 11400000, guid: dbe64923ed5811e44b27b0b1d937de17, type: 2}
+        - {fileID: 11400000, guid: ffda871891bf05c4a8ab1201fd48c300, type: 2}

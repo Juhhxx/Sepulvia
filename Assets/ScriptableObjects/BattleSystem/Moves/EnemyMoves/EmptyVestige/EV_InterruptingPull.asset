@@ -15,9 +15,9 @@ MonoBehaviour:
   <Name>k__BackingField: Interrupting Pull
   <Icon>k__BackingField: {fileID: 0}
   <Description>k__BackingField: 
-  <Level>k__BackingField: 1
-  <RecoveryCost>k__BackingField: 3
-  <Cooldown>k__BackingField: 0
+  <Level>k__BackingField: 0
+  <RecoveryCost>k__BackingField: 0
+  <Cooldown>k__BackingField: 8
   _stanceCost: 0
   <StanceRewardRange>k__BackingField: {x: 0, y: 0}
   <Type>k__BackingField: 0
@@ -26,11 +26,13 @@ MonoBehaviour:
     mode: 1
     unityReference: {fileID: 0}
     rawReference:
-      rid: 3144097684244398176
+      rid: 9062265491848167526
   references:
     version: 2
     RefIds:
-    - rid: 3144097684244398176
-      type: {class: MovePull, ns: , asm: Assembly-CSharp}
+    - rid: 9062265491848167526
+      type: {class: MoveCombo, ns: , asm: Assembly-CSharp}
       data:
-        _pullAmount: 1
+        _movesToCombo:
+        - {fileID: 11400000, guid: 34c061100acd52740a58a3853c7776c0, type: 2}
+        - {fileID: 11400000, guid: 9b9da54944ee99742bf2e4a06dd347cd, type: 2}

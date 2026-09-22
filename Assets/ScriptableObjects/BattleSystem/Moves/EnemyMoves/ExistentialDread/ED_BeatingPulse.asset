@@ -21,16 +21,16 @@ MonoBehaviour:
   _stanceCost: 0
   <StanceRewardRange>k__BackingField: {x: 0, y: 0}
   <Type>k__BackingField: 0
-  <Targeting>k__BackingField: 0
+  <Targeting>k__BackingField: 2
   _moveLogic:
     mode: 1
     unityReference: {fileID: 0}
     rawReference:
-      rid: 3144097684244398176
+      rid: 9062265491848167510
   references:
     version: 2
     RefIds:
-    - rid: 3144097684244398176
-      type: {class: MovePull, ns: , asm: Assembly-CSharp}
+    - rid: 9062265491848167510
+      type: {class: MoveApplyStatusEffect, ns: , asm: Assembly-CSharp}
       data:
-        _pullAmount: 0
+        _statusEffect: {fileID: 11400000, guid: 72df71d10855918479b019ecdc091237, type: 2}

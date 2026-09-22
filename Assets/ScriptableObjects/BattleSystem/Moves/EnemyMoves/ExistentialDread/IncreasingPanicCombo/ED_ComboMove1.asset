@@ -10,28 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b2a18b978b0aa94d8e3e05c29121187, type: 3}
-  m_Name: BarrierBlockade
+  m_Name: ED_ComboMove1
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
-  <Name>k__BackingField: Barrier
+  <Name>k__BackingField: Increasing Panic
   <Icon>k__BackingField: {fileID: 0}
-  <Description>k__BackingField: Place a Barrier Knot on an available space of the
-    Soul Chain
+  <Description>k__BackingField: 
   <Level>k__BackingField: 0
-  <RecoveryCost>k__BackingField: 2
+  <RecoveryCost>k__BackingField: 1
   <Cooldown>k__BackingField: 0
-  _stanceCost: 1
-  <StanceRewardRange>k__BackingField: {x: 0.5, y: 1}
-  <Type>k__BackingField: 1
-  <Targeting>k__BackingField: 1
+  _stanceCost: 0
+  <StanceRewardRange>k__BackingField: {x: 0, y: 0}
+  <Type>k__BackingField: 0
+  <Targeting>k__BackingField: 0
   _moveLogic:
     mode: 1
     unityReference: {fileID: 0}
     rawReference:
-      rid: 3144097833895329895
+      rid: 9062265491848167513
   references:
     version: 2
     RefIds:
-    - rid: 3144097833895329895
-      type: {class: MoveApplyBarModifier, ns: , asm: Assembly-CSharp}
+    - rid: 9062265491848167513
+      type: {class: MovePull, ns: , asm: Assembly-CSharp}
       data:
-        _modifier: {fileID: 11400000, guid: 724e4994f8fb9fc4abbb2bbf6b8879c1, type: 2}
+        _pullAmount: 1
