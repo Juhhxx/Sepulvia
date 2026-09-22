@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b2a18b978b0aa94d8e3e05c29121187, type: 3}
-  m_Name: COMBO_PullOne
+  m_Name: CP_3
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
-  <Name>k__BackingField: Pull One
+  <Name>k__BackingField: Combo Pull
   <Icon>k__BackingField: {fileID: 0}
   <Description>k__BackingField: 
   <Level>k__BackingField: 0
-  <RecoveryCost>k__BackingField: 1
-  <Cooldown>k__BackingField: 1
+  <RecoveryCost>k__BackingField: 5
+  <Cooldown>k__BackingField: 0
+  <MoveWaitTime>k__BackingField: 0.5
   _stanceCost: 0
   <StanceRewardRange>k__BackingField: {x: 0.1, y: 0.5}
   <Type>k__BackingField: 0
@@ -33,4 +34,4 @@ MonoBehaviour:
     - rid: 3144097947894415498
       type: {class: MovePull, ns: , asm: Assembly-CSharp}
       data:
-        _pullAmount: 1
+        _pullAmount: 2
