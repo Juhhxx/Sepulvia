@@ -419,7 +419,7 @@ public class BattleManager : MonoBehaviour
                     }
                 }
 
-                action = controller.GetAction();
+                action = controller.GetAction(_timelineManager.CurrentTurn);
 
                 yield return new WaitUntil(() => action != null);
                 
@@ -440,7 +440,11 @@ public class BattleManager : MonoBehaviour
 
                 yield return new WaitUntil(() => !_pullManager.IsMoving);
 
-                yield return new WaitForSeconds(0.5f);
+                float waitTime = 0.5f;
+
+                if (action.Move != null) waitTime = action.Move.MoveWaitTime;
+
+                yield return new WaitForSeconds(waitTime);
 
                 if (_hasWinner || _doRun) yield break; 
             }

@@ -51,6 +51,7 @@ public class StatusEffect
 
     [field: SerializeField, ReadOnly] public int TurnDuration { get; private set; }
     [SerializeField, ReadOnly] private int _turnsPassed = 0;
+    public void SetTurnDuration(int duration) => TurnDuration = duration;
     public void TurnPassed() => _turnsPassed++;
     public bool CheckIfDone() => _turnsPassed == TurnDuration + 1; // Don't count the first turn
     public void ResetTurnsPassed() => _turnsPassed = 0;
@@ -63,6 +64,6 @@ public interface IStatusEffect
 {
     public void OnEnterEffect(BattlerController target, StatusEffect statusEffect);
     public void OnUpdateEffect();
-    public void OnTriggerEffect();
+    public void OnTriggerEffect(params BattlerController[] effectTargets);
     public void OnExitEffect();
 }

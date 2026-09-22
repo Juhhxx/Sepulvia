@@ -16,7 +16,7 @@ public class StatusEffectPullStrenghtBoost : IStatusEffect
 
     public void OnUpdateEffect() {}
 
-    public void OnTriggerEffect() {}
+    public void OnTriggerEffect(params BattlerController[] effectTargets) {}
 
     public void OnExitEffect()
     {

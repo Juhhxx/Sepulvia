@@ -47,14 +47,18 @@ public class BattleResolver : RandomBehaviour
 
     public void DoMove(Move move, BattlerController user, BattlerController[] targets)
     {
-        int blockStun = CheckBlock(targets);
-
-        if (blockStun > 0)
+        if (CheckInterrupt(user, targets))
         {
-            user.Character.RecoveryTime += blockStun;
-
             DialogueManager.Instance.AddDialogue(
-                $"{user.Character.Name} was blocked and stunned for {blockStun} turns.");
+                $"{user.Character.Name} was interrupted.");
+            
+            return;
+        }
+        
+        if (CheckBlock(user, targets))
+        {
+            DialogueManager.Instance.AddDialogue(
+                $"{user.Character.Name} was blocked.");
             
             return;
         }
@@ -79,18 +83,47 @@ public class BattleResolver : RandomBehaviour
         return Mathf.Lerp(move.StanceRewardRange.x, move.StanceRewardRange.y, rnd);
     }
 
-    private int CheckBlock(BattlerController[] targets)
+    private bool CheckBlock(BattlerController affected, BattlerController[] targets)
     {
-        int result = 0;
+        bool result = false;
+
+        if (affected.IsInterrupting)
+        {
+            var se = affected.StatusEffectManager.GetStatusEffect<StatusEffectInterrupt>();
+
+            se.StatusEffectLogic.OnTriggerEffect(targets);
+            
+            return false;
+        }
 
         foreach (BattlerController bc in targets)
         {
-            if (bc.StatusEffectManager.HasStatusEffect<StatusEffectBlock>())
+            if (bc.IsBlocking)
             {
                 var se = bc.StatusEffectManager.GetStatusEffect<StatusEffectBlock>();
 
-                result += (se.StatusEffectLogic as StatusEffectBlock).StunAmount;
-                bc.Character.CurrentStance += (se.StatusEffectLogic as StatusEffectBlock).RewardAmount;
+                se.StatusEffectLogic.OnTriggerEffect(affected);
+
+                result = true;
+            }
+        }
+
+        return result;
+    }
+
+    private bool CheckInterrupt(BattlerController affected, BattlerController[] targets)
+    {
+        bool result = false;
+
+        foreach (BattlerController bc in targets)
+        {
+            if (bc.IsInterrupting)
+            {
+                var se = bc.StatusEffectManager.GetStatusEffect<StatusEffectInterrupt>();
+
+                se.StatusEffectLogic.OnTriggerEffect(affected);
+
+                result = true;
             }
         }
 

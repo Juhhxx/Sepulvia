@@ -50,6 +50,7 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
             if (se.StatusEffectLogic is StatusEffectCurse curseEffect)
             {
                 curseEffect.AddStack();
+                se.ResetTurnsPassed();
                 return true;
             }
         }
@@ -73,7 +74,7 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
 
     public void OnExitEffect() {}
 
-    public void OnTriggerEffect() {}
+    public void OnTriggerEffect(params BattlerController[] effectTargets) {}
 
     public void OnUpdateEffect() {}
 }

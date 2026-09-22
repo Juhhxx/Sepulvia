@@ -38,6 +38,7 @@ public class MoveInfo : ScriptableObject
     [field: SerializeField] public MoveTypes Type { get; private set; }
     [field: SerializeField] public MoveTargeting Targeting { get; private set; }
 
+
     [SerializeField] private SerializableInterface<IMove> _moveLogic;
     public SerializableInterface<IMove> MoveLogic => _moveLogic;
 

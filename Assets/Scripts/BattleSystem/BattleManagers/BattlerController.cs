@@ -10,6 +10,15 @@ public class BattlerController : MonoBehaviour
     public Character Character => _character;
     public bool IsPlayer() => _character is Player;
 
+    // Battle Parameters
+    private bool _isStunned = false;
+    public void SetStunned(bool stunned)
+    {
+        _isStunned = stunned;
+    }
+    public bool IsBlocking => _statusEffectManager.HasStatusEffect<StatusEffectBlock>();
+    public bool IsInterrupting => _statusEffectManager.HasStatusEffect<StatusEffectInterrupt>();
+
     // Enemy Battle AI
     [SerializeField] private EnemyBattleAI _enemyBattleAI;
     public EnemyBattleAI BattleAI => _enemyBattleAI;
@@ -37,13 +46,24 @@ public class BattlerController : MonoBehaviour
 
     // Actions
     private Queue<BattleAction> _queuedActions = new Queue<BattleAction>();
+    public Queue<BattleAction> QueuedActions => _queuedActions;
+
+    private List<BattleActionRegister> _actionTimeline = new List<BattleActionRegister>();
+    public IReadOnlyList<BattleActionRegister> ActionTimeline => _actionTimeline;
 
     public void QueueAction(BattleAction action)
     {
         _queuedActions.Enqueue(action);
     }
 
-    public BattleAction GetAction() => _queuedActions.Dequeue();
+    public BattleAction GetAction(int turn)
+    {
+        var action = _queuedActions.Dequeue();
+        
+        _actionTimeline.Add(new BattleActionRegister(turn, action));
+
+        return action;
+    }
 
     public bool HasActions() => _queuedActions.Count > 0;
 
@@ -134,4 +154,16 @@ public class BattlerController : MonoBehaviour
         QueueAction(action);
     }
 
+}
+
+public class BattleActionRegister
+{
+    public int Turn { get; private set; }
+    public BattleAction Action { get; private set; }
+
+    public BattleActionRegister(int turn, BattleAction action)
+    {
+        Turn = turn;
+        Action = action;
+    }
 }
