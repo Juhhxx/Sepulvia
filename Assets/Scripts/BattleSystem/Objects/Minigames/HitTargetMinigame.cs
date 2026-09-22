@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
+using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 {
+    [SerializeField] private AnimationCurve _movementCurve;
     [SerializeField] private float[] _movingSpeedPerRound = new float[1] { 1 };
+    [SerializeField] private bool _intermitentMovement;
 
     [SerializeField, MinMaxSlider(0,1)] private Vector2 _successRange;
     public Vector2 SuccessRange => _successRange;
@@ -24,6 +27,10 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         StopAllCoroutines();
         StartCoroutine(MinigameCR(rounds));
     }
+    public void MakeEasier()
+    {
+
+    }
 
     [Button]
     private void Test()
@@ -37,19 +44,15 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 
         for (int round = 0; round < rounds; round++)
         {
-            float time = 0;
-
-            while (!Input.GetKeyDown(KeyCode.Space))
+            yield return new WaitForSeconds(1);
+            
+            if (_intermitentMovement)
             {
-                int speedIdx = round;
-
-                if (round > _movingSpeedPerRound.Length) speedIdx = _movingSpeedPerRound.Length - 1;
-                
-                time += _movingSpeedPerRound[speedIdx] * Time.deltaTime;;
-
-                MovePoint(time, round);
-
-                yield return null;
+                yield return MinigameBackAndForth(round);
+            }
+            else
+            {
+                yield return MinigameOneShot(round);
             }
 
             bool result = _currentPoint > _successRange.x && _currentPoint < _successRange.y;
@@ -67,14 +70,60 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
             }
 
             yield return new WaitForSeconds(0.1f);
+
         }
 
         Debug.Log($"SUCCESS RATE : {points/(float)rounds}", this);
+
+        yield return new WaitForSeconds(1);
+
         OnMinigameEnd?.Invoke(points / (float)rounds);
     }
 
-    private void MovePoint(float time, int round)
+    private IEnumerator MinigameBackAndForth(int round)
     {
-        _currentPoint = Mathf.Abs(Mathf.Sin(time));
+        float time = 0;
+
+        while (!Input.GetKeyDown(KeyCode.Space))
+        {
+            int speedIdx = round;
+
+            if (round >= _movingSpeedPerRound.Length) speedIdx = _movingSpeedPerRound.Length - 1;
+            
+            time += _movingSpeedPerRound[speedIdx] * Time.deltaTime;
+
+            float t = Mathf.Abs(Mathf.Sin(time));
+
+            MovePoint(t);
+
+            yield return null;
+        }
     }
+
+    private IEnumerator MinigameOneShot(int round)
+    {
+        float time = 0;
+
+        while (time < 1)
+        {
+            int speedIdx = round;
+
+            if (round >= _movingSpeedPerRound.Length) speedIdx = _movingSpeedPerRound.Length - 1;
+            
+            time += _movingSpeedPerRound[speedIdx] * Time.deltaTime;;
+
+            MovePoint(time);
+
+            if (Input.GetKeyDown(KeyCode.Space)) yield break;
+
+            yield return null;
+        }
+    }
+
+    private void MovePoint(float time)
+    {
+        _currentPoint = _movementCurve.Evaluate(time);
+        Debug.Log($"TIME: {time} POINT: {_currentPoint}", this);
+    }
+
 }

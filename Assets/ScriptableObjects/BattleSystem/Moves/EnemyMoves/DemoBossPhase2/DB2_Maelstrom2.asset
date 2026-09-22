@@ -27,11 +27,19 @@ MonoBehaviour:
     mode: 1
     unityReference: {fileID: 0}
     rawReference:
-      rid: 3144097899053318236
+      rid: 3144097978290798710
   references:
     version: 2
     RefIds:
-    - rid: 3144097899053318236
-      type: {class: MoveApplyStatusEffect, ns: , asm: Assembly-CSharp}
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3144097978290798710
+      type: {class: MoveMaelstorm, ns: , asm: Assembly-CSharp}
       data:
-        _statusEffect: {fileID: 0}
+        _maxCurseStacks: 5
+        _curse: {fileID: 11400000, guid: 33f415e0a0999674a8718178e231c875, type: 2}
+        _minigamePrefab:
+          mode: 0
+          unityReference: {fileID: 423152878272657811, guid: 7761ef41e3e1f3442a4ea94852c4d598, type: 3}
+          rawReference:
+            rid: -2

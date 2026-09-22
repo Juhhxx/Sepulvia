@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8381942013227094544}
   - component: {fileID: 5886781778594044794}
   m_Layer: 0
-  m_Name: HitTargetMinigame
+  m_Name: CS_HitTargetMinigame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,10 +46,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 081010d159e30314d9f5028784ccb812, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitTargetMinigame
+  _movementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 2
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 3
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: -0.000000029569492
+      inSlope: -2
+      outSlope: -2
+      tangentMode: 34
+      weightedMode: 3
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _movingSpeedPerRound:
   - 0.5
   - 1
   - 1.5
+  _intermitentMovement: 1
   _successRange: {x: 0.4, y: 0.6}
   _currentPoint: 0
 --- !u!114 &5886781778594044794
@@ -65,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitTargetMinigameUI
   _slider: {fileID: 3543831284415229876}
+  _hitZoneIndicator: {fileID: 2513319501923005503}
   _roundIndicatorImagePrefab: {fileID: 4059315511728091547, guid: 999f21bf3a9d44c4bb8c28cb1c8854a5, type: 3}
   _roundIndicatorParent: {fileID: 1950945127337259031}
 --- !u!1 &1149047334900757657
@@ -529,7 +564,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 100}
+  m_SizeDelta: {x: 20, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &10258164393017392
 CanvasRenderer:

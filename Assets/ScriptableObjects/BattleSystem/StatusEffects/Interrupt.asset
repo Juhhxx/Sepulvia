@@ -12,17 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03a070f015bc16e44a14b9cb5f58d178, type: 3}
   m_Name: Interrupt
   m_EditorClassIdentifier: Assembly-CSharp::StatusEffectInfo
-  <Name>k__BackingField: 
+  <Name>k__BackingField: Interrupt
   <Icon>k__BackingField: {fileID: 0}
   <Description>k__BackingField: 
-  <TurnDuration>k__BackingField: 0
+  <TurnDuration>k__BackingField: 1
   _statusEffect:
-    mode: 0
+    mode: 1
     unityReference: {fileID: 0}
     rawReference:
-      rid: -2
+      rid: 3144097978290798685
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 3144097978290798685
+      type: {class: StatusEffectInterrupt, ns: , asm: Assembly-CSharp}
+      data:
+        _defaultStunAmount: 0
+        _stanceRewardAmount: 1
