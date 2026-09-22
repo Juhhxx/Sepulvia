@@ -9,6 +9,7 @@ public class CharacterInfo : DataAsset
     [field: Space(5)]
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public GameObject BattlePrefab { get; private set; }
+    [field: SerializeField] public Sprite TimelineIndicator { get; private set; }
 
     [Space(10)]
     [Header("Character Stats")]
@@ -48,6 +49,7 @@ public class Character
     {
         Name = info.Name;
         BattlePrefab = info.BattlePrefab;
+        TimelineIndicator = info.TimelineIndicator;
 
         _baseSpeed = info.Speed;
         _baseStance = info.MaxStance;
@@ -68,6 +70,13 @@ public class Character
             StanceMoveSet.Add(m.Instantiate());
         }
 
+        PassiveEffects = new List<PassiveEffect>();
+
+        foreach (PassiveEffectInfo p in info.PassiveEffects)
+        {
+            PassiveEffects.Add(p.Instantiate());
+        }
+
         SetBaseMoves();
 
         CheckEquipment();
@@ -79,6 +88,7 @@ public class Character
     [field: Space(5)]
     [field: SerializeField, ReadOnly] public string Name { get; private set; }
     [field: SerializeField, ReadOnly] public GameObject BattlePrefab { get; private set; }
+    [field: SerializeField, ReadOnly] public Sprite TimelineIndicator { get; private set; }
     public Animator Animator;
 
     [Space(10)]
@@ -334,6 +344,35 @@ public class Character
             m.ResetCooldown();
         }
     }
+
+    [field: Space(10)]
+    [field: Header("Character Passive Effects")]
+    [field: Space(5)]
+    [field: SerializeField] public List<PassiveEffect> PassiveEffects { get; private set; }
+
+    public void AddPassiveEffect(PassiveEffect effect)
+    {
+        PassiveEffects.Add(effect);
+    }
+
+    public bool HasPassiveEffect<T>() where T : IPassiveEffect
+    {
+        foreach (PassiveEffect pe in PassiveEffects)
+        {
+            if (pe.PassiveEffectLogic is T)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void RemovePassiveEffect(PassiveEffect effect)
+    {
+        PassiveEffects.Remove(effect);
+    }
+
 
     [field: Space(10)]
     [field: Header("Character Inventory")]

@@ -26,6 +26,18 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private EnemyParty _enemyParty;
 
     [Space(10)]
+    [Header("Soul Burn")]
+    [Space(5)]
+    [SerializeField] private SoulBurnProfile _soulBurn;
+    public event Action<int,int> OnSoulBurn;
+    public void ChangeSoulBurn(SoulBurnProfile profile)
+    {
+        _soulBurn = profile;
+        _soulBurn.OnStartBattle();
+        _soulBurn.OnSoulBurn += OnSoulBurn;
+    }
+
+    [Space(10)]
     [Header("Player Buttons")]
     [Space(5)]
     [SerializeField] private Button _moveButton;
@@ -44,6 +56,17 @@ public class BattleManager : MonoBehaviour
     private List<Character> _battlersList;
     private Dictionary<Character, BattlerController> _battlerControllers;
     public BattlerController GetBattlerController(Character character) => _battlerControllers[character];
+    public BattlerController[] GetBattlerControllers(Character[] characters)
+    {
+        BattlerController[] controllers = new BattlerController[characters.Length];
+
+        for (int i = 0; i < characters.Length; i++)
+        {
+            controllers[i] = GetBattlerController(characters[i]); 
+        }
+
+        return controllers;
+    }
     public void RegisterBattlerController(Character character, BattlerController controller)
     {
         Debug.Log($"Registering Battler Controller for {character.Name}", this);
@@ -101,7 +124,7 @@ public class BattleManager : MonoBehaviour
         EnemyTurnBegin,
         EnemyTurnEnd,
         BattleTurnEnd,
-        BattleEnd
+        BattleEnd0
     }
 
     private BattleState _currentState = BattleState.None;
@@ -159,10 +182,7 @@ public class BattleManager : MonoBehaviour
         _battlersList.Add(Player);
         _battlersList.AddRange(enemyParty.PartyMembers);
 
-        Player.ResetMoveCooldowns();
-        Player.CurrentStance = 0;
-
-        foreach (Character c in _enemyParty.PartyMembers)
+        foreach (Character c in _battlersList)
         {
             c.ResetMoveCooldowns();
             c.CurrentStance = 0;
@@ -173,8 +193,6 @@ public class BattleManager : MonoBehaviour
 
         _currentState = BattleState.SetUp;
 
-        
-
         _uiManager.InstantiateBattlePrefabs(_playerParty, _enemyParty);
         _dialogueManager.SetUpDialogueManager();
 
@@ -182,7 +200,6 @@ public class BattleManager : MonoBehaviour
         _pullManager.SetUp(enemyParty);
 
         // Pull Bar Events
-        // _pullManager.OnSelectBar += (int index) => AddActionPlayer(Player.MoveSet[3], null);
         _pullManager.OnHeartEnd += Win;
 
         // On Action Executed Events
@@ -190,9 +207,6 @@ public class BattleManager : MonoBehaviour
 
         // Instantiate Variables
         // _wfd = new WaitForDialogueEnd(_dialogueManager);
-
-        // Set Number of Battlers
-        // _numberOfBattlers = playerParty.PartySize + enemyParty.PartySize;
 
         // Set UI
         _uiManager.SetUIState(BattleUIManager.BattleUIState.None);
@@ -205,6 +219,16 @@ public class BattleManager : MonoBehaviour
 
         _timelineManager.SetTurn(0);
         _timelineManager.ToggleTurnCounting(true);
+
+        ChangeSoulBurn(_soulBurn);
+
+        foreach (Character c in _battlersList)
+        {
+            foreach (PassiveEffect pe in c.PassiveEffects)
+            {
+                pe.PassiveEffectLogic.OnEnterBattleEffect(GetBattlerController(c), this);
+            }
+        }
     }
 
     private void SetUpTurnEvents()
@@ -347,6 +371,8 @@ public class BattleManager : MonoBehaviour
     {
         if (_doRun) EndBattle();
 
+        if (_soulBurn.NextTurn == _timelineManager.CurrentTurn) _soulBurn.OnTurnReached();
+
         if (!_hasWinner)
         {
             StartCoroutine(ResolveTurn());
@@ -375,6 +401,16 @@ public class BattleManager : MonoBehaviour
         foreach (var battler in _battlersList)
         {
             Debug.Log($"TURN { _timelineManager.CurrentTurn} - {battler.Name} ({battler.RecoveryTime})", this);
+
+            Party oppositeParty = battler is Player ? EnemyParty : PlayerParty;
+
+            if (battler.RecoveryTime <= 0)
+            {
+                foreach (PassiveEffect pe in battler.PassiveEffects)
+                {
+                    pe.PassiveEffectLogic.OnBeginTurnEffect(GetBattlerControllers(oppositeParty.PartyMembers.ToArray()));
+                }
+            }
 
             while (battler.RecoveryTime <= 0)
             {
@@ -449,11 +485,59 @@ public class BattleManager : MonoBehaviour
                 if (_hasWinner || _doRun) yield break; 
             }
 
+            if (battler.RecoveryTime <= 0)
+            {
+                foreach (PassiveEffect pe in battler.PassiveEffects)
+                {
+                    pe.PassiveEffectLogic.OnEndTurnEffect(GetBattlerControllers(oppositeParty.PartyMembers.ToArray()));
+                }
+            }
+
             _timelineUIManager.UpdateTimelineIndicators(Player.RecoveryTime, _enemyParty.PartyMembers[0].RecoveryTime);
         }
 
         _timelineManager.ToggleTurnCounting(true);
 
         _currentState = BattleState.BattleTurnEnd;
+    }
+}
+
+[Serializable]
+public class SoulBurnProfile
+{
+    [SerializeField] private int _waitTimeTurns;
+    public int WaitTimeTurns => _waitTimeTurns;
+
+    [SerializeField] private int _waitTimeMinimum;
+    public int WaitTimeMinimum => _waitTimeMinimum;
+
+    [SerializeField] private float _waitTimeChangeRate;
+    public float WaitTimeChangeRate => _waitTimeChangeRate;
+
+    [SerializeField] private bool _doLeft;
+    [SerializeField] private bool _doRight;
+    public (bool, bool) DoLeftRight => (_doLeft, _doRight);
+
+    [SerializeField] private int _amount;
+    public int Amount => _amount;
+
+    private int _nextTurn;
+    public int NextTurn => _nextTurn;
+
+    public event Action<int,int> OnSoulBurn; // ints to indicate how much burn on each side
+
+    public void OnStartBattle()
+    {
+        _nextTurn = _waitTimeTurns;
+    }
+
+    public void OnTurnReached()
+    {
+        _waitTimeTurns = Mathf.FloorToInt(_waitTimeTurns * _waitTimeChangeRate);
+        _waitTimeTurns = Mathf.Max(_waitTimeTurns, _waitTimeMinimum);
+        _nextTurn += _waitTimeTurns;
+
+        OnSoulBurn?.Invoke(_doLeft ? _amount : 0,
+                            _doRight ? _amount : 0);
     }
 }

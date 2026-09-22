@@ -22,6 +22,7 @@ public class BattleResolver : RandomBehaviour
 
         _battleManager.OnActionExecuted += ExecuteAction;
         _pullManager.OnSelectBar += SetPlayerSelectedBar;
+        _battleManager.OnSoulBurn += DoChainShatter;
     }
 
     private void ExecuteAction(BattleAction action)
@@ -92,7 +93,7 @@ public class BattleResolver : RandomBehaviour
             var se = affected.StatusEffectManager.GetStatusEffect<StatusEffectInterrupt>();
 
             se.StatusEffectLogic.OnTriggerEffect(targets);
-            
+
             return false;
         }
 
@@ -197,12 +198,19 @@ public class BattleResolver : RandomBehaviour
     private bool _playingMinigame = false;
     public bool PlayingMinigame => _playingMinigame;
     private GameObject _activeMinigame;
-    public IMoveMinigame DoMinigame(GameObject minigamePrefab)
+    public IMoveMinigame DoMinigame(BattlerController player, GameObject minigamePrefab)
     {
         _playingMinigame = true;
         _activeMinigame = Instantiate(minigamePrefab);
 
-        return _activeMinigame.GetComponent<IMoveMinigame>();
+        IMoveMinigame minigame = _activeMinigame.GetComponent<IMoveMinigame>();
+        
+        if (player.Character.HasPassiveEffect<DollCharm>())
+        {
+            minigame.MakeEasier();
+        }
+
+        return minigame;
     }
     public void FinishedMinigame()
     {
@@ -212,6 +220,11 @@ public class BattleResolver : RandomBehaviour
         _activeMinigame = null;
     }
 
+    public void DoChainShatter(int left, int right)
+    {
+        DoChainShatter(left, false);
+        DoChainShatter(right, true);
+    }
     public void DoChainShatter(int number, bool right)
     {
         _pullManager.BreakBarSections(number, !right);

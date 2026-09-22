@@ -1,24 +1,17 @@
+using System;
 using UnityEngine;
 
 public class RapierPendant : IPassiveEffect
 {
-    public void OnBeginTurnEffect()
+    [SerializeField] private StatusEffectInfo _strengthBonus;
+    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager)
     {
-
+        target.OnDoBlock += () => target.StatusEffectManager.AddStatusEffect(_strengthBonus.Instantiate(), target);
     }
 
-    public void OnEndTurnEffect()
-    {
+    public void OnBeginTurnEffect(BattlerController[] others) {}
 
-    }
+    public void OnEndTurnEffect(BattlerController[] others) {}
 
-    public void OnEnterBattleEffect(BattlerController target)
-    {
-
-    }
-
-    public void OnTriggerEffect()
-    {
-
-    }
+    public void OnTriggerEffect(BattlerController[] others) {}
 }

@@ -1349,10 +1349,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2432013886260568106, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: _buttonType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2998896556141771889, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: _buttonType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777855122805989577, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: _buttonType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6134662642465953892, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: _buttonType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6799708064702914601, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: 'm_Cameras.Array.data[0]'
       value: 
       objectReference: {fileID: 320345967}
+    - target: {fileID: 7119951550267843867, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: _buttonType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7244043135473389477, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: _buttonType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7415876905438688713, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: _buttonType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7484220750380947122, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: _buttonType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7548431789735229943, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 200
@@ -1394,9 +1426,33 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8620377705130297943, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: _soulBurn._amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620377705130297943, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: _soulBurn._doLeft
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620377705130297943, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: _soulBurn._doRight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620377705130297943, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: _inventoryUIManager
       value: 
       objectReference: {fileID: 1264860217}
+    - target: {fileID: 8620377705130297943, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: _soulBurn._waitTimeTurns
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620377705130297943, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: _soulBurn._waitTimeMinimum
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620377705130297943, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: _soulBurn._waitTimeChangeRate
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8742622067530896353, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: m_Name
       value: Battle System

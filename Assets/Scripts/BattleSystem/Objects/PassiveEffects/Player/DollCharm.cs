@@ -2,23 +2,11 @@ using UnityEngine;
 
 public class DollCharm : IPassiveEffect
 {
-    public void OnBeginTurnEffect()
-    {
+    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager) {}
 
-    }
+    public void OnBeginTurnEffect(BattlerController[] others) {}
 
-    public void OnEndTurnEffect()
-    {
+    public void OnEndTurnEffect(BattlerController[] others) {}
 
-    }
-
-    public void OnEnterBattleEffect(BattlerController target)
-    {
-
-    }
-
-    public void OnTriggerEffect()
-    {
-
-    }
+    public void OnTriggerEffect(BattlerController[] others) {}
 }

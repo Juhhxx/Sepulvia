@@ -2,23 +2,17 @@ using UnityEngine;
 
 public class TheBellTolls : IPassiveEffect
 {
-    public void OnBeginTurnEffect()
-    {
+    [SerializeField] private SoulBurnProfile _newSoulBurn;
 
+
+    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager)
+    {
+        battleManager.ChangeSoulBurn(_newSoulBurn);
     }
 
-    public void OnEndTurnEffect()
-    {
+    public void OnBeginTurnEffect(BattlerController[] others) {}
 
-    }
+    public void OnEndTurnEffect(BattlerController[] others) {}
 
-    public void OnEnterBattleEffect(BattlerController target)
-    {
-
-    }
-
-    public void OnTriggerEffect()
-    {
-
-    }
+    public void OnTriggerEffect(BattlerController[] others) {}
 }

@@ -20,6 +20,8 @@ public class StatusEffectBlock : IStatusEffect
     {
         _target.StatusEffectManager.RemoveStatusEffect(_effect);
 
+        _target.OnBlock();
+
         _target.Character.CurrentStance += _stanceRewardAmount;
         
         foreach (BattlerController bc in effectTargets)

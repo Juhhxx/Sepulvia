@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using NaughtyAttributes;
+using System;
 
 public class BattlerController : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class BattlerController : MonoBehaviour
         _isStunned = stunned;
     }
     public bool IsBlocking => _statusEffectManager.HasStatusEffect<StatusEffectBlock>();
+    public event Action OnDoBlock;
+    public void OnBlock() => OnDoBlock?.Invoke();
     public bool IsInterrupting => _statusEffectManager.HasStatusEffect<StatusEffectInterrupt>();
 
     // Enemy Battle AI

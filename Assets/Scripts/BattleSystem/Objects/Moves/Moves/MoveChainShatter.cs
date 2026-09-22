@@ -11,7 +11,7 @@ public class MoveChainShatter : IMove
 
     public void OnDoMove(BattlerController user, BattlerController[] targets, BattleResolver resolver)
     {
-        _minigame = resolver.DoMinigame((_minigamePrefab.Value as HitTargetMinigame).gameObject);
+        _minigame = resolver.DoMinigame(user, (_minigamePrefab.Value as HitTargetMinigame).gameObject);
 
         _minigame.StartMinigame(_maxChainShatter);
         _minigame.OnMinigameEnd += (float success) =>

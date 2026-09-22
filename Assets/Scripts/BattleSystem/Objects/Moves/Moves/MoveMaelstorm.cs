@@ -12,7 +12,7 @@ public class MoveMaelstorm : IMove
 
     public void OnDoMove(BattlerController user, BattlerController[] targets, BattleResolver resolver)
     {
-        _minigame = resolver.DoMinigame((_minigamePrefab.Value as HitTargetMinigame).gameObject);
+        _minigame = resolver.DoMinigame(targets[0], (_minigamePrefab.Value as HitTargetMinigame).gameObject);
 
         _minigame.StartMinigame(_maxCurseStacks);
         _minigame.OnMinigameEnd += (float success) =>
