@@ -10,19 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03a070f015bc16e44a14b9cb5f58d178, type: 3}
-  m_Name: RP_StrenghtBonus
+  m_Name: RP_Enhance
   m_EditorClassIdentifier: Assembly-CSharp::StatusEffectInfo
-  <Name>k__BackingField: 
-  <Icon>k__BackingField: {fileID: 0}
+  <Name>k__BackingField: Enhance
+  <Icon>k__BackingField: {fileID: 21300000, guid: fdf48565870c41e4e98603c35525efbe, type: 3}
   <Description>k__BackingField: 
-  <TurnDuration>k__BackingField: 0
+  <TurnDuration>k__BackingField: 9
   _statusEffect:
-    mode: 0
+    mode: 1
     unityReference: {fileID: 0}
     rawReference:
-      rid: -2
+      rid: 1322792286820499745
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 1322792286820499745
+      type: {class: StatusEffectPullStrenghtBoost, ns: , asm: Assembly-CSharp}
+      data:
+        _boostAmount: 2
