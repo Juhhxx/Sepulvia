@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PassiveEffectInfo
   <Name>k__BackingField: Photo of Two Friends
   <Icon>k__BackingField: {fileID: 0}
-  <Description>k__BackingField: 
+  <Description>k__BackingField: Passively gain Stance throughout battles.
   _passiveEffect:
     mode: 1
     unityReference: {fileID: 0}
@@ -25,4 +25,5 @@ MonoBehaviour:
     RefIds:
     - rid: 9062265499754954838
       type: {class: PhotoOfTwoFriends, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+        _stanceGain: 0.1
