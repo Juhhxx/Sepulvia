@@ -226,7 +226,7 @@ public class BattleManager : MonoBehaviour
         {
             foreach (PassiveEffect pe in c.PassiveEffects)
             {
-                pe.PassiveEffectLogic.OnEnterBattleEffect(GetBattlerController(c), this);
+                pe.PassiveEffectLogic.OnEnterBattleEffect(GetBattlerController(c), this, pe);
             }
         }
     }

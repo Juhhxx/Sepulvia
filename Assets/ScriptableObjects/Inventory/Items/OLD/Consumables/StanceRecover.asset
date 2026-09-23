@@ -15,25 +15,26 @@ MonoBehaviour:
   _id: 2
   <Name>k__BackingField: Stance Recover I
   <Sprite>k__BackingField: {fileID: 21300000, guid: 3f78c120d5659ee429a7d3df66513ddf, type: 3}
+  <Description>k__BackingField: Recovers 5 stance to the user.
   <StackMaximum>k__BackingField: 10
-  <CanBeUsedInBattle>k__BackingField: 1
-  <CanBeBought>k__BackingField: 1
-  <CanBeSold>k__BackingField: 1
+  <CanBeUsedInBattle>k__BackingField: 0
+  <CanBeBought>k__BackingField: 0
+  <CanBeSold>k__BackingField: 0
   <Type>k__BackingField: 0
+  _consumable:
+    mode: 0
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: -2
+  _equippable:
+    mode: 0
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: -2
   <Level>k__BackingField: 1
   <Value>k__BackingField: 10
-  <Stat>k__BackingField: 1
-  <Amount>k__BackingField: 5
-  <Modifier>k__BackingField:
-    <StatAffected>k__BackingField: 0
-    <AmountAffected>k__BackingField: 0
-    <TurnDuration>k__BackingField: 0
-    _turnsPassed: 0
-    <Sprite>k__BackingField: {fileID: 0}
-  <EquipmentType>k__BackingField: 0
-  <StatEquip>k__BackingField: 0
-  <AmountEquip>k__BackingField: 0
-  <MoveIndex>k__BackingField: 0
-  <ChangeTo>k__BackingField: {fileID: 0}
-  <Upgrade>k__BackingField: {fileID: 0}
-  <Description>k__BackingField: Recovers 5 stance to the user.
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

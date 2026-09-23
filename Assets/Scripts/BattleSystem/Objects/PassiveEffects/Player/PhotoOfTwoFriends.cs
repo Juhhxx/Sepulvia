@@ -5,7 +5,7 @@ public class PhotoOfTwoFriends : IPassiveEffect
     [SerializeField] private float _stanceGain;
     private BattlerController _target;
 
-    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager)
+    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
     {
         _target = target;
     }

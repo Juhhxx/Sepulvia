@@ -15,26 +15,29 @@ MonoBehaviour:
   _id: 8
   <Name>k__BackingField: Stance Soul II
   <Sprite>k__BackingField: {fileID: 21300000, guid: 51c4f007a13672b43ac110c3c0cf56f4, type: 3}
-  <StackMaximum>k__BackingField: 10
-  <CanBeUsedInBattle>k__BackingField: 0
-  <CanBeSold>k__BackingField: 1
-  <Type>k__BackingField: 2
-  <Value>k__BackingField: 400
-  <Stat>k__BackingField: 0
-  <Amount>k__BackingField: 0
-  <Modifier>k__BackingField:
-    <StatAffected>k__BackingField: 0
-    <AmountAffected>k__BackingField: 0
-    <TurnDuration>k__BackingField: 0
-    _turnsPassed: 0
-    <Sprite>k__BackingField: {fileID: 0}
-  <EquipmentType>k__BackingField: 1
-  <StatEquip>k__BackingField: 2
-  <AmountEquip>k__BackingField: 5
-  <MoveIndex>k__BackingField: 2
-  <ChangeTo>k__BackingField: {fileID: 11400000, guid: 0d093cae63aa5254a8cdf6ad21feeb20, type: 2}
-  <Upgrade>k__BackingField: {fileID: 0}
   <Description>k__BackingField: 'A foe''s soul that can be equipped to modify your
     move set.
 
     Changes your Stat Modifier move to Pace out.'
+  <StackMaximum>k__BackingField: 10
+  <CanBeUsedInBattle>k__BackingField: 0
+  <CanBeBought>k__BackingField: 0
+  <CanBeSold>k__BackingField: 0
+  <Type>k__BackingField: 2
+  _consumable:
+    mode: 0
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: -2
+  _equippable:
+    mode: 0
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: -2
+  <Level>k__BackingField: 0
+  <Value>k__BackingField: 400
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

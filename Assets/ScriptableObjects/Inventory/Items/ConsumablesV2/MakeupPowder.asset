@@ -15,22 +15,26 @@ MonoBehaviour:
   _id: 24
   <Name>k__BackingField: Makeup Powder
   <Sprite>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: 
   <StackMaximum>k__BackingField: 5
   <CanBeUsedInBattle>k__BackingField: 1
   <CanBeBought>k__BackingField: 1
-  <CanBeSold>k__BackingField: 0
+  <CanBeSold>k__BackingField: 1
   <Type>k__BackingField: 0
+  _consumable:
+    mode: 0
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: -2
+  _equippable:
+    mode: 0
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: -2
   <Level>k__BackingField: 5
   <Value>k__BackingField: 100
-  <Stat>k__BackingField: 0
-  <Amount>k__BackingField: 0
-  <Modifier>k__BackingField:
-    <StatAffected>k__BackingField: 0
-    <AmountAffected>k__BackingField: 0
-  <EquipmentType>k__BackingField: 0
-  <StatEquip>k__BackingField: 0
-  <AmountEquip>k__BackingField: 0
-  <MoveIndex>k__BackingField: 0
-  <ChangeTo>k__BackingField: {fileID: 0}
-  <Upgrade>k__BackingField: {fileID: 0}
-  <Description>k__BackingField: 
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

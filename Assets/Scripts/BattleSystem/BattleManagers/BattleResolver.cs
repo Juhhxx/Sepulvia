@@ -285,7 +285,7 @@ public class BattleResolver : RandomBehaviour
 
         difficultyAverage /= enemyParty.PartySize;
 
-        float chance = (1 / difficultyAverage) + 0.25f;
+        float chance = (1 / difficultyAverage) + (user.Character as Player).RunChance;
 
         bool result = rnd <= chance;
 

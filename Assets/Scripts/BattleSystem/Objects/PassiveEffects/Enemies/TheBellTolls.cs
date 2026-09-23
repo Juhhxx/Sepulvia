@@ -4,8 +4,7 @@ public class TheBellTolls : IPassiveEffect
 {
     [SerializeField] private SoulBurnProfile _newSoulBurn;
 
-
-    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager)
+    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
     {
         battleManager.ChangeSoulBurn(_newSoulBurn);
     }

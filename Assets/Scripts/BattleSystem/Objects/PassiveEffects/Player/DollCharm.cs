@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DollCharm : IPassiveEffect
 {
-    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager) {}
+    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect) {}
 
     public void OnBeginTurnEffect(BattlerController[] others) {}
 

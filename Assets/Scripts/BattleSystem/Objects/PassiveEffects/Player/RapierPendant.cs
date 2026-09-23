@@ -4,7 +4,7 @@ using UnityEngine;
 public class RapierPendant : IPassiveEffect
 {
     [SerializeField] private StatusEffectInfo _strengthBonus;
-    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager)
+    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
     {
         target.OnDoBlock += () => target.StatusEffectManager.AddStatusEffect(_strengthBonus.Instantiate(), target);
     }

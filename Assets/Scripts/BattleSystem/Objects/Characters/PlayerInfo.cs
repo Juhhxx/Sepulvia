@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerInfo : CharacterInfo
 {
     [field: SerializeField] public int Essence { get; private set; }
+    [field: SerializeField] public float RunChance { get; private set; }
 }
 
 public class Player : Character
@@ -13,6 +14,7 @@ public class Player : Character
     public Player(PlayerInfo info) : base(info)
     {
         Essence = info.Essence;
+        RunChance = info.RunChance;
     }
 
     [SerializeField, ReadOnly] private int _essence;
@@ -29,6 +31,8 @@ public class Player : Character
     public void ChangeEssence(int amount) => Essence += amount;
 
     public Action<int> OnEssenceChange;
+
+    public float RunChance;
 
     public int Level => CalculatePlayerLevel();
 

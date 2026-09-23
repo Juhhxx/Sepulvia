@@ -5,7 +5,7 @@ public class PassiveEffectAddImmunities : IPassiveEffect
 {
     [SerializeField] private ImmunityProfile[] _immunitiesToAdd;
 
-    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager)
+    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
     {
         foreach (ImmunityProfile ip in _immunitiesToAdd)
         {

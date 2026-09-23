@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3849e9688085e241940703948ee8e3e, type: 3}
+  m_Name: PhotoOfTwoFriends
+  m_EditorClassIdentifier: Assembly-CSharp::ItemInfo
+  _id: 27
+  <Name>k__BackingField: Photo Of Two Friends
+  <Sprite>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: 
+  <StackMaximum>k__BackingField: 0
+  <CanBeUsedInBattle>k__BackingField: 0
+  <CanBeBought>k__BackingField: 0
+  <CanBeSold>k__BackingField: 0
+  <Type>k__BackingField: 1
+  _consumable:
+    mode: 0
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: -2
+  _equippable:
+    mode: 1
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: 3144098014362337398
+  <Level>k__BackingField: 0
+  <Value>k__BackingField: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3144098014362337398
+      type: {class: EquippableAddPassiveEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _passiveEffect: {fileID: 11400000, guid: 51e0eb5d39d492d4dae32447bb90d0af, type: 2}

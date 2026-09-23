@@ -87,4 +87,11 @@ public class BarSection : MonoBehaviour
     {
         Destroy(_modifierPrefab);
     }
+
+    public event Action OnDestroySection;
+    public void DestroySection()
+    {
+        OnDestroySection?.Invoke();
+        gameObject.SetActive(false);
+    }
 }

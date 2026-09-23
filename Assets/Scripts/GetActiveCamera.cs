@@ -8,6 +8,6 @@ public class GetActiveCamera : MonoBehaviour
     {
         if (_canvas == null) _canvas = GetComponent<Canvas>();
 
-        _canvas.worldCamera = GameSceneManager.Instance.CurrentCamera;
+        _canvas.worldCamera = GameSceneManager.Instance?.CurrentCamera;
     }
 }
