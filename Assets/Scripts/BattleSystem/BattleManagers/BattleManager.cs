@@ -254,11 +254,10 @@ public class BattleManager : MonoBehaviour
         // Count Turns in Moves
         _timelineManager.OnTurnEnd += () =>
         {
-            foreach (Move m in Player.MoveSet) m.TurnPassed();
-
-            foreach (Character c in _enemyParty.PartyMembers)
+            foreach (Character c in _battlersList)
             {
                 foreach (Move m in c.MoveSet) m.TurnPassed();
+                foreach (Move m in c.StanceMoveSet) m.TurnPassed();
             }
             Debug.Log("DID MOVE COUNT");
         };
