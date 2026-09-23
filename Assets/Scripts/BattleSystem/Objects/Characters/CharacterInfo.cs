@@ -337,6 +337,11 @@ public class Character
         PassiveEffects.Add(effect);
     }
 
+    public void RemovePassiveEffect(PassiveEffect effect)
+    {
+        PassiveEffects.Remove(effect);
+    }
+
     public bool HasPassiveEffect<T>() where T : IPassiveEffect
     {
         foreach (PassiveEffect pe in PassiveEffects)
@@ -350,9 +355,17 @@ public class Character
         return false;
     }
 
-    public void RemovePassiveEffect(PassiveEffect effect)
+    public T GetPassiveEffect<T>() where T : class, IPassiveEffect
     {
-        PassiveEffects.Remove(effect);
+        foreach (PassiveEffect pe in PassiveEffects)
+        {
+            if (pe.PassiveEffectLogic is T)
+            {
+                return pe.PassiveEffectLogic as T;
+            }
+        }
+
+        return default;
     }
 
 

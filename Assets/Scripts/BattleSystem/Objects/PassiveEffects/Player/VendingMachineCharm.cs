@@ -1,22 +1,11 @@
+using System;
 using UnityEngine;
 
 public class VendingMachineCharm : IPassiveEffect
 {
-    private float _originalValue;
-    private Player _target;
-    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
-    {
-        _target = target.Character as Player;
-        _originalValue = _target.RunChance;
-
-        _target.RunChance = 1;
-
-        battleManager.OnBattleEnd += () =>
-        {
-            _target.RunChance = _originalValue;
-            _target.RemovePassiveEffect(effect);
-        };
-    }
+    [SerializeField] private float _chanceOfNotConsuming = 0.2f;
+    public float ChanceOfNotConsuming => _chanceOfNotConsuming;
+    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect) {}
 
     public void OnBeginTurnEffect(BattlerController[] others) {}
 

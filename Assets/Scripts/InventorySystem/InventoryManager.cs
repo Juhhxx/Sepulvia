@@ -173,7 +173,22 @@ public class InventoryManager : MonoBehaviour
     {
         if (!_player.PlayerCharacter.Inventory.Contains(stack.Item)) return;
 
-        _player.PlayerCharacter.Inventory.RemoveItem(stack);
+        var vmc = _player.PlayerCharacter.GetPassiveEffect<VendingMachineCharm>();
+
+        if (vmc != null)
+        {
+            float rnd = UnityEngine.Random.Range(0,1f);
+
+            if (rnd > vmc.ChanceOfNotConsuming)
+            {
+                _player.PlayerCharacter.Inventory.RemoveItem(stack);
+            }
+        }
+        else
+        {
+            _player.PlayerCharacter.Inventory.RemoveItem(stack);
+        }
+
         _inventoryResolver.UseItem(stack.Item, _player.PlayerCharacter);
     }
 

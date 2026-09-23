@@ -22,10 +22,10 @@ MonoBehaviour:
   <CanBeSold>k__BackingField: 1
   <Type>k__BackingField: 0
   _consumable:
-    mode: 0
+    mode: 1
     unityReference: {fileID: 0}
     rawReference:
-      rid: -2
+      rid: 3144098014362337412
   _equippable:
     mode: 0
     unityReference: {fileID: 0}
@@ -38,3 +38,7 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 3144098014362337412
+      type: {class: ConsumableAddPassiveEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _passiveEffect: {fileID: 11400000, guid: 2f504da13a3b66545a9bbe7d3f66aee7, type: 2}
