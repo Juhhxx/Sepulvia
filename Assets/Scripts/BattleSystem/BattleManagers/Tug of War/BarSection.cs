@@ -92,6 +92,5 @@ public class BarSection : MonoBehaviour
     public void DestroySection()
     {
         OnDestroySection?.Invoke();
-        gameObject.SetActive(false);
     }
 }
