@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PassiveEffectInfo
   <Name>k__BackingField: Rapier Pendant
   <Icon>k__BackingField: {fileID: 0}
-  <Description>k__BackingField: 
+  <Description>k__BackingField: 'Successful Blocks also give you +1 Strength for
+    10 seconds. '
   _passiveEffect:
     mode: 1
     unityReference: {fileID: 0}
@@ -25,4 +26,5 @@ MonoBehaviour:
     RefIds:
     - rid: 9062265499754954839
       type: {class: RapierPendant, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+        _strengthBonus: {fileID: 11400000, guid: 64e9a0c549ca4d9489a3912f04dbde29, type: 2}

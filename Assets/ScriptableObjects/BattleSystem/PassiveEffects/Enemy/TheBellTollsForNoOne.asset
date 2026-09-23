@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22d9ae3229b2a7544a28439d5fae6d46, type: 3}
   m_Name: TheBellTollsForNoOne
   m_EditorClassIdentifier: Assembly-CSharp::PassiveEffectInfo
-  <Name>k__BackingField: The Bell Tolls
+  <Name>k__BackingField: The Bell Tolls For No One
   <Icon>k__BackingField: {fileID: 0}
-  <Description>k__BackingField: 
+  <Description>k__BackingField: Soul Burn burns 2 chains at once, starting from the
+    right end of the chain. +1 Strength permanently every Soul Burn.
   _passiveEffect:
     mode: 1
     unityReference: {fileID: 0}
@@ -25,4 +26,11 @@ MonoBehaviour:
     RefIds:
     - rid: 9062265499754954837
       type: {class: TheBellTollsForNoOne, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+        _newSoulBurn:
+          _waitTimeTurns: 20
+          _waitTimeMinimum: 5
+          _waitTimeChangeRate: 0.5
+          _doLeft: 0
+          _doRight: 1
+          _amount: 2
