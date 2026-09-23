@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22d9ae3229b2a7544a28439d5fae6d46, type: 3}
+  m_Name: FamiliarDomain
+  m_EditorClassIdentifier: Assembly-CSharp::PassiveEffectInfo
+  <Name>k__BackingField: FamiliarDomain
+  <Icon>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: 
+  _passiveEffect:
+    mode: 1
+    unityReference: {fileID: 0}
+    rawReference:
+      rid: 3144098014362337394
+  references:
+    version: 2
+    RefIds:
+    - rid: 3144098014362337394
+      type: {class: PassiveEffectAddImmunities, ns: , asm: Assembly-CSharp}
+      data:
+        _immunitiesToAdd:
+        - StatusEffect: {fileID: 11400000, guid: 33f415e0a0999674a8718178e231c875, type: 2}
+          Amount: 1
+        - StatusEffect: {fileID: 11400000, guid: fbd5ef14dc6b86144b20f4625a841407, type: 2}
+          Amount: 0.5

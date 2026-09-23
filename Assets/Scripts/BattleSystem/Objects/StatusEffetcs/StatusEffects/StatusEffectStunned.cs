@@ -9,6 +9,12 @@ public class StatusEffectStunned : IStatusEffect
     {
         _target = target;
 
+        float immunity = 1 - _target.StatusEffectManager.CheckImmunity(statusEffect.Name);
+
+        statusEffect.ChangeTurnDuration(Mathf.CeilToInt(statusEffect.TurnDuration * immunity));
+
+        _target.Character.RecoveryTime += statusEffect.TurnDuration;
+
         _target.SetStunned(true);
     }
 

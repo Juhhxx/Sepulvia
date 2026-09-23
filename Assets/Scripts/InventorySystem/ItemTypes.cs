@@ -1,8 +1,7 @@
 public enum ItemTypes
 {
-    Immediate,
-    LongTerm,
+    Consumable,
     Equippable,
     Save,
-    Fuel
+    Fuel,
 }

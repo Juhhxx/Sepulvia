@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class BarModifierStun : IBarModifier
 {
-    [SerializeField] private int _stunAmount;
+    [SerializeField] private StatusEffectInfo _stun;
 
     public void OnBarModifierTriggered(int position, BattlerController user, PullingManager pullManager)
     {
-        user.Character.RecoveryTime += _stunAmount;
+        user.StatusEffectManager.AddStatusEffect(_stun.Instantiate(), user);
     }
 }

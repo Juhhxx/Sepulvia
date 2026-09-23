@@ -7,7 +7,7 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
     [field: SerializeField] public int MaxStack { get; private set; }
     [field: SerializeField, ReadOnly] public int CurrentStack { get; private set; }
 
-    [SerializeField] private int _stunAmount = 2;
+    [SerializeField] private StatusEffectInfo _stun;
     private BattlerController _target;
     private StatusEffect _effect;
 
@@ -34,7 +34,7 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
 
     public void OnAddMaxStackReached()
     {
-        _target.Character.RecoveryTime += _stunAmount;
+        _target.StatusEffectManager.AddStatusEffect(_stun.Instantiate(), _target);
 
         _target.StatusEffectManager.RemoveStatusEffect(_effect);
     }

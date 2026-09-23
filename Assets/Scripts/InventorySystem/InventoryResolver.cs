@@ -3,20 +3,41 @@ using UnityEngine;
 
 public class InventoryResolver : MonoBehaviour
 {
+    public void UseItem(ItemInfo item, BattlerController user, BattlerController[] targets)
+    {
+        Debug.Log($"{user.Character.Name} USED {item.Name}");
+
+        switch (item.Type)
+        {
+            case ItemTypes.Consumable:
+
+                item.ConsumableLogic.OnConsumed(user, targets);
+                break;
+            
+            case ItemTypes.Equippable:
+
+                break;
+            
+            case ItemTypes.Save:
+            
+                break;
+
+        }
+    }
+
     public void UseItem(ItemInfo item, Character user)
     {
         Debug.Log($"{user.Name} USED {item.Name}");
 
         switch (item.Type)
         {
-            case ItemTypes.Immediate:
+            case ItemTypes.Consumable:
 
-                ApplyItemEffect(item, user);
+                item.ConsumableLogic.OnConsumed(user);
                 break;
             
-            case ItemTypes.LongTerm:
+            case ItemTypes.Equippable:
 
-                user.AddModifier(item.Modifier.Instantiate());
                 break;
             
             case ItemTypes.Save:
@@ -27,22 +48,4 @@ public class InventoryResolver : MonoBehaviour
         }
     }
 
-    private void ApplyItemEffect (ItemInfo item, Character user)
-    {
-        switch (item.Stat)
-        {
-            case Stats.Stance:
-
-                user.CurrentStance += item.Amount;
-
-                float realAmount = item.Amount > user.MaxStance ? user.MaxStance : item.Amount;
-
-                DialogueManager.Instance?.AddDialogue($"{user.Name} recovered {realAmount} stance.");
-                break;
-            
-            default:
-                
-                break;
-        }
-    }
 }

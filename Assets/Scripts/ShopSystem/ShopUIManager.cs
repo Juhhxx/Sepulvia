@@ -87,11 +87,6 @@ public class ShopUIManager : MonoBehaviour
                 _currentPanel = _upgradesPanel;
                 _currentSelectionImage = _upgradesSelectionImage;
                 break;
-
-            case ShopManager.ShopState.Souls:
-                _currentPanel = _soulsPanel;
-                _currentSelectionImage = _soulsSelectionImage;
-                break;
         }
 
         _currentPanel.SetActive(true);

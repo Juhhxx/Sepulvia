@@ -79,8 +79,6 @@ public class Character
 
         SetBaseMoves();
 
-        CheckEquipment();
-
         Inventory = info.Inventory?.Instantiate();
     }
 
@@ -177,22 +175,6 @@ public class Character
         }
 
         return bonus;
-    }
-
-    // Equipment
-    public void CheckEquipment()
-    {
-        if (Inventory == null) return;
-
-        if (Inventory.EquipmentSlots.Count == 0) return;
-
-        foreach (ItemInfo e in Inventory.EquipmentSlots)
-        {
-            if (e.EquipmentType == EquipmentType.MoveModidier)
-            {
-                MoveSet[e.MoveIndex] = e.ChangeTo.Instantiate();
-            }
-        }
     }
 
     // Stat Levels

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class StatusEffectBlock : IStatusEffect
 {
-    [SerializeField] private int _stunAmount;
+    [SerializeField] private StatusEffectInfo _stun;
     [SerializeField] private int _stanceRewardAmount;
 
     private BattlerController _target;
@@ -26,7 +26,7 @@ public class StatusEffectBlock : IStatusEffect
         
         foreach (BattlerController bc in effectTargets)
         {
-            bc.Character.RecoveryTime += _stunAmount;
+            bc.StatusEffectManager.AddStatusEffect(_stun.Instantiate(), bc);
             bc.ClearActions();
         }
     }

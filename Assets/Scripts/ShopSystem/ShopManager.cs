@@ -13,15 +13,12 @@ public class ShopManager : RandomBehaviour
     [SerializeField] private Button _buyButton;
     [SerializeField] private Button _sellButton;
     [SerializeField] private Button _upgradesButton;
-    [SerializeField] private Button _soulsButton;
-
 
     [SerializeField] private Button _rerollButton;
     [SerializeField] private int _rerollPrice;
 
 
     [SerializeField] private ShopUIManager _shopUIManager;
-    [SerializeField] private ShopSoulUpgradeManager _shopSoulUpgradeManager;
 
     [SerializeField] private ItemDataBase _itemDataBase;
     private List<ItemInfo> _shopItems = new List<ItemInfo>();
@@ -35,7 +32,6 @@ public class ShopManager : RandomBehaviour
         Buy,
         Sell,
         Upgrades,
-        Souls
     }
 
     [Serializable]
@@ -56,9 +52,6 @@ public class ShopManager : RandomBehaviour
         SetUpButtons();
         SetUpShopBuyReroll();
 
-        _shopSoulUpgradeManager.SetUp(_player.PlayerCharacter.Inventory);
-        _shopSoulUpgradeManager.OnSelectDeselectSouls += ToggleItemInfoPanel;
-
         _shopUIManager.CreateShopBuyDisplays(_shopSize);
         _shopUIManager.CreateShopSellDisplays(_player.PlayerCharacter.Inventory.MaxInventorySpaces);
         _shopUIManager.CreateShopUpgradeDisplays(_possibleUpgrades.Count);
@@ -77,15 +70,8 @@ public class ShopManager : RandomBehaviour
                 case ShopState.Upgrades:
                     SetUpShopUpgrades();
                     break;
-                case ShopState.Souls:
-                    _shopSoulUpgradeManager.CreateAvailableSouls(_player.PlayerCharacter.Inventory);
-                    _shopSoulUpgradeManager.SetUpAvailableSouls();
-                    _shopSoulUpgradeManager.SetUpSoulButtons();
-                    break;
             }
         };
-
-        _shopSoulUpgradeManager.OnUpgradeDone += () => _shopUIManager.ToggleItemInfo(false);
     }
 
     public void ToggleShop(bool onOff)
@@ -119,13 +105,6 @@ public class ShopManager : RandomBehaviour
         });
         _upgradesButton.GetComponent<PointerButtonEvents>().OnPointerEnterEvent.AddListener(() => _shopUIManager.DoButtonSelectAnim(_upgradesButton));
         _upgradesButton.GetComponent<PointerButtonEvents>().OnPointerExitEvent.AddListener(() => _shopUIManager.DoButtonDeselectAnim(_upgradesButton));
-
-        _soulsButton.onClick.AddListener(() => {
-            _shopUIManager.ToggleShopPanel(ShopState.Souls);
-            _shopUIManager.DoButtonClickAnim(_soulsButton);
-        });
-        _soulsButton.GetComponent<PointerButtonEvents>().OnPointerEnterEvent.AddListener(() => _shopUIManager.DoButtonSelectAnim(_soulsButton));
-        _soulsButton.GetComponent<PointerButtonEvents>().OnPointerExitEvent.AddListener(() => _shopUIManager.DoButtonDeselectAnim(_soulsButton));
     }
 
     private void Update()
@@ -150,7 +129,7 @@ public class ShopManager : RandomBehaviour
             ItemInfo item = _itemDataBase.GetRandomBuyableItem(_random);
 
             _shopItems.Add(item);
-            _shopItemsStock.Add(item.Type == ItemTypes.Save ? 1 : _shopOfferAmount);
+            _shopItemsStock.Add(_shopOfferAmount);
         }
     }
 

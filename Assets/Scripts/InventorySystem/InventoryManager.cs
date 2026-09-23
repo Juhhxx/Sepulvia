@@ -175,8 +175,6 @@ public class InventoryManager : MonoBehaviour
 
         _player.PlayerCharacter.Inventory.RemoveItem(stack);
         _inventoryResolver.UseItem(stack.Item, _player.PlayerCharacter);
-
-        if (stack.Item.Type == ItemTypes.Save) _inventoryUIManager.HideInventory();
     }
 
     public void EquipItem(ItemStack stack)
@@ -191,20 +189,9 @@ public class InventoryManager : MonoBehaviour
             return;
         }
 
-        if (stack.Item.EquipmentType == EquipmentType.MoveModidier)
-        {
-            if (_player.PlayerCharacter.Inventory.HasEquiped(stack.Item))
-            {
-                _raycastBlockerPanel.SetActive(true);
-                _warningPanel.SetActive(true);
-                _warningPanel.GetComponentInChildren<TextMeshProUGUI>().text = "You can't equip any more of this soul!";
-                return;
-            }
-        }
-
         _player.PlayerCharacter.Inventory.AddEquipment(stack.Item);
         _player.PlayerCharacter.Inventory.RemoveItem(stack);
-        _player.PlayerCharacter.CheckEquipment();
+        stack.Item.EquippableLogic.OnEquip(_player.PlayerCharacter);
     }
 
     public void UnequipItem(ItemInfo item)
@@ -224,7 +211,7 @@ public class InventoryManager : MonoBehaviour
         if (canAdd)
         {
             _player.PlayerCharacter.Inventory.RemoveEquipment(item);
-            _player.PlayerCharacter.ResetMove(item.MoveIndex, MoveTypes.Normal);
+            item.EquippableLogic.OnUnequip();
         }
         else
         {

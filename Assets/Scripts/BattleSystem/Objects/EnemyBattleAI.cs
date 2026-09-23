@@ -6,9 +6,12 @@ using System.Linq;
 [Serializable]
 public class EnemyBattleAI : MonoBehaviour
 {
+    private System.Random _rnd = new System.Random();
+    private List<BarSection> _barSections;
+    private int _currentSoulPosition;
+
     public void ChooseRandom(BattlerController battler, BattlerController[] possibleTargets, List<BarSection> sections, int soulPosition)
     {
-        System.Random rnd = new System.Random();
         Move move = null;
 
         bool ok = false;
@@ -17,7 +20,7 @@ public class EnemyBattleAI : MonoBehaviour
 
         while (!ok && iteration < maxIteration)
         {
-            move = battler.Character.MoveSet[rnd.Next(battler.Character.MoveSet.Count)];
+            move = battler.Character.MoveSet[_rnd.Next(battler.Character.MoveSet.Count)];
 
             ok = !move.CheckIfCooldown();
 
@@ -29,15 +32,6 @@ public class EnemyBattleAI : MonoBehaviour
             UnityEngine.Debug.Log("MAX ITERATION REACHED, CHOOSING FIRST AVAILABLE MOVE");
             move = battler.Character.MoveSet[0];
         }
-
-        // if (move.Type == MoveTypes.Modifier)
-        // {
-        //     var occupiedBars = sections.FindAll(s => s.HasModifier).Select(s => sections.IndexOf(s));
-
-        //     if (move.Modifier.Type == BarModifierType.GravityPull && occupiedBars.Contains(0)) return ChooseRandom(sections, soulPosition);
-
-        //     move.SetBarSection(ChooseBarSection(rnd, move.Modifier, sections.Count, soulPosition, occupiedBars.ToArray()));
-        // }
 
         var targets = ChooseTargets(battler, possibleTargets, move.Targeting);
 
@@ -58,27 +52,38 @@ public class EnemyBattleAI : MonoBehaviour
         return new BattlerController[0];
     }
 
-    public int ChooseBarSection(System.Random rnd, BarModifier modifier, int totalBars, int soulPosition, int[] occupied)
+    public int ChooseBarSection(ModifierApplyType whereToApply)
     {
+        int totalBars = _barSections.Count;
         int section = 0;
         int middle = totalBars / 2;
 
-        // switch (modifier.Type)
-        // {
-        //     case BarModifierType.Barrier:
-        //         section = rnd.Next(0, soulPosition);
-        //         break;
-            
-        //     case BarModifierType.Beartrap:
-        //         section = rnd.Next(soulPosition + 1, totalBars);
-        //         break;
-            
-        //     case BarModifierType.GravityPull:
-        //         section = totalBars - 1;
-        //         break;
-        // }
+        var occupied = _barSections.FindAll(s => s.HasModifier).Select(s => _barSections.IndexOf(s));
 
-        if (occupied.Contains(section)) return ChooseBarSection(rnd, modifier, totalBars, soulPosition, occupied);
+        switch (whereToApply)
+        {
+            case ModifierApplyType.BetweenSoulAndLeft:
+                section = _rnd.Next(0, _currentSoulPosition);
+                break;
+            
+            case ModifierApplyType.BetweenSoulAndRight:
+                section = _rnd.Next(_currentSoulPosition + 1, totalBars);
+                break;
+
+            case ModifierApplyType.Anywhere:
+                section = _rnd.Next(0, totalBars);
+                break;
+            
+            case ModifierApplyType.LeftSide:
+                section = 0;
+                break;
+            
+            case ModifierApplyType.RightSide:
+                section = totalBars - 1;
+                break;
+        }
+
+        if (occupied.Contains(section)) return ChooseBarSection(whereToApply);
 
         return section;
     }
