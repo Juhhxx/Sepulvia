@@ -55,7 +55,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
                 yield return MinigameOneShot(round);
             }
 
-            bool result = _currentPoint > _successRange.x && _currentPoint < _successRange.y;
+            bool result = _currentPoint >= _successRange.x && _currentPoint <= _successRange.y;
 
             OnMinigameRoundEnd?.Invoke(round, result);
 
