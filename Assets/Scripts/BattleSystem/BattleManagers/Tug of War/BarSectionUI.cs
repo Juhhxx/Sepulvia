@@ -1,6 +1,9 @@
-using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using UnityEditor.Callbacks;
+using NaughtyAttributes;
 
 public class BarSectionUI : MonoBehaviour
 {
@@ -11,6 +14,12 @@ public class BarSectionUI : MonoBehaviour
     [SerializeField] private Color _normalColor;
     [SerializeField] private Color _hasHeartColor;
     [SerializeField] private Color _isSelectedColor;
+    
+    [SerializeField] private float _shakeIntensity = 20;
+    [SerializeField] private float _torqueIntensity = 10;
+    [SerializeField] private float _explodeIntensity = 6;
+
+
     private Color _currentColor;
 
     private BarSection _barSection;
@@ -22,6 +31,7 @@ public class BarSectionUI : MonoBehaviour
 
         _barSection = GetComponent<BarSection>();
 
+        _barSection.OnDestroySection += DoExplodeShatter;
         _barSection.OnHeartChange += SetHeartColor;
         _barSection.OnChangeConnections += () => 
             ToggleSectionDivisors(_barSection.ConnectRight != null, 
@@ -61,5 +71,35 @@ public class BarSectionUI : MonoBehaviour
         _sectionDivisorLeft.enabled = left;
     }
 
+    [Button]
+    private void DoShakeAnim()
+    {
+        foreach(Image chain in _sectionChains)
+        {
+            chain.rectTransform.DOShakeAnchorPos(.1f,_shakeIntensity,10,90);
+            chain.rectTransform.DOShakeRotation(.1f,_shakeIntensity/2,10,90);
+        }
+    }
+
+    [Button]
+    private void DoExplodeShatter()
+    {
+        foreach(Image chain in _sectionChains)
+        {
+            _sectionDivisorLeft.enabled = false;
+            _sectionDivisorRight.enabled = false;
+
+            GameObject chainObj = chain.gameObject;
+            chain.AddComponent<Rigidbody2D>();
+            Rigidbody2D rb = chain.GetComponent<Rigidbody2D>();
+
+            float nx = Random.Range(-.5f,.5f);
+            float ny = Random.Range(0.1f, 1f);
+            float t = Random.Range(-1,1);
+
+            rb.AddForce(new Vector2(nx, ny) * _explodeIntensity, ForceMode2D.Impulse);
+            rb.AddTorque(_torqueIntensity * t);
+        }
+    }
 
 }
