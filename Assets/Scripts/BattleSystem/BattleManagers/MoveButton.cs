@@ -46,7 +46,7 @@ public class MoveButton : MonoBehaviour
 
     private void OnEnable()
     {
-        if(_move != null)
+        if(_playerController != null)
         {
             _button.interactable = _move.CheckIfCanUseMove(_playerController.Character);
         }
