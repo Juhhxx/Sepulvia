@@ -12,6 +12,9 @@ public class EnemyBattleAI : MonoBehaviour
 
     public void ChooseRandom(BattlerController battler, BattlerController[] possibleTargets, List<BarSection> sections, int soulPosition)
     {
+        _barSections = sections;
+        _currentSoulPosition = soulPosition;
+        
         Move move = null;
 
         bool ok = false;
@@ -34,6 +37,8 @@ public class EnemyBattleAI : MonoBehaviour
         }
 
         var targets = ChooseTargets(battler, possibleTargets, move.Targeting);
+
+        Debug.Log("ENEMY CHOSE MOVE");
 
         battler.QueueAction(new BattleAction(battler, targets, move));
     }
