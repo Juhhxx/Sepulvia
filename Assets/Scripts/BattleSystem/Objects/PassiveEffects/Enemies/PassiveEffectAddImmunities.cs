@@ -4,18 +4,21 @@ using UnityEngine;
 public class PassiveEffectAddImmunities : IPassiveEffect
 {
     [SerializeField] private ImmunityProfile[] _immunitiesToAdd;
+    private bool _done = false;
 
-    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
+    public void OnBeginTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
     {
+        if (_done) return;
+
         foreach (ImmunityProfile ip in _immunitiesToAdd)
         {
             target.StatusEffectManager.AddImmunity(ip.StatusEffect.Name, ip.Amount);
         }
+
+        _done = true;
     }
 
-    public void OnBeginTurnEffect(BattlerController[] others) {}
-
-    public void OnEndTurnEffect(BattlerController[] others) {}
+    public void OnEndTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect) {}
 
     public void OnTriggerEffect(BattlerController[] others) {}
 }

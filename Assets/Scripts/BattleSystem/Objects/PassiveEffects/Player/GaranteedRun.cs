@@ -1,26 +1,38 @@
 using UnityEngine;
 
-public class GaranteedRun: IPassiveEffect
+public class GaranteedRun : IPassiveEffect
 {
     private float _originalValue;
     private Player _target;
-    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
+    private PassiveEffect _effect;
+    private BattleManager _battleManager;
+    private bool _done = false;
+
+    public void OnBeginTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
     {
+        if (_done) return;
+
         _target = target.Character as Player;
+        _effect = effect;
+        _battleManager = battleManager; 
         _originalValue = _target.RunChance;
 
         _target.RunChance = 1;
 
-        battleManager.OnBattleEnd += () =>
-        {
-            _target.RunChance = _originalValue;
-            _target.RemovePassiveEffect(effect);
-        };
+        _battleManager.OnBattleEnd += ResetValue;
+
+        _done = true;
     }
 
-    public void OnBeginTurnEffect(BattlerController[] others) {}
+    private void ResetValue()
+    {
+        _target.RunChance = _originalValue;
+        _target.RemovePassiveEffect(_effect);
 
-    public void OnEndTurnEffect(BattlerController[] others) {}
+        _battleManager.OnBattleEnd -= ResetValue;
+    }
+
+    public void OnEndTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect) {}
 
     public void OnTriggerEffect(BattlerController[] others) {}
 }

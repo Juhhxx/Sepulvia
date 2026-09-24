@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class CharacterInfo : DataAsset
@@ -105,10 +106,16 @@ public class Character
         get => _recoveryTime;
         set
         {
+            var tmp = _recoveryTime;
+
             if (value < 0) _recoveryTime = 0;
             else _recoveryTime = value;
+
+            if (tmp != _recoveryTime) OnRecoveryTimeChange?.Invoke(_recoveryTime, tmp);
         }
     }
+    // new amount, old amount
+    public event Action<int,int> OnRecoveryTimeChange;
 
     // Base Stance
     [SerializeField] private float _baseStance;
@@ -135,14 +142,11 @@ public class Character
             else _currentStance = value;
 
             if(tmp != _currentStance) OnStanceChange?.Invoke(_currentStance, MaxStance, tmp);
-
-            if (_currentStance == 0) OnStanceLost?.Invoke();
         }
     }
 
     // new amount, max amount, old amount
     public Action<float, float, float> OnStanceChange;
-    public Action OnStanceLost;
 
     // Pull Strength
     public int PullStrenghtBonus => GetModifierBonus(Stats.PullStrength);

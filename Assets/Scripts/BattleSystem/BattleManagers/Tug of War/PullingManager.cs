@@ -21,14 +21,15 @@ public class PullingManager : RandomBehaviour
     public List<BarSection> BarSections => _barSectionList;
     private int _sectionsNumber;
 
-    public void BreakBarSection(BarSection section)
+    public void BreakBarSection(BarSection section, bool burn = false)
     {
         if (section.HasModifier) section.RemoveBarModifier();
 
         if (section.ConnectLeft != null) section.ConnectLeft.ConnectRight = section.ConnectRight;
         if (section.ConnectRight != null) section.ConnectRight.ConnectLeft = section.ConnectLeft;
 
-        section.DestroySection();
+        if (!burn) section.DestroySection();
+        else section.BurnSection();
     }
 
     public void BreakBarSections(int number, bool fromLeft)

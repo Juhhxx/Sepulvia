@@ -8,8 +8,8 @@ public class TargetButtonManager : MonoBehaviour
     [SerializeField] private Transform _targetButtonParent;
     [SerializeField] private Button _confirmButton;
 
-    private BattleManager _battleManager;
-    private EnemyParty _enemyParty;
+    private BattlerController _player;
+    private BattlerController[] _enemyParty;
 
     private List<BattlerController> _selectedEnemies = new List<BattlerController>();
     private int _numberOfTargets;
@@ -21,13 +21,10 @@ public class TargetButtonManager : MonoBehaviour
         _confirmButton.onClick.AddListener(() => SendTargetedEnemies());
     }
 
-    public void RequestTargets(int number)
+    public void RequestTargets(int number, BattlerController player, BattlerController[] enemyParty)
     {
-        if (_enemyParty == null)
-        {
-            _battleManager = FindAnyObjectByType<BattleManager>();
-            _enemyParty = _battleManager?.EnemyParty;
-        }
+        _player = player;
+        _enemyParty = enemyParty;
 
         _numberOfTargets = number;
         _selectedEnemies.Clear();
@@ -51,13 +48,12 @@ public class TargetButtonManager : MonoBehaviour
 
         for (int i = 0; i < _createdButtons.Count; i++)
         {
-            Debug.Log($"BUTTON {i} PARTY SIZE {_enemyParty.PartySize}");
+            Debug.Log($"BUTTON {i} PARTY SIZE {_enemyParty.Length}");
 
-            if (i < _enemyParty.PartySize)
+            if (i < _enemyParty.Length)
             {
                 _createdButtons[i].gameObject.SetActive(true);
-                UpdateTargetButton(_createdButtons[i], 
-                _battleManager.GetBattlerController(_enemyParty.PartyMembers[i]));
+                UpdateTargetButton(_createdButtons[i], _enemyParty[i]);
             }
             else
             {
@@ -84,7 +80,7 @@ public class TargetButtonManager : MonoBehaviour
     {
         foreach (BattlerController c in _selectedEnemies)
         {
-            _battleManager.GetBattlerController(_battleManager.Player).AddTarget(c);
+            _player.AddTarget(c);
         }
     }
 

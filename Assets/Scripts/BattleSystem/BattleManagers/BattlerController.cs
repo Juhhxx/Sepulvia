@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using NaughtyAttributes;
 using System;
+using System.Linq;
 
 public class BattlerController : MonoBehaviour
 {
@@ -21,6 +22,12 @@ public class BattlerController : MonoBehaviour
     public event Action OnDoBlock;
     public void OnBlock() => OnDoBlock?.Invoke();
     public bool IsInterrupting => _statusEffectManager.HasStatusEffect<StatusEffectInterrupt>();
+
+    [SerializeField] private float _battleItemTimer;
+    private Timer _itemTimer;
+    public Timer ItemTimer => _itemTimer;
+    private bool _canUseItems = true;
+    public bool CanUseItems => _canUseItems;
 
     // Enemy Battle AI
     [SerializeField] private EnemyBattleAI _enemyBattleAI;
@@ -44,6 +51,8 @@ public class BattlerController : MonoBehaviour
         if (IsPlayer())
         {
             _targetButtonManager = FindAnyObjectByType<TargetButtonManager>(FindObjectsInactive.Include);
+            _itemTimer = new Timer(_battleItemTimer, Timer.TimerReset.Manual);
+            _itemTimer.OnTimerDone += () => _canUseItems = true;
         }
     }
 
@@ -82,43 +91,52 @@ public class BattlerController : MonoBehaviour
     }
     private IEnumerator CreateAction()
     {
-        yield return new WaitUntil(() => _actionMove != null || _actionItem != null);
+        yield return new WaitUntil(() => _actionMove != null || _actionItemStack != null);
+
+        var possibleTargets = _battleManager.GetBattlerControllers(_battleManager.EnemyParty.PartyMembers.ToArray());
 
         if (_actionMove != null)
         {
-            if (_actionMove.Targeting == MoveTargeting.Single)
+            var targeting = _actionMove.Targeting;
+
+            if (targeting == MoveTargeting.Single && possibleTargets.Length == 1)
             {
-                _targetButtonManager.RequestTargets(1);
-
-                yield return new WaitUntil(() => _actionTargets.Count == 1);
-
-                AddAction(_actionMove, _actionTargets.ToArray());
+                targeting = MoveTargeting.All;
             }
-            else
+
+            switch (targeting)
             {
-                if (_actionMove.Targeting == MoveTargeting.Self)
-                {
+                case MoveTargeting.Single:
+
+                    _targetButtonManager.RequestTargets(1, this, possibleTargets);
+
+                    yield return new WaitUntil(() => _actionTargets.Count == 1);
+
+                    AddAction(_actionMove, _actionTargets.ToArray());
+                    break;
+                
+                case MoveTargeting.Self:
+
                     _actionTargets.Add(this);
-                }
-                else
-                {
-                    foreach (Character c in _battleManager.EnemyParty.PartyMembers)
-                    {
-                        _actionTargets.Add(_battleManager.GetBattlerController(c));
-                    }
-                }
+                    break;
+                
+                case MoveTargeting.All:
 
-                AddAction(_actionMove, _actionTargets.ToArray());
+                    _actionTargets.AddRange(possibleTargets);
+                    break;
+
             }
+
+            AddAction(_actionMove, _actionTargets.ToArray());
         }
-        else if(_actionItem != null)
+        else if(_actionItemStack != null)
         {
-            AddAction(_actionItem);
+            AddAction(_actionItemStack, possibleTargets);
         }
 
         _actionMove = null;
+        _actionItemStack = null;
         _actionTargets.Clear();
-        _actionItem = null;
     }
 
     private Move _actionMove = null;
@@ -140,14 +158,22 @@ public class BattlerController : MonoBehaviour
         QueueAction(action);
     }
 
-    private ItemInfo _actionItem = null;
+    private ItemStack _actionItemStack = null;
 
-    public void SetItem(ItemInfo item) => _actionItem = item;
-    public void AddAction(ItemInfo item)
+    public void SetItem(ItemStack stack) => _actionItemStack = stack;
+    public void AddAction(ItemStack stack, BattlerController[] targets)
     {
-        var action = new BattleAction(this, item);
+        if (IsPlayer() && !_canUseItems) return;
 
-        QueueAction(action);
+        var action = new BattleAction(this, targets, stack);
+
+        _battleManager.ExecuteAction(action);
+
+        if (IsPlayer())
+        {
+            _canUseItems = false;
+            _itemTimer.ResetTimer();
+        }
     }
 
     public void AddActionRun()
@@ -157,6 +183,14 @@ public class BattlerController : MonoBehaviour
         QueueAction(action);
     }
 
+    private void Update()
+    {
+        if (IsPlayer() && !_canUseItems)
+        {
+            _itemTimer.CountTimer();
+            Debug.Log($"{_itemTimer.CurrentTime}");
+        }
+    }
 }
 
 public class BattleActionRegister

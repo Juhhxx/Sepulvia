@@ -3,15 +3,31 @@ using UnityEngine;
 
 public class InventoryResolver : MonoBehaviour
 {
-    public void UseItem(ItemInfo item, BattlerController user, BattlerController[] targets)
+    public void UseItem(ItemStack stack, BattlerController user, BattlerController[] targets)
     {
-        Debug.Log($"{user.Character.Name} USED {item.Name}");
+        Debug.Log($"{user.Character.Name} USED {stack.Item.Name}");
 
-        switch (item.Type)
+        var vmc = user.Character.GetPassiveEffect<VendingMachineCharm>();
+
+        if (vmc != null)
+        {
+            float rnd = UnityEngine.Random.Range(0,1f);
+
+            if (rnd > vmc.ChanceOfNotConsuming)
+            {
+                user.Character.Inventory.RemoveItem(stack);
+            }
+        }
+        else
+        {
+            user.Character.Inventory.RemoveItem(stack);
+        }
+
+        switch (stack.Item.Type)
         {
             case ItemTypes.Consumable:
 
-                item.ConsumableLogic.OnConsumed(user, targets);
+                stack.Item.ConsumableLogic.OnConsumed(user, targets);
                 break;
             
             case ItemTypes.Equippable:
@@ -25,15 +41,31 @@ public class InventoryResolver : MonoBehaviour
         }
     }
 
-    public void UseItem(ItemInfo item, Character user)
+    public void UseItem(ItemStack stack, Character user)
     {
-        Debug.Log($"{user.Name} USED {item.Name}");
+        Debug.Log($"{user.Name} USED {stack.Item.Name}");
 
-        switch (item.Type)
+        var vmc = user.GetPassiveEffect<VendingMachineCharm>();
+
+        if (vmc != null)
+        {
+            float rnd = UnityEngine.Random.Range(0,1f);
+
+            if (rnd > vmc.ChanceOfNotConsuming)
+            {
+                user.Inventory.RemoveItem(stack);
+            }
+        }
+        else
+        {
+            user.Inventory.RemoveItem(stack);
+        }
+
+        switch (stack.Item.Type)
         {
             case ItemTypes.Consumable:
 
-                item.ConsumableLogic.OnConsumed(user);
+                stack.Item.ConsumableLogic.OnConsumed(user);
                 break;
             
             case ItemTypes.Equippable:

@@ -85,6 +85,10 @@ public class BattleManager : MonoBehaviour
     }
     
     public event Action<BattleAction> OnActionExecuted;
+    public void ExecuteAction(BattleAction action)
+    {
+        OnActionExecuted?.Invoke(action);
+    }
 
     // Battler Order
     
@@ -215,20 +219,17 @@ public class BattleManager : MonoBehaviour
         _inventoryUIManager.HideInventory();
         _inventoryUIManager.ResetInventory();
 
+        // Temporary
+        Player.OnRecoveryTimeChange += (newAmount, oldAmount) => _timelineUIManager.UpdateTimelineIndicators(newAmount, EnemyParty.PartyMembers[0].RecoveryTime);
+        EnemyParty.PartyMembers[0].OnRecoveryTimeChange += (newAmount, oldAmount) => _timelineUIManager.UpdateTimelineIndicators(Player.RecoveryTime, newAmount);
+
         SetUpTurnEvents();
 
         _timelineManager.SetTurn(0);
         _timelineManager.ToggleTurnCounting(true);
+        _timelineUIManager.UpdateTimelineIndicators(0, 0);
 
         ChangeSoulBurn(_soulBurn);
-
-        foreach (Character c in _battlersList)
-        {
-            foreach (PassiveEffect pe in c.PassiveEffects)
-            {
-                pe.PassiveEffectLogic.OnEnterBattleEffect(GetBattlerController(c), this, pe);
-            }
-        }
     }
 
     private void SetUpTurnEvents()
@@ -282,8 +283,9 @@ public class BattleManager : MonoBehaviour
                     invButtons[i].onClick.RemoveAllListeners();
                     invButtons[i].onClick.AddListener(() =>
                     {
-                        GetBattlerController(Player).SetItem(stack.Item);
-                        Player.Inventory.RemoveItem(stack);
+                        GetBattlerController(Player).RequestAction();
+                        GetBattlerController(Player).SetItem(stack);
+                        _inventoryUIManager.HideInventory();
                     });
                 }
                 else
@@ -366,6 +368,62 @@ public class BattleManager : MonoBehaviour
         OnBattleEnd?.Invoke();
     }
 
+    private void ShowEnd()
+    {
+        Debug.Log("END BATTLE NOW");
+        _uiManager.SetUIState(BattleUIManager.BattleUIState.None);
+        _dialogueManager.HideDialogue();
+        _inventoryUIManager.HideInventory();
+        _pullManager.TogglePullUI(false);
+
+        if (_playerWon)
+        {
+            _uiManager.ShowWinScreen();
+            OnBattleWon?.Invoke();
+        }
+        else
+        {
+            MenuManager.Instance.ToggleGameOverMenu(true);
+            OnBattleLost.Invoke();
+        }
+
+    }
+
+    public void DoAssimilation()
+    {
+        (List<ItemInfo> items, int essence) = _battleResolver.GiveRewards(_enemyParty, false);
+
+        (Player as Player).Essence += essence;
+
+        if (items.Count > 0)
+        {
+            foreach (ItemInfo i in items) Player.Inventory.AddItem(i);
+        }
+
+        _uiManager.DoDecisionHeartAssimilateAnim(() =>
+        {
+            _uiManager.ShowRewards(items, essence);
+            _uiManager.ShowRewardsScreen();
+        });
+    }
+    public void DoSpare()
+    {
+        (List<ItemInfo> items, int essence) = _battleResolver.GiveRewards(_enemyParty, true);
+
+        (Player as Player).Essence += essence;
+
+        if (items.Count > 0)
+        {
+            foreach (ItemInfo i in items) Player.Inventory.AddItem(i);
+        }
+
+        _uiManager.DoDecisionHeartSpareAnim(() =>
+        {
+            _uiManager.ShowRewards(items, essence);
+            _uiManager.ShowRewardsScreen();
+        });
+    }
+
     private void StartTurn()
     {
         if (_doRun) EndBattle();
@@ -378,7 +436,8 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            // ShowEnd();
+            Debug.Log($"BATTLE ENDED", this);
+            ShowEnd();
         }
     }
 
@@ -395,25 +454,23 @@ public class BattleManager : MonoBehaviour
             battler.RecoveryTime -= 1;
         }
 
-        _timelineUIManager.UpdateTimelineIndicators(Player.RecoveryTime, _enemyParty.PartyMembers[0].RecoveryTime);
-
         foreach (var battler in _battlersList)
         {
             Debug.Log($"TURN { _timelineManager.CurrentTurn} - {battler.Name} ({battler.RecoveryTime})", this);
 
+            BattlerController controller = GetBattlerController(battler);
             Party oppositeParty = battler is Player ? EnemyParty : PlayerParty;
 
             if (battler.RecoveryTime <= 0)
             {
                 foreach (PassiveEffect pe in battler.PassiveEffects)
                 {
-                    pe.PassiveEffectLogic.OnBeginTurnEffect(GetBattlerControllers(oppositeParty.PartyMembers.ToArray()));
+                    pe.PassiveEffectLogic.OnBeginTurnEffect(controller, this, pe);
                 }
             }
 
             while (battler.RecoveryTime <= 0)
             {
-                BattlerController controller = GetBattlerController(battler);
                 BattleAction action = null;
 
                 if (!controller.HasActions())
@@ -481,18 +538,20 @@ public class BattleManager : MonoBehaviour
 
                 yield return new WaitForSeconds(waitTime);
 
-                if (_hasWinner || _doRun) yield break; 
+                if (_hasWinner || _doRun)
+                {
+                    _timelineManager.ToggleTurnCounting(true);
+                    yield break;
+                }
             }
 
             if (battler.RecoveryTime <= 0)
             {
                 foreach (PassiveEffect pe in battler.PassiveEffects)
                 {
-                    pe.PassiveEffectLogic.OnEndTurnEffect(GetBattlerControllers(oppositeParty.PartyMembers.ToArray()));
+                    pe.PassiveEffectLogic.OnEndTurnEffect(controller, this, pe);
                 }
             }
-
-            _timelineUIManager.UpdateTimelineIndicators(Player.RecoveryTime, _enemyParty.PartyMembers[0].RecoveryTime);
         }
 
         _timelineManager.ToggleTurnCounting(true);

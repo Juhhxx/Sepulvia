@@ -8,7 +8,7 @@ public class BattleAction
     [field: SerializeField] public BattlerController[] Targets { get; private set; }
     [field: SerializeField] public ActionType Type { get; private set;}
     [field: SerializeField] public Move Move { get; private set; }
-    [field: SerializeField] public ItemInfo Item { get; private set;}
+    [field: SerializeField] public ItemStack Item { get; private set;}
 
     public BattleAction(BattlerController user, BattlerController[] targets, Move move)
     {
@@ -19,10 +19,10 @@ public class BattleAction
         Item = null;
     }
 
-    public BattleAction(BattlerController user, ItemInfo item)
+    public BattleAction(BattlerController user, BattlerController[] targets, ItemStack item)
     {
         User = user;
-        Targets = null;
+        Targets = targets;
         Type = ActionType.Item;
         Move = null;
         Item = item;

@@ -36,7 +36,7 @@ public class BattleResolver : RandomBehaviour
 
             case ActionType.Item:
 
-                UseItem(action.Item, action.User);
+                UseItem(action.Item, action.User, action.Targets);
                 break;
 
             case ActionType.Run:
@@ -230,9 +230,9 @@ public class BattleResolver : RandomBehaviour
         _pullManager.BreakBarSections(number, !right);
     }
 
-    public void UseItem(ItemInfo item, BattlerController user)
+    public void UseItem(ItemStack item, BattlerController user, BattlerController[] targets)
     {
-        _inventoryResolver.UseItem(item, user.Character);
+        _inventoryResolver.UseItem(item, user, targets);
     }
 
     public (List<ItemInfo>, int) GiveRewards(EnemyParty enemyParty, bool spared)
@@ -257,7 +257,7 @@ public class BattleResolver : RandomBehaviour
 
         if (spared) essence *= 2;
 
-        if (!spared)
+        if (!spared && possibleRewards.Count > 0)
         {
             int num = _random.Next(1, totalDifficulty + 1);
 

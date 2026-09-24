@@ -21,7 +21,7 @@ public class TimelineUIManager : MonoBehaviour
         _timelineSections.Clear();
     }
 
-    private void Start()
+    private void Awake()
     {
         ClearSectionsList();
         BuildTimeline();
@@ -87,4 +87,10 @@ public class TimelineUIManager : MonoBehaviour
             indicator.anchoredPosition = pos;
         }
     }
+}
+
+public struct TimelineIndicator
+{
+    public string Name;
+    public int Turn;
 }

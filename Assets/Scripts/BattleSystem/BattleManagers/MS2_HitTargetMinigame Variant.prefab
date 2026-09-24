@@ -57,20 +57,48 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8381942013227094544, guid: 52438d0f955bc2146935ab738c8a213d, type: 3}
+      propertyPath: _graceRadius
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8381942013227094544, guid: 52438d0f955bc2146935ab738c8a213d, type: 3}
       propertyPath: _successRange.x
       value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 8381942013227094544, guid: 52438d0f955bc2146935ab738c8a213d, type: 3}
       propertyPath: _successRange.y
-      value: 0.999
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8381942013227094544, guid: 52438d0f955bc2146935ab738c8a213d, type: 3}
       propertyPath: _intermitentMovement
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8381942013227094544, guid: 52438d0f955bc2146935ab738c8a213d, type: 3}
+      propertyPath: _movingSpeedPerRound.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8381942013227094544, guid: 52438d0f955bc2146935ab738c8a213d, type: 3}
       propertyPath: _movementCurve.m_Curve.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8381942013227094544, guid: 52438d0f955bc2146935ab738c8a213d, type: 3}
+      propertyPath: '_movingSpeedPerRound.Array.data[0]'
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8381942013227094544, guid: 52438d0f955bc2146935ab738c8a213d, type: 3}
+      propertyPath: '_movingSpeedPerRound.Array.data[1]'
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8381942013227094544, guid: 52438d0f955bc2146935ab738c8a213d, type: 3}
+      propertyPath: '_movingSpeedPerRound.Array.data[2]'
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8381942013227094544, guid: 52438d0f955bc2146935ab738c8a213d, type: 3}
+      propertyPath: '_movingSpeedPerRound.Array.data[3]'
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8381942013227094544, guid: 52438d0f955bc2146935ab738c8a213d, type: 3}
+      propertyPath: '_movingSpeedPerRound.Array.data[4]'
+      value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 8381942013227094544, guid: 52438d0f955bc2146935ab738c8a213d, type: 3}
       propertyPath: _movementCurve.m_Curve.Array.data[1].time

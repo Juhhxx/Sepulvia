@@ -2,11 +2,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using UnityEditor.Callbacks;
 using NaughtyAttributes;
 using System.Collections;
-using UnityEngine.LowLevelPhysics2D;
-using System.Runtime.CompilerServices;
 
 public class BarSectionUI : MonoBehaviour
 {

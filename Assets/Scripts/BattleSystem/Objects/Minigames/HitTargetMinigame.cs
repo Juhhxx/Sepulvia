@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using NaughtyAttributes;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,11 +15,28 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
     [SerializeField, MinMaxSlider(0,1)] private Vector2 _successRange;
     public Vector2 SuccessRange => _successRange;
 
+    [SerializeField] private float _graceRadius;
+    private Vector2 _graceRange;
+    public Vector2 GraceRange
+    {
+        get
+        {
+            Debug.Log($"{_graceRange}");
+            return _graceRange;
+        }
+    }
+
     [SerializeField, ReadOnly] private float _currentPoint;
     public float CurrentPoint => _currentPoint;
 
+    private void Awake()
+    {
+        _graceRange = new Vector2(_successRange.x - _graceRadius,
+                                            _successRange.y + _graceRadius);
+    }
+
     public event Action<int> OnMinigameStart;
-    public event Action<int, bool> OnMinigameRoundEnd;
+    public event Action<int, float> OnMinigameRoundEnd;
     public event Action<float> OnMinigameEnd;
     public void StartMinigame(int rounds)
     {
@@ -38,9 +56,11 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         StartMinigame(3);
     }
 
+    private bool _hitKey = false;
+
     private IEnumerator MinigameCR(int rounds)
     {
-        int points = 0;
+        float points = 0;
 
         for (int round = 0; round < rounds; round++)
         {
@@ -55,13 +75,15 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
                 yield return MinigameOneShot(round);
             }
 
-            bool result = _currentPoint >= _successRange.x && _currentPoint <= _successRange.y;
+            float result = CheckIfInRange();
+
+            if (!_hitKey) result = 0;
 
             OnMinigameRoundEnd?.Invoke(round, result);
 
-            if (result)
+            if (result > 0)
             {
-                points++;
+                points += result;
                 Debug.Log($"WON ROUND  {round}", this);
             }
             else
@@ -73,11 +95,11 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 
         }
 
-        Debug.Log($"SUCCESS RATE : {points/(float)rounds}", this);
+        Debug.Log($"SUCCESS RATE : {points / rounds}", this);
 
         yield return new WaitForSeconds(1);
 
-        OnMinigameEnd?.Invoke(points / (float)rounds);
+        OnMinigameEnd?.Invoke(points / rounds);
     }
 
     private IEnumerator MinigameBackAndForth(int round)
@@ -98,6 +120,8 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 
             yield return null;
         }
+
+        _hitKey = true;
     }
 
     private IEnumerator MinigameOneShot(int round)
@@ -114,16 +138,32 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 
             MovePoint(time);
 
-            if (Input.GetKeyDown(KeyCode.Space)) yield break;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _hitKey = true;
+                yield break;
+            }
 
             yield return null;
         }
     }
 
+    private float CheckIfInRange()
+    {
+        if (SuccessRange.x <= _currentPoint && _currentPoint <= SuccessRange.y)
+        {
+            return 1; // full point
+        }
+        else if (GraceRange.x <= _currentPoint && _currentPoint <= SuccessRange.y)
+        {
+            return 0.5f; // half point
+        }
+        else return 0; // zero points
+    }
+
     private void MovePoint(float time)
     {
         _currentPoint = _movementCurve.Evaluate(time);
-        Debug.Log($"TIME: {time} POINT: {_currentPoint}", this);
     }
 
 }
