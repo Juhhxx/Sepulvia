@@ -312,12 +312,18 @@ public class Character
     public void ResetMove(int index, MoveTypes type)
     {
         if (type == MoveTypes.Normal) MoveSet[index] = _baseMoves[index];
-        else StanceMoveSet[index] = _baseStanceMoves[index];
+        else
+        {
+            StanceMoveSet.RemoveAt(index);
+        }
     }
     public void ChangeMove(int index, Move to, MoveTypes type)
     {
         if (type == MoveTypes.Normal) MoveSet[index] = to;
-        else StanceMoveSet[index] = to;
+        else
+        {
+            StanceMoveSet.Add(to);
+        }
     }
     public void ResetMoveCooldowns()
     {
