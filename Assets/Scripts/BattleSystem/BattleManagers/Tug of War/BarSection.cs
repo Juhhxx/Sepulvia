@@ -93,4 +93,10 @@ public class BarSection : MonoBehaviour
     {
         OnDestroySection?.Invoke();
     }
+
+    public event Action OnBurnSection;
+    public void BurnSection()
+    {
+        OnBurnSection?.Invoke();
+    }
 }
