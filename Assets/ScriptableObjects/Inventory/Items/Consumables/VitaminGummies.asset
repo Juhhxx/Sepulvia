@@ -15,11 +15,11 @@ MonoBehaviour:
   _id: 20
   <Name>k__BackingField: Vitamin Gummies
   <Sprite>k__BackingField: {fileID: 0}
-  <Description>k__BackingField: 
+  <Description>k__BackingField: Gain +2 Strength for the next 5 turns.
   <StackMaximum>k__BackingField: 5
   <CanBeUsedInBattle>k__BackingField: 1
   <CanBeBought>k__BackingField: 1
-  <CanBeSold>k__BackingField: 1
+  <CanBeSold>k__BackingField: 0
   <Type>k__BackingField: 0
   _consumable:
     mode: 1
@@ -41,4 +41,4 @@ MonoBehaviour:
     - rid: 3144098014362337383
       type: {class: ConsumableApplyStatusEffect, ns: , asm: Assembly-CSharp}
       data:
-        _statusEffect: {fileID: 0}
+        _statusEffect: {fileID: 11400000, guid: be29f03c963d7634db065437dea46302, type: 2}
