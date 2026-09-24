@@ -22,16 +22,16 @@ MonoBehaviour:
   _stanceCost: 0
   <StanceRewardRange>k__BackingField: {x: 0, y: 0}
   <Type>k__BackingField: 1
-  <Targeting>k__BackingField: 0
+  <Targeting>k__BackingField: 2
   _moveLogic:
     mode: 1
     unityReference: {fileID: 0}
     rawReference:
-      rid: 3144098014362337372
+      rid: 9062265556007911508
   references:
     version: 2
     RefIds:
-    - rid: 3144098014362337372
-      type: {class: MoveApplyStatusEffect, ns: , asm: Assembly-CSharp}
+    - rid: 9062265556007911508
+      type: {class: MoveApplyPassiveEffect, ns: , asm: Assembly-CSharp}
       data:
-        _statusEffect: {fileID: 0}
+        _PassiveEffect: {fileID: 11400000, guid: afd4a371a830af64b9107c96081e937b, type: 2}
