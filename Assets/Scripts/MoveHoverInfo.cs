@@ -7,10 +7,14 @@ public class MoveHoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private Move _move;
     private BattleUIManager _uiManager;
 
-    public void SetUpHover(Move move, BattleUIManager uiManager)
+    private void Awake()
+    {
+        GetComponent<MoveButton>().OnMoveSetUp += SetUp;
+    }
+    public void SetUp(Move move)
     {
         _move = move;
-        _uiManager = uiManager;
+        _uiManager = FindAnyObjectByType<BattleUIManager>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)

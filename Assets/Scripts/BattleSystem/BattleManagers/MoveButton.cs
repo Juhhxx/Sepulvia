@@ -8,6 +8,7 @@ public class MoveButton : MonoBehaviour
     [SerializeField] private int _buttonNumber;
     [SerializeField] private MoveTypes _buttonType;
     [SerializeField, ReadOnly] private Move _move;
+    public Move Move => _move;
 
     private BattleManager _battleManager;
     private BattlerController _playerController;
@@ -41,6 +42,14 @@ public class MoveButton : MonoBehaviour
         _button.onClick.AddListener(() => SendMoveInput());
 
         if (_move != null) OnMoveSetUp?.Invoke(_move);
+    }
+
+    private void OnEnable()
+    {
+        if(_move != null)
+        {
+            _button.interactable = _move.CheckIfCanUseMove(_playerController.Character);
+        }
     }
 
     private void SendMoveInput()

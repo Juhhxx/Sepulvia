@@ -163,9 +163,15 @@ public class BattleUIManager : MonoBehaviour
         if (onOff)
         {
             _panelTitle.text = $"{move.Name}";
-            _panelDescription.text = $"Cooldown: {move.Cooldown} turn(s)\n\n{move.Description}";
+            _panelDescription.text = $"Recovery Cost: {move.RecoveryCost} turn(s)\nCooldown: {move.Cooldown} turn(s)";
+            if (move.Type == MoveTypes.Stance) _panelDescription.text += $"\nStance Cost: {move.StanceCost} stance";
+
+            _panelDescription.text += $"\n\n{move.Description}";
 
             if (move.CheckIfCooldown()) _panelTitle.text += $" (cooldown)";
+
+            Debug.Log(_panelTitle.text);
+            Debug.Log(_panelDescription.text);
         }
         
         _moveInfoPanel.SetActive(onOff);
