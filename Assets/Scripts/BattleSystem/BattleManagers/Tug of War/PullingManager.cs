@@ -30,6 +30,11 @@ public class PullingManager : RandomBehaviour
 
         if (!burn) section.DestroySection();
         else section.BurnSection();
+
+        if (section.HasHeart)
+        {
+            OnHeartEnd?.Invoke(section.ConnectLeft == null);
+        }
     }
 
     public void BreakBarSections(int number, bool fromLeft)
