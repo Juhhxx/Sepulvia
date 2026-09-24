@@ -37,12 +37,12 @@ public class PullingManager : RandomBehaviour
         }
     }
 
-    public void BreakBarSections(int number, bool fromLeft)
+    public void BreakBarSections(int number, bool fromLeft, bool burn = false)
     {
-        StartCoroutine(BreakBarSectionsCR(number, fromLeft));
+        StartCoroutine(BreakBarSectionsCR(number, fromLeft, burn));
     }
 
-    private IEnumerator BreakBarSectionsCR(int number, bool fromLeft)
+    private IEnumerator BreakBarSectionsCR(int number, bool fromLeft, bool burn = false)
     {
         int startIndex = fromLeft ? 0 : _barSectionList.Count - 1;
         
@@ -54,7 +54,7 @@ public class PullingManager : RandomBehaviour
         {
             if (i >= sections.Count) yield break;
 
-            BreakBarSection(sections[i]);
+            BreakBarSection(sections[i], burn);
 
             yield return new WaitForSeconds(0.5f);
         }

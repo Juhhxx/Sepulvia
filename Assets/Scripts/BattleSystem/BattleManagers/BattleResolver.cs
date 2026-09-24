@@ -22,7 +22,7 @@ public class BattleResolver : RandomBehaviour
 
         _battleManager.OnActionExecuted += ExecuteAction;
         _pullManager.OnSelectBar += SetPlayerSelectedBar;
-        _battleManager.OnSoulBurn += DoChainShatter;
+        _battleManager.OnSoulBurn += DoChainBurn;
     }
 
     private void ExecuteAction(BattleAction action)
@@ -220,14 +220,14 @@ public class BattleResolver : RandomBehaviour
         _activeMinigame = null;
     }
 
-    public void DoChainShatter(int left, int right)
+    public void DoChainBurn(int left, int right)
     {
-        DoChainShatter(left, false);
-        DoChainShatter(right, true);
+        DoChainShatter(left, false, true);
+        DoChainShatter(right, true, true);
     }
-    public void DoChainShatter(int number, bool right)
+    public void DoChainShatter(int number, bool right, bool burn = false)
     {
-        _pullManager.BreakBarSections(number, !right);
+        _pullManager.BreakBarSections(number, !right, burn);
     }
 
     public void UseItem(ItemStack item, BattlerController user, BattlerController[] targets)
