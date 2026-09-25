@@ -6,6 +6,7 @@ public class Timer
     private float _time;
     private float _maxTime;
     public float CurrentTime => _time;
+    public float MaxTime => _maxTime;
 
     public enum TimerReset { Automatic, Manual }
     private TimerReset _timerReset;
