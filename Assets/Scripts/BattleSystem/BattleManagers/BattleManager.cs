@@ -176,6 +176,7 @@ public class BattleManager : MonoBehaviour
         _runButton.onClick.AddListener(() => GetBattlerController(Player).AddActionRun());
     }
 
+    private WaitForDialogueEnd _wfd;
     public void StartBattle(PlayerParty playerParty, EnemyParty enemyParty)
     {
         _playerParty = playerParty;
@@ -210,7 +211,7 @@ public class BattleManager : MonoBehaviour
         OnActionExecuted += (_) => _dialogueManager.StartDialogues();
 
         // Instantiate Variables
-        // _wfd = new WaitForDialogueEnd(_dialogueManager);
+        _wfd = new WaitForDialogueEnd(_dialogueManager);
 
         // Set UI
         _uiManager.SetUIState(BattleUIManager.BattleUIState.None);
@@ -353,6 +354,7 @@ public class BattleManager : MonoBehaviour
     {
         Debug.Log("ENDING BATTLE");
         _uiManager.HideFinalScreens();
+        _dialogueManager.ClearDialogues();
         _dialogueManager.HideDialogue();
 
         _uiManager.ClearCreatedObjects();
@@ -426,7 +428,11 @@ public class BattleManager : MonoBehaviour
 
     private void StartTurn()
     {
-        if (_doRun) EndBattle();
+        if (_doRun)
+        {
+            _timelineManager.ToggleTurnCounting(false);
+            EndBattle();
+        }
 
         if (_soulBurn.NextTurn == _timelineManager.CurrentTurn) _soulBurn.OnTurnReached();
 
@@ -436,7 +442,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            Debug.Log($"BATTLE ENDED", this);
+            _timelineManager.ToggleTurnCounting(false);
             ShowEnd();
         }
     }
@@ -502,10 +508,11 @@ public class BattleManager : MonoBehaviour
                     {
                         _currentState = BattleState.EnemyTurnBegin;
                         
-                        BattlerController[] playerControllers = _playerParty.PartyMembers.Select(c => GetBattlerController(c)).ToArray();
+                        BattlerController[] playerControllers = GetBattlerControllers(PlayerParty.PartyMembers.ToArray());
+                        BattlerController[] enemyControllers = GetBattlerControllers(EnemyParty.PartyMembers.ToArray());
 
-                        controller.BattleAI.ChooseRandom(controller, playerControllers, 
-                                _pullManager.BarSections, _pullManager.CurrentHeartIndex);
+                        controller.BattleAI.ChooseRandom(controller, enemyControllers, playerControllers, 
+                                                    _pullManager.BarSections, _pullManager.CurrentHeartIndex);
 
                         _currentState = BattleState.EnemyTurnEnd;
                     }
@@ -537,6 +544,8 @@ public class BattleManager : MonoBehaviour
                 if (action.Move != null) waitTime = action.Move.MoveWaitTime;
 
                 yield return new WaitForSeconds(waitTime);
+
+                yield return _wfd;
 
                 if (_hasWinner || _doRun)
                 {

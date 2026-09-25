@@ -17,6 +17,7 @@ public class EnemyInfo : CharacterInfo
     [field: Space(10)]
     [field: Header("Character Battle AI")]
     [field: Space(5)]
+    [field : SerializeField] public bool CanRun{ get; private set; } = true;
     [field : SerializeField] public int Inteligence { get; private set; }
 }
 
@@ -27,6 +28,7 @@ public class Enemy : Character
         DifficultyLevel = info.DifficultyLevel;
         PossibleRewards = info.PossibleRewards;
         Inteligence = info.Inteligence;
+        CanRun = info.CanRun;
     }
 
     [field: Header("Character Defeat Rewards")]

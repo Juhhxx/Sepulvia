@@ -14,4 +14,8 @@ public enum MoveTargeting
     Single,
     All,
     Self,
+    AllySingle,
+    AllyAll,
+    Everyone,
+    None
 }

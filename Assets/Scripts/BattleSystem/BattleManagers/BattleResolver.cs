@@ -99,6 +99,8 @@ public class BattleResolver : RandomBehaviour
 
         foreach (BattlerController bc in targets)
         {
+            if (bc == affected) return false;
+
             if (bc.IsBlocking)
             {
                 var se = bc.StatusEffectManager.GetStatusEffect<StatusEffectBlock>();
@@ -118,6 +120,8 @@ public class BattleResolver : RandomBehaviour
 
         foreach (BattlerController bc in targets)
         {
+            if (bc == affected) return false;
+
             if (bc.IsInterrupting)
             {
                 var se = bc.StatusEffectManager.GetStatusEffect<StatusEffectInterrupt>();

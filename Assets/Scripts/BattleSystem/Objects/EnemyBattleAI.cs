@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 
 [Serializable]
 public class EnemyBattleAI : MonoBehaviour
@@ -10,7 +11,7 @@ public class EnemyBattleAI : MonoBehaviour
     private List<BarSection> _barSections;
     private int _currentSoulPosition;
 
-    public void ChooseRandom(BattlerController battler, BattlerController[] possibleTargets, List<BarSection> sections, int soulPosition)
+    public void ChooseRandom(BattlerController battler, BattlerController[] allies, BattlerController[] possibleTargets, List<BarSection> sections, int soulPosition)
     {
         _barSections = sections;
         _currentSoulPosition = soulPosition;
@@ -36,25 +37,64 @@ public class EnemyBattleAI : MonoBehaviour
             move = battler.Character.MoveSet[0];
         }
 
-        var targets = ChooseTargets(battler, possibleTargets, move.Targeting);
+        var targets = ChooseTargets(battler, allies, possibleTargets, move.Targeting);
 
         Debug.Log("ENEMY CHOSE MOVE");
 
         battler.QueueAction(new BattleAction(battler, targets, move));
     }
-    private BattlerController[] ChooseTargets(BattlerController battler, BattlerController[] possibleTargets, MoveTargeting targeting)
+    public BattlerController[] ChooseTargets(BattlerController battler, BattlerController[] allies, BattlerController[] possibleTargets, MoveTargeting targeting)
     {
-        if (targeting == MoveTargeting.Self) return new BattlerController[1] {battler};
-        else if (targeting == MoveTargeting.All) return possibleTargets;
-        else if (targeting == MoveTargeting.Single)
-        {
-            System.Random rnd = new System.Random();
-            int targetIndex = rnd.Next(0, possibleTargets.Length);
+        System.Random rnd = new System.Random();
+        BattlerController[] targets = null;
 
-            return new BattlerController[1] {possibleTargets[targetIndex]};
+        var alliesNoUser = new List<BattlerController>();
+        alliesNoUser.Remove(battler);
+
+        switch (targeting)
+        {
+            case MoveTargeting.Single:
+
+                int targetIndex = rnd.Next(0, possibleTargets.Length);
+                targets = new BattlerController[1] {possibleTargets[targetIndex]};
+                break;
+            
+            case MoveTargeting.All:
+
+                targets = possibleTargets;
+                break;
+            
+            case MoveTargeting.Self:
+
+                targets = new BattlerController[1] {battler};
+                break;
+            
+            case MoveTargeting.AllySingle:
+
+                int allyIndex = rnd.Next(0, alliesNoUser.Count);
+                targets = new BattlerController[1] {alliesNoUser[allyIndex]};
+                break;
+            
+            case MoveTargeting.AllyAll:
+
+                targets = alliesNoUser.ToArray();
+                break;
+
+            case MoveTargeting.Everyone:
+
+                var everyone = new List<BattlerController>(allies);
+                everyone.AddRange(possibleTargets);
+
+                targets = everyone.ToArray();
+                break;
+            
+            case MoveTargeting.None:
+
+                targets = new BattlerController[0];
+                break;
         }
 
-        return new BattlerController[0];
+        return targets;
     }
 
     public int ChooseBarSection(ModifierApplyType whereToApply)
