@@ -64,15 +64,17 @@ public class BattleResolver : RandomBehaviour
             return;
         }
 
-        Debug.Log($"{user.Character.Name} USED {move.Name} AGAINST {targets[0].Character.Name}");
+        Debug.Log($"{user.Character.Name} USED {move.Name}.");
 
         move.UsedMove();
 
         user.Character.RecoveryTime += move.RecoveryCost;
         user.Character.CurrentStance += GetStanceBoost(move);
 
+        if (move.Type.HasFlag(MoveTypes.Stance)) user.Character.CurrentStance -= move.StanceCost;
+
         DialogueManager.Instance.AddDialogue(
-            $"{user.Character.Name} used {move.Name} against {string.Join(", ", targets.Select(t => t.Character.Name))}.");
+            $"{user.Character.Name} used {move.Name}.");
 
         move.MoveLogic.OnDoMove(user, targets, this);
     }

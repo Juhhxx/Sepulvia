@@ -55,7 +55,11 @@ public class BattleManager : MonoBehaviour
     
     private List<Character> _battlersList;
     private Dictionary<Character, BattlerController> _battlerControllers;
-    public BattlerController GetBattlerController(Character character) => _battlerControllers[character];
+    public BattlerController GetBattlerController(Character character)
+    {
+
+        return _battlerControllers.GetValueOrDefault(character, null);
+    }
     public BattlerController[] GetBattlerControllers(Character[] characters)
     {
         BattlerController[] controllers = new BattlerController[characters.Length];
@@ -156,12 +160,7 @@ public class BattleManager : MonoBehaviour
     // Run logic
     public void Run()
     {
-        bool result = _battleResolver.CanRun(GetBattlerController(Player), _enemyParty);
-
-        if (result)
-        {
-            EndBattle();
-        }
+        _doRun = _battleResolver.CanRun(GetBattlerController(Player), _enemyParty);
     }
 
     // Battle logic
@@ -221,14 +220,13 @@ public class BattleManager : MonoBehaviour
         _inventoryUIManager.ResetInventory();
 
         // Temporary
-        Player.OnRecoveryTimeChange += (newAmount, oldAmount) => _timelineUIManager.UpdateTimelineIndicators(newAmount, EnemyParty.PartyMembers[0].RecoveryTime);
-        EnemyParty.PartyMembers[0].OnRecoveryTimeChange += (newAmount, oldAmount) => _timelineUIManager.UpdateTimelineIndicators(Player.RecoveryTime, newAmount);
+        _timelineUIManager.ClearIndicators();
+        _timelineUIManager.AddPartyTimelineIndicators(_playerParty, _enemyParty);
 
         SetUpTurnEvents();
 
         _timelineManager.SetTurn(0);
         _timelineManager.ToggleTurnCounting(true);
-        _timelineUIManager.UpdateTimelineIndicators(0, 0);
 
         ChangeSoulBurn(_soulBurn);
     }
@@ -241,9 +239,10 @@ public class BattleManager : MonoBehaviour
 
         _timelineManager.OnTurnBegin += StartTurn;
 
-        // Count Turns in Modifiers and Check Them
+        // Count Turns in Modifiers
         _timelineManager.OnTurnEnd += () =>
         {
+            Debug.Log("UPDATING STATUS EFFECTS");
             foreach (Character c in _battlersList)
             {
                 GetBattlerController(c).StatusEffectManager.UpdateStatusEffects();
@@ -432,6 +431,7 @@ public class BattleManager : MonoBehaviour
         {
             _timelineManager.ToggleTurnCounting(false);
             EndBattle();
+            return;
         }
 
         if (_soulBurn.NextTurn == _timelineManager.CurrentTurn) _soulBurn.OnTurnReached();
@@ -500,7 +500,6 @@ public class BattleManager : MonoBehaviour
                         }
 
                         _uiManager.SetUIState(BattleUIManager.BattleUIState.None);
-                        _uiManager.UpdateStanceBars(Player);
                         _inventoryUIManager.HideInventory();
                         _currentState = BattleState.PlayerTurnEnd;
                     }
@@ -514,6 +513,7 @@ public class BattleManager : MonoBehaviour
                         controller.BattleAI.ChooseRandom(controller, enemyControllers, playerControllers, 
                                                     _pullManager.BarSections, _pullManager.CurrentHeartIndex);
 
+                        yield return new WaitForSeconds(1f);
                         _currentState = BattleState.EnemyTurnEnd;
                     }
                 }

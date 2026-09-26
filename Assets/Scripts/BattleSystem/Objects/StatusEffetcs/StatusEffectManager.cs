@@ -8,6 +8,8 @@ public class StatusEffectManager : MonoBehaviour
     [SerializeField] private List<StatusEffect> _activeStatusEffects = new List<StatusEffect>();
     public IReadOnlyList<StatusEffect> ActiveStatusEffects => _activeStatusEffects;
 
+    public event Action<StatusEffect> OnAddStatusEffect;
+
     private Dictionary<string,float> _immunities = new Dictionary<string,float>();
 
     public void AddImmunity(string statusEffect, float percentage)
@@ -32,6 +34,8 @@ public class StatusEffectManager : MonoBehaviour
         if (_immunities.ContainsKey(se.Name) && _immunities[se.Name] == 1) return;
 
         _activeStatusEffects.Add(se);
+        
+        OnAddStatusEffect?.Invoke(se);
 
         se.StatusEffectLogic.OnEnterEffect(character, se);
     }

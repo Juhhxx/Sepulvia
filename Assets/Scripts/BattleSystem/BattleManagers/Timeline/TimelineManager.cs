@@ -1,4 +1,5 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class TimelineManager : MonoBehaviour
@@ -10,7 +11,7 @@ public class TimelineManager : MonoBehaviour
     public Action OnTurnEnd;
 
     private bool _countTurn = false;
-    private int _currentTurn = 0;
+    [SerializeField, ReadOnly] private int _currentTurn = 0;
     public int CurrentTurn => _currentTurn;
     public void SetTurn(int turn)
     {
@@ -32,7 +33,10 @@ public class TimelineManager : MonoBehaviour
             OnTurnBegin?.Invoke();
         };
 
-        _timer.OnTimerDone += () => OnTurnEnd?.Invoke();
+        _timer.OnTimerDone += () => {
+            OnTurnEnd?.Invoke();
+            Debug.Log("TURN PASSED", this);
+        };
     }
 
     private void Update()

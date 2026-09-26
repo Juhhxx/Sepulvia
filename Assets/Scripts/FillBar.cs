@@ -67,7 +67,7 @@ public class FillBar : MonoBehaviour
 
     private void UpdateUI(float to)
     {
-        int displayValue = Mathf.RoundToInt(_maxValue * to);
+        string displayValue = $"{_maxValue * to:f1}";
 
         _barFillImage.fillAmount = to;
         _barInfoTMP.text = $"{_infoName} ({displayValue}/{_maxValue})";

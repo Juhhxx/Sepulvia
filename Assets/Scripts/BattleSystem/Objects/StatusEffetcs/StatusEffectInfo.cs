@@ -51,10 +51,24 @@ public class StatusEffect
 
     [field: SerializeField, ReadOnly] public int TurnDuration { get; private set; }
     [SerializeField, ReadOnly] private int _turnsPassed = 0;
-    public void TurnPassed() => _turnsPassed++;
-    public bool CheckIfDone() => _turnsPassed == TurnDuration + 1; // Don't count the first turn
+    public void TurnPassed()
+    {
+        _turnsPassed++;
+        OnTurnPassed?.Invoke(TurnDuration - _turnsPassed);
+    }
+    public bool CheckIfDone()
+    {
+        bool result = _turnsPassed == TurnDuration;
+
+        if (result) OnCompleted?.Invoke();
+
+        return result;
+    }
     public void ResetTurnsPassed() => _turnsPassed = 0;
     public void ChangeTurnDuration(int turns) => TurnDuration = turns;
+
+    public event Action<int> OnTurnPassed;
+    public event Action OnCompleted;
 
     [SerializeField, ReadOnly] private SerializableInterface<IStatusEffect> _statusEffect;
     public IStatusEffect StatusEffectLogic => _statusEffect.Value;

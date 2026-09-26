@@ -56,6 +56,8 @@ public class BattleUIManager : MonoBehaviour
     {
         _decisionHearthDefaultPos = _decisionScreenHeart.anchoredPosition;
         _decisionHearthDefaultScale = _decisionScreenHeart.localScale;
+
+        _battleManager.Player.OnStanceChange += (_,_,_) => UpdateStanceBar(_battleManager.Player);
     }
 
     public void ClearCreatedObjects()
@@ -158,9 +160,9 @@ public class BattleUIManager : MonoBehaviour
     private void ToggleActionButtons(bool onOff)
     {
         _actionButtons.SetActive(onOff);
-        _battleManager.MoveButton.interactable = onOff;
-        _battleManager.StanceMoveButton.interactable = onOff;
-        _battleManager.RunButton.interactable = onOff;
+        _battleManager.MoveButton.interactable = true;
+        _battleManager.StanceMoveButton.interactable = true;
+        _battleManager.RunButton.interactable = true;
     }
     private void ToggleActionButtonsDeactivated()
     {
@@ -254,12 +256,10 @@ public class BattleUIManager : MonoBehaviour
     {        
         _playerStanceBar.SetUpBar(player.Name, "Stance", player.MaxStance);
     }
-    public void UpdateStanceBars(Character player)
+    public void UpdateStanceBar(Character player)
     {
         _playerStanceBar.UpdateFillAmout(player.CurrentStance);
     }
-
-    
 
     // Animations
 
