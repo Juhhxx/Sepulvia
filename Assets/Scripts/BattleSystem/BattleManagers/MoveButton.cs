@@ -12,6 +12,7 @@ public class MoveButton : MonoBehaviour
 
     private BattleManager _battleManager;
     private BattlerController _playerController;
+    private Character _player;
 
     public Action<Move> OnMoveSetUp;
     public Action<Move> OnMoveSelected;
@@ -26,10 +27,10 @@ public class MoveButton : MonoBehaviour
 
         if (_battleManager != null)
         {
-            Character player = _battleManager.Player;
-            _playerController = _battleManager.GetBattlerController(player);
+            _player = _battleManager.Player;
+            _playerController = _battleManager.GetBattlerController(_player);
 
-            var moveList = _buttonType == MoveTypes.Normal ? player.MoveSet : player.StanceMoveSet;
+            var moveList = _buttonType == MoveTypes.Normal ? _player.MoveSet : _player.StanceMoveSet;
 
             if (moveList.Count >= _buttonNumber)
             {
@@ -46,9 +47,9 @@ public class MoveButton : MonoBehaviour
 
     private void OnEnable()
     {
-        if(_playerController != null)
+        if(_battleManager != null)
         {
-            _button.interactable = _move.CheckIfCanUseMove(_playerController.Character);
+            _button.interactable = _move.CheckIfCanUseMove(_player);
         }
     }
 
@@ -56,9 +57,9 @@ public class MoveButton : MonoBehaviour
     {
         if (_move != null)
         {
-            if (_move.CheckIfCanUseMove(_playerController.Character))
+            if (_move.CheckIfCanUseMove(_player))
             {
-                _playerController.SetMove(_move);
+                _battleManager.GetBattlerController(_player).SetMove(_move);
             }
         }
     }

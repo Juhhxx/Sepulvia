@@ -190,6 +190,7 @@ public class BattleManager : MonoBehaviour
         {
             c.ResetMoveCooldowns();
             c.CurrentStance = 0;
+            c.RecoveryTime = 0;
         }
 
         _hasWinner = false;
