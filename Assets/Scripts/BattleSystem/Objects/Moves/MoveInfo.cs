@@ -13,6 +13,26 @@ public class MoveInfo : ScriptableObject
     [field: SerializeField, ResizableTextArea] public string Description { get; private set; }
     [field: SerializeField] public int Level { get; private set; }
 
+    [field: Header("Move Animation Parameters")]
+    [field: Space(5)]
+    [field: Dropdown("possibleTriggers")]
+    [field: SerializeField] public string AnimationTriggerUser { get; private set; }
+    
+    [field: Dropdown("possibleTriggers")]
+    [field: SerializeField] public string AnimationTriggerTarget { get; private set; }
+
+    private string[] possibleTriggers = new string[] 
+    {
+        "Attack",
+        "Charging",
+        "Hurt",
+        "Buff",
+        "Nerf",
+        "Knot",
+        "BigMove",
+        "Die"
+    };
+
     [field: Header("Move Cost Parameters")]
     [field: Space(5)]
     [field: SerializeField] public int RecoveryCost { get; private set; }
@@ -75,6 +95,8 @@ public class Move
     [field: SerializeField, ReadOnly] public Sprite Icon { get; private set; }
     [field: SerializeField, ResizableTextArea, ReadOnly] public string Description { get; private set; }
     [field: SerializeField, ReadOnly] public int Level { get; private set; }
+
+    [field: SerializeField] public string AnimationTrigger { get; private set; }
 
     [field: SerializeField] public int RecoveryCost { get; private set; }
 
