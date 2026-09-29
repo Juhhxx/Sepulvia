@@ -88,7 +88,6 @@ public class Character
     [field: SerializeField, ReadOnly] public string Name { get; private set; }
     [field: SerializeField, ReadOnly] public GameObject BattlePrefab { get; private set; }
     [field: SerializeField, ReadOnly] public Sprite TimelineIndicator { get; private set; }
-    public Animator Animator;
 
     [Space(10)]
     [Header("Character Stats")]

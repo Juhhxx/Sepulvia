@@ -56,6 +56,11 @@ public class TimelineUIManager : MonoBehaviour
                 Destroy(_timelineSections[i]);
             }
         }
+
+        for (int i = 0; i < _timelineSections.Count; i++)
+        {
+            Debug.Log($"section {i}, pos: {_timelineSections[i].rectTransform.anchoredPosition}", this);
+        }
     }
 
     private List<TimelineIndicator> _timelineIndicators = new List<TimelineIndicator>();
@@ -117,6 +122,8 @@ public class TimelineUIManager : MonoBehaviour
 
         indicator.GetComponentInChildren<Image>().sprite = sprite;
 
+        indicator.gameObject.name = name;
+
         _timelineIndicators.Add(new TimelineIndicator(name, turn, indicator));
 
         UpdateTimelineIndicator(name, 0, false);
@@ -132,6 +139,9 @@ public class TimelineUIManager : MonoBehaviour
     {
         indicator.gameObject.SetActive(true);
         indicator.transform.SetAsLastSibling();
+
+        Debug.Log($"Moving Indicator to section {position}, pos: {_timelineSections[position].rectTransform.anchoredPosition}", this);
+        Debug.Log($"Number of sections: {_timelineSections.Count}", this);
 
         if (position >= 0 && position <= _timelineSize)
         {

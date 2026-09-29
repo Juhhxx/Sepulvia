@@ -77,7 +77,6 @@ public class BattleUIManager : MonoBehaviour
 
         GameObject playerGO = Instantiate(player.BattlePrefab, _playerPivot.position, Quaternion.identity);
 
-        player.Animator = playerGO.GetComponent<Animator>();
         BattlerController playerController = playerGO.GetComponent<BattlerController>();
 
         _characterModels.Add(playerGO);

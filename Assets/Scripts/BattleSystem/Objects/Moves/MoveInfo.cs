@@ -17,11 +17,12 @@ public class MoveInfo : ScriptableObject
     [field: Space(5)]
     [field: Dropdown("possibleTriggers")]
     [field: SerializeField] public string AnimationTriggerUser { get; private set; }
-    
+
     [field: Dropdown("possibleTriggers")]
+    [field: HideIf("Targeting", MoveTargeting.Self)]
     [field: SerializeField] public string AnimationTriggerTarget { get; private set; }
 
-    private string[] possibleTriggers = new string[] 
+    private string[] possibleTriggers = new string[9] 
     {
         "Attack",
         "Charging",
@@ -30,7 +31,8 @@ public class MoveInfo : ScriptableObject
         "Nerf",
         "Knot",
         "BigMove",
-        "Die"
+        "Die",
+        "None",
     };
 
     [field: Header("Move Cost Parameters")]
@@ -78,6 +80,9 @@ public class Move
         Description = info.Description;
         Level = info.Level;
 
+        AnimationTriggerUser = info.AnimationTriggerUser;
+        AnimationTriggerTarget = info.AnimationTriggerTarget;
+
         Cooldown = info.Cooldown;
         RecoveryCost = info.RecoveryCost;
         MoveWaitTime = info.MoveWaitTime;
@@ -96,13 +101,14 @@ public class Move
     [field: SerializeField, ResizableTextArea, ReadOnly] public string Description { get; private set; }
     [field: SerializeField, ReadOnly] public int Level { get; private set; }
 
-    [field: SerializeField] public string AnimationTrigger { get; private set; }
+    [field: SerializeField] public string AnimationTriggerUser { get; private set; }
+    [field: SerializeField] public string AnimationTriggerTarget { get; private set; }
 
     [field: SerializeField] public int RecoveryCost { get; private set; }
 
     [field: SerializeField, ReadOnly] public int Cooldown { get; private set; }
     [SerializeField, ReadOnly] private int _turnsPassed = 0;
-    public int TurnsPassed => _turnsPassed; 
+    public int TurnsPassed => _turnsPassed - 1;
     [SerializeField, ReadOnly] private bool _inCooldown = false;
     public void TurnPassed()
     {

@@ -42,6 +42,8 @@ public class StatusEffectManager : MonoBehaviour
 
     public void RemoveStatusEffect(StatusEffect se)
     {
+        se.Completed();
+
         _activeStatusEffects.Remove(se);
 
         se.StatusEffectLogic.OnExitEffect();

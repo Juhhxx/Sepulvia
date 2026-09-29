@@ -60,12 +60,14 @@ public class StatusEffect
     {
         bool result = _turnsPassed == TurnDuration;
 
-        if (result) OnCompleted?.Invoke();
-
         return result;
     }
     public void ResetTurnsPassed() => _turnsPassed = 0;
     public void ChangeTurnDuration(int turns) => TurnDuration = turns;
+    public void Completed()
+    {
+        OnCompleted?.Invoke();
+    }
 
     public event Action<int> OnTurnPassed;
     public event Action OnCompleted;

@@ -12,6 +12,11 @@ public class BattlerController : MonoBehaviour
     public Character Character => _character;
     public bool IsPlayer() => _character is Player;
 
+    // Animation
+
+    private BattlerAnimationController _animationController;
+    public BattlerAnimationController AnimationController => _animationController;
+
     // Battle Parameters
     private bool _isStunned = false;
     public void SetStunned(bool stunned)
@@ -54,6 +59,7 @@ public class BattlerController : MonoBehaviour
         _battleManager = battleManager;
 
         _enemyBattleAI = GetComponent<EnemyBattleAI>();
+        _animationController = GetComponent<BattlerAnimationController>();
 
         if (IsPlayer())
         {
@@ -89,7 +95,7 @@ public class BattlerController : MonoBehaviour
         _queuedActions.Clear();
     }
 
-    // Creating Action
+    // Creating Actions
     public void RequestAction()
     {
         StartCoroutine(CreateAction());

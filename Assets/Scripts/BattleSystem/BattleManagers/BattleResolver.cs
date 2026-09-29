@@ -71,10 +71,17 @@ public class BattleResolver : RandomBehaviour
         user.Character.RecoveryTime += move.RecoveryCost;
         user.Character.CurrentStance += GetStanceBoost(move);
 
+        user.AnimationController.DoTrigger(move.AnimationTriggerUser);
+
+        foreach (BattlerController bc in targets)
+        {
+            bc.AnimationController.DoTrigger(move.AnimationTriggerTarget);
+        }
+
         if (move.Type.HasFlag(MoveTypes.Stance)) user.Character.CurrentStance -= move.StanceCost;
 
-        DialogueManager.Instance.AddDialogue(
-            $"{user.Character.Name} used {move.Name}.");
+        if (!move.Type.HasFlag(MoveTypes.PartOfCombo))
+            DialogueManager.Instance.AddDialogue($"{user.Character.Name} used {move.Name}.");
 
         move.MoveLogic.OnDoMove(user, targets, this);
     }
@@ -142,20 +149,7 @@ public class BattleResolver : RandomBehaviour
         int pullStrenght = strenght + user.Character.PullStrenghtBonus;
 
         if (pullStrenght < 0) pullStrenght = 0;
-
-        if (pullStrenght > 0)
-        {
-            DialogueManager.Instance.AddDialogue(
-            $"{user.Character.Name} pulled the Soul to their side by {pullStrenght}.");
-        }
-        else
-        {
-            DialogueManager.Instance.AddDialogue(
-            $"{user.Character.Name} failed to pull the Soul to their side.");
-        }
        
-        user.Character.Animator?.SetTrigger("Attack");
-        
         Debug.Log($"{_pullManager}");
         if (user.IsPlayer())
         {
