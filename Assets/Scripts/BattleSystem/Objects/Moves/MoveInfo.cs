@@ -80,6 +80,7 @@ public class Move
 
     [field: SerializeField, ReadOnly] public int Cooldown { get; private set; }
     [SerializeField, ReadOnly] private int _turnsPassed = 0;
+    public int TurnsPassed => _turnsPassed; 
     [SerializeField, ReadOnly] private bool _inCooldown = false;
     public void TurnPassed()
     {

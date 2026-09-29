@@ -160,16 +160,16 @@ public class BattleUIManager : MonoBehaviour
     private void ToggleActionButtons(bool onOff)
     {
         _actionButtons.SetActive(onOff);
-        _battleManager.MoveButton.interactable = true;
-        _battleManager.StanceMoveButton.interactable = true;
-        _battleManager.RunButton.interactable = true;
+        _battleManager.MoveButton.gameObject.SetActive(true);
+        _battleManager.StanceMoveButton.gameObject.SetActive(true);
+        _battleManager.RunButton.gameObject.SetActive(true);
     }
     private void ToggleActionButtonsDeactivated()
     {
         _actionButtons.SetActive(true);
-        _battleManager.MoveButton.interactable = false;
-        _battleManager.StanceMoveButton.interactable = false;
-        _battleManager.RunButton.interactable = false;
+        _battleManager.MoveButton.gameObject.SetActive(false);
+        _battleManager.StanceMoveButton.gameObject.SetActive(false);
+        _battleManager.RunButton.gameObject.SetActive(false);
     }
     private void ToggleMoveButtons(bool onOff) => _moveButtons.SetActive(onOff);
     private void ToggleStanceMoveButtons(bool onOff) => _stanceMoveButtons.SetActive(onOff);
@@ -180,7 +180,18 @@ public class BattleUIManager : MonoBehaviour
         if (onOff)
         {
             _panelTitle.text = $"{move.Name}";
-            _panelDescription.text = $"Recovery Cost: {move.RecoveryCost} turn(s)\nCooldown: {move.Cooldown} turn(s)";
+
+            _panelDescription.text = $"Recovery Cost: {move.RecoveryCost}";
+            _panelDescription.text += move.RecoveryCost == 1 ? " turn" : " turns";
+
+            if (move.CheckIfCooldown())
+            {
+                int turnsLeft = move.Cooldown - move.TurnsPassed;
+                _panelDescription.text += $"\nCooldown: {turnsLeft}/{move.Cooldown}";
+            }
+            else _panelDescription.text += $"\nCooldown: {move.Cooldown}";
+            _panelDescription.text += move.Cooldown == 1 ? " turn" : " turns";
+
             if (move.Type == MoveTypes.Stance) _panelDescription.text += $"\nStance Cost: {move.StanceCost} stance";
 
             _panelDescription.text += $"\n\n{move.Description}";

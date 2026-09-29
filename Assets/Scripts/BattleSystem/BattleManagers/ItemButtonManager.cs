@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,9 +21,6 @@ public class ItemButtonManager : MonoBehaviour
 
         _button = GetComponent<Button>();
 
-        _playerController.ItemTimer.OnTimerBegin += () => ToggleItemButton(false);
-        _playerController.ItemTimer.OnTimerDone += () => ToggleItemButton(true);
-
         ToggleItemButton(true);
     }
 
@@ -35,7 +33,14 @@ public class ItemButtonManager : MonoBehaviour
 
     private void Update()
     {
-        _timerImage.fillAmount = 1 - _playerController.ItemTimer.CurrentTime / _playerController.ItemTimer.MaxTime;
-        _timerTMP.text = $"{(int)((_playerController.ItemTimer.CurrentTime % 60) % 60) + 1}";
+        ToggleItemButton(_playerController.ItemColldownTurns == 0);
+
+        float fillAmount = _playerController.ItemColldownTurns == 0 ?
+                            0 :
+                            1 - (_playerController.ItemColldownTurns / (float)_playerController.ItemCooldown);
+
+        _timerImage.DOFillAmount(fillAmount, 0.2f);
+
+        _timerTMP.text = $"{_playerController.ItemColldownTurns}";
     }
 }

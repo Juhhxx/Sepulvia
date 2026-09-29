@@ -243,7 +243,19 @@ public class BattleManager : MonoBehaviour
         // Count Turns in Modifiers
         _timelineManager.OnTurnEnd += () =>
         {
-            Debug.Log("UPDATING STATUS EFFECTS");
+            foreach (Character c in _battlersList)
+            {
+                GetBattlerController(c).StatusEffectManager.UpdateStatusEffects();
+            }
+        };
+
+        _timelineManager.OnTurnEnd += () =>
+        {
+            GetBattlerController(Player).CountItemTurn();
+        };
+
+        _timelineManager.OnTurnEnd += () =>
+        {
             foreach (Character c in _battlersList)
             {
                 GetBattlerController(c).StatusEffectManager.UpdateStatusEffects();

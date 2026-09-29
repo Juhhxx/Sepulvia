@@ -23,9 +23,16 @@ public class BattlerController : MonoBehaviour
     public void OnBlock() => OnDoBlock?.Invoke();
     public bool IsInterrupting => _statusEffectManager.HasStatusEffect<StatusEffectInterrupt>();
 
-    [SerializeField] private float _battleItemTimer;
-    private Timer _itemTimer;
-    public Timer ItemTimer => _itemTimer;
+    [SerializeField] private int _battleItemCooldown;
+    private int _itemsCooldownTurns;
+    public int ItemCooldown => _battleItemCooldown;
+    public int ItemColldownTurns => _itemsCooldownTurns;
+    public void CountItemTurn()
+    {
+        if (_itemsCooldownTurns == 0) return;
+        _itemsCooldownTurns -= 1;
+    }
+
     private bool _canUseItems = true;
     public bool CanUseItems => _canUseItems;
 
@@ -51,8 +58,6 @@ public class BattlerController : MonoBehaviour
         if (IsPlayer())
         {
             _targetButtonManager = FindAnyObjectByType<TargetButtonManager>(FindObjectsInactive.Include);
-            _itemTimer = new Timer(_battleItemTimer, Timer.TimerReset.Manual);
-            _itemTimer.OnTimerDone += () => _canUseItems = true;
         }
     }
 
@@ -163,7 +168,9 @@ public class BattlerController : MonoBehaviour
     public void SetItem(ItemStack stack) => _actionItemStack = stack;
     public void AddAction(ItemStack stack, BattlerController[] targets)
     {
-        if (IsPlayer() && !_canUseItems) return;
+        bool canUseItems = _itemsCooldownTurns == 0;
+
+        if (IsPlayer() && !canUseItems) return;
 
         var action = new BattleAction(this, targets, stack);
 
@@ -171,8 +178,7 @@ public class BattlerController : MonoBehaviour
 
         if (IsPlayer())
         {
-            _canUseItems = false;
-            _itemTimer.ResetTimer();
+            _itemsCooldownTurns = _battleItemCooldown;
         }
     }
 
@@ -181,15 +187,6 @@ public class BattlerController : MonoBehaviour
         var action = new BattleAction(this);
 
         QueueAction(action);
-    }
-
-    private void Update()
-    {
-        if (IsPlayer() && !_canUseItems)
-        {
-            _itemTimer.CountTimer();
-            Debug.Log($"{_itemTimer.CurrentTime}");
-        }
     }
 }
 

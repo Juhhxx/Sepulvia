@@ -15,6 +15,7 @@ public class MoveButton : MonoBehaviour
     private Character _player;
 
     public Action<Move> OnMoveSetUp;
+    public Action<Move> OnMoveCooldown;
     public Action<Move> OnMoveSelected;
     public Action<Move> OnMovePressed;
 
@@ -50,6 +51,7 @@ public class MoveButton : MonoBehaviour
         if(_battleManager != null)
         {
             _button.interactable = _move.CheckIfCanUseMove(_player);
+            OnMoveCooldown?.Invoke(_move);
         }
     }
 
