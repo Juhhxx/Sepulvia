@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using NaughtyAttributes;
 using DG.Tweening;
 using System.Linq;
+using System;
 
 public class TimelineUIManager : MonoBehaviour
 {
@@ -16,11 +17,11 @@ public class TimelineUIManager : MonoBehaviour
     [SerializeField] private RectTransform _lowerIndicatorPrefab;
 
     [OnValueChanged("BuildTimeline"), SerializeField, Range(0,50)] private int _timelineSize;
-    private List<Image> _timelineSections = new List<Image>();
+    private List<TimelineSection> _timelineSections = new List<TimelineSection>();
     [Button(enabledMode: EButtonEnableMode.Always)]
     private void ClearSectionsList()
     {
-        foreach (Image i in _timelineSections) if (i != null) Destroy(i.gameObject);
+        foreach (TimelineSection s in _timelineSections) if (s != null) Destroy(s.Section.gameObject);
         _timelineSections.Clear();
     }
 
@@ -40,12 +41,13 @@ public class TimelineUIManager : MonoBehaviour
         {
             if (_timelineSections.Count >= i + 1)
             {
-                _timelineSections[i].gameObject.SetActive(true);
+                _timelineSections[i].Section.gameObject.SetActive(true);
             }
             else
             {
                 Image newSection = Instantiate(_timelineSection, _timelineSectionParent);
-                _timelineSections.Add(newSection);
+
+                _timelineSections.Add(new TimelineSection(newSection.rectTransform));
             }
         }
 
@@ -53,22 +55,19 @@ public class TimelineUIManager : MonoBehaviour
         {
             for (int i = _timelineSize; i < _timelineSections.Count; i++)
             {
-                Destroy(_timelineSections[i]);
+                Destroy(_timelineSections[i].Section);
             }
-        }
-
-        for (int i = 0; i < _timelineSections.Count; i++)
-        {
-            Debug.Log($"section {i}, pos: {_timelineSections[i].rectTransform.anchoredPosition}", this);
         }
     }
 
+    [SerializeField]
     private List<TimelineIndicator> _timelineIndicators = new List<TimelineIndicator>();
     public void ClearIndicators()
     {
         foreach (TimelineIndicator ti in _timelineIndicators)
         {
             Destroy(ti.Indicator.gameObject);
+            _timelineSections[ti.Turn].Indicators.Remove(ti);
         }
 
         _timelineIndicators.Clear();
@@ -124,43 +123,56 @@ public class TimelineUIManager : MonoBehaviour
 
         indicator.gameObject.name = name;
 
-        _timelineIndicators.Add(new TimelineIndicator(name, turn, indicator));
+        _timelineIndicators.Add(new TimelineIndicator(name, turn, indicator, position));
 
         UpdateTimelineIndicator(name, 0, false);
     }
 
-    public void UpdateTimelineIndicator(string name, int position, bool doAnim = true)
+    public void UpdateTimelineIndicator(string name, int turn, bool doAnim = true)
     {
-        RectTransform indicator = _timelineIndicators.Find(i => i.Name == name).Indicator;
+        TimelineIndicator timelineIndicator = _timelineIndicators.Find(i => i.Name == name);
 
-        MoveIndicator(indicator, position, doAnim);
+        _timelineSections[timelineIndicator.Turn]?.Indicators.Remove(timelineIndicator);
+        _timelineSections[turn].Indicators.Add(timelineIndicator);
+
+        timelineIndicator.Turn = turn;
+        
+        RectTransform indicator = timelineIndicator.Indicator;
+        TimelinePosition position = timelineIndicator.Position;
+
+        MoveIndicator(indicator, turn, position, doAnim);
     }
-    private void MoveIndicator(RectTransform indicator, int position, bool doAnim = true)
+    private void MoveIndicator(RectTransform indicator, int turn, TimelinePosition position, bool doAnim = true)
     {
+        if (indicator.anchoredPosition.y != 0)
+        {
+            indicator.DOAnchorPosY(0, 0.5f).OnComplete(() => MoveIndicator(indicator, turn, position));
+            return;
+        }
+
         indicator.gameObject.SetActive(true);
         indicator.transform.SetAsLastSibling();
+        
 
-        Debug.Log($"Moving Indicator to section {position}, pos: {_timelineSections[position].rectTransform.anchoredPosition}", this);
-        Debug.Log($"Number of sections: {_timelineSections.Count}", this);
-
-        if (position >= 0 && position <= _timelineSize)
+        if (turn >= 0 && turn <= _timelineSize)
         {
-            var pos = _timelineSections[position].rectTransform.anchoredPosition;
+            var pos = _timelineSections[turn].Section.anchoredPosition;
             pos.y = indicator.anchoredPosition.y;
 
             if (doAnim)
             {
                 indicator.DOKill();
-                indicator.DOAnchorPosX(pos.x, 0.5f);
+                indicator.DOAnchorPosX(pos.x, 0.5f)
+                        .OnComplete(() => ResolveOverlay(_timelineSections[turn], position));
             }
             else
             {
                 indicator.anchoredPosition = pos;
             }
         }
-        else if (position < 0)
+        else if (turn < 0)
         {
-            var pos = _timelineSections[0].rectTransform.anchoredPosition;
+            var pos = _timelineSections[0].Section.anchoredPosition;
             pos.y = indicator.anchoredPosition.y;
 
             indicator.anchoredPosition = pos;
@@ -170,19 +182,58 @@ public class TimelineUIManager : MonoBehaviour
             indicator.gameObject.SetActive(false);
         }
     }
+
+    float overlaySpacing = 50f;
+    private void ResolveOverlay(TimelineSection section, TimelinePosition position)
+    {
+        var indicators = section.Indicators.FindAll(i => i.Position == position);
+
+        if (indicators.Count == 1) return;
+
+        for (int i = 0; i < indicators.Count; i++)
+        {
+            float yPos = overlaySpacing * i;
+
+            var timelineIndicator = indicators[i];
+
+
+            if (yPos == 0 && timelineIndicator.Indicator.anchoredPosition.x == 0) continue;
+
+            if (position == TimelinePosition.Lower) yPos *= -1;
+
+            timelineIndicator.Indicator.transform.SetAsFirstSibling();
+            timelineIndicator.Indicator.DOAnchorPosY(yPos, 0.1f);
+        }
+        
+    }
 }
 
-public struct TimelineIndicator
+public class TimelineSection
+{
+    public RectTransform Section;
+    public List<TimelineIndicator> Indicators;
+
+    public TimelineSection(RectTransform section)
+    {
+        Section = section;
+        Indicators = new List<TimelineIndicator>();
+    }
+}
+
+[Serializable]
+public class TimelineIndicator
 {
     public string Name;
     public int Turn;
     public RectTransform Indicator;
+    public TimelinePosition Position;
 
-    public TimelineIndicator(string name, int turn, RectTransform indicator)
+    public TimelineIndicator(string name, int turn, RectTransform indicator, TimelinePosition position)
     {
         Name = name;
         Turn = turn;
         Indicator = indicator;
+        Position = position;
     }
 }
 public enum TimelinePosition

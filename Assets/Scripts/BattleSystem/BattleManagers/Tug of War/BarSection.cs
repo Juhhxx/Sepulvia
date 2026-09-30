@@ -7,7 +7,8 @@ using System.Collections;
 public class BarSection : MonoBehaviour
 {
     [field: SerializeField, ReadOnly] public BarModifier BarModifier { get; private set; }
-    public bool HasModifier { get; private set; }
+    public bool HasModifier { get; private set; } = false;
+    public bool WasDestroyed { get; private set; } = false;
     private GameObject _modifierPrefab;
 
     public void AddBarModifier(BarModifierInfo barModifier)
@@ -91,12 +92,14 @@ public class BarSection : MonoBehaviour
     public event Action OnDestroySection;
     public void DestroySection()
     {
+        WasDestroyed = true;
         OnDestroySection?.Invoke();
     }
 
     public event Action OnBurnSection;
     public void BurnSection()
     {
+        WasDestroyed = true;
         OnBurnSection?.Invoke();
     }
 }

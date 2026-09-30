@@ -46,7 +46,7 @@ public class PullingManager : RandomBehaviour
     {
         int startIndex = fromLeft ? 0 : _barSectionList.Count - 1;
         
-        var sections = new List<BarSection>(_barSectionList);
+        var sections = _barSectionList.FindAll(s => !s.WasDestroyed);
 
         if (!fromLeft) sections.Reverse();
 
