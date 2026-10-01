@@ -8,10 +8,14 @@ using System;
 
 public class TimelineUIManager : MonoBehaviour
 {
+    [Header("Timeline Prefabs and Parents")]
+    [Space(5f)]
+    // Sections
     [SerializeField] private Image _timelineSection;
     [SerializeField] private Transform _timelineSectionParent;
-    [SerializeField] private Transform _timelineIndicatorsParent;
 
+    // Inidcators
+    [SerializeField] private Transform _timelineIndicatorsParent;
     [SerializeField] private RectTransform _upperIndicatorPrefab;
     [SerializeField] private RectTransform _middleIndicatorPrefab;
     [SerializeField] private RectTransform _lowerIndicatorPrefab;
@@ -90,7 +94,7 @@ public class TimelineUIManager : MonoBehaviour
 
             c.OnRecoveryTimeChange += (newT, oldT) =>
             {
-                UpdateTimelineIndicator(name, c.RecoveryTime);
+                UpdateTimelineIndicator(name, oldT, newT);
             };
         }
     }
@@ -125,86 +129,95 @@ public class TimelineUIManager : MonoBehaviour
 
         _timelineIndicators.Add(new TimelineIndicator(name, turn, indicator, position));
 
-        UpdateTimelineIndicator(name, 0, false);
+        UpdateTimelineIndicator(name, 0, 0, false);
     }
 
-    public void UpdateTimelineIndicator(string name, int turn, bool doAnim = true)
+    public void UpdateTimelineIndicator(string name, int fromTurn, int toTurn, bool doAnim = true)
     {
         TimelineIndicator timelineIndicator = _timelineIndicators.Find(i => i.Name == name);
 
-        _timelineSections[timelineIndicator.Turn]?.Indicators.Remove(timelineIndicator);
-        _timelineSections[turn].Indicators.Add(timelineIndicator);
-
-        timelineIndicator.Turn = turn;
+        _timelineSections[fromTurn]?.Indicators.Remove(timelineIndicator);
+        _timelineSections[toTurn].Indicators.Add(timelineIndicator);
+        timelineIndicator.Turn = toTurn;
         
         RectTransform indicator = timelineIndicator.Indicator;
         TimelinePosition position = timelineIndicator.Position;
+        Vector2 moveTo = Vector2.zero;
 
-        MoveIndicator(indicator, turn, position, doAnim);
+        moveTo.x = _timelineSections[toTurn].Section.anchoredPosition.x;
+        moveTo.y = GetOverlayY(_timelineSections[toTurn], position); 
+
+        MoveIndicator(indicator, moveTo, position, doAnim);
     }
-    private void MoveIndicator(RectTransform indicator, int turn, TimelinePosition position, bool doAnim = true)
-    {
-        if (indicator.anchoredPosition.y != 0)
-        {
-            indicator.DOAnchorPosY(0, 0.5f).OnComplete(() => MoveIndicator(indicator, turn, position));
-            return;
-        }
-
-        indicator.gameObject.SetActive(true);
-        indicator.transform.SetAsLastSibling();
-        
-
-        if (turn >= 0 && turn <= _timelineSize)
-        {
-            var pos = _timelineSections[turn].Section.anchoredPosition;
-            pos.y = indicator.anchoredPosition.y;
-
-            if (doAnim)
-            {
-                indicator.DOKill();
-                indicator.DOAnchorPosX(pos.x, 0.5f)
-                        .OnComplete(() => ResolveOverlay(_timelineSections[turn], position));
-            }
-            else
-            {
-                indicator.anchoredPosition = pos;
-            }
-        }
-        else if (turn < 0)
-        {
-            var pos = _timelineSections[0].Section.anchoredPosition;
-            pos.y = indicator.anchoredPosition.y;
-
-            indicator.anchoredPosition = pos;
-        }
-        else
-        {
-            indicator.gameObject.SetActive(false);
-        }
-    }
-
-    float overlaySpacing = 50f;
-    private void ResolveOverlay(TimelineSection section, TimelinePosition position)
+    private float GetOverlayY(TimelineSection section, TimelinePosition position)
     {
         var indicators = section.Indicators.FindAll(i => i.Position == position);
 
-        if (indicators.Count == 1) return;
+        return _overlaySpacing * (indicators.Count - 1);
+    }
 
-        for (int i = 0; i < indicators.Count; i++)
+    [SerializeField] private float _overlaySpacing = 35f;
+    [SerializeField] private float _overlayAnimSpeed = 0.1f;
+    [SerializeField] private Ease _overlayAnimEase = Ease.Linear;
+    [SerializeField] private float _moveAnimSpeed = 0.5f;
+    [SerializeField] private Ease _moveAnimEase = Ease.Linear;
+
+    private void MoveIndicator(RectTransform indicator, Vector2 to, TimelinePosition position, bool doAnim = true)
+    {
+        indicator.gameObject.SetActive(true);
+
+        if (indicator.anchoredPosition == to) return;
+        else if (indicator.anchoredPosition.x > _timelineSections.Last().Section.anchoredPosition.x)
         {
-            float yPos = overlaySpacing * i;
-
-            var timelineIndicator = indicators[i];
-
-
-            if (yPos == 0 && timelineIndicator.Indicator.anchoredPosition.x == 0) continue;
-
-            if (position == TimelinePosition.Lower) yPos *= -1;
-
-            timelineIndicator.Indicator.transform.SetAsFirstSibling();
-            timelineIndicator.Indicator.DOAnchorPosY(yPos, 0.1f);
+            indicator.gameObject.SetActive(false); // Indicator outside timeline
         }
         
+        if (doAnim)
+        {
+            if (to.y == indicator.anchoredPosition.y)
+            {
+                MoveIndicatorHorizontal(indicator, to.x);
+            }
+            else if (to.y > indicator.anchoredPosition.y)
+            {
+                if (position == TimelinePosition.Lower) to.y *= -1;
+
+                MoveIndicatorHorizontal(indicator, to.x, () => 
+                MoveIndicatorVertical(indicator, to.y, position, false));
+            }
+            else if (to.y < indicator.anchoredPosition.y)
+            {
+                if (position == TimelinePosition.Lower) to.y *= -1;
+
+                MoveIndicatorVertical(indicator, to.y, position, true, ()=>
+                MoveIndicatorHorizontal(indicator, to.x));
+            }
+        }
+        else
+        {
+            if (position == TimelinePosition.Lower) to.y *= -1;
+            
+            indicator.anchoredPosition = to;
+        }
+    }
+    private void MoveIndicatorHorizontal(RectTransform indicator, float xPos, Action onDone = null)
+    {
+        indicator.transform.SetAsLastSibling();
+
+        indicator.DOKill();
+        indicator.DOAnchorPosX(xPos, _moveAnimSpeed)
+                .SetEase(_moveAnimEase)
+                .OnComplete(() => onDone?.Invoke());
+    }
+    private void MoveIndicatorVertical(RectTransform indicator, float yPos, TimelinePosition position, bool inFront, Action onDone = null)
+    {
+        if (inFront) indicator.transform.SetAsLastSibling();
+        else indicator.transform.SetAsFirstSibling();
+
+        indicator.DOKill();
+        indicator.DOAnchorPosY(yPos, _overlayAnimSpeed)
+                .SetEase(_overlayAnimEase)
+                .OnComplete(() => onDone?.Invoke());
     }
 }
 
