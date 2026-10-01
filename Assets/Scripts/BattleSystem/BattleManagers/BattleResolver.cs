@@ -171,13 +171,13 @@ public class BattleResolver : RandomBehaviour
 
     private bool _applyingBarModifier = false;
     public bool ApplyingBarModifier => _applyingBarModifier;
-    public void DoBarModifier(BarModifierInfo modifier)
+    public void DoBarModifier(BarModifier modifier)
     {
         _applyingBarModifier = true;
         StartCoroutine(DoBarModifierCR(modifier));
     }
 
-    private IEnumerator DoBarModifierCR(BarModifierInfo modifier)
+    private IEnumerator DoBarModifierCR(BarModifier modifier)
     {
         _battleManager.CurrentState = BattleManager.BattleState.PlayerChooseBar;
 
@@ -189,10 +189,10 @@ public class BattleResolver : RandomBehaviour
         _applyingBarModifier = false;
     }
 
-    public void ApplyBarModifier(int section, BarModifierInfo modifier)
+    public void ApplyBarModifier(int section, BarModifier modifier)
     {
         Debug.Log($"Applying Bar Modifier {modifier.Name} to Section {section}");
-        _pullManager.BarSections[section].AddBarModifier(modifier);
+        _pullManager.AddBarModifier(section, modifier);
     }
 
     private bool _playingMinigame = false;

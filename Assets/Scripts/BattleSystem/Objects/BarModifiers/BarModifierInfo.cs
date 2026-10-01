@@ -1,6 +1,7 @@
 using TNRD;
 using UnityEngine;
 using NaughtyAttributes;
+using System;
 
 [CreateAssetMenu(fileName = "BarModifier", menuName = "Battle System/New Bar Modifier")]
 public class BarModifierInfo : ScriptableObject
@@ -9,6 +10,7 @@ public class BarModifierInfo : ScriptableObject
     [field: Space(5)]
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public Sprite Icon { get; private set; }
+    [field: SerializeField] public Sprite TimelineIndicator { get; private set; }
     [field: SerializeField] public GameObject BarEffectPrefab { get; private set; }
     [field: SerializeField, TextArea] public string Description { get; private set; }
 
@@ -38,6 +40,7 @@ public class BarModifier
     {
         Name = info.Name;
         Icon = info.Icon;
+        TimelineIndicator = info.TimelineIndicator;
         BarEffectPrefab = info.BarEffectPrefab;
         Description = info.Description;
 
@@ -52,6 +55,7 @@ public class BarModifier
     [field: Space(5)]
     [field: SerializeField, ReadOnly] public string Name { get; private set; }
     [field: SerializeField, ReadOnly] public Sprite Icon { get; private set; }
+    [field: SerializeField] public Sprite TimelineIndicator { get; private set; }
     [field: SerializeField, ReadOnly] public GameObject BarEffectPrefab { get; private set; }
     [field: SerializeField, TextArea, ReadOnly] public string Description { get; private set; }
 
@@ -60,9 +64,21 @@ public class BarModifier
 
     [field: SerializeField, ReadOnly] public int TurnDuration { get; private set; }
     [SerializeField, ReadOnly] private int _turnsPassed = 0;
-    public void TurnPassed() => _turnsPassed++;
+    public void TurnPassed()
+    {
+        var oldDuration = TurnDuration - _turnsPassed;
+
+        _turnsPassed++;
+
+        var newDuration = TurnDuration - _turnsPassed;
+
+        OnTurnPassed?.Invoke(newDuration, oldDuration);
+    }
     public bool CheckIfDone() => _turnsPassed == TurnDuration + 1; // Don't count the first turn
     public void ResetTurnsPassed() => _turnsPassed = 0;
+    public Action<int, int> OnTurnPassed;
+    public void Completed() => OnCompleted?.Invoke();
+    public Action OnCompleted;
 
     [field: SerializeField, ReadOnly] public bool DestroyOnUse { get; private set; }
 

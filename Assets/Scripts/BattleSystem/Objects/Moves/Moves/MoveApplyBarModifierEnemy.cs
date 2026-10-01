@@ -11,7 +11,7 @@ public class MoveApplyBarModifierEnemy : IMove
 
         int barIndex = enemyAI.ChooseBarSection(_whereToApply);
         
-        resolver.ApplyBarModifier(barIndex, _modifier);
+        resolver.ApplyBarModifier(barIndex, _modifier.Instantiate());
     }
 }
 

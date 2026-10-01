@@ -11,16 +11,16 @@ public class BarSection : MonoBehaviour
     public bool WasDestroyed { get; private set; } = false;
     private GameObject _modifierPrefab;
 
-    public void AddBarModifier(BarModifierInfo barModifier)
+    public void AddBarModifier(BarModifier barModifier)
     {
-        BarModifier = barModifier.Instantiate();
+        BarModifier = barModifier;
         _modifierPrefab = Instantiate(barModifier.BarEffectPrefab, GetComponentInParent<Canvas>().transform);
         _modifierPrefab.GetComponent<RectTransform>().anchoredPosition = HeartPosition;
         HasModifier = true;
-        
     }
     public void RemoveBarModifier()
     {
+        BarModifier.Completed();
         BarModifier = null;
         HasModifier = false;
         _modifierPrefab.GetComponent<Animator>().SetTrigger("Destroy");

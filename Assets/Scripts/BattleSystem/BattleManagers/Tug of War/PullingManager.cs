@@ -91,6 +91,7 @@ public class PullingManager : RandomBehaviour
 
     // Events
     public event Action<int> OnSelectBar;
+    public event Action<int,BarModifier> OnAddModifier;
     public event Action<bool> OnHeartEnd;
     public void ResetEvents()
     {
@@ -213,6 +214,11 @@ public class PullingManager : RandomBehaviour
     }
 
     // Modifier Logic
+    public void AddBarModifier(int section, BarModifier modifier)
+    {
+        _barSectionList[section].AddBarModifier(modifier);
+        OnAddModifier?.Invoke(section, modifier);
+    }
     public void CheckBarModifiers()
     {
         foreach (BarSection section in _barSectionList)
@@ -228,6 +234,7 @@ public class PullingManager : RandomBehaviour
             }
         }
     }
+
     public void DoBarModifier(BarSection section, BarModifierTrigger trigger, BattlerController user)
     {
         if (!section.HasModifier) return;
@@ -238,7 +245,6 @@ public class PullingManager : RandomBehaviour
 
         if (section.BarModifier.DestroyOnUse) section.RemoveBarModifier();
     }
-
     public void DoBarModifiers(BarModifierTrigger trigger)
     {
         foreach (BarSection section in _barSectionList)
