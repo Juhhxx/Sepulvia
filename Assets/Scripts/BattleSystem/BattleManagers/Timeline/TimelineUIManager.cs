@@ -163,7 +163,7 @@ public class TimelineUIManager : MonoBehaviour
 
         _timelineIndicators.Add(new TimelineIndicator(name, turn, indicator, image, position));
 
-        UpdateTimelineIndicator(name, 0, turn, false);
+        UpdateTimelineIndicator(name, turn, turn, false);
     }
     public void RemoveTimelineIndicator(string name)
     {
@@ -253,7 +253,13 @@ public class TimelineUIManager : MonoBehaviour
         }
         else
         {
-            indicator.gameObject.SetActive(false); // Indicaotr outside timeline
+            // Indicator outside timeline
+            var pos = _timelineSections.Last().Section.anchoredPosition;
+            pos.x += + _timelineSections[0].Section.rect.width / 2;
+            pos.y = indicator.anchoredPosition.y;
+
+            indicator.anchoredPosition = pos;
+            indicator.gameObject.SetActive(false); 
         }
     }
     private void MoveIndicatorHorizontal(RectTransform indicator, float xPos, Action onDone = null)
