@@ -75,6 +75,8 @@ public class PullingUIManager : MonoBehaviour
 
         foreach (GameObject go in _spawnedObjects) Destroy(go);
         _spawnedObjects.Clear();
+        _lastBar = null;
+
 
         _barSectionList.Clear();
         

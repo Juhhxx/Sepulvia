@@ -241,6 +241,8 @@ public class BattleManager : MonoBehaviour
 
         _timelineManager.OnTurnBegin += StartTurn;
 
+        _timelineManager.OnTurnBegin += _timelineUIManager.UpdateTurnIndicator;
+
         _timelineManager.OnTurnEnd += () =>
         {
             _soulBurn.PassTurn();

@@ -5,16 +5,22 @@ using NaughtyAttributes;
 using DG.Tweening;
 using System.Linq;
 using System;
+using TMPro;
 
 public class TimelineUIManager : MonoBehaviour
 {
+    [Header("Current Turn Indicator")]
+    [Space(5f)]
+    [SerializeField] private TextMeshProUGUI _currentTurnIndicator;
+
     [Header("Timeline Prefabs and Parents")]
     [Space(5f)]
     // Sections
     [SerializeField] private Image _timelineSection;
+    [SerializeField] private Image _firstTimelineSection;
     [SerializeField] private Transform _timelineSectionParent;
 
-    // Inidcators
+    // Indicators
     [SerializeField] private Transform _timelineIndicatorsParent;
     [SerializeField] private RectTransform _upperIndicatorPrefab;
     [SerializeField] private RectTransform _middleIndicatorPrefab;
@@ -33,18 +39,27 @@ public class TimelineUIManager : MonoBehaviour
     }
 
     private PullingManager _pullManager;
+    [SerializeField]private TimelineManager _timelineManager;
 
     private void Awake()
     {
         _pullManager = FindAnyObjectByType<PullingManager>();
+        _timelineManager = FindAnyObjectByType<TimelineManager>();
 
         if (_pullManager != null)
         {
             _pullManager.OnAddModifier += AddBarModifierIndicator;
         }
 
+        _currentTurnIndicator.text = "1";
+
         ClearSectionsList();
         BuildTimeline();
+    }
+
+    public void UpdateTurnIndicator()
+    {
+        _currentTurnIndicator.text = $"{_timelineManager.CurrentTurn}";
     }
 
     public void BuildTimeline()
@@ -61,7 +76,9 @@ public class TimelineUIManager : MonoBehaviour
             }
             else
             {
-                Image newSection = Instantiate(_timelineSection, _timelineSectionParent);
+                Image prefab = (i == 0) ? _firstTimelineSection : _timelineSection;
+
+                Image newSection = Instantiate(prefab, _timelineSectionParent);
 
                 _timelineSections.Add(new TimelineSection(newSection.rectTransform));
             }

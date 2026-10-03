@@ -32,6 +32,7 @@ public class SoulBurnProfile
     public void OnStartBattle()
     {
         _turnsUntil = _waitTimeTurns;
+        _turnsPassed = 0;
     }
 
     public void PassTurn()
@@ -50,9 +51,8 @@ public class SoulBurnProfile
 
     public void OnTurnReached()
     {
-        _waitTimeTurns = Mathf.FloorToInt(_waitTimeTurns * _waitTimeChangeRate);
-        _waitTimeTurns = Mathf.Max(_waitTimeTurns, _waitTimeMinimum);
-        _turnsUntil = _waitTimeTurns;
+        _turnsUntil = Mathf.FloorToInt(_waitTimeTurns * _waitTimeChangeRate);
+        _turnsUntil = Mathf.Max(_turnsUntil, _waitTimeMinimum);
         _turnsPassed = 0;
 
         OnSoulBurn?.Invoke(_doLeft ? _amount : 0,
