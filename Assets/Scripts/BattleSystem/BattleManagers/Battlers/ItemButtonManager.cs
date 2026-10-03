@@ -14,7 +14,7 @@ public class ItemButtonManager : MonoBehaviour
     private BattlerController _playerController;
     private Button _button;
 
-    private void Start()
+    private void OnEnable()
     {
         var battleManager = FindAnyObjectByType<BattleManager>();
         _playerController = battleManager.GetBattlerController(battleManager.Player);
