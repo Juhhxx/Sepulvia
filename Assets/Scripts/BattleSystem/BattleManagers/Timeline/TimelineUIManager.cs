@@ -11,7 +11,12 @@ public class TimelineUIManager : MonoBehaviour
 {
     [Header("Current Turn Indicator")]
     [Space(5f)]
-    [SerializeField] private TextMeshProUGUI _currentTurnIndicator;
+    [SerializeField] private TextMeshProUGUI _currentTurnIndicatorTMP;
+
+    [Header("Outside Indicator")]
+    [Space(5f)]
+    [SerializeField] private GameObject _outsideIndicator;
+    [SerializeField] private TextMeshProUGUI _outsideIndicatorTMP;
 
     [Header("Timeline Prefabs and Parents")]
     [Space(5f)]
@@ -51,7 +56,7 @@ public class TimelineUIManager : MonoBehaviour
             _pullManager.OnAddModifier += AddBarModifierIndicator;
         }
 
-        _currentTurnIndicator.text = "1";
+        _currentTurnIndicatorTMP.text = "1";
 
         ClearSectionsList();
         BuildTimeline();
@@ -59,7 +64,20 @@ public class TimelineUIManager : MonoBehaviour
 
     public void UpdateTurnIndicator()
     {
-        _currentTurnIndicator.text = $"{_timelineManager.CurrentTurn}";
+        _currentTurnIndicatorTMP.text = $"{_timelineManager.CurrentTurn}";
+    }
+
+    public void UpdateOutsideIndicator()
+    {
+        int num = _timelineIndicators.Count(i => i.Turn >= _timelineSize);
+
+        if (num == 0)
+        {
+            _outsideIndicator.SetActive(false);
+            return;
+        }
+        _outsideIndicator.SetActive(true);
+        _outsideIndicatorTMP.text = $"+{num}";
     }
 
     public void BuildTimeline()
@@ -313,6 +331,8 @@ public class TimelineUIManager : MonoBehaviour
                 indicator.gameObject.SetActive(false);
             }
         }
+
+        UpdateOutsideIndicator();
     }
     private void MoveIndicatorHorizontal(RectTransform indicator, float xPos, Action onDone = null)
     {
