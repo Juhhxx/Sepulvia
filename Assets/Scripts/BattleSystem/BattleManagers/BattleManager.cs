@@ -35,6 +35,7 @@ public class BattleManager : MonoBehaviour
         _soulBurn = profile;
         _soulBurn.OnStartBattle();
         _soulBurn.OnSoulBurn += OnSoulBurn;
+        _timelineUIManager.AddBSoulBurnIndicator(_soulBurn);
     }
 
     [Space(10)]
@@ -239,6 +240,12 @@ public class BattleManager : MonoBehaviour
         _timelineManager.OnTurnEnd = null;
 
         _timelineManager.OnTurnBegin += StartTurn;
+
+        _timelineManager.OnTurnEnd += () =>
+        {
+            _soulBurn.PassTurn();
+            _soulBurn.CheckSoulBurn();
+        };
 
         // Count Turns in Modifiers
         _timelineManager.OnTurnEnd += () =>
@@ -447,8 +454,6 @@ public class BattleManager : MonoBehaviour
             return;
         }
 
-        if (_soulBurn.NextTurn == _timelineManager.CurrentTurn) _soulBurn.OnTurnReached();
-
         if (!_hasWinner)
         {
             StartCoroutine(ResolveTurn());
@@ -582,42 +587,3 @@ public class BattleManager : MonoBehaviour
     }
 }
 
-[Serializable]
-public class SoulBurnProfile
-{
-    [SerializeField] private int _waitTimeTurns;
-    public int WaitTimeTurns => _waitTimeTurns;
-
-    [SerializeField] private int _waitTimeMinimum;
-    public int WaitTimeMinimum => _waitTimeMinimum;
-
-    [SerializeField] private float _waitTimeChangeRate;
-    public float WaitTimeChangeRate => _waitTimeChangeRate;
-
-    [SerializeField] private bool _doLeft;
-    [SerializeField] private bool _doRight;
-    public (bool, bool) DoLeftRight => (_doLeft, _doRight);
-
-    [SerializeField] private int _amount;
-    public int Amount => _amount;
-
-    private int _nextTurn;
-    public int NextTurn => _nextTurn;
-
-    public event Action<int,int> OnSoulBurn; // ints to indicate how much burn on each side
-
-    public void OnStartBattle()
-    {
-        _nextTurn = _waitTimeTurns;
-    }
-
-    public void OnTurnReached()
-    {
-        _waitTimeTurns = Mathf.FloorToInt(_waitTimeTurns * _waitTimeChangeRate);
-        _waitTimeTurns = Mathf.Max(_waitTimeTurns, _waitTimeMinimum);
-        _nextTurn += _waitTimeTurns;
-
-        OnSoulBurn?.Invoke(_doLeft ? _amount : 0,
-                            _doRight ? _amount : 0);
-    }
-}

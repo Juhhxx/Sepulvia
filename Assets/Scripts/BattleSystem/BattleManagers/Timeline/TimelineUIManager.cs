@@ -23,6 +23,7 @@ public class TimelineUIManager : MonoBehaviour
     [Header("Timeline Size Parameters")]
     [Space(5f)]
     [OnValueChanged("BuildTimeline"), SerializeField, Range(0,50)] private int _timelineSize;
+    [SerializeField]
     private List<TimelineSection> _timelineSections = new List<TimelineSection>();
     [Button(enabledMode: EButtonEnableMode.Always)]
     private void ClearSectionsList()
@@ -85,6 +86,10 @@ public class TimelineUIManager : MonoBehaviour
             Destroy(ti.Indicator.gameObject);
             _timelineSections[ti.Turn].Indicators.Remove(ti);
         }
+        foreach (TimelineSection ts in _timelineSections)
+        {
+            ts.Indicators.Clear();
+        }
 
         _timelineIndicators.Clear();
     }
@@ -129,6 +134,17 @@ public class TimelineUIManager : MonoBehaviour
             RemoveTimelineIndicator(name);
         };
     }
+    public void AddBSoulBurnIndicator(SoulBurnProfile soulBurn)
+    {
+        string name = "Soul Burn";
+
+        AddTimelineIndicator(name, soulBurn.TurnsUntil, soulBurn.Icon, TimelinePosition.Middle);
+
+        soulBurn.OnTurnPassed += (newT, oldT) =>
+        {
+            UpdateTimelineIndicator(name, oldT, newT);
+        };
+    }
 
     public void AddTimelineIndicator(string name, int turn, Sprite sprite, TimelinePosition position)
     {
@@ -159,9 +175,9 @@ public class TimelineUIManager : MonoBehaviour
         image.sprite = sprite;
         indicator.gameObject.name = name;
 
-        if (turn >= _timelineSize) indicator.gameObject.SetActive(false);
-
         _timelineIndicators.Add(new TimelineIndicator(name, turn, indicator, image, position));
+
+        if (turn >= _timelineSize) indicator.gameObject.SetActive(false);
 
         UpdateTimelineIndicator(name, turn, turn, false);
     }
@@ -169,7 +185,7 @@ public class TimelineUIManager : MonoBehaviour
     {
         var ti = _timelineIndicators.Find(i => i.Name == name);
 
-        Destroy(ti.Indicator.gameObject);
+        HideIndicator(ti.Indicator, () => Destroy(ti.Indicator.gameObject));
 
         _timelineIndicators.Remove(ti);
     }
@@ -180,6 +196,17 @@ public class TimelineUIManager : MonoBehaviour
         
         MoveIndicator(timelineIndicator, fromTurn, toTurn, doAnim);
     }
+
+    [Header("Timeline Animations Parameters")]
+    [Space(5f)]
+    [SerializeField] private float _overlaySpacing = 35f;
+    [SerializeField] private float _overlayAnimSpeed = 0.1f;
+    [SerializeField] private Ease _overlayAnimEase = Ease.Linear;
+    [SerializeField] private float _moveAnimSpeed = 0.5f;
+    [SerializeField] private Ease _moveAnimEase = Ease.Linear;
+    [SerializeField] private float _showHideAnimSpeed = 0.5f;
+    [SerializeField] private Ease _showHideAnimEase = Ease.Linear;
+
     private void ResolveOverlay(TimelineSection section, TimelinePosition position)
     {
         var indicators = section.Indicators.FindAll(i => i.Position == position);
@@ -200,15 +227,6 @@ public class TimelineUIManager : MonoBehaviour
         }
         
     }
-
-    [Header("Timeline Animations Parameters")]
-    [Space(5f)]
-    [SerializeField] private float _overlaySpacing = 35f;
-    [SerializeField] private float _overlayAnimSpeed = 0.1f;
-    [SerializeField] private Ease _overlayAnimEase = Ease.Linear;
-    [SerializeField] private float _moveAnimSpeed = 0.5f;
-    [SerializeField] private Ease _moveAnimEase = Ease.Linear;
-
     private void MoveIndicator(TimelineIndicator timelineIndicator, int from, int to, bool doAnim = true)
     {
         RectTransform indicator = timelineIndicator.Indicator;
@@ -236,8 +254,17 @@ public class TimelineUIManager : MonoBehaviour
 
             if (doAnim)
             {
-                MoveIndicatorHorizontal(indicator, pos.x, ()=>
-                ResolveOverlay(_timelineSections[to], timelineIndicator.Position));
+                if (from >= _timelineSize)
+                {
+                    ShowIndicator(indicator, () =>
+                    MoveIndicatorHorizontal(indicator, pos.x, ()=>
+                    ResolveOverlay(_timelineSections[to], timelineIndicator.Position)));
+                }
+                else
+                {
+                    MoveIndicatorHorizontal(indicator, pos.x, ()=>
+                    ResolveOverlay(_timelineSections[to], timelineIndicator.Position));
+                }
             }
             else
             {
@@ -258,8 +285,16 @@ public class TimelineUIManager : MonoBehaviour
             pos.x += + _timelineSections[0].Section.rect.width / 2;
             pos.y = indicator.anchoredPosition.y;
 
-            indicator.anchoredPosition = pos;
-            indicator.gameObject.SetActive(false); 
+            if (doAnim)
+            {
+                MoveIndicatorHorizontal(indicator, pos.x, () =>
+                HideIndicator(indicator));               
+            }
+            else
+            {
+                indicator.anchoredPosition = pos;
+                indicator.gameObject.SetActive(false);
+            }
         }
     }
     private void MoveIndicatorHorizontal(RectTransform indicator, float xPos, Action onDone = null)
@@ -276,17 +311,35 @@ public class TimelineUIManager : MonoBehaviour
                 .SetEase(_overlayAnimEase)
                 .OnComplete(() => onDone?.Invoke());
     }
+
+    private void HideIndicator(RectTransform indicator, Action onDone = null)
+    {
+        indicator.DOKill();
+        indicator.DOScale(0f, _showHideAnimSpeed)
+                .SetEase(_showHideAnimEase)
+                .OnComplete(() => onDone?.Invoke());
+    }
+    private void ShowIndicator(RectTransform indicator, Action onDone = null)
+    {
+        indicator.localScale = Vector2.zero;
+
+        indicator.DOKill();
+        indicator.DOScale(1f, _showHideAnimSpeed)
+                .SetEase(_showHideAnimEase)
+                .OnComplete(() => onDone?.Invoke());
+    }
 }
 
+[Serializable]
 public class TimelineSection
 {
     public RectTransform Section;
     public List<TimelineIndicator> Indicators => _indicators;
-    private List<TimelineIndicator> _indicators;
+    [SerializeField] private List<TimelineIndicator> _indicators;
 
     public void AddIndicator(TimelineIndicator indicator)
     {
-        _indicators.Add(indicator);
+        if (!_indicators.Contains(indicator)) _indicators.Add(indicator);
     }
     public void RemoveIndicator(TimelineIndicator indicator)
     {

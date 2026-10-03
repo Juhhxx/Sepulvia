@@ -26,7 +26,6 @@ public class BarSectionUI : MonoBehaviour
 
 
     private Color _currentColor;
-
     private BarSection _barSection;
     private PointerButtonEvents _pointerEvents;
 
@@ -48,6 +47,11 @@ public class BarSectionUI : MonoBehaviour
         _pointerEvents.OnPointerEnterEvent.AddListener(() => ToggleSelection(true));
         _pointerEvents.OnPointerExitEvent.AddListener(() => ToggleSelection(false));
 
+    }
+
+    private void Start()
+    {
+        AdjustChains();
     }
 
     private void SetHeartColor(bool hasHeart)
@@ -78,6 +82,27 @@ public class BarSectionUI : MonoBehaviour
         _sectionDivisorLeft.enabled = left;
     }
 
+    private void AdjustChains()
+    {
+        float sectionWidth = GetComponent<RectTransform>().sizeDelta.x;
+
+        float divisorRightWidth = _sectionDivisorRight.rectTransform.sizeDelta.x;
+        float divisorLeftWidth = _sectionDivisorLeft.rectTransform.sizeDelta.x;
+
+        float chainPreferedWidth = _sectionChains[0].GetComponent<Image>().sprite.rect.width;
+
+        float chainsWidth = sectionWidth - divisorRightWidth - divisorLeftWidth;
+
+        int numChains = Mathf.FloorToInt(chainsWidth / chainPreferedWidth);
+        int chainsToRemove = _sectionChains.Length - numChains;
+
+        for (int i = 0; i < chainsToRemove; i++)
+        {
+            _sectionChains[i].gameObject.SetActive(false);
+        }
+
+    }
+
     [Button]
     private void DoShakeAnim()
     {
@@ -91,11 +116,11 @@ public class BarSectionUI : MonoBehaviour
     [Button]
     private void DoExplodeShatter()
     {
+        _sectionDivisorLeft.enabled = false;
+        _sectionDivisorRight.enabled = false;
+
         foreach(Image chain in _sectionChains)
         {
-            _sectionDivisorLeft.enabled = false;
-            _sectionDivisorRight.enabled = false;
-
             GameObject chainObj = chain.gameObject;
             chain.AddComponent<Rigidbody2D>();
             Rigidbody2D rb = chain.GetComponent<Rigidbody2D>();
@@ -107,6 +132,8 @@ public class BarSectionUI : MonoBehaviour
             rb.AddForce(new Vector2(nx, ny) * _explodeIntensity, ForceMode2D.Impulse);
             rb.AddTorque(_torqueIntensity * t);
         }
+
+        StartCoroutine(DeactivateSection(2f));
     }
 
     private Coroutine burn;
@@ -160,6 +187,9 @@ public class BarSectionUI : MonoBehaviour
 
         yield return new WaitForSeconds(.1f);
 
+        _sectionDivisorLeft.enabled = false;
+        _sectionDivisorRight.enabled = false;
+
         //After that adicionar rigidbody ams com graviutyScales ligeiramente diferentes para cairem a velocidades diferentes
         foreach( Image chain in _sectionChains)
         {
@@ -174,7 +204,13 @@ public class BarSectionUI : MonoBehaviour
             rb.AddForce(new Vector2(nx, 0f), ForceMode2D.Impulse);
         }
         
-        
+        yield return DeactivateSection(2f); //Deactivate the section after 3 seconds
+    }
+
+    private IEnumerator DeactivateSection(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        gameObject.SetActive(false);
     }
 
 }

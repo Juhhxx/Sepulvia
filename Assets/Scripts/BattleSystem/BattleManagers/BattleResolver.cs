@@ -259,6 +259,8 @@ public class BattleResolver : RandomBehaviour
 
         if (!spared && possibleRewards.Count > 0)
         {
+            if (possibleRewards.Count == 0) return (items, essence);
+
             int num = _random.Next(1, totalDifficulty + 1);
 
             for (int i = 0; i < num; i++)
