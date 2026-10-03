@@ -119,7 +119,6 @@ public class TimelineUIManager : MonoBehaviour
         foreach (TimelineIndicator ti in _timelineIndicators)
         {
             Destroy(ti.Indicator.gameObject);
-            _timelineSections[ti.Turn].Indicators.Remove(ti);
         }
         foreach (TimelineSection ts in _timelineSections)
         {

@@ -97,15 +97,6 @@ public class BattleResolver : RandomBehaviour
     {
         bool result = false;
 
-        if (affected.IsInterrupting)
-        {
-            var se = affected.StatusEffectManager.GetStatusEffect<StatusEffectInterrupt>();
-
-            se.StatusEffectLogic.OnTriggerEffect(targets);
-
-            return false;
-        }
-
         foreach (BattlerController bc in targets)
         {
             if (bc == affected) return false;
@@ -117,6 +108,18 @@ public class BattleResolver : RandomBehaviour
                 se.StatusEffectLogic.OnTriggerEffect(affected);
 
                 result = true;
+            }
+        }
+
+        if (result)
+        {
+            if (affected.IsInterrupting)
+            {
+                var se = affected.StatusEffectManager.GetStatusEffect<StatusEffectInterrupt>();
+
+                se.StatusEffectLogic.OnTriggerEffect(targets);
+
+                return false;
             }
         }
 

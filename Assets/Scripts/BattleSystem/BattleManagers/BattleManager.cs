@@ -174,6 +174,9 @@ public class BattleManager : MonoBehaviour
         _moveButton.onClick.AddListener(() => _uiManager.SetUIState(BattleUIManager.BattleUIState.Move));
         _stanceMoveButton.onClick.AddListener(() => _uiManager.SetUIState(BattleUIManager.BattleUIState.StanceMove));
         _runButton.onClick.AddListener(() => GetBattlerController(Player).AddActionRun());
+
+        // On Action Executed Events
+        OnActionExecuted += (_) => _dialogueManager.StartDialogues();
     }
 
     private WaitForDialogueEnd _wfd;
@@ -207,9 +210,6 @@ public class BattleManager : MonoBehaviour
 
         // Pull Bar Events
         _pullManager.OnHeartEnd += Win;
-
-        // On Action Executed Events
-        OnActionExecuted += (_) => _dialogueManager.StartDialogues();
 
         // Instantiate Variables
         _wfd = new WaitForDialogueEnd(_dialogueManager);
@@ -376,14 +376,12 @@ public class BattleManager : MonoBehaviour
         Debug.Log("ENDING BATTLE");
         _uiManager.HideFinalScreens();
         _dialogueManager.ClearDialogues();
-        _dialogueManager.HideDialogue();
 
         _uiManager.ClearCreatedObjects();
         _pullManager.ResetEvents();
 
         Player.ResetModifiers();
 
-        _timelineManager.ToggleTurnCounting(false);
         _timelineManager.OnTurnBegin -= StartTurn;
 
         ClearBattlerControllers();
