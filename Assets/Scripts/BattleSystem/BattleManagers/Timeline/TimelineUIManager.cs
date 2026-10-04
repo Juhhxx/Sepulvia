@@ -56,7 +56,7 @@ public class TimelineUIManager : MonoBehaviour
             _pullManager.OnAddModifier += AddBarModifierIndicator;
         }
 
-        _currentTurnIndicatorTMP.text = "1";
+        _currentTurnIndicatorTMP.text = "0";
 
         ClearSectionsList();
         BuildTimeline();
@@ -268,7 +268,7 @@ public class TimelineUIManager : MonoBehaviour
         indicator.gameObject.SetActive(true);
         // indicator.transform.SetAsLastSibling();
 
-        Debug.Log($"Moving Indicator to section {to}", this);
+        Debug.Log($"Moving Indicator {timelineIndicator.Name} from section {from} to section {to}", this);
 
         if (from >= 0 && from < _timelineSize - 1)
         {
