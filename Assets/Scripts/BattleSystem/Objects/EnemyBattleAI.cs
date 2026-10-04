@@ -103,7 +103,8 @@ public class EnemyBattleAI : MonoBehaviour
         int section = 0;
         int middle = totalBars / 2;
 
-        var occupied = _barSections.FindAll(s => s.HasModifier).Select(s => _barSections.IndexOf(s));
+        var prohibited = _barSections.FindAll(s => s.HasModifier || s.WasDestroyed || s.HasHeart).Select(s => _barSections.IndexOf(s));
+        var available = _barSections.FindAll(s => !s.HasModifier && !s.WasDestroyed && !s.HasHeart).Select(s => _barSections.IndexOf(s));
 
         switch (whereToApply)
         {
@@ -120,15 +121,15 @@ public class EnemyBattleAI : MonoBehaviour
                 break;
             
             case ModifierApplyType.LeftSide:
-                section = 0;
+                section = available.First();
                 break;
             
             case ModifierApplyType.RightSide:
-                section = totalBars - 1;
+                section = available.Last();
                 break;
         }
 
-        if (occupied.Contains(section)) return ChooseBarSection(whereToApply);
+        if (prohibited.Contains(section)) return ChooseBarSection(whereToApply);
 
         return section;
     }
