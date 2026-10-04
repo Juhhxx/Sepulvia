@@ -248,6 +248,8 @@ public class TimelineUIManager : MonoBehaviour
 
         for (int i = 0; i < indicators.Count; i++)
         {
+            if (indicators[i]?.Indicator == null) continue;
+
             float yPos = _overlaySpacing * i;
 
             var timelineIndicator = indicators[i];
