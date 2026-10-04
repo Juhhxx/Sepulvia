@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class BattleUIManager : MonoBehaviour
 {
-    [SerializeField] private FillBar _playerStanceBar;
+    [SerializeField] private ThresholdBarManager _playerStanceBar;
 
     [SerializeField] private Transform _playerPivot;
     [SerializeField] private Transform _enemyPivot;
