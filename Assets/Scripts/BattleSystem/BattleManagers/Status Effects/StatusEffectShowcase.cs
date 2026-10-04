@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Unity.Collections;
+using System.Collections;
 
 public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -15,6 +17,8 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
     private void Start()
     {
         OnShowcaseSelected += FindAnyObjectByType<StatusEffectInfoPanel>().UpdatePanel;
+        //ele nasce aqui
+            //puxa a corotina aqui para iniciar o efeito de dissolve
     }
 
     public void SetUpShowcase(StatusEffect se)
@@ -36,6 +40,7 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
     private void DestroyShowcase()
     {
         Destroy(gameObject);
+        //Add lerp to the dissolve here
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -46,5 +51,10 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
     public void OnPointerEnter(PointerEventData eventData)
     {
         OnShowcaseSelected?.Invoke(true, _statusEffect);
+    }
+
+    private IEnumerator StartFade()
+    {
+        
     }
 }
