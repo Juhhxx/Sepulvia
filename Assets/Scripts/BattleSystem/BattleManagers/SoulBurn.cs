@@ -37,7 +37,7 @@ public class SoulBurnProfile
 
     public void PassTurn()
     {
-        var tmp = _turnsPassed;
+        var tmp = _turnsUntil - _turnsPassed;
 
         _turnsPassed++;
 
@@ -57,5 +57,7 @@ public class SoulBurnProfile
 
         OnSoulBurn?.Invoke(_doLeft ? _amount : 0,
                             _doRight ? _amount : 0);
+
+        OnTurnPassed?.Invoke(_turnsUntil - _turnsPassed, 0);
     }
 }

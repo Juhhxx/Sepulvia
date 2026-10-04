@@ -29,11 +29,11 @@ public class TimelineManager : MonoBehaviour
         _timer = new Timer(_turnDuration);
 
         _timer.OnTimerBegin += () => {
-            _currentTurn++;
             OnTurnBegin?.Invoke();
         };
 
         _timer.OnTimerDone += () => {
+            _currentTurn++;
             OnTurnEnd?.Invoke();
             Debug.Log("TURN PASSED", this);
         };

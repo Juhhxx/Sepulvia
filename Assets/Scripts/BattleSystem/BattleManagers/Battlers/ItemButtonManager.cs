@@ -16,9 +16,6 @@ public class ItemButtonManager : MonoBehaviour
 
     private void OnEnable()
     {
-        var battleManager = FindAnyObjectByType<BattleManager>();
-        _playerController = battleManager.GetBattlerController(battleManager.Player);
-
         _button = GetComponent<Button>();
 
         ToggleItemButton(true);
@@ -33,6 +30,13 @@ public class ItemButtonManager : MonoBehaviour
 
     private void Update()
     {
+        if (_playerController == null)
+        {
+            var battleManager = FindAnyObjectByType<BattleManager>();
+            _playerController = battleManager.GetBattlerController(battleManager.Player);
+            return;
+        }
+
         ToggleItemButton(_playerController.ItemColldownTurns == 0);
 
         float fillAmount = _playerController.ItemColldownTurns == 0 ?
