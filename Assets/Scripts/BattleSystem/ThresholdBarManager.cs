@@ -16,6 +16,7 @@ public class ThresholdBarManager : MonoBehaviour
 
     private string _infoName;
     private float _maxValue;
+    private GameObject[] _divisors; 
 
     public void SetUpBar(string name, string info, float maxValue)
     {
@@ -26,11 +27,29 @@ public class ThresholdBarManager : MonoBehaviour
         _infoName = info;
         _maxValue = maxValue;
 
+        CleanUpDivisors();
+        
         int divisorCount = Mathf.FloorToInt(maxValue);
+        _divisors = new GameObject[divisorCount];
 
         for (int i = 0; i < divisorCount; i++)
         {
             GameObject divisor = Instantiate(_barDivisorPrefab, _barDivisorsParent);
+            _divisors[i] = divisor;
+        }
+    }
+
+    private void CleanUpDivisors()
+    {
+        if (_divisors != null)
+        {
+            foreach (GameObject divisor in _divisors)
+            {
+                if (divisor != null)
+                {
+                    Destroy(divisor);
+                }
+            }
         }
     }
 
