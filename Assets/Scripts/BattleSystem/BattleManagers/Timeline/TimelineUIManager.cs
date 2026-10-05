@@ -305,6 +305,7 @@ public class TimelineUIManager : MonoBehaviour
             else
             {
                 indicator.anchoredPosition = pos;
+                ResolveOverlay(_timelineSections[to], timelineIndicator.Position);
             }
         }
         else if (to < 0)
