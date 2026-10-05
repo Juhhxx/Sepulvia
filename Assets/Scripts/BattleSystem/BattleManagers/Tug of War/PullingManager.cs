@@ -110,7 +110,14 @@ public class PullingManager : RandomBehaviour
         if (_random == null) TryInitializeRandom();
 
         //  Calculate number of sections based on enemy party
-        _sectionsNumber = (enemyParty.PartySize * 5) + 5;
+        _sectionsNumber = 5;
+
+        foreach (Enemy e in enemyParty.PartyMembers)
+        {
+            _sectionsNumber += 5 * Mathf.Max(1, e.DifficultyLevel);
+        }
+
+        if (_sectionsNumber % 2 == 0) _sectionsNumber++; // Make sure the number of sections is odd
 
         _pullingUIManager.SpawnHeart();
         _pullingUIManager.SpawnBarSections(_sectionsNumber);

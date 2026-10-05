@@ -55,6 +55,6 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
 
     private IEnumerator StartFade()
     {
-        
+        yield return null;
     }
 }

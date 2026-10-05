@@ -70,6 +70,14 @@ public class StatusEffectManager : MonoBehaviour
         se.StatusEffectLogic.OnUpdateEffect();
     }
 
+    public void ClearStatusEffects()
+    {
+        foreach (StatusEffect se in new List<StatusEffect>(_activeStatusEffects))
+        {
+            RemoveStatusEffect(se);
+        }
+    }
+
     public bool HasStatusEffect<T>() where T : IStatusEffect
     {
         foreach (StatusEffect se in _activeStatusEffects)

@@ -1,11 +1,14 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MoveButtonUI : MonoBehaviour
+public class MoveButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image _iconImage;
     [SerializeField] private Image _iconImageBW;
+    [SerializeField] private Image _frameImage;
+    [SerializeField] private Image _frameSelectImage;
     [SerializeField] private GameObject _cooldownIndicator;
     [SerializeField] private Image _cooldownImage;
     [SerializeField] private TextMeshProUGUI _cooldownTMP;
@@ -42,5 +45,19 @@ public class MoveButtonUI : MonoBehaviour
             _moveButton.OnMoveSetUp += UpdateButton;
             _moveButton.OnMoveCooldown += UpdateCooldown;
         }
+    }
+
+    private void OnEnable()
+    {
+        _frameSelectImage.enabled = false;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        _frameSelectImage.enabled = true;
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _frameSelectImage.enabled = false;
     }
 }

@@ -380,7 +380,8 @@ public class BattleManager : MonoBehaviour
         _uiManager.ClearCreatedObjects();
         _pullManager.ResetEvents();
 
-        Player.ResetModifiers();
+        GetBattlerController(Player).ClearActions();
+        GetBattlerController(Player).StatusEffectManager.ClearStatusEffects();
 
         _timelineManager.OnTurnBegin -= StartTurn;
 
