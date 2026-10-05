@@ -5,11 +5,15 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Unity.Collections;
 using System.Collections;
+using DG.Tweening;
 
 public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image _iconImage;
+    [SerializeField] private GameObject _turnIndicator;
     [SerializeField] private TextMeshProUGUI _durationTMP;
+    [SerializeField] private GameObject _stackIndicator;
+    [SerializeField] private TextMeshProUGUI _stackTMP;
 
     public event Action<bool,StatusEffect> OnShowcaseSelected;
     private StatusEffect _statusEffect;
@@ -24,17 +28,38 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
     public void SetUpShowcase(StatusEffect se)
     {
         _iconImage.sprite = se.Icon;
-        _durationTMP.text = $"{se.TurnDuration}";
+        _durationTMP.text = se.TurnDuration.ToString();
 
         se.OnTurnPassed += UpdateDuration;
         se.OnCompleted += DestroyShowcase;
+
+        if (se.StatusEffectLogic is IStackableEffect stackable)
+        {
+            _stackTMP.text = "1";
+            
+            stackable.OnStackChange += UpdateStack;
+        }
+        else
+        {
+            _stackIndicator.SetActive(false);
+        }
 
         _statusEffect = se;
     }
 
     private void UpdateDuration(int duration)
     {
-        _durationTMP.text = $"{duration}";
+        if (_durationTMP == null) return;
+
+        _durationTMP.text = duration.ToString();
+    }
+
+    private void UpdateStack(int stack)
+    {
+        if (_stackIndicator == null) return;
+
+        _stackTMP.rectTransform.DOPunchScale(Vector3.one * 1.2f, 0.2f);
+        _stackTMP.text = stack.ToString();
     }
 
     private void DestroyShowcase()

@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class StatusEffectCurse : IStatusEffect, IStackableEffect
 {
@@ -11,16 +12,19 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
     private BattlerController _target;
     private StatusEffect _effect;
 
+    public event Action<int> OnStackChange;
+
     public void AddStack()
     {
         if (CurrentStack < MaxStack)
         {
             CurrentStack++;
+            OnStackChange?.Invoke(CurrentStack);
         }
 
         if (CurrentStack == MaxStack)
         {
-            OnAddMaxStackReached();
+            OnMaxStackReached();
         }
     }
 
@@ -32,7 +36,7 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
         }
     }
 
-    public void OnAddMaxStackReached()
+    public void OnMaxStackReached()
     {
         _target.StatusEffectManager.AddStatusEffect(_stun.Instantiate(), _target);
 
