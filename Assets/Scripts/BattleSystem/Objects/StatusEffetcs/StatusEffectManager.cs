@@ -33,6 +33,8 @@ public class StatusEffectManager : MonoBehaviour
     {
         if (_immunities.ContainsKey(se.Name) && _immunities[se.Name] == 1) return;
 
+        Debug.Log($"ADDING STATUS EFFECT {se.Name} TO {character.name}", this);
+
         _activeStatusEffects.Add(se);
         
         OnAddStatusEffect?.Invoke(se);
@@ -43,6 +45,8 @@ public class StatusEffectManager : MonoBehaviour
     public void RemoveStatusEffect(StatusEffect se)
     {
         se.Completed();
+
+        Debug.Log($"REMOVING STATUS EFFECT {se.Name}", this);
 
         _activeStatusEffects.Remove(se);
 

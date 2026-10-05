@@ -18,6 +18,8 @@ public class StatusEffectBlock : IStatusEffect
 
     public void OnTriggerEffect(params BattlerController[] effectTargets)
     {
+        Debug.Log("BLOCK TRIGGERED");
+        
         _target.StatusEffectManager.RemoveStatusEffect(_effect);
 
         _target.OnBlock();

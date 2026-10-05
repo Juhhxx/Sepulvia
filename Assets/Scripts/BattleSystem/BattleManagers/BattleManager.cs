@@ -260,14 +260,6 @@ public class BattleManager : MonoBehaviour
             GetBattlerController(Player).CountItemTurn();
         };
 
-        _timelineManager.OnTurnEnd += () =>
-        {
-            foreach (Character c in _battlersList)
-            {
-                GetBattlerController(c).StatusEffectManager.UpdateStatusEffects();
-            }
-        };
-
         // Check Bar Modifiers
         _timelineManager.OnTurnEnd += _pullManager.CheckBarModifiers;
 
