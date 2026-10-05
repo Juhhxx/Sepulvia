@@ -296,6 +296,8 @@ public class BattleResolver : RandomBehaviour
 
         if (enemyParty.PartyMembers.Any(e => !(e as Enemy).CanRun)) result = false;
 
+        Debug.Log($"RUN CALCULATIONS : Rnd = {rnd}, Difficulty Average = {difficultyAverage}, Chance = {chance}, Result = {result}", this);
+
         if (result) DialogueManager.Instance.AddDialogue($"{user.Character.Name} ran away!");
         else DialogueManager.Instance.AddDialogue($"{user.Character.Name} couldn't run from battle.");
 
