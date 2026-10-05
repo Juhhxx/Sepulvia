@@ -1,24 +1,31 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using NaughtyAttributes;
 
 public class StatusEffectShowcaseManager : MonoBehaviour
 {
     [SerializeField] private StatusEffectShowcase _showcasePrefab;
     [SerializeField] private Transform _showcaseParent;
+    [SerializeField] private StatusEffectInfoPanel _infoPanel;
+    [SerializeField] private bool _isEnemyShowcase;
+    [SerializeField, ShowIf("_isEnemyShowcase")] private StatusEffectManager _statusEffectManager;
 
     private BattleManager _battleManager;
-    private StatusEffectManager _statusEffectManager;
 
     private void Awake()
     {
-        _battleManager = FindAnyObjectByType<BattleManager>();
+        if (!_isEnemyShowcase)
+        {
+            _battleManager = FindAnyObjectByType<BattleManager>();
+        }
     }
 
     private void Start()
     {
-        _statusEffectManager = _battleManager.GetBattlerController(_battleManager.Player)
+        if (!_isEnemyShowcase)
+        {
+            _statusEffectManager = _battleManager.GetBattlerController(_battleManager.Player)
                                             .GetComponent<StatusEffectManager>();
+        }
 
         _statusEffectManager.OnAddStatusEffect += AddStatusEffectShowcase;
     }
@@ -26,7 +33,7 @@ public class StatusEffectShowcaseManager : MonoBehaviour
     private void AddStatusEffectShowcase(StatusEffect se)
     {
         var showcase = Instantiate(_showcasePrefab, _showcaseParent);
-        showcase.SetUpShowcase(se);
+        showcase.SetUpShowcase(se, _infoPanel);
     }
 
 }

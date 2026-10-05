@@ -20,12 +20,11 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
 
     private void Start()
     {
-        OnShowcaseSelected += FindAnyObjectByType<StatusEffectInfoPanel>().UpdatePanel;
         //ele nasce aqui
             //puxa a corotina aqui para iniciar o efeito de dissolve
     }
 
-    public void SetUpShowcase(StatusEffect se)
+    public void SetUpShowcase(StatusEffect se, StatusEffectInfoPanel infoPanel)
     {
         _iconImage.sprite = se.Icon;
         _durationTMP.text = se.TurnDuration.ToString();
@@ -45,6 +44,8 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
         }
 
         _statusEffect = se;
+
+        OnShowcaseSelected += infoPanel.UpdatePanel;
     }
 
     private void UpdateDuration(int duration)
