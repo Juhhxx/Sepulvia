@@ -88,6 +88,8 @@ public class PullingManager : RandomBehaviour
         {
             int index = i;
 
+            Debug.Log($"SET UP ABR BUTTON {i}", this);
+
             _barSectionList[i].Button.onClick.AddListener(() => SetSelectedIndex(index));
         }
     }
@@ -142,7 +144,7 @@ public class PullingManager : RandomBehaviour
         }
         else
         {
-            index = (_sectionsNumber / 2) + 1;
+            index = (_sectionsNumber / 2);
         }
 
         _currentHeartSection = _barSectionList[index];

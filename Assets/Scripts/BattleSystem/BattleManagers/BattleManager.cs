@@ -174,9 +174,6 @@ public class BattleManager : MonoBehaviour
         _moveButton.onClick.AddListener(() => _uiManager.SetUIState(BattleUIManager.BattleUIState.Move));
         _stanceMoveButton.onClick.AddListener(() => _uiManager.SetUIState(BattleUIManager.BattleUIState.StanceMove));
         _runButton.onClick.AddListener(() => GetBattlerController(Player).AddActionRun());
-
-        // On Action Executed Events
-        OnActionExecuted += (_) => _dialogueManager.StartDialogues();
     }
 
     private WaitForDialogueEnd _wfd;
@@ -555,6 +552,8 @@ public class BattleManager : MonoBehaviour
                 }
 
                 yield return new WaitUntil(() => !_battleResolver.PlayingMinigame);
+
+                _dialogueManager.StartDialogues();
 
                 yield return new WaitUntil(() => !_pullManager.IsMoving);
 
