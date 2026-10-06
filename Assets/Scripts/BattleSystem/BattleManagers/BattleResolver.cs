@@ -115,6 +115,9 @@ public class BattleResolver : RandomBehaviour
         {
             if (affected.IsInterrupting)
             {
+                DialogueManager.Instance.AddDialogue(
+                    $"{targets[0].Character.Name} was interrupted.");
+
                 var se = affected.StatusEffectManager.GetStatusEffect<StatusEffectInterrupt>();
 
                 se.StatusEffectLogic.OnTriggerEffect(targets);

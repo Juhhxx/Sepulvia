@@ -29,13 +29,14 @@ public class BattleManager : MonoBehaviour
     [Header("Soul Burn")]
     [Space(5)]
     [SerializeField] private SoulBurnProfile _soulBurn;
+    private SoulBurnProfile _activeSoulBurn;
     public event Action<int,int> OnSoulBurn;
     public void ChangeSoulBurn(SoulBurnProfile profile)
     {
-        _soulBurn = profile;
-        _soulBurn.OnStartBattle();
-        _soulBurn.OnSoulBurn += OnSoulBurn;
-        _timelineUIManager.AddBSoulBurnIndicator(_soulBurn);
+        _activeSoulBurn = profile.Clone() as SoulBurnProfile;
+        _activeSoulBurn.OnStartBattle();
+        _activeSoulBurn.OnSoulBurn += OnSoulBurn;
+        _timelineUIManager.AddBSoulBurnIndicator(_activeSoulBurn);
     }
 
     [Space(10)]
@@ -242,8 +243,8 @@ public class BattleManager : MonoBehaviour
 
         _timelineManager.OnTurnEnd += () =>
         {
-            _soulBurn.PassTurn();
-            _soulBurn.CheckSoulBurn();
+            _activeSoulBurn.PassTurn();
+            _activeSoulBurn.CheckSoulBurn();
         };
 
         // Count Turns in Modifiers

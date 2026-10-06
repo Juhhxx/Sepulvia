@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class SoulBurnProfile
+public class SoulBurnProfile : ICloneable
 {
     [SerializeField] public Sprite Icon;
     [SerializeField] private int _waitTimeTurns;
@@ -59,5 +59,10 @@ public class SoulBurnProfile
                             _doRight ? _amount : 0);
 
         OnTurnPassed?.Invoke(_turnsUntil - _turnsPassed, 0);
+    }
+
+    public object Clone()
+    {
+        return MemberwiseClone();
     }
 }
