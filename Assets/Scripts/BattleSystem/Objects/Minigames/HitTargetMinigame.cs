@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Linq;
 using NaughtyAttributes;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,9 +11,11 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
     [SerializeField] private bool _intermitentMovement;
 
     [SerializeField, MinMaxSlider(0,1)] private Vector2 _successRange;
+    [SerializeField, MinMaxSlider(0,1)] private Vector2 _easierSuccessRange;
     public Vector2 SuccessRange => _successRange;
 
     [SerializeField] private float _graceRadius;
+    [SerializeField] private float _easierGraceRadius;
     private Vector2 _graceRange;
     public Vector2 GraceRange
     {
@@ -45,9 +45,17 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         StopAllCoroutines();
         StartCoroutine(MinigameCR(rounds));
     }
+
+    public event Action OnMakeEasier;
+    [Button]
     public void MakeEasier()
     {
+        _graceRange = new Vector2(_easierSuccessRange.x - _easierGraceRadius,
+                                            _easierSuccessRange.y + _easierGraceRadius);
 
+        _successRange = _easierSuccessRange;
+
+        OnMakeEasier?.Invoke();
     }
 
     [Button]

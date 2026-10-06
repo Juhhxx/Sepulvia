@@ -8,4 +8,5 @@ public interface IMoveMinigame
 
     // Send the result of the minigame (float between 0 and 1)
     public event Action<float> OnMinigameEnd;
+    public event Action OnMakeEasier;
 }
