@@ -21,7 +21,7 @@ public class ThresholdBarManager : MonoBehaviour
     public void SetUpBar(string name, string info, float maxValue)
     {
         _barNameTMP.text = name;
-        _barInfoTMP.text = $"{info} (0/{maxValue})";
+        _barInfoTMP.text = $"{info} (0/{maxValue:f1})";
         _barFillImage.fillAmount = 0f; 
 
         _infoName = info;
@@ -53,6 +53,29 @@ public class ThresholdBarManager : MonoBehaviour
         }
     }
 
+    private void UpdateDivisorColors(float currentAmount)
+    {
+        int reachedDivisors = Mathf.FloorToInt(currentAmount);
+
+        Debug.Log($"CURRENT AMOUNT = {currentAmount} REACHED DIVISORS = {reachedDivisors}");
+
+        for (int i = 0; i < _divisors.Length; i++)
+        {
+            Image divisorImage = _divisors[i].transform.GetChild(0).GetComponent<Image>();
+
+            Debug.Log($"DIVISOR {i} SPRITE = {(i < reachedDivisors ? "REACHED" : "NORMAL")}");
+
+            if (i < reachedDivisors)
+            {
+                divisorImage.gameObject.SetActive(true);
+            }
+            else
+            {
+                divisorImage.gameObject.SetActive(false);
+            }
+        }
+    }
+
     public void UpdateFillAmout(float newAmount)
     {
         Debug.Log($"CURRENT HP : {newAmount}");
@@ -78,11 +101,13 @@ public class ThresholdBarManager : MonoBehaviour
             newValue = Mathf.Lerp(from, to, t);
 
             UpdateUI(newValue);
+            UpdateDivisorColors(newValue * _maxValue);
 
             yield return null;
         }
 
-        UpdateUI(to);        
+        UpdateUI(to);
+        UpdateDivisorColors(to * _maxValue);
     }
 
     private void UpdateUI(float to)
@@ -90,6 +115,6 @@ public class ThresholdBarManager : MonoBehaviour
         string displayValue = $"{_maxValue * to:f1}";
 
         _barFillImage.fillAmount = to;
-        _barInfoTMP.text = $"{_infoName} ({displayValue}/{_maxValue})";
+        _barInfoTMP.text = $"{_infoName} ({displayValue}/{_maxValue:f1})";
     }
 }
