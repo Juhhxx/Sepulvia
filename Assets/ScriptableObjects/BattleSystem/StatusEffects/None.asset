@@ -10,22 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03a070f015bc16e44a14b9cb5f58d178, type: 3}
-  m_Name: Interrupt
+  m_Name: None
   m_EditorClassIdentifier: Assembly-CSharp::StatusEffectInfo
-  <Name>k__BackingField: Interrupt
-  <Icon>k__BackingField: {fileID: 21300000, guid: f0aa2ef2ba383ce43b45f0e3d84eb281, type: 3}
-  <Description>k__BackingField: Destroys Block and Restarts Recovery Time.
-  <TurnDuration>k__BackingField: 1
+  <Name>k__BackingField: 
+  <Icon>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: 
+  <TurnDuration>k__BackingField: 0
   _statusEffect:
     mode: 1
     unityReference: {fileID: 0}
     rawReference:
-      rid: 3144097978290798685
+      rid: 4645655568697786456
   references:
     version: 2
     RefIds:
-    - rid: 3144097978290798685
-      type: {class: StatusEffectInterrupt, ns: , asm: Assembly-CSharp}
-      data:
-        _defaultStunAmount: 0
-        _stanceRewardAmount: 1
+    - rid: 4645655568697786456
+      type: {class: StatusEffectNone, ns: , asm: Assembly-CSharp}
+      data: 

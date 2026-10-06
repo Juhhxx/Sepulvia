@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatusEffectInfo
   <Name>k__BackingField: Curse
   <Icon>k__BackingField: {fileID: 21300000, guid: 5f1f3d1bb2bc19c4a93cabb32e83dd86, type: 3}
-  <Description>k__BackingField: 
+  <Description>k__BackingField: 'Detonates when reaching 3 stacks, destroying all
+    stacks to Stun for 7 turns.
+
+    Acquiring a new stack refreshes duration of
+    all stacks.'
   <TurnDuration>k__BackingField: 10
   _statusEffect:
     mode: 1
@@ -28,5 +32,5 @@ MonoBehaviour:
       type: {class: StatusEffectCurse, ns: , asm: Assembly-CSharp}
       data:
         <MaxStack>k__BackingField: 3
-        <CurrentStack>k__BackingField: 0
-        _stun: {fileID: 11400000, guid: 319c63c6479fa16438232baa298f665b, type: 2}
+        <CurrentStack>k__BackingField: 1
+        _stun: {fileID: 11400000, guid: 8da24cdf89c17de4ab3d2ae33af41b0c, type: 2}

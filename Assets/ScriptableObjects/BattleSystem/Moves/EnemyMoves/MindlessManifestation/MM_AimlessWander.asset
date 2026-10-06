@@ -10,30 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b2a18b978b0aa94d8e3e05c29121187, type: 3}
-  m_Name: MM_Block
+  m_Name: MM_AimlessWander
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
-  <Name>k__BackingField: Block
+  <Name>k__BackingField: Aimless Wander
   <Icon>k__BackingField: {fileID: 0}
-  <Description>k__BackingField: Gains 2 Block.
+  <Description>k__BackingField: Gets distracted and skips turn.
   <Level>k__BackingField: 0
-  <AnimationTriggerUser>k__BackingField: Attack
-  <AnimationTriggerTarget>k__BackingField: 
-  <RecoveryCost>k__BackingField: 2
-  <Cooldown>k__BackingField: 10
+  <AnimationTriggerUser>k__BackingField: None
+  <AnimationTriggerTarget>k__BackingField: None
+  <RecoveryCost>k__BackingField: 3
+  <Cooldown>k__BackingField: 0
   <MoveWaitTime>k__BackingField: 0.5
   _stanceCost: 0
-  <StanceRewardRange>k__BackingField: {x: 0.1, y: 0.5}
+  <StanceRewardRange>k__BackingField: {x: 0, y: 0}
   <Type>k__BackingField: 1
-  <Targeting>k__BackingField: 2
+  <Targeting>k__BackingField: 6
   _moveLogic:
     mode: 1
     unityReference: {fileID: 0}
     rawReference:
-      rid: 3144097684244398311
+      rid: 4645655568697786457
   references:
     version: 2
     RefIds:
-    - rid: 3144097684244398311
+    - rid: 4645655568697786457
       type: {class: MoveApplyStatusEffect, ns: , asm: Assembly-CSharp}
       data:
-        _statusEffect: {fileID: 11400000, guid: 899ac622312b43c4eabfec18914da677, type: 2}
+        _statusEffect: {fileID: 11400000, guid: 77a8488761bade248ba830402c5356b9, type: 2}
