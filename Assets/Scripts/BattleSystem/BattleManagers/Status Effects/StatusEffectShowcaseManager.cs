@@ -21,13 +21,22 @@ public class StatusEffectShowcaseManager : MonoBehaviour
 
     private void Start()
     {
-        if (!_isEnemyShowcase)
+        if (!_isEnemyShowcase) return;
+
+        _statusEffectManager.OnAddStatusEffect += AddStatusEffectShowcase;
+    }
+
+    private void Update()
+    {
+        if (_isEnemyShowcase) return;
+
+        if (_statusEffectManager == null)
         {
             _statusEffectManager = _battleManager.GetBattlerController(_battleManager.Player)
                                             .GetComponent<StatusEffectManager>();
+                                            
+            _statusEffectManager.OnAddStatusEffect += AddStatusEffectShowcase;
         }
-
-        _statusEffectManager.OnAddStatusEffect += AddStatusEffectShowcase;
     }
 
     private void AddStatusEffectShowcase(StatusEffect se)

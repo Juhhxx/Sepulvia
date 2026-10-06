@@ -41,6 +41,7 @@ public class BattleResolver : RandomBehaviour
 
             case ActionType.Run:
 
+                action.User.Character.RecoveryTime += 1;
                 _battleManager.Run();
                 break;
         }

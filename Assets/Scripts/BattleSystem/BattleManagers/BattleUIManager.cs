@@ -153,15 +153,15 @@ public class BattleUIManager : MonoBehaviour
         ToggleSelectBar(state == BattleUIState.SelectBar);
         ToggleMoveInfo(false); //Always toggle move info panel off when changing states
 
-        if (state == BattleUIState.None) ToggleActionButtonsDeactivated();
+        // if (state == BattleUIState.None) ToggleActionButtonsDeactivated();
     }
     
     private void ToggleActionButtons(bool onOff)
     {
         _actionButtons.SetActive(onOff);
-        _battleManager.MoveButton.gameObject.SetActive(true);
-        _battleManager.StanceMoveButton.gameObject.SetActive(true);
-        _battleManager.RunButton.gameObject.SetActive(true);
+        // _battleManager.MoveButton.gameObject.SetActive(true);
+        // _battleManager.StanceMoveButton.gameObject.SetActive(true);
+        // _battleManager.RunButton.gameObject.SetActive(true);
     }
     private void ToggleActionButtonsDeactivated()
     {
