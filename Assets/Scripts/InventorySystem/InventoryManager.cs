@@ -58,6 +58,15 @@ public class InventoryManager : MonoBehaviour
             
             if (stack != null)
             {
+                if (!stack.Item.CanBeUsedOutsideBattle)
+                {
+                    tmp[i].enabled = false;
+                    tmp[i].onClick.RemoveAllListeners();
+                    tmp[i]?.GetComponent<ItemHoverInfo>()
+                    .SetUpHover(stack.Item, _inventoryUIManager.ToggleItemInfo);
+                    continue;
+                }
+                
                 tmp[i].enabled = true;
                 tmp[i].onClick.RemoveAllListeners();
                 

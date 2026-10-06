@@ -13,6 +13,7 @@ public class ItemInfo : DataAsset
 
     [field: SerializeField] public int StackMaximum { get; private set; }
     [field: SerializeField] public bool CanBeUsedInBattle { get; private set; }
+    [field: SerializeField] public bool CanBeUsedOutsideBattle { get; private set; }
     [field: SerializeField] public bool CanBeBought{ get; private set; }
     [field: SerializeField] public bool CanBeSold { get; private set; }
 
