@@ -23,6 +23,8 @@ public class TimelineUIManager : MonoBehaviour
     // Sections
     [SerializeField] private Image _timelineSection;
     [SerializeField] private Image _firstTimelineSection;
+    [SerializeField] private Image _middleTimelineSection;
+    [SerializeField] private Image _finalTimelineSection;
     [SerializeField] private Transform _timelineSectionParent;
 
     // Indicators
@@ -95,6 +97,12 @@ public class TimelineUIManager : MonoBehaviour
             else
             {
                 Image prefab = (i == 0) ? _firstTimelineSection : _timelineSection;
+
+                // middle of timeline
+                if (i == (_timelineSize/2)) prefab = _middleTimelineSection;
+
+                // end of timeline
+                if (i == _timelineSize - 1) prefab = _finalTimelineSection;
 
                 Image newSection = Instantiate(prefab, _timelineSectionParent);
 
