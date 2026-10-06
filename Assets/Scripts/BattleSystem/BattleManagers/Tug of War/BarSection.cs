@@ -9,30 +9,23 @@ public class BarSection : MonoBehaviour
     [field: SerializeField, ReadOnly] public BarModifier BarModifier { get; private set; }
     public bool HasModifier { get; private set; } = false;
     public bool WasDestroyed { get; private set; } = false;
-    private GameObject _modifierPrefab;
 
+    public event Action<BarModifier> OnAddModifier;
+    public event Action OnRemoveModifier;
     public void AddBarModifier(BarModifier barModifier)
     {
         BarModifier = barModifier;
-        _modifierPrefab = Instantiate(barModifier.BarEffectPrefab, GetComponentInParent<Canvas>().transform);
-        _modifierPrefab.GetComponent<RectTransform>().anchoredPosition = HeartPosition;
         HasModifier = true;
+
+        OnAddModifier?.Invoke(barModifier);
     }
     public void RemoveBarModifier()
     {
         BarModifier.Completed();
         BarModifier = null;
         HasModifier = false;
-        _modifierPrefab.GetComponent<Animator>().SetTrigger("Destroy");
-
-        StartCoroutine(DestroyModifierCR(_modifierPrefab));
-    }
-
-    private IEnumerator DestroyModifierCR(GameObject modifier)
-    {
-        yield return new WaitForSeconds(2);
-
-        Destroy(modifier);
+        
+        OnRemoveModifier?.Invoke();
     }
 
     public event Action OnChangeConnections;
@@ -82,11 +75,6 @@ public class BarSection : MonoBehaviour
     {
         _button = GetComponent<Button>();
         RectTransform = GetComponent<RectTransform>();
-    }
-
-    private void OnDestroy()
-    {
-        Destroy(_modifierPrefab);
     }
 
     public event Action OnDestroySection;

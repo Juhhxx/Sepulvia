@@ -26,8 +26,11 @@ public class BarSectionUI : MonoBehaviour
 
 
     private Color _currentColor;
+    private int _activeChains = 3;
     private BarSection _barSection;
     private PointerButtonEvents _pointerEvents;
+    private GameObject _modifierPrefab;
+
 
     private void Awake()
     {
@@ -38,6 +41,8 @@ public class BarSectionUI : MonoBehaviour
         _barSection.OnDestroySection += DoExplodeShatter;
         _barSection.OnBurnSection += StartDoBurn;
         _barSection.OnHeartChange += SetHeartColor;
+        _barSection.OnAddModifier += SpawnModifierPrefab;
+        _barSection.OnRemoveModifier += RemoveModifierPrefab;
         _barSection.OnChangeConnections += () => 
             ToggleSectionDivisors(_barSection.ConnectRight != null, 
                 _barSection.ConnectLeft != null);
@@ -96,12 +101,45 @@ public class BarSectionUI : MonoBehaviour
         int numChains = Mathf.FloorToInt(chainsWidth / chainPreferedWidth);
         int chainsToRemove = _sectionChains.Length - numChains;
 
+        _activeChains = numChains;
+
         for (int i = 0; i < chainsToRemove; i++)
         {
             _sectionChains[i].gameObject.SetActive(false);
         }
-
     }
+
+    private void SpawnModifierPrefab(BarModifier barModifier)
+    {
+        _modifierPrefab = Instantiate(barModifier.BarEffectPrefab, GetComponentInParent<Canvas>().transform);
+
+        var pos = _barSection.HeartPosition;
+        pos.y  = Mathf.Lerp(pos.y - 25f, pos.y, (_activeChains / 3f));
+
+        _modifierPrefab.GetComponent<RectTransform>().anchoredPosition = pos;
+        _modifierPrefab.GetComponent<RectTransform>().localScale = Vector3.one * Mathf.Lerp(0.6f, 1f, (_activeChains / 3f));
+    }
+
+    private void RemoveModifierPrefab()
+    {
+        _modifierPrefab.GetComponent<Animator>().SetTrigger("Destroy");
+
+        StartCoroutine(DestroyModifierCR(_modifierPrefab));
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(_modifierPrefab);
+    }
+
+    private IEnumerator DestroyModifierCR(GameObject modifier)
+    {
+        yield return new WaitForSeconds(2);
+
+        Destroy(modifier);
+    }
+
+    // Animations
 
     [Button]
     private void DoShakeAnim()
