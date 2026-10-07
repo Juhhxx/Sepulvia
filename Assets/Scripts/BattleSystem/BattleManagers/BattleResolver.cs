@@ -104,26 +104,24 @@ public class BattleResolver : RandomBehaviour
 
             if (bc.IsBlocking)
             {
+                // Check if the affected battler is interrupting the blocking battler
+                if (affected.IsInterrupting)
+                {
+                    DialogueManager.Instance.AddDialogue(
+                        $"{targets[0].Character.Name} was interrupted.");
+
+                    var sei = affected.StatusEffectManager.GetStatusEffect<StatusEffectInterrupt>();
+
+                    sei.StatusEffectLogic.OnTriggerEffect(targets);
+
+                    return false;
+                }
+
                 var se = bc.StatusEffectManager.GetStatusEffect<StatusEffectBlock>();
 
                 se.StatusEffectLogic.OnTriggerEffect(affected);
 
                 result = true;
-            }
-        }
-
-        if (result)
-        {
-            if (affected.IsInterrupting)
-            {
-                DialogueManager.Instance.AddDialogue(
-                    $"{targets[0].Character.Name} was interrupted.");
-
-                var se = affected.StatusEffectManager.GetStatusEffect<StatusEffectInterrupt>();
-
-                se.StatusEffectLogic.OnTriggerEffect(targets);
-
-                return false;
             }
         }
 
