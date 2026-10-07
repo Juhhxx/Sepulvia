@@ -11,7 +11,6 @@ public class MoveButton : MonoBehaviour
     public Move Move => _move;
 
     private BattleManager _battleManager;
-    private BattlerController _playerController;
     private Character _player;
 
     public Action<Move> OnMoveSetUp;
@@ -29,10 +28,14 @@ public class MoveButton : MonoBehaviour
         _timelineUIManager = FindAnyObjectByType<TimelineUIManager>();
         _button = GetComponent<Button>();
 
+        SetUp();
+    }
+
+    private void SetUp()
+    {
         if (_battleManager != null)
         {
             _player = _battleManager.Player;
-            _playerController = _battleManager.GetBattlerController(_player);
 
             var moveList = _buttonType == MoveTypes.Normal ? _player.MoveSet : _player.StanceMoveSet;
 
@@ -42,15 +45,18 @@ public class MoveButton : MonoBehaviour
                 gameObject.SetActive(true);
             }
             else gameObject.SetActive(false);
+
+            _button.onClick.RemoveAllListeners();
+            _button.onClick.AddListener(() => SendMoveInput());
+
+            if (_move != null) OnMoveSetUp?.Invoke(_move);
         }
-
-        _button.onClick.AddListener(() => SendMoveInput());
-
-        if (_move != null) OnMoveSetUp?.Invoke(_move);
     }
 
     private void OnEnable()
     {
+        SetUp();
+        
         if(_battleManager != null)
         {
             _button.interactable = _move.CheckIfCanUseMove(_player);

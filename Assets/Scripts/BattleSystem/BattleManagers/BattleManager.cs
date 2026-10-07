@@ -134,7 +134,7 @@ public class BattleManager : MonoBehaviour
         EnemyTurnBegin,
         EnemyTurnEnd,
         BattleTurnEnd,
-        BattleEnd0
+        BattleEnd
     }
 
     private BattleState _currentState = BattleState.None;
@@ -198,10 +198,10 @@ public class BattleManager : MonoBehaviour
         _hasWinner = false;
         _doRun = false;
 
-        _currentState = BattleState.SetUp;
-
         _uiManager.InstantiateBattlePrefabs(_playerParty, _enemyParty);
         _dialogueManager.SetUpDialogueManager();
+
+        CurrentState = BattleState.SetUp;
 
         _pullManager.TogglePullUI(true);
         _pullManager.SetUp(enemyParty);
@@ -364,6 +364,8 @@ public class BattleManager : MonoBehaviour
     public void EndBattle()
     {
         Debug.Log("ENDING BATTLE");
+        CurrentState = BattleState.BattleEnd;
+
         _uiManager.HideFinalScreens();
         _dialogueManager.ClearDialogues();
 
@@ -460,7 +462,7 @@ public class BattleManager : MonoBehaviour
     {
         OrganizeBattlers();
 
-        _currentState = BattleState.BattleTurnBegin;
+        CurrentState = BattleState.BattleTurnBegin;
 
         _timelineManager.ToggleTurnCounting(false);
 
@@ -492,7 +494,7 @@ public class BattleManager : MonoBehaviour
                 {
                     if (controller.IsPlayer())
                     {
-                        _currentState = BattleState.PlayerTurnBegin;
+                        CurrentState = BattleState.PlayerTurnBegin;
 
                         _dialogueManager.HideDialogue();
                         _uiManager.SetUIState(BattleUIManager.BattleUIState.Action);
@@ -501,7 +503,7 @@ public class BattleManager : MonoBehaviour
 
                         while (!controller.HasActions())
                         {
-                            if (_currentState == BattleState.PlayerChooseTarget)
+                            if (CurrentState == BattleState.PlayerChooseTarget)
                             {
                                 _uiManager.SetUIState(BattleUIManager.BattleUIState.Target);
                             }
@@ -510,11 +512,11 @@ public class BattleManager : MonoBehaviour
 
                         _uiManager.SetUIState(BattleUIManager.BattleUIState.None);
                         _inventoryUIManager.HideInventory();
-                        _currentState = BattleState.PlayerTurnEnd;
+                        CurrentState = BattleState.PlayerTurnEnd;
                     }
                     else
                     {
-                        _currentState = BattleState.EnemyTurnBegin;
+                        CurrentState = BattleState.EnemyTurnBegin;
                         
                         BattlerController[] playerControllers = GetBattlerControllers(PlayerParty.PartyMembers.ToArray());
                         BattlerController[] enemyControllers = GetBattlerControllers(EnemyParty.PartyMembers.ToArray());
@@ -523,7 +525,7 @@ public class BattleManager : MonoBehaviour
                                                     _pullManager.BarSections, _pullManager.CurrentHeartIndex);
 
                         yield return new WaitForSeconds(1f);
-                        _currentState = BattleState.EnemyTurnEnd;
+                        CurrentState = BattleState.EnemyTurnEnd;
                     }
                 }
 
@@ -533,7 +535,7 @@ public class BattleManager : MonoBehaviour
                 
                 OnActionExecuted?.Invoke(action);
 
-                if (_currentState == BattleState.PlayerChooseBar)
+                if (CurrentState == BattleState.PlayerChooseBar)
                 {
                     _pullManager.ToggleBarButtons(true);
                     _uiManager.SetUIState(BattleUIManager.BattleUIState.SelectBar);
@@ -576,7 +578,7 @@ public class BattleManager : MonoBehaviour
 
         _timelineManager.ToggleTurnCounting(true);
 
-        _currentState = BattleState.BattleTurnEnd;
+        CurrentState = BattleState.BattleTurnEnd;
     }
 }
 
