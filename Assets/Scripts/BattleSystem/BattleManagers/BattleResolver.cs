@@ -49,7 +49,7 @@ public class BattleResolver : RandomBehaviour
 
     public void DoMove(Move move, BattlerController user, BattlerController[] targets)
     {
-        if (CheckInterrupt(user, targets))
+        if (CheckInterrupt(user))
         {
             DialogueManager.Instance.AddDialogue(
                 $"{user.Character.Name} was interrupted.");
@@ -104,13 +104,13 @@ public class BattleResolver : RandomBehaviour
 
             if (bc.IsBlocking)
             {
-                // Check if the affected battler is interrupting the blocking battler
-                if (affected.IsInterrupting)
+                // Check if the blocking battler is being interrupted
+                if (bc.IsInterruped)
                 {
                     DialogueManager.Instance.AddDialogue(
-                        $"{targets[0].Character.Name} was interrupted.");
+                        $"{bc.Character.Name} was interrupted while trying to block.");
 
-                    var sei = affected.StatusEffectManager.GetStatusEffect<StatusEffectInterrupt>();
+                    var sei = bc.StatusEffectManager.GetStatusEffect<StatusEffectInterrupt>();
 
                     sei.StatusEffectLogic.OnTriggerEffect(targets);
 
@@ -128,22 +128,17 @@ public class BattleResolver : RandomBehaviour
         return result;
     }
 
-    private bool CheckInterrupt(BattlerController affected, BattlerController[] targets)
+    private bool CheckInterrupt(BattlerController affected)
     {
         bool result = false;
 
-        foreach (BattlerController bc in targets)
+        if (affected.IsInterruped)
         {
-            if (bc == affected) return false;
+            var se = affected.StatusEffectManager.GetStatusEffect<StatusEffectInterrupt>();
 
-            if (bc.IsInterrupting)
-            {
-                var se = bc.StatusEffectManager.GetStatusEffect<StatusEffectInterrupt>();
+            se.StatusEffectLogic.OnTriggerEffect(affected);
 
-                se.StatusEffectLogic.OnTriggerEffect(affected);
-
-                result = true;
-            }
+            result = true;
         }
 
         return result;

@@ -10,6 +10,7 @@ public class StatusEffectStunned : IStatusEffect, IStackableEffect
 
     public int CurrentStack { get; private set; } = 0;
 
+    public event Action OnEffectTriggered;
     public event Action<int> OnStackChange;
 
     public void AddStack()

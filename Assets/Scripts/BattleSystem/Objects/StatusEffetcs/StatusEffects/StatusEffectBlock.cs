@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class StatusEffectBlock : IStatusEffect
 {
@@ -7,6 +8,7 @@ public class StatusEffectBlock : IStatusEffect
 
     private BattlerController _target;
     private StatusEffect _effect;
+    public event Action OnEffectTriggered;
 
     public void OnEnterEffect(BattlerController target, StatusEffect statusEffect)
     {

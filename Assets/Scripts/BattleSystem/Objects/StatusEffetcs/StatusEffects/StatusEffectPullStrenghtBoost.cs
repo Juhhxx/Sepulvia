@@ -6,6 +6,7 @@ public class StatusEffectPullStrenghtBoost : IStatusEffect
     [SerializeField] private int _boostAmount;
     private StatModifier _modifier;
     private BattlerController _target;
+    public event Action OnEffectTriggered;
 
     public void OnEnterEffect(BattlerController target, StatusEffect statusEffect)
     {

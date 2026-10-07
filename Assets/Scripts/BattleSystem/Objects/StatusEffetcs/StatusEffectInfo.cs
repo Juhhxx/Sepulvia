@@ -87,6 +87,7 @@ public class StatusEffect
 
 public interface IStatusEffect
 {
+    public event Action OnEffectTriggered;
     public void OnEnterEffect(BattlerController target, StatusEffect statusEffect);
     public void OnUpdateEffect();
     public void OnTriggerEffect(params BattlerController[] effectTargets);

@@ -12,6 +12,7 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
     private BattlerController _target;
     private StatusEffect _effect;
 
+    public event Action OnEffectTriggered;
     public event Action<int> OnStackChange;
 
     public void AddStack()

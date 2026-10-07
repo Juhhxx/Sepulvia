@@ -26,7 +26,7 @@ public class BattlerController : MonoBehaviour
     public bool IsBlocking => _statusEffectManager.HasStatusEffect<StatusEffectBlock>();
     public event Action OnDoBlock;
     public void OnBlock() => OnDoBlock?.Invoke();
-    public bool IsInterrupting => _statusEffectManager.HasStatusEffect<StatusEffectInterrupt>();
+    public bool IsInterruped => _statusEffectManager.HasStatusEffect<StatusEffectInterrupt>();
 
     [SerializeField] private int _battleItemCooldown;
     private int _itemsCooldownTurns;

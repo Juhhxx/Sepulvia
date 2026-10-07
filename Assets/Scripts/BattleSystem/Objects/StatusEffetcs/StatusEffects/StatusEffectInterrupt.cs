@@ -5,10 +5,10 @@ using UnityEngine;
 public class StatusEffectInterrupt : IStatusEffect
 {
     [SerializeField] private int _defaultStunAmount;
-    [SerializeField] private int _stanceRewardAmount;
 
     private BattlerController _target;
     private StatusEffect _effect;
+    public event Action OnEffectTriggered;
 
     public void OnEnterEffect(BattlerController target, StatusEffect statusEffect)
     {
@@ -20,17 +20,15 @@ public class StatusEffectInterrupt : IStatusEffect
 
     public void OnTriggerEffect(params BattlerController[] effectTargets)
     {
+        OnEffectTriggered?.Invoke();
+        
         _target.StatusEffectManager.RemoveStatusEffect(_effect);
-        _target.Character.CurrentStance += _stanceRewardAmount;
 
-        foreach (BattlerController bc in effectTargets)
-        {
-            var targetLastMove = GetLatestMove(bc);
+        var targetLastMove = GetLatestMove(_target);
 
-            bc.Character.RecoveryTime += targetLastMove != null ?
-                                    targetLastMove.RecoveryCost : _defaultStunAmount;
-            bc.ClearActions();
-        }
+        _target.Character.RecoveryTime += targetLastMove != null ?
+                                targetLastMove.RecoveryCost : _defaultStunAmount;
+        _target.ClearActions();
     }
 
     private Move GetLatestMove(BattlerController target)
