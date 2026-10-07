@@ -195,9 +195,6 @@ public class TimelineUIManager : MonoBehaviour
     {
         string name = "Player Move Timeline Preview";
 
-        // Don't add previews for moves that don't have a duration
-        if(previewDuration == 0) return;
-
         AddTimelineIndicator(name, previewDuration, _playerPreviewIndicator, TimelinePosition.Upper);
     }
 

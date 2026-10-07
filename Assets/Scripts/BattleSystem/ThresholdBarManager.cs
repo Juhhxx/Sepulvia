@@ -21,7 +21,7 @@ public class ThresholdBarManager : MonoBehaviour
     public void SetUpBar(string name, string info, float maxValue)
     {
         _barNameTMP.text = name;
-        _barInfoTMP.text = $"{info} (0/{maxValue:f1})";
+        //_barInfoTMP.text = $"{info} (0/{maxValue:f1})";
         _barFillImage.fillAmount = 0f; 
 
         _infoName = info;

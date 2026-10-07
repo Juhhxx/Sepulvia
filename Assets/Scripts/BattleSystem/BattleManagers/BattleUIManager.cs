@@ -181,8 +181,9 @@ public class BattleUIManager : MonoBehaviour
             _panelTitle.text = $"{move.Name}";
 
             _panelDescription.text = $"Recovery Cost: {move.RecoveryCost}";
-            _panelDescription.text += move.RecoveryCost == 1 ? " turn" : " turns";
+            //_panelDescription.text += move.RecoveryCost == 1 ? " turn" : " turns";
 
+            /*
             if (move.CheckIfCooldown())
             {
                 int turnsLeft = move.Cooldown - move.TurnsPassed;
@@ -190,6 +191,9 @@ public class BattleUIManager : MonoBehaviour
             }
             else _panelDescription.text += $"\nCooldown: {move.Cooldown}";
             _panelDescription.text += move.Cooldown == 1 ? " turn" : " turns";
+            */
+
+            _panelDescription.text += $"\nCooldown: {move.Cooldown}";
 
             if (move.Type == MoveTypes.Stance) _panelDescription.text += $"\nStance Cost: {move.StanceCost} stance";
 
