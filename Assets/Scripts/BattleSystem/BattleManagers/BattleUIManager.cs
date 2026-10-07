@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -35,6 +36,8 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _panelTitle;
     [SerializeField] private TextMeshProUGUI _panelDescription;
 
+    [SerializeField] private GameObject _battleWinTransitionScreen;
+    [SerializeField] private GameObject _battleLossTransitionScreen;
     [SerializeField] private GameObject _winBattleScreen;
     [SerializeField] private GameObject _decisionBattleScreen;
     [SerializeField] private GameObject _rewardsBattleScreen;
@@ -50,6 +53,8 @@ public class BattleUIManager : MonoBehaviour
     private void Awake()
     {
         _battleManager = FindAnyObjectByType<BattleManager>();
+        _battleLossTransitionScreen = GameObject.FindGameObjectWithTag("BattleLossTransitionScreen");
+        _battleLossTransitionScreen.SetActive(false);
     }
 
     private void Start()
@@ -208,8 +213,13 @@ public class BattleUIManager : MonoBehaviour
         _moveInfoPanel.SetActive(onOff);
     }
 
-    public void ShowWinScreen()
+    public IEnumerator ShowWinScreen()
     {
+        // Dissolve transition in
+        yield return DissolveEndTransition(_battleWinTransitionScreen, -1f, 1f, 1f)
+            .WaitForCompletion();     
+
+        // Activate the menu
         _decisionScreenHeart.anchoredPosition = _decisionHearthDefaultPos;
         _decisionScreenHeart.localScale =  _decisionHearthDefaultScale;
 
@@ -217,6 +227,58 @@ public class BattleUIManager : MonoBehaviour
         _winBattleScreen.SetActive(true);
         _decisionBattleScreen.SetActive(true);
         _rewardsBattleScreen.SetActive(false);
+
+        // Dissolve transition out
+        yield return DissolveEndTransition(_battleWinTransitionScreen, 1f, -1f, 1f)
+            .WaitForCompletion();
+
+        yield return null;
+    }
+
+    public IEnumerator ShowLossScreen()
+    {   
+        // Dissolve transition in
+        yield return DissolveEndTransition(_battleLossTransitionScreen, -1f, 1f, 1f)
+            .WaitForCompletion();
+
+        // Activate the menu
+        MenuManager.Instance.ToggleGameOverMenu(true);
+
+        // Dissolve transition out
+        yield return DissolveEndTransition(_battleLossTransitionScreen, 1f, -1f, 1f)
+            .WaitForCompletion();
+    }
+
+    private Tween DissolveEndTransition(GameObject battleEndTransitionScreen, float startDissolveValue, float endDissolveValue, float dissolveDuration)
+    {   
+        // Get the object's image component
+        Image img = battleEndTransitionScreen.GetComponent<Image>();
+
+        // Clone the image's material and apply it, so it doesn't interact with any other object's material
+        Material dissolveMaterial = new Material (img.material);
+        img.material = dissolveMaterial;
+        
+        // Set the starting dissolve value
+        dissolveMaterial.SetFloat("_Dissolve_Amount", startDissolveValue);
+
+        // Determine whether screen is fading in our out
+        bool fadingIn = startDissolveValue < endDissolveValue;
+
+        // If fading in, activate the screen
+        if (fadingIn) battleEndTransitionScreen.SetActive(true);
+
+        // Dissolve the image
+        return DOTween.To(
+            () => dissolveMaterial.GetFloat("_Dissolve_Amount"),
+            value => dissolveMaterial.SetFloat("_Dissolve_Amount", value),
+            endDissolveValue,
+            dissolveDuration
+        )
+        .OnComplete(() =>
+        {   
+            // If fading out, disable the screen
+            if(!fadingIn) battleEndTransitionScreen.SetActive(false);
+        });
     }
 
     public void ShowRewardsScreen()
