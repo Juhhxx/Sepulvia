@@ -48,7 +48,7 @@ public class EnemyBattleAI : MonoBehaviour
         System.Random rnd = new System.Random();
         BattlerController[] targets = null;
 
-        var alliesNoUser = new List<BattlerController>();
+        var alliesNoUser = new List<BattlerController>(allies);
         alliesNoUser.Remove(battler);
 
         switch (targeting)
