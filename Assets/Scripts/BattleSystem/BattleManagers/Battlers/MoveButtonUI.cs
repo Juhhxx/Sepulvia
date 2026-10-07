@@ -36,6 +36,18 @@ public class MoveButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }
     }
 
+    private void UpdateStanceCost(Move move, Character player)
+    {   
+        // If the move has already been checked to NOT be on cooldown, check if the player has enough Stance to cast it
+        if (!move.CheckIfCooldown()) {
+            bool result = player.CurrentStance < move.StanceCost;
+            _iconImageBW.gameObject.SetActive(result);
+
+            // Refills the image, in case last combat ended with stance moves on cooldown
+            if(result) _iconImageBW.fillAmount = 1;
+        }
+    }
+
     private void Awake()
     {
         _moveButton = GetComponent<MoveButton>();
@@ -44,6 +56,7 @@ public class MoveButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         {
             _moveButton.OnMoveSetUp += UpdateButton;
             _moveButton.OnMoveCooldown += UpdateCooldown;
+            _moveButton.OnMoveStanceCost += UpdateStanceCost;
         }
     }
 

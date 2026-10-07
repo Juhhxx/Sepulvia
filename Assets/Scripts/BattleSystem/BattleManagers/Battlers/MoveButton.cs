@@ -16,6 +16,7 @@ public class MoveButton : MonoBehaviour
 
     public Action<Move> OnMoveSetUp;
     public Action<Move> OnMoveCooldown;
+    public Action<Move, Character> OnMoveStanceCost;
     public Action<Move> OnMoveSelected;
     public Action<Move> OnMovePressed;
 
@@ -46,7 +47,12 @@ public class MoveButton : MonoBehaviour
 
         _button.onClick.AddListener(() => SendMoveInput());
 
-        if (_move != null) OnMoveSetUp?.Invoke(_move);
+        if (_move != null) {
+            OnMoveSetUp?.Invoke(_move);
+
+            // Here so buttons for stance moves start greyed out
+            if(_move.StanceCost > 0) OnMoveStanceCost?.Invoke(_move, _player);
+        }
     }
 
     private void OnEnable()
@@ -55,6 +61,9 @@ public class MoveButton : MonoBehaviour
         {
             _button.interactable = _move.CheckIfCanUseMove(_player);
             OnMoveCooldown?.Invoke(_move);
+
+            // If the move has a stance cost, trigger a UI event
+            if(_move.StanceCost > 0) OnMoveStanceCost?.Invoke(_move, _player);
         }
     }
 

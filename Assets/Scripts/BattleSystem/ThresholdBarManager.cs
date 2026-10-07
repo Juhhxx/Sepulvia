@@ -115,6 +115,6 @@ public class ThresholdBarManager : MonoBehaviour
         string displayValue = $"{_maxValue * to:f1}";
 
         _barFillImage.fillAmount = to;
-        _barInfoTMP.text = $"{_infoName} ({displayValue}/{_maxValue:f1})";
+        //_barInfoTMP.text = $"{_infoName} ({displayValue}/{_maxValue:f1})";
     }
 }
