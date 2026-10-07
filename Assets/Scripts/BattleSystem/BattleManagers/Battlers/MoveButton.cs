@@ -21,9 +21,12 @@ public class MoveButton : MonoBehaviour
 
     private Button _button;
 
+    private TimelineUIManager _timelineUIManager;
+
     private void Start()
     {
         _battleManager = FindAnyObjectByType<BattleManager>();
+        _timelineUIManager = FindAnyObjectByType<TimelineUIManager>();
         _button = GetComponent<Button>();
 
         if (_battleManager != null)
@@ -62,6 +65,9 @@ public class MoveButton : MonoBehaviour
             if (_move.CheckIfCanUseMove(_player))
             {
                 _battleManager.GetBattlerController(_player).SetMove(_move);
+
+                // Clear player move preview
+                _timelineUIManager.RemoveAllPlayerPreviewIndicators();
             }
         }
     }

@@ -6,6 +6,7 @@ public class MoveHoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 {
     private Move _move;
     private BattleUIManager _uiManager;
+    private TimelineUIManager _timelineUIManager;
 
     private void Awake()
     {
@@ -15,14 +16,22 @@ public class MoveHoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         _move = move;
         _uiManager = FindAnyObjectByType<BattleUIManager>();
+        _timelineUIManager = FindAnyObjectByType<TimelineUIManager>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         _uiManager.ToggleMoveInfo(true, _move);
+
+        //Remove any previous preview indicators and add a new one
+        _timelineUIManager.RemoveAllPlayerPreviewIndicators();
+        _timelineUIManager.AddPlayerMovePreviewIndicator(_move.RecoveryCost);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
+        // Remove preview timeline indicators
+        _timelineUIManager.RemoveAllPlayerPreviewIndicators();
+
         _uiManager.ToggleMoveInfo(false);
     }
 }

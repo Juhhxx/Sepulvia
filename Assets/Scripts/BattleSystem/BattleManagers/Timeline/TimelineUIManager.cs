@@ -33,6 +33,9 @@ public class TimelineUIManager : MonoBehaviour
     [SerializeField] private RectTransform _middleIndicatorPrefab;
     [SerializeField] private RectTransform _lowerIndicatorPrefab;
 
+    [Header("Player Preview Indicator")]
+    [SerializeField] private Sprite _playerPreviewIndicator;
+
     [Header("Timeline Size Parameters")]
     [Space(5f)]
     [OnValueChanged("BuildTimeline"), SerializeField, Range(0,50)] private int _timelineSize;
@@ -188,6 +191,23 @@ public class TimelineUIManager : MonoBehaviour
         };
     }
 
+    public void AddPlayerMovePreviewIndicator(int previewDuration)
+    {
+        string name = "Player Move Timeline Preview";
+
+        // Don't add previews for moves that don't have a duration
+        if(previewDuration == 0) return;
+
+        AddTimelineIndicator(name, previewDuration, _playerPreviewIndicator, TimelinePosition.Upper);
+    }
+
+    public void RemoveAllPlayerPreviewIndicators()
+    {
+        string name = "Player Move Timeline Preview";
+
+        RemoveAllTimelineIndicatorsWithName(name);
+    }
+
     public void AddTimelineIndicator(string name, int turn, Sprite sprite, TimelinePosition position)
     {
         if (_timelineIndicators.Any(i => i.Name == name)) return;
@@ -227,9 +247,21 @@ public class TimelineUIManager : MonoBehaviour
     {
         var ti = _timelineIndicators.Find(i => i.Name == name);
 
-        HideIndicator(ti.Indicator, () => Destroy(ti.Indicator.gameObject));
+        if(ti != null) HideIndicator(ti.Indicator, () => Destroy(ti.Indicator.gameObject));
 
         _timelineIndicators.Remove(ti);
+    }
+
+    public void RemoveAllTimelineIndicatorsWithName(string name)
+    {
+        var indicatorsToRemove = _timelineIndicators.FindAll(i => i.Name == name);
+
+        foreach(var obj in indicatorsToRemove)
+        {   
+            _timelineSections[obj.Turn].RemoveIndicator(obj);
+            _timelineIndicators.Remove(obj);
+            DestroyImmediate(obj.Indicator.gameObject);
+        }
     }
 
     public void UpdateTimelineIndicator(string name, int fromTurn, int toTurn, bool doAnim = true)
