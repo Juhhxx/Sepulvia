@@ -169,7 +169,7 @@ public class BattleManager : MonoBehaviour
 
     // Run logic
     public void Run()
-    {
+    {   
         _doRun = _battleResolver.CanRun(GetBattlerController(Player), _enemyParty);
     }
 

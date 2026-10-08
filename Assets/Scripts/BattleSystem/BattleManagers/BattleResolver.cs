@@ -8,6 +8,7 @@ public class BattleResolver : RandomBehaviour
     [SerializeField] private BattleManager _battleManager;
     [SerializeField] private PullingManager _pullManager;
     private int _playerSelectedBar = -1;
+    private int _escapeRecoveryTime = 1;
     private void SetPlayerSelectedBar(int bar)
     {
         Debug.Log($"Player Selected Bar Section {bar}");
@@ -41,7 +42,7 @@ public class BattleResolver : RandomBehaviour
 
             case ActionType.Run:
 
-                action.User.Character.RecoveryTime += 1;
+                //action.User.Character.RecoveryTime += _escapeRecoveryTime;
                 _battleManager.Run();
                 break;
         }
@@ -277,6 +278,7 @@ public class BattleResolver : RandomBehaviour
         return (items, essence);
     }
 
+    // Calculates whether the player can escape from an encounter, via their RunChance
     public bool CanRun(BattlerController user, EnemyParty enemyParty)
     {
         float rnd = (float)_random.NextDouble();
@@ -294,7 +296,22 @@ public class BattleResolver : RandomBehaviour
 
         bool result = rnd <= chance;
 
-        if (enemyParty.PartyMembers.Any(e => !(e as Enemy).CanRun)) result = false;
+        // If any enemy has a false "CanRun" bool
+        if (enemyParty.PartyMembers.Any(e => !(e as Enemy).CanRun))
+        {   
+            // Escaping doesn't take time
+            _escapeRecoveryTime = 0;
+
+            // Player can't escape no matter what
+            result = false;
+        }
+        else
+        {   
+            // Otherwise Run takes 1 turn
+            _escapeRecoveryTime = 1;
+        }
+
+        user.Character.RecoveryTime += _escapeRecoveryTime;
 
         Debug.Log($"RUN CALCULATIONS : Rnd = {rnd}, Difficulty Average = {difficultyAverage}, Chance = {chance}, Result = {result}", this);
 
