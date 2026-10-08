@@ -27,6 +27,8 @@ public class ItemInfo : DataAsset
     [SerializeField] private SerializableInterface<IEquippable> _equippable;
     public IEquippable EquippableLogic => _equippable.Value;
 
+    [field: SerializeField] public EquippableTypes equippableType { get; private set; }
+
     [field: SerializeField] public int Level { get; private set; }
 
     [field: Space(10)]

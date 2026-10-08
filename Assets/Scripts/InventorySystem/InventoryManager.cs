@@ -2,6 +2,7 @@ using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -123,13 +124,21 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        tmp = _inventoryUIManager.GetEquipmentButtons();
+        SetUpEquipmentButtonsList(_inventoryUIManager.GetCombatEquipmentButtons(), _player.PlayerCharacter.Inventory.CombatEquipmentSlots);
+        SetUpEquipmentButtonsList(_inventoryUIManager.GetUtilityEquipmentButtons(), _player.PlayerCharacter.Inventory.UtilityEquipmentSlots);
+        SetUpEquipmentButtonsList(_inventoryUIManager.GetAltMoveEquipmentButtons(), _player.PlayerCharacter.Inventory.AltMoveEquipmentSlots);
+
+    }
+
+    private void SetUpEquipmentButtonsList(List<Button> typeList, List<ItemInfo> equipmentSlots)
+    {   
+        var tmp = typeList;
 
         for (int i = 0; i < tmp.Count; i++)
         {
             ItemInfo item = 
-            (i < _player.PlayerCharacter.Inventory.EquipmentSlots.Count) ? 
-            _player.PlayerCharacter.Inventory.EquipmentSlots[i] : null;
+            (i < equipmentSlots.Count) ? 
+            equipmentSlots[i] : null;
             
             if (item != null)
             {
@@ -189,7 +198,10 @@ public class InventoryManager : MonoBehaviour
     {
         if (!_player.PlayerCharacter.Inventory.Contains(stack.Item) || stack.Item.Type != ItemTypes.Equippable) return;
 
-        if (_player.PlayerCharacter.Inventory.EquipmentFull())
+        EquippableTypes equippableType = stack.Item.equippableType;
+
+
+        if (_player.PlayerCharacter.Inventory.EquipmentTypeFull(equippableType))
         {
             _raycastBlockerPanel.SetActive(true);
             _warningPanel.SetActive(true);

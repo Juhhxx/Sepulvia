@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 public class InventoryUIManager : MonoBehaviour
 {
@@ -13,6 +15,9 @@ public class InventoryUIManager : MonoBehaviour
     [SerializeField] private GameObject _itemSlots;
     [SerializeField] private GameObject _itemSlotPrefab;
     [SerializeField] private GameObject _equipmentSlots;
+    [SerializeField] private GameObject _battleEquipmentSlots;
+    [SerializeField] private GameObject _utilityEquipmentSlots;
+    [SerializeField] private GameObject _altMoveEquipmentSlots;
     [SerializeField] private GameObject _equipmentSlotPrefab;
 
     [SerializeField] private PlayerStatsUI _statsUI;
@@ -25,9 +30,15 @@ public class InventoryUIManager : MonoBehaviour
     [SerializeField] private RectTransform _itemInfoPanelRect;
     [SerializeField] private Canvas _canvas;
 
-    private List<Button> _buttons;
+    [SerializeField] private List<Button> _buttons;
+    [SerializeField] private List<Button> _CombatEquipmentButtons;
+    [SerializeField] private List<Button> _UtilityEquipmentButtons;
+    [SerializeField] private List<Button> _AltMoveEquipmentButtons;
 
     public List<Button> GetAllButtons() => _buttons;
+    public List<Button> GetCombatEquipmentButtons() => _CombatEquipmentButtons;
+    public List<Button> GetUtilityEquipmentButtons() => _UtilityEquipmentButtons;
+    public List<Button> GetAltMoveEquipmentButtons() => _AltMoveEquipmentButtons;
     public List<Button> GetItemButtons() => _buttons.GetRange(0, _inventory.MaxInventorySpaces);
     public List<Button> GetEquipmentButtons() => _buttons.GetRange(_inventory.MaxInventorySpaces, _inventory.MaxEquipmentSpaces);
 
@@ -124,9 +135,43 @@ public class InventoryUIManager : MonoBehaviour
         }
     }
 
-    List<GameObject> _inventoryEquipmentlots = new List<GameObject>();
+    [SerializeField] List<GameObject> _CombatEquipmentSlots;
+    [SerializeField] List<GameObject> _UtilityEquipmentSlots;
+    [SerializeField] List<GameObject> _AltMoveEquipmentSlots;
+    [SerializeField] List<GameObject> _inventoryEquipmentSlots;
     private void CreateEquipmentSpaces(Inventory inventory)
     {
+        // Enable combat slots and add them to the total equipment slots
+        for(int i = 0; i < inventory.MaxCombatEquipmentAmount; i++)
+        {
+           GameObject inventorySlot = _CombatEquipmentSlots[i];
+
+            inventorySlot.gameObject.SetActive(true);
+            _inventoryEquipmentSlots.Add(inventorySlot);
+            _buttons.Add(inventorySlot.GetComponent<Button>());
+        }
+
+        // Enable utility slots and add them to the total equipment slots
+        for(int i = 0; i < inventory.MaxUtilityEquipmentAmount; i++)
+        {
+           GameObject inventorySlot = _UtilityEquipmentSlots[i];
+
+            inventorySlot.gameObject.SetActive(true);
+            _inventoryEquipmentSlots.Add(inventorySlot);
+            _buttons.Add(inventorySlot.GetComponent<Button>());
+        }
+
+        // Enable alt move slots and add them to the total equipment slots
+        for(int i = 0; i < inventory.MaxAltMoveEquipmentAmount; i++)
+        {  
+           GameObject inventorySlot = _AltMoveEquipmentSlots[i];
+
+            inventorySlot.gameObject.SetActive(true);
+            _inventoryEquipmentSlots.Add(inventorySlot);
+            _buttons.Add(inventorySlot.GetComponent<Button>());
+        }
+
+        /*
         for (int i = 0; i < inventory.MaxEquipmentSpaces; i++)
         {
             GameObject slot = Instantiate(_equipmentSlotPrefab, _equipmentSlots.transform);
@@ -135,27 +180,88 @@ public class InventoryUIManager : MonoBehaviour
             _inventoryEquipmentlots.Add(slot);
             _buttons.Add(slot.GetComponent<Button>());
         }
+        */
     }
 
     private void ShowEquipmentSpaces(Inventory inventory)
     {
-        for (int i = 0; i < inventory.MaxEquipmentSpaces; i++)
+        ShowCombatEquipmentSpaces(inventory);
+        ShowUtilityEquipmentSpaces(inventory);
+        ShowAltMoveEquipmentSpaces(inventory);
+    }
+
+    private void ShowCombatEquipmentSpaces(Inventory inventory)
+    {   
+        for (int i = 0; i < inventory.MaxCombatEquipmentAmount; i++)
         {
-            ItemInfo item = (i < inventory.EquipmentSlots.Count) ? inventory.EquipmentSlots[i] : null;
-            InventorySlotManager slot = _inventoryEquipmentlots[i].GetComponent<InventorySlotManager>();
+            ItemInfo item = (i < inventory.CombatEquipmentSlots.Count) ? inventory.CombatEquipmentSlots[i] : null;
+
+            InventorySlotManager slot;
+
+            slot = _CombatEquipmentSlots[i].GetComponent<InventorySlotManager>();
 
             if (item != null) slot.UpdateSlot(item.Sprite);
-            else slot.UpdateSlot();
+            else slot.UpdateSlot();            
         }
     }
+
+    private void ShowUtilityEquipmentSpaces(Inventory inventory)
+    {   
+        for (int i = 0; i < inventory.MaxUtilityEquipmentAmount; i++)
+        {
+            ItemInfo item = (i < inventory.UtilityEquipmentSlots.Count) ? inventory.UtilityEquipmentSlots[i] : null;
+
+            InventorySlotManager slot;
+
+            slot = _UtilityEquipmentSlots[i].GetComponent<InventorySlotManager>();
+
+            if (item != null) slot.UpdateSlot(item.Sprite);
+            else slot.UpdateSlot();            
+        }
+    }
+
+    private void ShowAltMoveEquipmentSpaces(Inventory inventory)
+    {   
+        for (int i = 0; i < inventory.MaxAltMoveEquipmentAmount; i++)
+        {
+            ItemInfo item = (i < inventory.AltMoveEquipmentSlots.Count) ? inventory.AltMoveEquipmentSlots[i] : null;
+
+            InventorySlotManager slot;
+
+            slot = _AltMoveEquipmentSlots[i].GetComponent<InventorySlotManager>();
+
+            if (item != null) slot.UpdateSlot(item.Sprite);
+            else slot.UpdateSlot();            
+        }
+    }    
+
+    /*
+    private List<GameObject> FindEquipmentTypeList(EquippableTypes equipmentType)
+    {   
+        List<GameObject> result = null;
+        switch(equipmentType) {
+            case EquippableTypes.Combat:
+                result = _CombatEquipmentSlots;
+                break;
+            case EquippableTypes.Utility:
+                result = _UtilityEquipmentSlots;
+                break;
+            case EquippableTypes.AltMove:
+                result = _AltMoveEquipmentSlots;
+                break;                             
+        }
+
+        return result;
+    }
+    */
 
     private void ClearSlots()
     {
         foreach(GameObject go in _inventoryItemSlots) Destroy(go);
         _inventoryItemSlots.Clear();
 
-        foreach(GameObject go in _inventoryEquipmentlots) Destroy(go);
-        _inventoryEquipmentlots.Clear();
+        foreach(GameObject go in _inventoryEquipmentSlots) Destroy(go);
+        _inventoryEquipmentSlots.Clear();
     }
 
 
