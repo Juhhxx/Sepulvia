@@ -66,7 +66,7 @@ public class StatusEffectManager : MonoBehaviour
 
         se.StatusEffectLogic.OnExitEffect();
 
-        _battlerController.AnimationController.DoBattlerVFX(se.OnEnterVFX);
+        _battlerController.AnimationController.DoBattlerVFX(se.OnExitVFX);
     }
 
     public void UpdateStatusEffects()
