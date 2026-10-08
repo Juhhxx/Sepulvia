@@ -49,6 +49,9 @@ public class BattleResolver : RandomBehaviour
 
     public void DoMove(Move move, BattlerController user, BattlerController[] targets)
     {
+
+        Debug.Log($"Enemy {user.Character.Name} has chosen targets for move {move.Name}: {string.Join(", ", targets.Select(t => t.Character.Name))}");
+
         if (CheckInterrupt(user))
         {
             DialogueManager.Instance.AddDialogue(

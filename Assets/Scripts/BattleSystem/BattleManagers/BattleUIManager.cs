@@ -181,7 +181,7 @@ public class BattleUIManager : MonoBehaviour
     private void ToggleMoveButtons(bool onOff) => _moveButtons.SetActive(onOff);
     private void ToggleStanceMoveButtons(bool onOff) => _stanceMoveButtons.SetActive(onOff);
     private void ToggleTargetButtons(bool onOff) => _targetButtons.SetActive(onOff);
-    private void ToggleSelectBar(bool onOff) => _selectBarCanvas.SetActive(onOff);
+    public void ToggleSelectBar(bool onOff) => _selectBarCanvas.SetActive(onOff);
     public void ToggleMoveInfo(bool onOff, Move move = null)
     {
         if (onOff)

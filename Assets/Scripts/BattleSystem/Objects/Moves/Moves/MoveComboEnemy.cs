@@ -10,8 +10,8 @@ public class MoveComboEnemy : IMove
     {
         EnemyBattleAI battleAI = user.GetComponent<EnemyBattleAI>();
 
-        var playerParty = targets.Where((c) => c.Character is Player).ToArray();
-        var enemyParty = targets.Where((c) => c.Character is Enemy).ToArray();
+        var playerParty = targets.Where((c) => c.IsPlayer()).ToArray();
+        var enemyParty = targets.Where((c) => !c.IsPlayer()).ToArray();
 
         foreach (MoveInfo mi in _movesToCombo)
         {
