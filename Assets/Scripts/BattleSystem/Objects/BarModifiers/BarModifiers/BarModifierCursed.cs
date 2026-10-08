@@ -8,6 +8,6 @@ public class BarModifierCursed : IBarModifier
 
     public void OnBarModifierTriggered(int position, BattlerController user, PullingManager pullManager)
     {
-        user.StatusEffectManager.AddStatusEffect(_curse.Instantiate(), user);
+        user.StatusEffectManager.AddStatusEffect(_curse.Instantiate());
     }
 }

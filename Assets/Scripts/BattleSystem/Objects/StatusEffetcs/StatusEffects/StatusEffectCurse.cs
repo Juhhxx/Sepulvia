@@ -39,7 +39,7 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
 
     public void OnMaxStackReached()
     {
-        _target.StatusEffectManager.AddStatusEffect(_stun.Instantiate(), _target);
+        _target.StatusEffectManager.AddStatusEffect(_stun.Instantiate());
 
         _target.StatusEffectManager.RemoveStatusEffect(_effect);
     }

@@ -18,6 +18,13 @@ public class StatusEffectInfo : ScriptableObject
     [field: SerializeField] public int TurnDuration { get; private set; }
 
     [field: Space(10)]
+    [field: Header("Status Effect VFX Parameters")]
+    [field: Space(5)]
+    [field: SerializeField] public BattlerVFX OnEnterVFX { get; private set; }
+    [field: SerializeField] public BattlerVFX OnTriggeredVFX { get; private set; }
+    [field: SerializeField] public BattlerVFX OnExitVFX { get; private set; }
+
+    [field: Space(10)]
     [field: Header("Status Effect Logic Parameters")]
     [field: Space(5)]
     [SerializeField] private SerializableInterface<IStatusEffect> _statusEffect;
@@ -39,6 +46,10 @@ public class StatusEffect
         Description = info.Description;
 
         TurnDuration = info.TurnDuration;
+
+        OnEnterVFX = info.OnEnterVFX;
+        OnTriggeredVFX = info.OnTriggeredVFX;
+        OnExitVFX = info.OnExitVFX;
 
         _statusEffect = info.StatusEffectLogic;
     }
@@ -77,9 +88,12 @@ public class StatusEffect
     {
         OnCompleted?.Invoke();
     }
-
     public event Action<int> OnTurnPassed;
     public event Action OnCompleted;
+
+    public BattlerVFX OnEnterVFX { get; private set; }
+    public BattlerVFX OnTriggeredVFX { get; private set; }
+    public BattlerVFX OnExitVFX { get; private set; }
 
     [SerializeField, ReadOnly] private SerializableInterface<IStatusEffect> _statusEffect;
     public IStatusEffect StatusEffectLogic => _statusEffect.Value;

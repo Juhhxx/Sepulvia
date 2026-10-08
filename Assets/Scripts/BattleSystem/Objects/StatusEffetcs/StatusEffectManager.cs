@@ -5,11 +5,14 @@ using System;
 [Serializable]
 public class StatusEffectManager : MonoBehaviour
 {
-    [SerializeField] private List<StatusEffect> _activeStatusEffects = new List<StatusEffect>();
-    public IReadOnlyList<StatusEffect> ActiveStatusEffects => _activeStatusEffects;
+    private BattlerController _battlerController;
 
-    public event Action<StatusEffect> OnAddStatusEffect;
+    private void Awake()
+    {
+        _battlerController = GetComponent<BattlerController>();
+    }
 
+    // Immunities Add, Remove and Remove
     private Dictionary<string,float> _immunities = new Dictionary<string,float>();
 
     public void AddImmunity(string statusEffect, float percentage)
@@ -29,17 +32,28 @@ public class StatusEffectManager : MonoBehaviour
         return _immunities.GetValueOrDefault(statusEffect, 0);
     }
 
-    public void AddStatusEffect(StatusEffect se, BattlerController character)
+    // Status Effects Add, Remove, Update, Cehck and Get
+    [SerializeField] private List<StatusEffect> _activeStatusEffects = new List<StatusEffect>();
+    public IReadOnlyList<StatusEffect> ActiveStatusEffects => _activeStatusEffects;
+
+    public event Action<StatusEffect> OnAddStatusEffect;
+
+    public void AddStatusEffect(StatusEffect se)
     {
         if (_immunities.ContainsKey(se.Name) && _immunities[se.Name] == 1) return;
 
-        Debug.Log($"ADDING STATUS EFFECT {se.Name} TO {character.name}", this);
+        Debug.Log($"ADDING STATUS EFFECT {se.Name} TO {_battlerController.name}", this);
 
         _activeStatusEffects.Add(se);
         
         OnAddStatusEffect?.Invoke(se);
 
-        se.StatusEffectLogic.OnEnterEffect(character, se);
+        se.StatusEffectLogic.OnEnterEffect(_battlerController, se);
+
+        _battlerController.AnimationController.DoBattlerVFX(se.OnEnterVFX);
+
+        se.StatusEffectLogic.OnEffectTriggered += () => 
+        _battlerController.AnimationController.DoBattlerVFX(se.OnTriggeredVFX);
     }
 
     public void RemoveStatusEffect(StatusEffect se)
@@ -51,6 +65,8 @@ public class StatusEffectManager : MonoBehaviour
         _activeStatusEffects.Remove(se);
 
         se.StatusEffectLogic.OnExitEffect();
+
+        _battlerController.AnimationController.DoBattlerVFX(se.OnEnterVFX);
     }
 
     public void UpdateStatusEffects()

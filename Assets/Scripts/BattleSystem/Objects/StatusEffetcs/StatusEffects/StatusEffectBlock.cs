@@ -22,6 +22,8 @@ public class StatusEffectBlock : IStatusEffect
     {
         Debug.Log("BLOCK TRIGGERED");
         
+        OnEffectTriggered?.Invoke();
+        
         _target.StatusEffectManager.RemoveStatusEffect(_effect);
 
         _target.OnBlock();
@@ -30,7 +32,7 @@ public class StatusEffectBlock : IStatusEffect
         
         foreach (BattlerController bc in effectTargets)
         {
-            bc.StatusEffectManager.AddStatusEffect(_stun.Instantiate(), bc);
+            bc.StatusEffectManager.AddStatusEffect(_stun.Instantiate());
             bc.ClearActions();
         }
     }

@@ -10,7 +10,7 @@ public class RapierPendant : IPassiveEffect
     {
         if (_done) return;
 
-        target.OnDoBlock += () => target.StatusEffectManager.AddStatusEffect(_strengthBonus.Instantiate(), target);
+        target.OnDoBlock += () => target.StatusEffectManager.AddStatusEffect(_strengthBonus.Instantiate());
 
         _done = true;
     }

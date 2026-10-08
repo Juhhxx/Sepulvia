@@ -8,7 +8,7 @@ public class ConsumableStunEnemies : IConsumable
     {
         foreach (BattlerController target in targets)
         {
-            target.StatusEffectManager.AddStatusEffect(_stun.Instantiate(), target);
+            target.StatusEffectManager.AddStatusEffect(_stun.Instantiate());
         }
     }
 

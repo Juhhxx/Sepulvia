@@ -7,6 +7,6 @@ public class BarModifierStun : IBarModifier
 
     public void OnBarModifierTriggered(int position, BattlerController user, PullingManager pullManager)
     {
-        user.StatusEffectManager.AddStatusEffect(_stun.Instantiate(), user);
+        user.StatusEffectManager.AddStatusEffect(_stun.Instantiate());
     }
 }

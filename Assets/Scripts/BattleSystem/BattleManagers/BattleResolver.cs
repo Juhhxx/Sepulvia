@@ -165,7 +165,7 @@ public class BattleResolver : RandomBehaviour
     {
         foreach (BattlerController target in targets)
         {
-            target.StatusEffectManager.AddStatusEffect(statusEffect, target);
+            target.StatusEffectManager.AddStatusEffect(statusEffect);
         }
     }
 
