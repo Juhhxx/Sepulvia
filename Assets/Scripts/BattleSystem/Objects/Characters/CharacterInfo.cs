@@ -71,11 +71,12 @@ public class Character
             StanceMoveSet.Add(m.Instantiate());
         }
 
-        PassiveEffects = new List<PassiveEffect>();
+        PassiveEffects = new List<PassiveEffectInfo>();
+        ActivePassiveEffects = new List<PassiveEffect>();
 
         foreach (PassiveEffectInfo p in info.PassiveEffects)
         {
-            PassiveEffects.Add(p.Instantiate());
+            PassiveEffects.Add(p);
         }
 
         SetBaseMoves();
@@ -339,21 +340,29 @@ public class Character
     [field: Space(10)]
     [field: Header("Character Passive Effects")]
     [field: Space(5)]
-    [field: SerializeField] public List<PassiveEffect> PassiveEffects { get; private set; }
+    [field: SerializeField] public List<PassiveEffectInfo> PassiveEffects { get; private set; }
+    [field: SerializeField] public List<PassiveEffect> ActivePassiveEffects { get; private set; }
 
+    public void StartPassiveEffects()
+    {
+        foreach (PassiveEffectInfo pe in PassiveEffects)
+        {
+            ActivePassiveEffects.Add(pe.Instantiate());
+        }
+    }
     public void AddPassiveEffect(PassiveEffect effect)
     {
-        PassiveEffects.Add(effect);
+        ActivePassiveEffects.Add(effect);
     }
 
     public void RemovePassiveEffect(PassiveEffect effect)
     {
-        PassiveEffects.Remove(effect);
+        ActivePassiveEffects.Remove(effect);
     }
 
     public bool HasPassiveEffect<T>() where T : IPassiveEffect
     {
-        foreach (PassiveEffect pe in PassiveEffects)
+        foreach (PassiveEffect pe in ActivePassiveEffects)
         {
             if (pe.PassiveEffectLogic is T)
             {
@@ -366,7 +375,7 @@ public class Character
 
     public T GetPassiveEffect<T>() where T : class, IPassiveEffect
     {
-        foreach (PassiveEffect pe in PassiveEffects)
+        foreach (PassiveEffect pe in ActivePassiveEffects)
         {
             if (pe.PassiveEffectLogic is T)
             {

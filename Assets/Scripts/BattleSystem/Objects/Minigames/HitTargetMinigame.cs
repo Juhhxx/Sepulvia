@@ -73,6 +73,8 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         for (int round = 0; round < rounds; round++)
         {
             yield return new WaitForSeconds(1);
+
+            _hitKey = false;
             
             if (_intermitentMovement)
             {

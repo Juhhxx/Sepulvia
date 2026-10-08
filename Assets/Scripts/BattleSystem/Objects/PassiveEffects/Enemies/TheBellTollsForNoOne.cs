@@ -7,6 +7,8 @@ public class TheBellTollsForNoOne : IPassiveEffect
 
     public void OnBeginTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
     {
+        Debug.Log($"DOING BELL TOOL PASSIVE {_done}");
+
         if (_done) return;
 
         _newSoulBurn.OnSoulBurn += (_,_) => target.Character.AddModifier(new (Stats.PullStrength, 1));
@@ -14,6 +16,7 @@ public class TheBellTollsForNoOne : IPassiveEffect
         battleManager.ChangeSoulBurn(_newSoulBurn);
 
         _done = true;
+        Debug.Log($"DID BELL TOOL PASSIVE {_done}");
     }
 
     public void OnEndTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect) {}

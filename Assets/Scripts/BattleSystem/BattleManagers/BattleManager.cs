@@ -33,6 +33,7 @@ public class BattleManager : MonoBehaviour
     public event Action<int,int> OnSoulBurn;
     public void ChangeSoulBurn(SoulBurnProfile profile)
     {
+        Debug.Log($"SOUL BURN CHANGE TO: {profile.Amount} {profile.DoLeftRight}");
         _activeSoulBurn = profile.Clone() as SoulBurnProfile;
         _activeSoulBurn.OnStartBattle();
         _activeSoulBurn.OnSoulBurn += OnSoulBurn;
@@ -201,6 +202,7 @@ public class BattleManager : MonoBehaviour
             c.ResetMoveCooldowns();
             c.CurrentStance = 0;
             c.RecoveryTime = 0;
+            c.StartPassiveEffects();
         }
 
         _hasWinner = false;
@@ -492,8 +494,9 @@ public class BattleManager : MonoBehaviour
             BattlerController controller = GetBattlerController(battler);
             Party oppositeParty = battler is Player ? EnemyParty : PlayerParty;
 
-            foreach (PassiveEffect pe in battler.PassiveEffects)
+            foreach (PassiveEffect pe in battler.ActivePassiveEffects)
             {
+                Debug.Log($"DOING PASSIVE EFFECT {pe.Name}");
                 pe.PassiveEffectLogic.OnBeginTurnEffect(controller, this, pe);
             }
 
@@ -580,7 +583,7 @@ public class BattleManager : MonoBehaviour
 
             if (battler.RecoveryTime <= 0)
             {
-                foreach (PassiveEffect pe in battler.PassiveEffects)
+                foreach (PassiveEffect pe in battler.ActivePassiveEffects)
                 {
                     pe.PassiveEffectLogic.OnEndTurnEffect(controller, this, pe);
                 }

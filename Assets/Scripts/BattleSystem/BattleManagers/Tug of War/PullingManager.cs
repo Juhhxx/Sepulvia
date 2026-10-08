@@ -28,9 +28,6 @@ public class PullingManager : RandomBehaviour
         if (section.ConnectLeft != null) section.ConnectLeft.ConnectRight = section.ConnectRight;
         if (section.ConnectRight != null) section.ConnectRight.ConnectLeft = section.ConnectLeft;
 
-        section.ConnectLeft = null;
-        section.ConnectRight = null;
-
         if (!burn) section.DestroySection();
         else section.BurnSection();
 
@@ -38,6 +35,9 @@ public class PullingManager : RandomBehaviour
         {
             OnHeartEnd?.Invoke(section.ConnectLeft == null);
         }
+
+        section.ConnectLeft = null;
+        section.ConnectRight = null;
     }
 
     public void BreakBarSections(int number, bool fromLeft, bool burn = false)
