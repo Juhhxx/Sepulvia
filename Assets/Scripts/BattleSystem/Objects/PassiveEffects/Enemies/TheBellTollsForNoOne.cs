@@ -3,6 +3,7 @@ using UnityEngine;
 public class TheBellTollsForNoOne : IPassiveEffect
 {
     [SerializeField] private SoulBurnProfile _newSoulBurn;
+    [SerializeField] private StatusEffectInfo _enrageStatusEffect;
     private bool _done = false;
 
     public void OnBeginTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
@@ -11,7 +12,7 @@ public class TheBellTollsForNoOne : IPassiveEffect
 
         if (_done) return;
 
-        _newSoulBurn.OnSoulBurn += (_,_) => target.Character.AddModifier(new (Stats.PullStrength, 1));
+        _newSoulBurn.OnSoulBurn += (_,_) => target.StatusEffectManager.AddStatusEffect(_enrageStatusEffect.Instantiate());
 
         battleManager.ChangeSoulBurn(_newSoulBurn);
 
