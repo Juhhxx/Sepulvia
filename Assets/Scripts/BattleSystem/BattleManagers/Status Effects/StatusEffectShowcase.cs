@@ -69,9 +69,9 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
         Material dissolveMaterial = new Material (_iconImage.material);
         _iconImage.material = dissolveMaterial;
 
-        // Also apply it to stack and duration texts, so they dissolve too
-        //_stackTMP.fontMaterial = dissolveMaterial;
-        //_durationTMP.fontMaterial = dissolveMaterial;
+        // Disable object text indicators
+        _turnIndicator.gameObject.SetActive(false);
+        _stackIndicator.gameObject.SetActive(false);
 
         dissolveMaterial.SetFloat("_Dissolve_Amount", 1f);
         float dissolveDuration = 0.75f;
