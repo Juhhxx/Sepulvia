@@ -53,6 +53,8 @@ public class BattleResolver : RandomBehaviour
 
         Debug.Log($"Enemy {user.Character.Name} has chosen targets for move {move.Name}: {string.Join(", ", targets.Select(t => t.Character.Name))}");
 
+        move.UsedMove();
+
         if (CheckInterrupt(user))
         {
             DialogueManager.Instance.AddDialogue(
@@ -71,11 +73,6 @@ public class BattleResolver : RandomBehaviour
                 return;
             }
         }
-        
-
-        Debug.Log($"{user.Character.Name} USED {move.Name}.");
-
-        move.UsedMove();
 
         user.Character.RecoveryTime += move.RecoveryCost;
         user.Character.CurrentStance += GetStanceBoost(move);
