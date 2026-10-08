@@ -61,13 +61,17 @@ public class BattleResolver : RandomBehaviour
             return;
         }
         
-        if (CheckBlock(user, targets))
+        if (move.CanBeBlocked)
         {
-            DialogueManager.Instance.AddDialogue(
-                $"{user.Character.Name} was blocked.");
-            
-            return;
+            if (CheckBlock(user, targets))
+            {
+                DialogueManager.Instance.AddDialogue(
+                    $"{user.Character.Name} was blocked.");
+                
+                return;
+            }
         }
+        
 
         Debug.Log($"{user.Character.Name} USED {move.Name}.");
 

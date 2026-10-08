@@ -59,6 +59,7 @@ public class MoveInfo : ScriptableObject
     [field: Space(5)]
     [field: SerializeField] public MoveTypes Type { get; private set; }
     [field: SerializeField] public MoveTargeting Targeting { get; private set; }
+    [field: SerializeField] public bool CanBeBlocked { get; private set; }
 
 
     [SerializeField] private SerializableInterface<IMove> _moveLogic;
@@ -89,6 +90,7 @@ public class Move
 
         Type = info.Type;
         Targeting = info.Targeting;
+        CanBeBlocked = info.CanBeBlocked;
 
         StanceCost = info.StanceCost;
         StanceRewardRange = info.StanceRewardRange;
@@ -131,6 +133,8 @@ public class Move
 
     [field: SerializeField, ReadOnly] public MoveTypes Type { get; private set; }
     [field: SerializeField] public MoveTargeting Targeting { get; private set; }
+    [field: SerializeField] public bool CanBeBlocked { get; private set; }
+
 
     [field: SerializeField, ReadOnly] public int StanceCost { get; private set; }
     [field: SerializeField, MinMaxSlider(0, 1)] public Vector2 StanceRewardRange { get; private set; }
