@@ -2,6 +2,9 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using UnityEngine.UI;
+using NUnit.Framework.Interfaces;
+using Unity.VisualScripting;
 
 [CreateAssetMenu(fileName = "InventoryInfo", menuName = "Inventory/New Inventory")]
 public class InventoryInfo : ScriptableObject
@@ -16,9 +19,15 @@ public class InventoryInfo : ScriptableObject
     [field: Header("Character Equipment")]
     [field: Space(5)]
     [field: SerializeField] public int MaxEquipmentSpaces { get; private set; }
+    [field: SerializeField] public int MaxCombatEquipmentAmount { get; private set; }
+    [field: SerializeField] public int MaxUtilityEquipmentAmount { get; private set; }
+    [field: SerializeField] public int MaxAltMoveEquipmentAmount { get; private set; }
 
     [field: OnValueChanged("CheckEquipment")]
     [field: SerializeField, Expandable] public List<ItemInfo> EquipmentSlots { get; private set; }
+    [field: SerializeField, Expandable] public List<ItemInfo> CombatEquipmentSlots { get; private set; }
+    [field: SerializeField, Expandable] public List<ItemInfo> UtilityEquipmentSlots { get; private set; }
+    [field: SerializeField, Expandable] public List<ItemInfo> AltMoveEquipmentSlots { get; private set; }
 
     private void CheckEquipment()
     {
@@ -37,6 +46,9 @@ public class Inventory
     public Inventory(InventoryInfo info)
     {
         MaxInventorySpaces = info.MaxInventorySpaces;
+        MaxCombatEquipmentAmount = info.MaxCombatEquipmentAmount;
+        MaxUtilityEquipmentAmount = info.MaxUtilityEquipmentAmount;
+        MaxAltMoveEquipmentAmount = info.MaxAltMoveEquipmentAmount;
         
         ItemSlots = new List<ItemStack>();
         foreach (ItemStack stack in info.ItemSlots)
@@ -46,6 +58,9 @@ public class Inventory
 
         MaxEquipmentSpaces = info.MaxEquipmentSpaces;
         EquipmentSlots = new List<ItemInfo>(info.EquipmentSlots);
+        CombatEquipmentSlots = new List<ItemInfo>(info.CombatEquipmentSlots);
+        UtilityEquipmentSlots = new List<ItemInfo>(info.UtilityEquipmentSlots);
+        AltMoveEquipmentSlots = new List<ItemInfo>(info.AltMoveEquipmentSlots);
 
         CheckEquipment();
     }
@@ -63,6 +78,9 @@ public class Inventory
     [field: Header("Character Inventory")]
     [field: Space(5)]
     [field: SerializeField, ReadOnly] public int MaxInventorySpaces { get; private set; }
+    [field: SerializeField] public int CombatEquipmentAmount { get; private set; }
+    [field: SerializeField] public int UtilityEquipmentAmount { get; private set; }
+    [field: SerializeField] public int AltMoveEquipmentAmount { get; private set; }
     [field: SerializeField, ReadOnly] public List<ItemStack> ItemSlots { get; private set; }
 
     public bool IsFull(bool considerStacks = true)
@@ -158,18 +176,38 @@ public class Inventory
     [field: Header("Character Equipment")]
     [field: Space(5)]
     [field: SerializeField, ReadOnly] public int MaxEquipmentSpaces { get; private set; }
+    [field: SerializeField] public int MaxCombatEquipmentAmount { get; private set; }
+    [field: SerializeField] public int MaxUtilityEquipmentAmount { get; private set; }
+    [field: SerializeField] public int MaxAltMoveEquipmentAmount { get; private set; }
 
     [field: OnValueChanged("CheckEquipment")]
     [field: SerializeField, Expandable, ReadOnly] public List<ItemInfo> EquipmentSlots { get; private set; }
+    [field: SerializeField, Expandable, ReadOnly] public List<ItemInfo> CombatEquipmentSlots { get; private set; }
+    [field: SerializeField, Expandable, ReadOnly] public List<ItemInfo> UtilityEquipmentSlots { get; private set; }
+    [field: SerializeField, Expandable, ReadOnly] public List<ItemInfo> AltMoveEquipmentSlots { get; private set; }
 
     private void CheckEquipment()
     {
         EquipmentSlots.RemoveAll((e) => e.Type != ItemTypes.Equippable);
     }
 
-    public bool EquipmentFull()
-    {
-        return EquipmentSlots.Count >= MaxEquipmentSpaces;
+    public bool EquipmentTypeFull(EquippableTypes equipmentType)
+    {   
+        bool result = true;
+
+        switch (equipmentType) {
+            case EquippableTypes.Combat:
+                result = CombatEquipmentSlots.Count >= MaxCombatEquipmentAmount;
+                break;
+            case EquippableTypes.Utility:
+                result = UtilityEquipmentSlots.Count >= MaxUtilityEquipmentAmount;
+                break;
+            case EquippableTypes.AltMove:
+                result = AltMoveEquipmentSlots.Count >= MaxAltMoveEquipmentAmount;
+                break;            
+        }
+
+        return result;
     }
 
     public bool HasEquiped(ItemInfo item)
@@ -181,8 +219,15 @@ public class Inventory
     {
         if (item.Type != ItemTypes.Equippable) return false;
 
-        if (EquipmentSlots.Count == MaxEquipmentSpaces) return false;
+        EquippableTypes equipmentType = item.equippableType;
 
+        // If the inventory for the equipment type is full, return
+        if (EquipmentTypeFull(equipmentType)) return false;
+
+        // Otherwise add it to its list
+        AddEquipmentToTypeList(item, item.equippableType);
+
+        // And add it to the overall list of equipment
         EquipmentSlots.Add(item);
 
         OnChangeEqupipment?.Invoke();
@@ -190,15 +235,50 @@ public class Inventory
         return true;
     }
 
+    private void AddEquipmentToTypeList(ItemInfo item, EquippableTypes equipmentType)
+    {
+        switch (equipmentType) {
+            case EquippableTypes.Combat:
+                CombatEquipmentSlots.Add(item);
+                break;
+            case EquippableTypes.Utility:
+                UtilityEquipmentSlots.Add(item);
+                break;
+            case EquippableTypes.AltMove:
+                AltMoveEquipmentSlots.Add(item);
+                break;            
+        }        
+    }
+
     public void RemoveEquipment(ItemInfo item)
     {
         if (item.Type != ItemTypes.Equippable) return;
 
+        // If the inventory doesn't contain the item, return
         if (!EquipmentSlots.Contains(item)) return;
 
+        // Otherwise remove it from its list
+        RemoveEquipmentFromTypeList(item, item.equippableType);
+
+        // And from the general items list
         EquipmentSlots.Remove(item);
 
         OnChangeEqupipment?.Invoke();
+    }
+
+    private void RemoveEquipmentFromTypeList(ItemInfo item, EquippableTypes equipmentType)
+    {
+        switch (equipmentType) {
+            case EquippableTypes.Combat:
+                CombatEquipmentSlots.Remove(item);
+                break;
+            case EquippableTypes.Utility:
+                UtilityEquipmentSlots.Remove(item);
+                break;
+            case EquippableTypes.AltMove:
+                AltMoveEquipmentSlots.Remove(item);
+                break;            
+        }        
     }
 
     public Action OnChangeEqupipment;

@@ -6,6 +6,7 @@ using DG.Tweening;
 public class InventorySlotManager : MonoBehaviour
 {
     [SerializeField] private Image _itemImage;
+    [SerializeField] private Image _frameImage;
     [SerializeField] private TextMeshProUGUI _itemAmountTMP;
     [SerializeField] private GameObject _selectionImage;
 
