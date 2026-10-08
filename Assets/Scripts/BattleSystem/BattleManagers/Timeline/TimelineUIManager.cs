@@ -257,7 +257,7 @@ public class TimelineUIManager : MonoBehaviour
         {   
             _timelineSections[obj.Turn].RemoveIndicator(obj);
             _timelineIndicators.Remove(obj);
-            DestroyImmediate(obj.Indicator.gameObject);
+            HideIndicator(obj.Indicator, () => Destroy(obj.Indicator.gameObject));
         }
     }
 
