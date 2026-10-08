@@ -119,7 +119,7 @@ public class InventoryUIManager : MonoBehaviour
             ItemStack stack = (i < inventory.ItemSlots.Count) ? inventory.ItemSlots[i] : null;
             InventorySlotManager slot = _inventoryItemSlots[i].GetComponent<InventorySlotManager>();
 
-            if (stack != null) slot.UpdateSlot(stack.Item.Sprite, stack.Amount);
+            if (stack != null) slot.UpdateSlot(stack);
             else slot.UpdateSlot();
         }
     }

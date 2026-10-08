@@ -147,7 +147,7 @@ public class ShopUIManager : MonoBehaviour
             ItemStack stack = (i < inventory.ItemSlots.Count) ? inventory.ItemSlots[i] : null;
             InventorySlotManager display = _shopSellDisplays[i];
 
-            if (stack != null) display.UpdateSlot(stack.Item.Sprite, stack.Amount);
+            if (stack != null) display.UpdateSlot(stack);
             else display.UpdateSlot();
 
             _buttonsSell.Add(display.GetComponent<Button>());

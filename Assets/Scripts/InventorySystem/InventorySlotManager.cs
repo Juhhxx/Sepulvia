@@ -14,18 +14,24 @@ public class InventorySlotManager : MonoBehaviour
         _selectionImage.SetActive(false);
     }
 
-    public void UpdateSlot(Sprite sprite, int amount)
+    public void UpdateSlot(ItemStack stack)
     {
-        _itemImage.sprite = sprite;
+        _itemImage.sprite = stack.Item.Sprite;
         _itemImage.color = Color.white;
 
+        string stackTextToDisplay = "";
+
+        // Update item amount in text
         if (_itemAmountTMP.text != "")
         {
             int previousAmount = int.Parse(_itemAmountTMP.text);
-            if (previousAmount != amount) DoAmountChangeAnim();
+            if (previousAmount != stack.Amount) DoAmountChangeAnim();
         }
-        
-        _itemAmountTMP.text = amount.ToString();
+
+        // Only display a stack amount if the item isn't equippable
+        if(stack.Item.Type != ItemTypes.Equippable) stackTextToDisplay = stack.Amount.ToString();
+
+        _itemAmountTMP.text = stackTextToDisplay;
 
         _itemAmountTMP.transform.parent.gameObject.SetActive(true);
     }
