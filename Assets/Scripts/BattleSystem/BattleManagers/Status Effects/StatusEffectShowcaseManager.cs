@@ -41,6 +41,8 @@ public class StatusEffectShowcaseManager : MonoBehaviour
 
     private void AddStatusEffectShowcase(StatusEffect se)
     {
+        if (se.Icon == null) return;
+        
         var showcase = Instantiate(_showcasePrefab, _showcaseParent);
         showcase.SetUpShowcase(se, _infoPanel);
     }

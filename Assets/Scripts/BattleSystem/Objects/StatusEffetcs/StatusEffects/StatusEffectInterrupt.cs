@@ -6,30 +6,29 @@ public class StatusEffectInterrupt : IStatusEffect
 {
     [SerializeField] private int _defaultStunAmount;
 
-    private BattlerController _target;
-    private StatusEffect _effect;
     public event Action OnEffectTriggered;
 
     public void OnEnterEffect(BattlerController target, StatusEffect statusEffect)
-    {
-        _target = target;
-        _effect = statusEffect;
+    { 
+        target.StatusEffectManager.RemoveStatusEffect(statusEffect);
+
+        var targetLastMove = GetLatestMove(target);
+
+        int recoveryReset = targetLastMove != null ?
+                    targetLastMove.RecoveryCost : _defaultStunAmount;
+
+        recoveryReset -= target.Character.RecoveryTime;
+
+        if (recoveryReset < 0) recoveryReset = 0;
+
+        target.Character.RecoveryTime += recoveryReset;
+
+        target.ClearActions();
     }
 
     public void OnExitEffect() {}
 
-    public void OnTriggerEffect(params BattlerController[] effectTargets)
-    {
-        OnEffectTriggered?.Invoke();
-        
-        _target.StatusEffectManager.RemoveStatusEffect(_effect);
-
-        var targetLastMove = GetLatestMove(_target);
-
-        _target.Character.RecoveryTime += targetLastMove != null ?
-                                targetLastMove.RecoveryCost : _defaultStunAmount;
-        _target.ClearActions();
-    }
+    public void OnTriggerEffect(params BattlerController[] effectTargets) {}
 
     private Move GetLatestMove(BattlerController target)
     {
