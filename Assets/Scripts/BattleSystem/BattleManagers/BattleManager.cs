@@ -351,6 +351,12 @@ public class BattleManager : MonoBehaviour
         _hasWinner = true;
     }
 
+    public void LoseCheat()
+    {
+        _playerWon = false;
+        _hasWinner = true;
+    }
+
     // Win Logic
     private void Win(bool playerWon)
     {
