@@ -492,12 +492,9 @@ public class BattleManager : MonoBehaviour
             BattlerController controller = GetBattlerController(battler);
             Party oppositeParty = battler is Player ? EnemyParty : PlayerParty;
 
-            if (battler.RecoveryTime <= 0)
+            foreach (PassiveEffect pe in battler.PassiveEffects)
             {
-                foreach (PassiveEffect pe in battler.PassiveEffects)
-                {
-                    pe.PassiveEffectLogic.OnBeginTurnEffect(controller, this, pe);
-                }
+                pe.PassiveEffectLogic.OnBeginTurnEffect(controller, this, pe);
             }
 
             while (battler.RecoveryTime <= 0)
