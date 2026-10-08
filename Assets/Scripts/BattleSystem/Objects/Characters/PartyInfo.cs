@@ -13,8 +13,12 @@ public class PartyInfo : DataAsset
     [field: SerializeField, ShowIf(nameof(_isPlayerParty))]
     public PlayerInfo Player { get; private set; }
 
+
     [field: SerializeField, HideIf(nameof(_isPlayerParty))]
     public List<CharacterInfo> PartyMembers { get; private set; }
+
+    [field: SerializeField, HideIf(nameof(_isPlayerParty))]
+    public int EncounterBarSections { get; private set; } = 5;
 
     public int Difficulty => CalculatePartyDifficulty();
 
@@ -71,7 +75,11 @@ public class Party
 
 public class EnemyParty : Party
 {
-    public EnemyParty(PartyInfo info) : base(info) {}
+    public int EncounterBarSections { get; private set; }
+    public EnemyParty(PartyInfo info) : base(info)
+    {
+        EncounterBarSections = info.EncounterBarSections;
+    }
 }
 
 public class PlayerParty : Party
