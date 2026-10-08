@@ -57,6 +57,14 @@ public class BattleManager : MonoBehaviour
     
     private List<Character> _battlersList;
     private Dictionary<Character, BattlerController> _battlerControllers;
+
+    private void Awake()
+    {
+        GameObject battleLossTransitionScreen = GameObject.FindGameObjectWithTag("BattleLossTransitionScreen");
+        _uiManager.setBattleLossTransitionScreen(battleLossTransitionScreen);
+        battleLossTransitionScreen.SetActive(false);
+    }
+
     public BattlerController GetBattlerController(Character character)
     {
 
@@ -348,6 +356,12 @@ public class BattleManager : MonoBehaviour
     public void WinCheat()
     {
         _playerWon = true;
+        _hasWinner = true;
+    }
+
+    public void LoseCheat()
+    {
+        _playerWon = false;
         _hasWinner = true;
     }
 

@@ -53,8 +53,6 @@ public class BattleUIManager : MonoBehaviour
     private void Awake()
     {
         _battleManager = FindAnyObjectByType<BattleManager>();
-        _battleLossTransitionScreen = GameObject.FindGameObjectWithTag("BattleLossTransitionScreen");
-        _battleLossTransitionScreen.SetActive(false);
     }
 
     private void Start()
@@ -63,6 +61,11 @@ public class BattleUIManager : MonoBehaviour
         _decisionHearthDefaultScale = _decisionScreenHeart.localScale;
 
         _battleManager.Player.OnStanceChange += (_,_,_) => UpdateStanceBar(_battleManager.Player);
+    }
+
+    public void setBattleLossTransitionScreen(GameObject screen)
+    {
+        _battleLossTransitionScreen = screen;
     }
 
     public void ClearCreatedObjects()
