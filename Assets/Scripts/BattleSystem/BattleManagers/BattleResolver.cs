@@ -189,7 +189,8 @@ public class BattleResolver : RandomBehaviour
     {
         if (_applyModifierCoroutine != null) StopCoroutine(_applyModifierCoroutine);
         
-        
+        _playerSelectedBar = -1;
+        _applyingBarModifier = false;
     }
 
     private Coroutine _applyModifierCoroutine = null;
