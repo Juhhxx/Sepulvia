@@ -64,9 +64,30 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
     }
 
     private void DestroyShowcase()
-    {
-        Destroy(gameObject);
-        //Add lerp to the dissolve here
+    {   
+        // Clone the image's material and apply it, so it doesn't interact with any other icon's material
+        Material dissolveMaterial = new Material (_iconImage.material);
+        _iconImage.material = dissolveMaterial;
+
+        // Also apply it to stack and duration texts, so they dissolve too
+        //_stackTMP.fontMaterial = dissolveMaterial;
+        //_durationTMP.fontMaterial = dissolveMaterial;
+
+        dissolveMaterial.SetFloat("_Dissolve_Amount", 1f);
+        float dissolveDuration = 0.75f;
+
+        // Dissolve the status effect before destroying it
+        DOTween.To(
+            () => dissolveMaterial.GetFloat("_Dissolve_Amount"),
+            value => dissolveMaterial.SetFloat("_Dissolve_Amount", value),
+            -0.5f,
+            dissolveDuration
+        )
+        .OnComplete(() =>
+        {   
+            Destroy(gameObject);
+        });
+        
     }
 
     public void OnPointerExit(PointerEventData eventData)

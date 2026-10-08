@@ -392,12 +392,12 @@ public class BattleManager : MonoBehaviour
 
         if (_playerWon)
         {
-            _uiManager.ShowWinScreen();
+            StartCoroutine(_uiManager.ShowWinScreen());
             OnBattleWon?.Invoke();
         }
         else
         {
-            MenuManager.Instance.ToggleGameOverMenu(true);
+            StartCoroutine(_uiManager.ShowLossScreen());
             OnBattleLost.Invoke();
         }
 
