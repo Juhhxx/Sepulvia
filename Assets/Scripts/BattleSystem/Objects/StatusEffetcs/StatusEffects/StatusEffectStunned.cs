@@ -9,6 +9,7 @@ public class StatusEffectStunned : IStatusEffect, IStackableEffect
     public int MaxStack { get; private set; }= 10;
 
     public int CurrentStack { get; private set; } = 0;
+    [field: SerializeField] public bool ShowStack { get; private set; } = false;
 
     public event Action OnEffectTriggered;
     public event Action<int> OnStackChange;

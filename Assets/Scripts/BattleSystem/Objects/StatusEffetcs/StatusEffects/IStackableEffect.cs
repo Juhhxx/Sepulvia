@@ -5,6 +5,7 @@ public interface IStackableEffect
 {
     public int MaxStack { get; }
     public int CurrentStack { get; }
+    public bool ShowStack { get; }
 
     public event Action<int> OnStackChange;
 

@@ -7,6 +7,7 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
 {
     [field: SerializeField] public int MaxStack { get; private set; }
     [field: SerializeField, ReadOnly] public int CurrentStack { get; private set; }
+    [field: SerializeField] public bool ShowStack { get; private set; } = true;
 
     [SerializeField] private StatusEffectInfo _stun;
     private BattlerController _target;

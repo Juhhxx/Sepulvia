@@ -12,7 +12,15 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private ThresholdBarManager _playerStanceBar;
 
     [SerializeField] private Transform _playerPivot;
-    [SerializeField] private Transform _enemyPivot;
+    [SerializeField] private List<PivotFormation> _enemyPivotFormations;
+
+    [Serializable]
+    public class PivotFormation
+    {
+        public int FormationSize;
+        public List<Transform> PivotPoints;
+    }
+
     private List<GameObject> _characterModels;
 
     [SerializeField] private GameObject _actionButtons;
@@ -91,7 +99,7 @@ public class BattleUIManager : MonoBehaviour
         _battleManager.RegisterBattlerController(player, playerController);
         Debug.Log($"Instantiated player prefab for {player.Name}", this);
 
-        List<Vector3> positions = GetSpawnPoints(enemyParty.PartySize, _enemyPivot);
+        List<Vector3> positions = GetEnemySpawnPoints(enemyParty.PartySize);
 
         for (int i = 0; i < enemyParty.PartySize; i++)
         {
@@ -105,49 +113,17 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
-    private float radius = 4f;
-    public List<Vector3> GetSpawnPoints(int count, Transform pivot)
+    public List<Vector3> GetEnemySpawnPoints(int count)
     {
-        List<Vector3> points = new List<Vector3>();
-
-        if (count <= 0)
-            return points;
-
-        // Single point = just the pivot
-        if (count == 1)
+        foreach (PivotFormation pf in _enemyPivotFormations)
         {
-            points.Add(GetPos(Vector3.zero, pivot));
-            return points;
+            if (pf.FormationSize == count)
+            {
+                return pf.PivotPoints.Select(t => t.position).ToList();
+            }
         }
 
-        // Two points = vertical line up/down from pivot
-        if (count == 2)
-        {
-            points.Add(GetPos(Vector3.right * radius, pivot));
-            points.Add(GetPos(Vector3.left * radius, pivot));
-            return points;
-        }
-
-        // 3+ = semi-circle facing forward (+Z)
-        float angleStep = 180f / (count - 1);
-
-        for (int i = 0; i < count; i++)
-        {
-            float angle = -90f + (angleStep * i); // from -90° to +90°
-
-            // Rotation on Y axis
-            Vector3 dir = Quaternion.Euler(0, angle, 0) * Vector3.forward;
-
-            points.Add(GetPos(dir * radius, pivot));
-        }
-
-        return points;
-    }
-
-    private bool useLocalSpace;
-    private Vector3 GetPos(Vector3 offset, Transform pivot)
-    {
-        return useLocalSpace ? pivot.TransformPoint(offset) : pivot.position + offset;
+        return null;
     }
 
 
