@@ -13,10 +13,12 @@ public class PlayerStatsUI : MonoBehaviour
     {
         _nameTMP.text = c.Name;
 
-        string pullBonus = c.PullStrenghtBonus >= 0 ? $"+{c.PullStrenghtBonus}" : $"{c.PullStrenghtBonus}";
+        //string pullBonus = c.PullStrenghtBonus >= 0 ? $"+{c.PullStrenghtBonus}" : $"{c.PullStrenghtBonus}";
 
         _statsTMP.text = 
-        $"Stance : {c.CurrentStance}/{c.MaxStance}\nSpeed : {c.Speed}\nPull Str. : {pullBonus}";
+       // $"Stance : {c.CurrentStance}/{c.MaxStance}\nSpeed : {c.Speed}\nPull Str. : {pullBonus}";
+
+       $"Max Stance : 3\nSpeed: 100";
 
         var tmp = _moveButtons.GetComponentsInChildren<TextMeshProUGUI>();
 
