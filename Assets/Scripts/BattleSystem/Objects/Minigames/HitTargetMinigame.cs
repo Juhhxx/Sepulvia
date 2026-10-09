@@ -116,7 +116,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
     {
         float time = 0;
 
-        while (!Input.GetKeyDown(KeyCode.Space))
+        while (!Input.GetMouseButtonDown(0))
         {
             int speedIdx = round;
 
@@ -148,7 +148,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 
             MovePoint(time);
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetMouseButtonDown(0))
             {
                 _hitKey = true;
                 yield break;
