@@ -126,6 +126,8 @@ public class BattleResolver : RandomBehaviour
 
                 se.StatusEffectLogic.OnTriggerEffect(affected);
 
+                Debug.Log($"{bc.Character.Name} BLOCKED {affected.Character.Name}", this);
+
                 result = true;
             }
         }
