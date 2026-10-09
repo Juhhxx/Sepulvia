@@ -1038,13 +1038,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Stance : 20/20
+  m_text: 'Max Stance : 3
 
-    Stance Gain : 1
-
-    Speed : 5
-
-    Pull Str. : +0'
+    Speed : 5'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6cde298980cc6cc42bdaa99d294cad15, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: 6cde298980cc6cc42bdaa99d294cad15, type: 2}
@@ -1849,8 +1845,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_AnchoredPosition: {x: 255, y: 341}
+  m_SizeDelta: {x: 1344, y: 260}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3488009226551388494
 CanvasRenderer:
@@ -1880,7 +1876,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a8eb78a43384e834fa76f711b24138ad, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ca87c370f0fdf034390e026ecb5fd983, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7441,6 +7437,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Combat Equipment Inventory Slot
       objectReference: {fileID: 0}
+    - target: {fileID: 4608002556196290965, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c0e6c95c39c431949883069fc614dd38, type: 3}
+    - target: {fileID: 4723577493264420168, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9961947
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.08715578
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7503,11 +7523,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 75
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -92
+      value: -122
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7559,6 +7579,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: Alt Move Equipment Inventory Slot (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2052989116980623927, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608002556196290965, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5bc2f5bcf9143654086d881cef1fff11, type: 3}
+    - target: {fileID: 4723577493264420168, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9358137
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.35249498
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 41.28
+      objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7621,11 +7669,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 295.21405
+      value: 864
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -230.86938
+      value: -68
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7677,6 +7725,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: Combat Equipment Inventory Slot (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2052989116980623927, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 2052989116980623927, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608002556196290965, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 85056d762945fcd4ebd9db72af9874ea, type: 3}
+    - target: {fileID: 4723577493264420168, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9990253
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.044142466
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -13
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 5.06
+      objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7723,27 +7803,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9995447
+      value: 0.9756878
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.030174825
+      value: -0.21916519
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 357
+      value: 255
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -126
+      value: -111
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7755,7 +7835,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 477c2e0a5d721924481d0f816a0e638e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 3.458
+      value: -25.32
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7795,6 +7875,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: Alt Move Equipment Inventory Slot
       objectReference: {fileID: 0}
+    - target: {fileID: 2052989116980623927, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2052989116980623927, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -22
+      objectReference: {fileID: 0}
+    - target: {fileID: 4608002556196290965, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6e33ce05885be1d478d95d0dffaadf01, type: 3}
+    - target: {fileID: 4723577493264420168, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9991768
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.040567826
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -4.65
+      objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7857,11 +7969,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 295.21405
+      value: 739
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -230.86938
+      value: -143
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: 9fa4791e4ff7d9a4f8782df9e7501932, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7913,6 +8025,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Utility Equipment Inventory Slot
       objectReference: {fileID: 0}
+    - target: {fileID: 4608002556196290965, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8639df23ef0eaa847969acf691591301, type: 3}
+    - target: {fileID: 4723577493264420168, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9407033
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.33923054
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723577493264420168, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -39.66
+      objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7959,27 +8095,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.98444194
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.17571041
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 295.21405
+      value: 503
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -230.86938
+      value: -175
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7991,7 +8127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6623567003018999229, guid: d210edc5a4fa69b45b2ab03a92876eef, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 20.24
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

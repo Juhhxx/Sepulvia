@@ -9,6 +9,12 @@ public class InventorySlotManager : MonoBehaviour
     [SerializeField] private Image _frameImage;
     [SerializeField] private TextMeshProUGUI _itemAmountTMP;
     [SerializeField] private GameObject _selectionImage;
+    [SerializeField] private Material _baseMaterial;
+    [SerializeField] private Material _combatMaterial;
+    [SerializeField] private Material _utilityMaterial;
+    [SerializeField] private Material _altMoveMaterial;
+
+
 
     private void OnDisable()
     {
@@ -35,14 +41,36 @@ public class InventorySlotManager : MonoBehaviour
         _itemAmountTMP.text = stackTextToDisplay;
 
         _itemAmountTMP.transform.parent.gameObject.SetActive(true);
+
+        // Change frame if its an equipable item
+        if(stack.Item.Type == ItemTypes.Equippable)
+        {   
+            EquippableTypes equipmentType = stack.Item.equippableType;
+
+            switch(equipmentType)
+            {
+                case EquippableTypes.Combat:
+                    _frameImage.material = _combatMaterial;
+                    break;
+                case EquippableTypes.Utility:
+                    _frameImage.material = _utilityMaterial;
+                    break;
+                case EquippableTypes.AltMove:
+                    _frameImage.material = _altMoveMaterial;
+                    break;
+            }
+        }
     }
 
+
+    // For equipments!
     public void UpdateSlot(Sprite sprite)
     {
         _itemImage.sprite = sprite;
         _itemImage.color = Color.white;
     }
 
+    // When emptying slot
     public void UpdateSlot()
     {
         if (_itemImage != null) _itemImage.color = new Color(1f , 1f, 1f, 0f);
@@ -51,6 +79,8 @@ public class InventorySlotManager : MonoBehaviour
             _itemAmountTMP.text = "";
             _itemAmountTMP.transform.parent.gameObject.SetActive(false);
         }
+
+        _frameImage.material = _baseMaterial;
     }
 
     public void SetDisabled()

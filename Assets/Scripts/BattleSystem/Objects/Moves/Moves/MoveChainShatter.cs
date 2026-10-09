@@ -5,6 +5,7 @@ using UnityEngine;
 public class MoveChainShatter : IMove
 {
     [SerializeField] private int _maxChainShatter;
+    [SerializeField] private int _rounds = 3;
     [SerializeField] private bool _right;
     [SerializeField] private SerializableInterface<IMoveMinigame> _minigamePrefab;
     private IMoveMinigame _minigame;
@@ -13,7 +14,7 @@ public class MoveChainShatter : IMove
     {
         _minigame = resolver.DoMinigame(user, (_minigamePrefab.Value as HitTargetMinigame).gameObject);
 
-        _minigame.StartMinigame(_maxChainShatter);
+        _minigame.StartMinigame(_rounds);
         _minigame.OnMinigameEnd += (float success) =>
         {
             resolver.DoChainShatter((int)(_maxChainShatter * success), _right);
