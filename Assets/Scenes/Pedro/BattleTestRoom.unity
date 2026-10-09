@@ -15,9 +15,9 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0, g: 0, b: 0, a: 1}
-  m_FogMode: 3
-  m_FogDensity: 0.054
+  m_FogColor: {r: 0.21960784, g: 0.023529412, b: 0.23921569, a: 1}
+  m_FogMode: 2
+  m_FogDensity: 0.065
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -27,7 +27,7 @@ RenderSettings:
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
-  m_HaloStrength: 0.379
+  m_HaloStrength: 0.4
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
@@ -428,7 +428,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
       propertyPath: _currentGameScene
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
       propertyPath: _gameScenes.Array.data[0].<FogDensity>k__BackingField
@@ -968,7 +968,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1062794268}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
@@ -1605,7 +1605,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8072954173581285941, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2215,22 +2215,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1062794269}
-    - target: {fileID: 3470514610702125478, guid: 70e967c5c6f8fb849b4b52e68482b6ff, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 715
-      objectReference: {fileID: 0}
-    - target: {fileID: 3470514610702125478, guid: 70e967c5c6f8fb849b4b52e68482b6ff, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -144
-      objectReference: {fileID: 0}
-    - target: {fileID: 3793448397894917653, guid: 70e967c5c6f8fb849b4b52e68482b6ff, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 532
-      objectReference: {fileID: 0}
-    - target: {fileID: 3793448397894917653, guid: 70e967c5c6f8fb849b4b52e68482b6ff, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -172
-      objectReference: {fileID: 0}
     - target: {fileID: 4297200164790225041, guid: 70e967c5c6f8fb849b4b52e68482b6ff, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2270,14 +2254,6 @@ PrefabInstance:
     - target: {fileID: 4751528532283894913, guid: 70e967c5c6f8fb849b4b52e68482b6ff, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5163423434714396335, guid: 70e967c5c6f8fb849b4b52e68482b6ff, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 949
-      objectReference: {fileID: 0}
-    - target: {fileID: 5163423434714396335, guid: 70e967c5c6f8fb849b4b52e68482b6ff, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -64
       objectReference: {fileID: 0}
     - target: {fileID: 6788073381927670023, guid: 70e967c5c6f8fb849b4b52e68482b6ff, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2464,11 +2440,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1975657072068235659, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2478835305192422731, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2632831117914650720, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: m_AnchorMax.y
