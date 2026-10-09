@@ -247,6 +247,7 @@ public class TimelineUIManager : MonoBehaviour
         if(ti != null) HideIndicator(ti.Indicator, () => Destroy(ti.Indicator.gameObject));
 
         _timelineIndicators.Remove(ti);
+        _timelineSections[ti.Turn].RemoveIndicator(ti);
     }
 
     public void RemoveAllTimelineIndicatorsWithName(string name)
@@ -327,6 +328,7 @@ public class TimelineUIManager : MonoBehaviour
 
             if (doAnim)
             {
+                Debug.Log($"Doing Move Animation for {timelineIndicator.Name}", this);
                 if (from >= _timelineSize)
                 {
                     ShowIndicator(indicator, () =>
@@ -341,6 +343,7 @@ public class TimelineUIManager : MonoBehaviour
             }
             else
             {
+                Debug.Log($"Doing Move Without Animation for {timelineIndicator.Name}", this);
                 indicator.anchoredPosition = pos;
                 ResolveOverlay(_timelineSections[to], timelineIndicator.Position);
             }
@@ -359,14 +362,21 @@ public class TimelineUIManager : MonoBehaviour
             pos.x += + _timelineSections[0].Section.rect.width / 2;
             pos.y = indicator.anchoredPosition.y;
 
-            if (doAnim)
+            if (from < _timelineSize)
             {
-                MoveIndicatorHorizontal(indicator, pos.x, () =>
-                HideIndicator(indicator));               
+                if (doAnim)
+                {
+                    MoveIndicatorHorizontal(indicator, pos.x, () =>
+                    HideIndicator(indicator));               
+                }
+                else
+                {
+                    indicator.anchoredPosition = pos;
+                    indicator.gameObject.SetActive(false);
+                }
             }
             else
             {
-                indicator.anchoredPosition = pos;
                 indicator.gameObject.SetActive(false);
             }
         }
