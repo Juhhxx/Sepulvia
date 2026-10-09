@@ -32,7 +32,7 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
         se.OnTurnPassed += UpdateDuration;
         se.OnCompleted += DestroyShowcase;
 
-        if (se.StatusEffectLogic is IStackableEffect stackable)
+        if (se.StatusEffectLogic is IStackableEffect stackable && stackable.ShowStack)
         {
             _stackTMP.text = "1";
             
