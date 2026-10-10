@@ -12,6 +12,9 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
     [SerializeField] private TextMeshProUGUI _dialogueTextBox;
     [SerializeField] private float _textSpeed;
     [SerializeField][InputAxis] private string _jumpKey;
+    [SerializeField] private bool _advanceAutomatic;
+    [SerializeField, ShowIf("_advanceAutomatic")] private float _advanceDelay;
+    private Timer _advanceTimer;
 
     private Queue<DialogueEvent> _dialogueQueue;
     private YieldInstruction _wfs;
@@ -34,6 +37,11 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
     {
         CheckDialogEnd();
         CheckForSkip();
+
+        if (_advanceAutomatic && _dialoguePlaying && !_fillingDialogue)
+        {
+            _advanceTimer.CountTimer();
+        }
     }
 
     public void SetUpDialogueManager()
@@ -45,6 +53,11 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
         _wfku = new WaitForKeyUp(_jumpKey);
         _dialogueBox.SetActive(false);
 
+        if (_advanceAutomatic)
+        {
+            _advanceTimer = new Timer(_advanceDelay, Timer.TimerReset.Manual);
+            _advanceTimer.OnTimerDone += () => _wfkd.ForceKeyPress();
+        }
     }
 
     public void AddDialogue(string dialogue, Action action = null)
@@ -100,6 +113,7 @@ public class DialogueManager : MonoBehaviourSingleton<DialogueManager>
         while (i < size)
         {
             _nextArrow?.SetActive(false);
+            _advanceTimer?.ResetTimer();
 
             // Dequeue next dialogue
             (string dialogue, Action action) = _dialogueQueue.Dequeue().GetValues();
