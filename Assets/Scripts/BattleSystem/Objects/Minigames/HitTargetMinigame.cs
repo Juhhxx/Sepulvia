@@ -58,10 +58,11 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         OnMakeEasier?.Invoke();
     }
 
+    [SerializeField] private int _testRounds = 3;
     [Button]
     private void Test()
     {
-        StartMinigame(3);
+        StartMinigame(_testRounds);
     }
 
     private bool _hitKey = false;
