@@ -43,10 +43,11 @@ public class PlayerOverworldUI : MonoBehaviour
         _player.PlayerCharacter.Inventory.OnChangeEqupipment += UpdateEquipmentSlots;
         (_player.PlayerCharacter as Player).OnEssenceChange += (int essence) => UpdateValue(_essenceTMP, essence);
 
-        _essenceTMP.text = $"{(_player.PlayerCharacter as Player).Essence:000}";
+        _essenceTMP.text = $"{(_player.PlayerCharacter as Player).Essence}";
 
         _scrollingText.text = "";
         StartCoroutine(ScrollTextCR());
+        StartCoroutine(DemoTextCR());
 
         if (!_showDashTimer) _dashTimerImageRightHalf.gameObject.SetActive(false);
         if (!_showDashTimer) _dashTimerImageLeftHalf.gameObject.SetActive(false);
@@ -185,6 +186,15 @@ public class PlayerOverworldUI : MonoBehaviour
             }
 
             yield return new WaitForSeconds(_scrollingSpeed);
+        }
+    }
+
+    private IEnumerator DemoTextCR()
+    {
+        while (true)
+        {
+            AddScrollText("This is a combat demo, the enemies are ordered by difficulty level from left to right! Good luck!");
+            yield return new WaitForSeconds(20f);
         }
     }
 }
