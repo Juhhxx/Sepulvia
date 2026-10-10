@@ -247,7 +247,7 @@ public class TimelineUIManager : MonoBehaviour
         if(ti != null) HideIndicator(ti.Indicator, () => Destroy(ti.Indicator.gameObject));
 
         _timelineIndicators.Remove(ti);
-        _timelineSections[ti.Turn].RemoveIndicator(ti);
+        if (ti.Turn > 0 && ti.Turn < _timelineSize) _timelineSections[ti.Turn].RemoveIndicator(ti);
     }
 
     public void RemoveAllTimelineIndicatorsWithName(string name)
@@ -256,7 +256,7 @@ public class TimelineUIManager : MonoBehaviour
 
         foreach(var obj in indicatorsToRemove)
         {   
-            _timelineSections[obj.Turn].RemoveIndicator(obj);
+            if (obj.Turn > 0 && obj.Turn < _timelineSize) _timelineSections[obj.Turn].RemoveIndicator(obj);
             _timelineIndicators.Remove(obj);
             HideIndicator(obj.Indicator, () => Destroy(obj.Indicator.gameObject));
         }

@@ -19,6 +19,8 @@ public class MenuManager : MonoBehaviourSingleton<MenuManager>
     [SerializeField] private GameObject _optionsMenu;
     [SerializeField] private GameObject _confirmQuitMenu;
     [SerializeField] private GameObject _confirmMainMenu;
+    [SerializeField] private GameObject _lossTransitionScreen;
+    public GameObject LossTransitionScreen => _lossTransitionScreen;
     [SerializeField] private Button _loadSaveButton;
 
     private Animator _anim;

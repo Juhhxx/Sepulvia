@@ -85,6 +85,7 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
         )
         .OnComplete(() =>
         {   
+            OnShowcaseSelected?.Invoke(false, null);
             Destroy(gameObject);
         });
         

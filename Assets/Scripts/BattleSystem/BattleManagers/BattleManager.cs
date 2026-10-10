@@ -61,7 +61,7 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
-        GameObject battleLossTransitionScreen = GameObject.FindGameObjectWithTag("BattleLossTransitionScreen");
+        GameObject battleLossTransitionScreen = MenuManager.Instance.LossTransitionScreen;
         _uiManager.setBattleLossTransitionScreen(battleLossTransitionScreen);
         battleLossTransitionScreen.SetActive(false);
     }
