@@ -154,8 +154,7 @@ public class BarSectionUI : MonoBehaviour
     [Button]
     private void DoExplodeShatter()
     {
-        _sectionDivisorLeft.enabled = false;
-        _sectionDivisorRight.enabled = false;
+        ToggleDivisors(false);
 
         foreach(Image chain in _sectionChains)
         {
@@ -225,8 +224,7 @@ public class BarSectionUI : MonoBehaviour
 
         yield return new WaitForSeconds(.1f);
 
-        _sectionDivisorLeft.enabled = false;
-        _sectionDivisorRight.enabled = false;
+        ToggleDivisors(false);
 
         //After that adicionar rigidbody ams com graviutyScales ligeiramente diferentes para cairem a velocidades diferentes
         foreach( Image chain in _sectionChains)
@@ -243,6 +241,15 @@ public class BarSectionUI : MonoBehaviour
         }
         
         yield return DeactivateSection(2f); //Deactivate the section after 3 seconds
+    }
+
+    private void ToggleDivisors(bool on)
+    {
+        Color color = _sectionDivisorLeft.color;
+        color.a = on ? 1f : 0f;
+
+        _sectionDivisorLeft.color = color;
+        _sectionDivisorRight.color = color;
     }
 
     private IEnumerator DeactivateSection(float delay)

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b2a18b978b0aa94d8e3e05c29121187, type: 3}
-  m_Name: ROF_Pull
+  m_Name: ROF_LightPull
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
-  <Name>k__BackingField: Pull
+  <Name>k__BackingField: Light Pull
   <Icon>k__BackingField: {fileID: 0}
-  <Description>k__BackingField: Pulls the Heart by 2 Chains.
+  <Description>k__BackingField: Pulls the Heart by 1 Chain.
   <Level>k__BackingField: 1
   <AnimationTriggerUser>k__BackingField: Attack
   <AnimationTriggerTarget>k__BackingField: Hurt
@@ -37,4 +37,4 @@ MonoBehaviour:
     - rid: 3144097684244398176
       type: {class: MovePull, ns: , asm: Assembly-CSharp}
       data:
-        _pullAmount: 2
+        _pullAmount: 1

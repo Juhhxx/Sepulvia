@@ -191,11 +191,13 @@ public class BattleResolver : RandomBehaviour
     {
         if (_applyModifierCoroutine != null) StopCoroutine(_applyModifierCoroutine);
         
+        Move move = _battleManager.GetBattlerController(_battleManager.Player)
+            .ActionTimeline.Last().Action.Move;
+
+        move.ResetCooldown();
         _playerSelectedBar = -1;
         _applyingBarModifier = false;
-        _battleManager.Player.CurrentStance = 
-            _battleManager.GetBattlerController(_battleManager.Player)
-            .ActionTimeline.Last().Action.Move.StanceCost;
+        _battleManager.Player.CurrentStance += move.StanceCost;
 
         DialogueManager.Instance.ClearDialogues();
     }
@@ -215,7 +217,11 @@ public class BattleResolver : RandomBehaviour
 
     public void ApplyBarModifier(int section, BarModifier modifier)
     {
-        if (section < 0) return;
+        if (section < 0)
+        {
+            DialogueManager.Instance.AddDialogue("It couldn't be placed");
+            return;
+        }
         
         Debug.Log($"Applying Bar Modifier {modifier.Name} to Section {section}");
         _pullManager.AddBarModifier(section, modifier);

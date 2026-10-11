@@ -33,6 +33,7 @@ public class PullingManager : RandomBehaviour
 
         if (section.HasHeart)
         {
+            Debug.Log($"Section with Heart Destroyed! ConnectLeft: {section.ConnectLeft}, ConnectRight: {section.ConnectRight}, Player Win : {section.ConnectLeft == null}", this);
             OnHeartEnd?.Invoke(section.ConnectLeft == null);
         }
 
@@ -176,7 +177,7 @@ public class PullingManager : RandomBehaviour
             // Check Modifier in Current Bar Section
             DoBarModifier(section, BarModifierTrigger.OnInside, user); 
 
-            var nextSection = positive ? section.ConnectLeft : section.ConnectRight;
+            var nextSection = positive ? section.ConnectRight : section.ConnectLeft;
 
             if (nextSection != null)
             {

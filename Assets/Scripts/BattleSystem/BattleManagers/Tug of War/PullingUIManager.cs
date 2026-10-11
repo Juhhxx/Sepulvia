@@ -106,8 +106,8 @@ public class PullingUIManager : MonoBehaviour
 
            if (_lastBar != null)
             {
-                section.ConnectRight = _lastBar;
-                _lastBar.ConnectLeft = section;
+                section.ConnectLeft = _lastBar;
+                _lastBar.ConnectRight = section;
             }
 
             _lastBar = section;

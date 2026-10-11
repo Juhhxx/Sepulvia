@@ -97,7 +97,9 @@ public class EnemyBattleAI : MonoBehaviour
         return targets;
     }
 
-    public int ChooseBarSection(ModifierApplyType whereToApply)
+
+    private int _maxChooseBarIteration = 5;
+    public int ChooseBarSection(ModifierApplyType whereToApply, int iteration = 0)
     {
         int totalBars = _barSections.Count;
         int section = 0;
@@ -105,6 +107,10 @@ public class EnemyBattleAI : MonoBehaviour
 
         var prohibited = _barSections.FindAll(s => s.HasModifier || s.WasDestroyed || s.HasHeart).Select(s => _barSections.IndexOf(s));
         var available = _barSections.FindAll(s => !s.HasModifier && !s.WasDestroyed && !s.HasHeart).Select(s => _barSections.IndexOf(s));
+
+        if (available.Count() == 0) return -1;
+
+        iteration++;
 
         switch (whereToApply)
         {
@@ -129,7 +135,10 @@ public class EnemyBattleAI : MonoBehaviour
                 break;
         }
 
-        if (prohibited.Contains(section)) return ChooseBarSection(whereToApply);
+        if (prohibited.Contains(section) && iteration < _maxChooseBarIteration) 
+            return ChooseBarSection(whereToApply, iteration);
+        else if (iteration >= _maxChooseBarIteration)
+            return ChooseBarSection(whereToApply);
 
         return section;
     }
