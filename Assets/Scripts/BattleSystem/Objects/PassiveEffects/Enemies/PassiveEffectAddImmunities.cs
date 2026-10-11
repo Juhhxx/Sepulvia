@@ -21,6 +21,11 @@ public class PassiveEffectAddImmunities : IPassiveEffect
     public void OnEndTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect) {}
 
     public void OnTriggerEffect(BattlerController[] others) {}
+
+    public void ResetPassiveEffect()
+    {
+        _done = false;
+    }
 }
 
 [Serializable]

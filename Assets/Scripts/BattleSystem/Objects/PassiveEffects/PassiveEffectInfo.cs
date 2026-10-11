@@ -29,6 +29,8 @@ public class PassiveEffect
         Description = info.Description;
 
         _passiveEffect = info.PassiveEffectLogic;
+
+        _passiveEffect.Value.ResetPassiveEffect();
     }
 
     [field: Header("Base Passive Effect Parameters")]
@@ -50,4 +52,5 @@ public interface IPassiveEffect
     public void OnTriggerEffect(BattlerController[] others);
     public void OnBeginTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect);
     public void OnEndTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect);
+    public void ResetPassiveEffect();
 }
