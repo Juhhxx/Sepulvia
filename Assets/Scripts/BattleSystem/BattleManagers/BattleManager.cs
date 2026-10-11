@@ -502,6 +502,11 @@ public class BattleManager : MonoBehaviour
 
             while (battler.RecoveryTime <= 0)
             {
+                if (battler is Enemy && _timelineManager.CurrentTurn == 0)
+                {
+                    yield return new WaitForSeconds(0.5f);
+                }
+
                 BattleAction action = null;
 
                 if (!controller.HasActions())
