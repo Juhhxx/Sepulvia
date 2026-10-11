@@ -30,7 +30,7 @@ public class CheatManager : MonoBehaviour
     public void InfiniteStance()
     {
         Debug.Log("Infinite Stance Activated");
-        FindAnyObjectByType<PlayerController>().PlayerCharacter.SetBaseStance(9999);
-        FindAnyObjectByType<PlayerController>().PlayerCharacter.CurrentStance = 9999;
+        var player = FindAnyObjectByType<PlayerController>().PlayerCharacter;
+        player.CurrentStance = player.MaxStance;
     }
 }

@@ -193,6 +193,11 @@ public class BattleResolver : RandomBehaviour
         
         _playerSelectedBar = -1;
         _applyingBarModifier = false;
+        _battleManager.Player.CurrentStance = 
+            _battleManager.GetBattlerController(_battleManager.Player)
+            .ActionTimeline.Last().Action.Move.StanceCost;
+
+        DialogueManager.Instance.ClearDialogues();
     }
 
     private Coroutine _applyModifierCoroutine = null;
