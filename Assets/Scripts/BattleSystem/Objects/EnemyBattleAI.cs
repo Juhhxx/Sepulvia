@@ -138,7 +138,7 @@ public class EnemyBattleAI : MonoBehaviour
         if (prohibited.Contains(section) && iteration < _maxChooseBarIteration) 
             return ChooseBarSection(whereToApply, iteration);
         else if (iteration >= _maxChooseBarIteration)
-            return ChooseBarSection(whereToApply);
+            return ChooseBarSection(ModifierApplyType.Anywhere);
 
         return section;
     }

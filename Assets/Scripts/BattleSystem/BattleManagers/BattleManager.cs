@@ -518,6 +518,12 @@ public class BattleManager : MonoBehaviour
                     yield return new WaitForSeconds(0.5f);
                 }
 
+                if (_hasWinner || _doRun)
+                {
+                    _timelineManager.ToggleTurnCounting(true);
+                    yield break;
+                }
+
                 BattleAction action = null;
 
                 if (!controller.HasActions())
