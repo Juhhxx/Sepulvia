@@ -6,12 +6,9 @@ public class GaranteedRun : IPassiveEffect
     private Player _target;
     private PassiveEffect _effect;
     private BattleManager _battleManager;
-    private bool _done = false;
 
-    public void OnBeginTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
+    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
     {
-        if (_done) return;
-
         _target = target.Character as Player;
         _effect = effect;
         _battleManager = battleManager; 
@@ -20,9 +17,9 @@ public class GaranteedRun : IPassiveEffect
         _target.RunChance = 1;
 
         _battleManager.OnBattleEnd += ResetValue;
-
-        _done = true;
     }
+
+    public void OnBeginTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect) {}
 
     private void ResetValue()
     {
@@ -36,8 +33,5 @@ public class GaranteedRun : IPassiveEffect
 
     public void OnTriggerEffect(BattlerController[] others) {}
 
-    public void ResetPassiveEffect()
-    {
-        _done = false;
-    }
+    public void ResetPassiveEffect() {}
 }

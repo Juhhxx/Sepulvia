@@ -465,6 +465,17 @@ public class BattleManager : MonoBehaviour
 
         if (!_hasWinner)
         {
+            if (_timelineManager.CurrentTurn == 0)
+            {
+                foreach (Character c in _battlersList)
+                {
+                    foreach(PassiveEffect pe in c.ActivePassiveEffects)
+                    {
+                        pe.PassiveEffectLogic.OnEnterBattleEffect(GetBattlerController(c), this, pe);
+                    }
+                }
+            }
+
             StartCoroutine(ResolveTurn());
         }
         else

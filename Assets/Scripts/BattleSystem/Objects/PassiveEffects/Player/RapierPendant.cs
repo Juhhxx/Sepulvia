@@ -4,23 +4,17 @@ using UnityEngine;
 public class RapierPendant : IPassiveEffect
 {
     [SerializeField] private StatusEffectInfo _strengthBonus;
-    private bool _done = false;
 
-    public void OnBeginTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
+    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
     {
-        if (_done) return;
-
         target.OnDoBlock += () => target.StatusEffectManager.AddStatusEffect(_strengthBonus.Instantiate());
-
-        _done = true;
     }
+
+    public void OnBeginTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect) {}
 
     public void OnEndTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect) {}
 
     public void OnTriggerEffect(BattlerController[] others) {}
 
-    public void ResetPassiveEffect()
-    {
-        _done = false;
-    }
+    public void ResetPassiveEffect() {}
 }

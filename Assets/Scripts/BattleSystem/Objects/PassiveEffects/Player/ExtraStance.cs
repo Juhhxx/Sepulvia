@@ -29,26 +29,21 @@ public class ExtraStance : IPassiveEffect
         }
     }
 
-    public void OnBeginTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
+    public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
     {
-        if (_done) return;
-
         _target = target;
         _effect = effect;
         _battleManager = battleManager;
 
         _battleManager.OnActionExecuted += AddBonusStance;
-
-
-        _done = true;
     }
+
+
+    public void OnBeginTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect) {}
 
     public void OnEndTurnEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect) {}
 
     public void OnTriggerEffect(BattlerController[] others) {}
 
-    public void ResetPassiveEffect()
-    {
-        _done = false;
-    }
+    public void ResetPassiveEffect() {}
 }
