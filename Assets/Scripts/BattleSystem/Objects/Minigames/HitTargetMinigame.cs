@@ -165,7 +165,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         {
             return 1; // full point
         }
-        else if (GraceRange.x <= _currentPoint && _currentPoint <= SuccessRange.y)
+        else if (GraceRange.x <= _currentPoint && _currentPoint <= GraceRange.y)
         {
             return 0.5f; // half point
         }
