@@ -28,6 +28,8 @@ public class EnemyBattleAI : MonoBehaviour
 
             ok = !move.CheckIfCooldown();
 
+            if(!ok) move = null;
+
             iteration++;
         }
 
