@@ -292,12 +292,12 @@ public class TimelineUIManager : MonoBehaviour
 
             var timelineIndicator = indicators[i];
 
-            if (yPos == timelineIndicator.Indicator.anchoredPosition.x) continue;
+            if (yPos == timelineIndicator.Indicator.anchoredPosition.y) continue;
 
             if (position == TimelinePosition.Lower) yPos *= -1;
 
             timelineIndicator.Indicator.transform.SetSiblingIndex(num - i - 1);
-            MoveIndicatorVertical(timelineIndicator.Indicator, yPos);
+            MoveIndicatorVertical(timelineIndicator, yPos);
         }
         
     }
@@ -332,12 +332,12 @@ public class TimelineUIManager : MonoBehaviour
                 if (from >= _timelineSize)
                 {
                     ShowIndicator(indicator, () =>
-                    MoveIndicatorHorizontal(indicator, pos.x, ()=>
+                    MoveIndicatorHorizontal(timelineIndicator, pos.x, ()=>
                     ResolveOverlay(_timelineSections[to], timelineIndicator.Position)));
                 }
                 else
                 {
-                    MoveIndicatorHorizontal(indicator, pos.x, ()=>
+                    MoveIndicatorHorizontal(timelineIndicator, pos.x, ()=>
                     ResolveOverlay(_timelineSections[to], timelineIndicator.Position));
                 }
             }
@@ -366,8 +366,8 @@ public class TimelineUIManager : MonoBehaviour
             {
                 if (doAnim)
                 {
-                    MoveIndicatorHorizontal(indicator, pos.x, () =>
-                    HideIndicator(indicator));               
+                    MoveIndicatorHorizontal(timelineIndicator, pos.x, () =>
+                    HideIndicator(timelineIndicator.Indicator));               
                 }
                 else
                 {
@@ -383,19 +383,37 @@ public class TimelineUIManager : MonoBehaviour
 
         UpdateOutsideIndicator();
     }
-    private void MoveIndicatorHorizontal(RectTransform indicator, float xPos, Action onDone = null)
+    private void MoveIndicatorHorizontal(TimelineIndicator timelineIndicator, float xPos, Action onDone = null)
     {
-        indicator.DOKill();
-        indicator.DOAnchorPosX(xPos, _moveAnimSpeed)
-                .SetEase(_moveAnimEase)
-                .OnComplete(() => onDone?.Invoke());
+        RectTransform indicator = timelineIndicator.Indicator;
+
+        if (timelineIndicator.HorizontalMoveTween != null)
+        {
+            timelineIndicator.HorizontalMoveTween.Kill();
+            timelineIndicator.HorizontalMoveTween = null;
+        }
+        
+        var horTween = indicator.DOAnchorPosX(xPos, _moveAnimSpeed)
+                                .SetEase(_moveAnimEase)
+                                .OnComplete(() => onDone?.Invoke());
+
+        timelineIndicator.HorizontalMoveTween = horTween;
     }
-    private void MoveIndicatorVertical(RectTransform indicator, float yPos, Action onDone = null)
+    private void MoveIndicatorVertical(TimelineIndicator timelineIndicator, float yPos, Action onDone = null)
     {
-        indicator.DOKill();
-        indicator.DOAnchorPosY(yPos, _overlayAnimSpeed)
-                .SetEase(_overlayAnimEase)
-                .OnComplete(() => onDone?.Invoke());
+        RectTransform indicator = timelineIndicator.Indicator;
+
+        if (timelineIndicator.VerticalMoveTween != null)
+        {
+            timelineIndicator.VerticalMoveTween.Kill();
+            timelineIndicator.VerticalMoveTween = null;
+        }
+
+        var verTween = indicator.DOAnchorPosY(yPos, _overlayAnimSpeed)
+                                .SetEase(_overlayAnimEase)
+                                .OnComplete(() => onDone?.Invoke());
+
+        timelineIndicator.VerticalMoveTween = verTween;
     }
 
     private void HideIndicator(RectTransform indicator, Action onDone = null)
@@ -447,6 +465,9 @@ public class TimelineIndicator
     public RectTransform Indicator;
     public Image Image;
     public TimelinePosition Position;
+
+    public Tween HorizontalMoveTween;
+    public Tween VerticalMoveTween;
 
     public TimelineIndicator(string name, int turn, RectTransform indicator, Image image, TimelinePosition position)
     {

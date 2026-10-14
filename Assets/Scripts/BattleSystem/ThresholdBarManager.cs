@@ -57,13 +57,9 @@ public class ThresholdBarManager : MonoBehaviour
     {
         int reachedDivisors = Mathf.FloorToInt(currentAmount);
 
-        Debug.Log($"CURRENT AMOUNT = {currentAmount} REACHED DIVISORS = {reachedDivisors}");
-
         for (int i = 0; i < _divisors.Length; i++)
         {
             Image divisorImage = _divisors[i].transform.GetChild(0).GetComponent<Image>();
-
-            Debug.Log($"DIVISOR {i} SPRITE = {(i < reachedDivisors ? "REACHED" : "NORMAL")}");
 
             if (i < reachedDivisors)
             {
@@ -78,7 +74,7 @@ public class ThresholdBarManager : MonoBehaviour
 
     public void UpdateFillAmout(float newAmount)
     {
-        Debug.Log($"CURRENT HP : {newAmount}");
+        Debug.Log($"CURRENT STANCE : {newAmount}");
         StopAllCoroutines();
         if (gameObject.activeInHierarchy) StartCoroutine(UpdateBarCR(newAmount / _maxValue));
     }
