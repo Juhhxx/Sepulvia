@@ -443,7 +443,12 @@ public class TimelineSection
 
     public void AddIndicator(TimelineIndicator indicator)
     {
-        if (!_indicators.Contains(indicator)) _indicators.Add(indicator);
+        if (!_indicators.Contains(indicator))
+        {
+            _indicators.Add(indicator);
+            // Organize indicators by number id to keep a consistent order (nubmer id is last part of name)
+            _indicators.Sort((a, b) => a.Name.Last().CompareTo(b.Name.Last()));
+        }
     }
     public void RemoveIndicator(TimelineIndicator indicator)
     {
