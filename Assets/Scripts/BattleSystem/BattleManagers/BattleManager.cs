@@ -257,14 +257,14 @@ public class BattleManager : MonoBehaviour
             _activeSoulBurn.CheckSoulBurn();
         };
 
-        // Count Turns in Modifiers
-        _timelineManager.OnTurnEnd += () =>
-        {
-            foreach (Character c in _battlersList)
-            {
-                GetBattlerController(c).StatusEffectManager.UpdateStatusEffects();
-            }
-        };
+        // Count Turns in Modifiers (CHANGED TO  UPDATE INDIVIDUALLY DURING BATTLE)
+        // _timelineManager.OnTurnEnd += () =>
+        // {
+        //     foreach (Character c in _battlersList)
+        //     {
+        //         GetBattlerController(c).StatusEffectManager.UpdateStatusEffects();
+        //     }
+        // };
 
         _timelineManager.OnTurnEnd += () =>
         {
@@ -510,6 +510,8 @@ public class BattleManager : MonoBehaviour
                 Debug.Log($"DOING PASSIVE EFFECT {pe.Name}");
                 pe.PassiveEffectLogic.OnBeginTurnEffect(controller, this, pe);
             }
+
+            controller.StatusEffectManager.UpdateStatusEffects();
 
             while (battler.RecoveryTime <= 0)
             {
