@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Linq;
 
 public class StatusEffectBlock : IStatusEffect
 {
@@ -18,6 +19,7 @@ public class StatusEffectBlock : IStatusEffect
 
     public void OnExitEffect() {}
 
+    // taget is who is blocking and effectTargets are who is being blocked
     public void OnTriggerEffect(params BattlerController[] effectTargets)
     {
         Debug.Log("BLOCK TRIGGERED");
@@ -33,6 +35,15 @@ public class StatusEffectBlock : IStatusEffect
         foreach (BattlerController bc in effectTargets)
         {
             bc.StatusEffectManager.AddStatusEffect(_stun.Instantiate());
+
+            // if affected battler is immune to stun give them the recovery time of the blocked move
+            if (bc.StatusEffectManager.CheckImmunity("Stun") >= 1)
+            {
+                Move lastmove = bc.ActionTimeline.Last().Action.Move;
+
+                bc.Character.RecoveryTime += lastmove.RecoveryCost;
+            }
+
             bc.ClearActions();
         }
     }
