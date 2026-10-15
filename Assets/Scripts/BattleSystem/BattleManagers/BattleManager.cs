@@ -586,7 +586,7 @@ public class BattleManager : MonoBehaviour
 
                 _dialogueManager.StartDialogues();
 
-                yield return new WaitUntil(() => !_pullManager.IsMoving);
+                yield return new WaitUntil(() => !_pullManager.IsMoving && !_pullManager.IsBreaking);
 
                 float waitTime = 0.5f;
 

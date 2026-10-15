@@ -21,6 +21,9 @@ public class PullingManager : RandomBehaviour
     public List<BarSection> BarSections => _barSectionList;
     private int _sectionsNumber;
 
+    // Breaking Bar Logic
+    public bool IsBreaking { get; private set; }
+
     public void BreakBarSection(BarSection section, bool burn = false)
     {
         if (section.HasModifier) section.RemoveBarModifier();
@@ -54,6 +57,8 @@ public class PullingManager : RandomBehaviour
 
         if (!fromLeft) sections.Reverse();
 
+        IsBreaking = true;
+
         for (int i = 0; i < number; i++)
         {
             if (i >= sections.Count) yield break;
@@ -62,6 +67,8 @@ public class PullingManager : RandomBehaviour
 
             yield return new WaitForSeconds(0.5f);
         }
+
+        IsBreaking = false;
 
     }
 
