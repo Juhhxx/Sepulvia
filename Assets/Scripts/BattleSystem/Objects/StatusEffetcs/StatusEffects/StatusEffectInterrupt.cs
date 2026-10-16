@@ -58,4 +58,15 @@ public class StatusEffectInterrupt : IStatusEffect
     }
 
     public void OnUpdateEffect() {}
+
+    public IStatusEffect Instantiate()
+    {
+        return new StatusEffectInterrupt(_defaultStunAmount);
+    }
+
+    public StatusEffectInterrupt(int defaultStun)
+    {
+        _defaultStunAmount = defaultStun;
+
+    }
 }

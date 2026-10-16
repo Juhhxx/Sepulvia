@@ -23,4 +23,15 @@ public class StatusEffectPullStrenghtBoost : IStatusEffect
     {
         _target.Character.RemoveModifier(_modifier);
     }
+
+    public IStatusEffect Instantiate()
+    {
+        return new StatusEffectPullStrenghtBoost(_boostAmount);
+    }
+
+    public StatusEffectPullStrenghtBoost(int boost)
+    {
+        _boostAmount = boost;
+
+    }
 }

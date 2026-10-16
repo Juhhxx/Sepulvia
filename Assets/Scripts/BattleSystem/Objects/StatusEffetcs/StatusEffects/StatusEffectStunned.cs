@@ -86,4 +86,13 @@ public class StatusEffectStunned : IStatusEffect, IStackableEffect
     public void OnTriggerEffect(params BattlerController[] effectTargets) {}
 
     public void OnUpdateEffect() {}
+
+    public IStatusEffect Instantiate()
+    {
+        return new StatusEffectStunned();
+    }
+
+    public StatusEffectStunned()
+    {
+    }
 }

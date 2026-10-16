@@ -18,10 +18,7 @@ public class StatusEffectAddImmunity : IStatusEffect
         }
     }
 
-    public void OnUpdateEffect()
-    {
-
-    }
+    public void OnUpdateEffect() {}
     public void OnExitEffect()
     {
         foreach (ImmunityProfile ip in _immunitiesToAdd)
@@ -30,8 +27,15 @@ public class StatusEffectAddImmunity : IStatusEffect
         }
     }
 
-    public void OnTriggerEffect(params BattlerController[] effectTargets)
+    public void OnTriggerEffect(params BattlerController[] effectTargets) {}
+
+    public IStatusEffect Instantiate()
     {
-        
+        return new StatusEffectAddImmunity(_immunitiesToAdd);
+    }
+
+    public StatusEffectAddImmunity(ImmunityProfile[] immunities)
+    {
+        _immunitiesToAdd = immunities;
     }
 }

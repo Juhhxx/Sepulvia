@@ -83,4 +83,16 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
     public void OnTriggerEffect(params BattlerController[] effectTargets) {}
 
     public void OnUpdateEffect() {}
+
+    public IStatusEffect Instantiate()
+    {
+        return new StatusEffectCurse(_stun, MaxStack, ShowStack);
+    }
+
+    public StatusEffectCurse(StatusEffectInfo stun, int maxStack, bool showStack)
+    {
+        _stun = stun;
+        MaxStack = maxStack;
+        ShowStack = showStack;
+    }
 }

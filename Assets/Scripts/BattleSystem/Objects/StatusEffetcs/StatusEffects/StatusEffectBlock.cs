@@ -5,7 +5,7 @@ using System.Linq;
 public class StatusEffectBlock : IStatusEffect
 {
     [SerializeField] private StatusEffectInfo _stun;
-    [SerializeField] private int _stanceRewardAmount;
+    [SerializeField] private float _stanceRewardAmount = 1f;
 
     private BattlerController _target;
     private StatusEffect _effect;
@@ -49,4 +49,16 @@ public class StatusEffectBlock : IStatusEffect
     }
 
     public void OnUpdateEffect() {}
+
+    public IStatusEffect Instantiate()
+    {
+        return new StatusEffectBlock(_stun, _stanceRewardAmount);
+    }
+
+    public StatusEffectBlock(StatusEffectInfo stun, float stanceReward)
+    {
+        _stun = stun;
+        _stanceRewardAmount = stanceReward;
+
+    }
 }

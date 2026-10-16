@@ -52,6 +52,7 @@ public class StatusEffect
         OnExitVFX = info.OnExitVFX;
 
         _statusEffect = info.StatusEffectLogic;
+        _statusEffect.Value = _statusEffect.Value.Instantiate();
     }
 
     [field: Header("Base Status Effect Parameters")]
@@ -106,4 +107,5 @@ public interface IStatusEffect
     public void OnUpdateEffect();
     public void OnTriggerEffect(params BattlerController[] effectTargets);
     public void OnExitEffect();
+    public IStatusEffect Instantiate();
 }
