@@ -4,6 +4,8 @@ public class BattlerVFX : MonoBehaviour
 {
     private ParticleSystem _particleSystem;
     private Timer _destroyTimer;
+    private bool _isPlaying;
+    public bool IsPlaying => _isPlaying;
 
     private void Awake()
     {
@@ -19,6 +21,7 @@ public class BattlerVFX : MonoBehaviour
     private void Start()
     {
         _particleSystem.Play();
+        _isPlaying = true;
     }
 
     private void Update()
@@ -29,5 +32,6 @@ public class BattlerVFX : MonoBehaviour
     private void DestroyVFX()
     {
         Destroy(gameObject);
+        _isPlaying = false;
     }
 }

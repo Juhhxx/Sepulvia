@@ -20,7 +20,7 @@ MonoBehaviour:
     Barrier Knots prevent the Heart from moving past it.
 
     They
-    last 10 turns and break when triggered.'
+    last 10 turns or until triggered.'
   <Level>k__BackingField: 1
   <AnimationTriggerUser>k__BackingField: Knot
   <AnimationTriggerTarget>k__BackingField: None
@@ -31,6 +31,7 @@ MonoBehaviour:
   <StanceRewardRange>k__BackingField: {x: 0, y: 0}
   <Type>k__BackingField: 2
   <Targeting>k__BackingField: 6
+  <CanBeBlocked>k__BackingField: 0
   _moveLogic:
     mode: 1
     unityReference: {fileID: 0}
