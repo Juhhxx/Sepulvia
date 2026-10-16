@@ -152,7 +152,7 @@ public class TimelineUIManager : MonoBehaviour
         for (int i = 0; i < party.PartySize; i++)
         {
             Character c = party.PartyMembers[i];
-            string name = c.Name + " " + i;
+            string name = c.Name + "/" + c.Speed + "/" + i;
 
             AddTimelineIndicator(name, 0, c.TimelineIndicator, position);
 
@@ -446,9 +446,29 @@ public class TimelineSection
         if (!_indicators.Contains(indicator))
         {
             _indicators.Add(indicator);
-            // Organize indicators by number id to keep a consistent order (nubmer id is last part of name)
-            _indicators.Sort((a, b) => a.Name.Last().CompareTo(b.Name.Last()));
+            // Organize indicators by number id to keep a consistent order
+            _indicators = _indicators.OrderBy(i => i.Position)
+                                    .ThenByDescending(i => GetSortValues(i).speed)
+                                    .ThenBy(i => GetSortValues(i).id)
+                                    .ThenBy(i => i.Name)
+                                    .ToList();
         }
+    }
+
+    private (int speed, int id) GetSortValues(TimelineIndicator indicator)
+    {
+        string[] parts = indicator.Name.Split('/');
+
+        // Verify if indicator is in middle (no id nor speed), check lenght of into and try to parse it
+        if (indicator.Position == TimelinePosition.Middle ||
+            parts.Length < 3 ||
+            !int.TryParse(parts[1], out int speed) ||
+            !int.TryParse(parts[2], out int id))
+        {
+            return (0, 0);
+        }
+
+        return (speed, id);
     }
     public void RemoveIndicator(TimelineIndicator indicator)
     {
