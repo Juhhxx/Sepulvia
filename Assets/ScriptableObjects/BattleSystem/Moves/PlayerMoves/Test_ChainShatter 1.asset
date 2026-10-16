@@ -26,6 +26,7 @@ MonoBehaviour:
   <StanceRewardRange>k__BackingField: {x: 0.5, y: 1}
   <Type>k__BackingField: 1
   <Targeting>k__BackingField: 6
+  <CanBeBlocked>k__BackingField: 0
   _moveLogic:
     mode: 1
     unityReference: {fileID: 0}
@@ -40,6 +41,7 @@ MonoBehaviour:
       type: {class: MoveChainShatter, ns: , asm: Assembly-CSharp}
       data:
         _maxChainShatter: 3
+        _rounds: 3
         _right: 0
         _minigamePrefab:
           mode: 0
