@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "PCG Rooms/Room Data Base")]
+[CreateAssetMenu(menuName = "PCG/Room Data Base")]
 public class RoomDataBase : DataBase<RoomData>
 {
     public RoomData GetRoom(System.Random random, bool weighted = false)

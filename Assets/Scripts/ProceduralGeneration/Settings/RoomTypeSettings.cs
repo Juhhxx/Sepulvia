@@ -4,7 +4,7 @@ using NaughtyAttributes;
 using System.Linq;
 using System;
 
-[CreateAssetMenu(fileName = "RoomTypeSettings", menuName = "Scriptable Objects/RoomTypeSettings")]
+[CreateAssetMenu(fileName = "RoomTypeSettings", menuName = "PCG/RoomTypeSettings")]
 public class RoomTypeSettings : ScriptableObject
 {
     public List<RoomTypeWeight> RoomTypeWeights;

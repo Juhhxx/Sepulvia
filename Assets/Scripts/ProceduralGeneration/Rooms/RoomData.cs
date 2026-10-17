@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-[CreateAssetMenu(menuName = "PCG Rooms/Room")]
+[CreateAssetMenu(menuName = "PCG/Room")]
 public class RoomData : DataAsset
 {
     public GameObject RoomPrefab;
@@ -44,7 +44,8 @@ public class RoomNode
     }
 }
 
-[System.Serializable] public class RoomConnection 
+[Serializable]
+public class RoomConnection 
 { 
     public RoomSide DoorId;
     [SerializeReference] public RoomNode TargetRoom;

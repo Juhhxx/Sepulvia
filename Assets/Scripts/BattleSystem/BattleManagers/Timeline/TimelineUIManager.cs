@@ -459,7 +459,7 @@ public class TimelineSection
     {
         string[] parts = indicator.Name.Split('/');
 
-        // Verify if indicator is in middle (no id nor speed), check lenght of into and try to parse it
+        // Verify if indicator is in middle (no id nor speed), check lenght of info and try to parse it
         if (indicator.Position == TimelinePosition.Middle ||
             parts.Length < 3 ||
             !int.TryParse(parts[1], out int speed) ||

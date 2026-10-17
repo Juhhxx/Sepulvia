@@ -1,13 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
+using GLTFast.Schema;
 using NaughtyAttributes;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DungeonGenerator : RandomBehaviour
 {
+    [SerializeField, BoxGroup("Generation Settings")] private bool _usePreMadeDungeon = false;
+
+    [ShowIf("_usePreMadeDungeon")]
+    [SerializeField, BoxGroup("Generation Settings")] private PreMadeDungeon _preMadeDungeon;
+
+    [HideIf("_usePreMadeDungeon")]
     [SerializeField, Expandable,BoxGroup("Generation Settings")] private RoomDataBase _roomDataBase;
+    [HideIf("_usePreMadeDungeon")]
     [SerializeField, Expandable, BoxGroup("Generation Settings")] private RoomTypeSettings _roomTypeSettings;
+    [HideIf("_usePreMadeDungeon")]
     [SerializeField, BoxGroup("Generation Settings")] private int _maxDungeonSize = 5;
 
     private void Start()
@@ -15,9 +23,16 @@ public class DungeonGenerator : RandomBehaviour
         TryInitializeRandom();
     }
 
+    // Dungeon Generation
     public RoomNode Generate()
     {
-        if (_roomDataBase.IsEmpty) return null;
+        if (_usePreMadeDungeon) return GeneratePreMade();
+
+        if (_roomDataBase.IsEmpty)
+        {
+            Debug.Log("[Dungeon Generator] Couldn't find Dungeon Room Data Base! Can't generate Dungeon.");
+            return null;
+        }
 
         var start = new RoomNode(_roomDataBase.GetRoomByType(RoomType.StartingRoom, _random, true), 0);
         var createdRooms = new List<RoomNode>() { start };
@@ -51,6 +66,51 @@ public class DungeonGenerator : RandomBehaviour
         return start;
     }
 
+    // Pre Made Dungeons
+    private RoomNode GeneratePreMade()
+    {
+        Debug.Log("[Dungeon Generator] Generating Pre-Made Dungeon.");
+
+        var createdRooms = new List<RoomNode>();
+
+        int roomNumber = 0;
+
+        foreach (PreMadeRoomNode prn in _preMadeDungeon.DungeonRooms)
+        {
+            createdRooms.Add(new RoomNode(prn.RoomData, roomNumber));
+            
+            roomNumber++;
+        }
+
+        for (int i = 0; i < createdRooms.Count; i++)
+        {
+            var node = createdRooms[i];
+            var preMade = _preMadeDungeon.DungeonRooms[i];
+
+            foreach (PreMadeRoomConnection pmc in preMade.Connections)
+            {
+                node.Connections.Add(new RoomConnection(
+                    pmc.DoorId,
+                    pmc.TargetDoorId,
+                    GetRoomNodeByData(pmc.TargetRoom.RoomData, createdRooms.ToArray())
+                ));
+            }
+        }
+
+        return createdRooms[0];
+    }
+
+    private RoomNode GetRoomNodeByData(RoomData data, RoomNode[] nodes)
+    {
+        foreach (RoomNode node in nodes)
+        {
+            if (node.RoomData == data) return node;
+        }
+
+        return null;
+    }
+
+    // Get Room of Type
     private RoomType GetRoomType()
     {
         int totalWeight = 0;
@@ -76,6 +136,7 @@ public class DungeonGenerator : RandomBehaviour
         return RoomType.DungeonRoom;
     }
 
+    // Print Dungeon
     public void ShowGeneratedDungeon(RoomNode firstNode)
     {
         Debug.Log($"Dungeon Created :");

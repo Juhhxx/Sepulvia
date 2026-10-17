@@ -110,6 +110,12 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
 
     private void SpawnEnemies(RoomInstance roomInstance)
     {
+        if (_enemySpawner == null)
+        {
+            Debug.Log("[Room Manager] Couldn't find EnemySpawner! Not Spawning any Enemies.", this);
+            return;
+        }
+
         var paths = roomInstance.GetPaths();
 
         if (paths.Count > 0)
