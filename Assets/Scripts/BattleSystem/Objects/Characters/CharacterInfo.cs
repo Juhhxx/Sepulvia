@@ -345,6 +345,8 @@ public class Character
 
     public void StartPassiveEffects()
     {
+        ActivePassiveEffects.Clear();
+        
         foreach (PassiveEffectInfo pe in PassiveEffects)
         {
             ActivePassiveEffects.Add(pe.Instantiate());

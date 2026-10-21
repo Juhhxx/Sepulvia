@@ -7,6 +7,7 @@ public class TheBellTollsForNoOne : IPassiveEffect
 
     public void OnEnterBattleEffect(BattlerController target, BattleManager battleManager, PassiveEffect effect)
     {
+        _newSoulBurn.ResetSoulBurnEvents();
         _newSoulBurn.OnSoulBurn += (_,_) => target.StatusEffectManager.AddStatusEffect(_enrageStatusEffect.Instantiate());
 
         battleManager.ChangeSoulBurn(_newSoulBurn);

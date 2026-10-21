@@ -27,6 +27,11 @@ public class SoulBurnProfile : ICloneable
     private int _turnsPassed = 0;
 
     public event Action<int,int> OnSoulBurn; // ints to indicate how much burn on each side
+    public void ResetSoulBurnEvents()
+    {
+        OnSoulBurn = null;
+    }
+    
     public event Action<int,int> OnTurnPassed; // int to indicate how many turns until soul burn
 
     public void OnStartBattle()
