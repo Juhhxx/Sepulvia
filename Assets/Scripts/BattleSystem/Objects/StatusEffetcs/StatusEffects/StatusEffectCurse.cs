@@ -50,6 +50,7 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
         var tmp = new List<StatusEffect>(target.StatusEffectManager.ActiveStatusEffects);
 
         tmp.Remove(statusEffect);
+        tmp.Reverse();
 
         foreach (StatusEffect se in tmp)
         {
@@ -72,7 +73,7 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
         }
         else
         {
-            CurrentStack = 1;
+            AddStack();
             _target = target;
             _effect = statusEffect;
         }
@@ -94,5 +95,6 @@ public class StatusEffectCurse : IStatusEffect, IStackableEffect
         _stun = stun;
         MaxStack = maxStack;
         ShowStack = showStack;
+        CurrentStack = 0;
     }
 }

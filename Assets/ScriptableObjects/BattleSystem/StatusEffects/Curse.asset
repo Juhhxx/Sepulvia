@@ -20,17 +20,21 @@ MonoBehaviour:
     Acquiring a new stack refreshes duration of
     all stacks.'
   <TurnDuration>k__BackingField: 10
+  <OnEnterVFX>k__BackingField: {fileID: 0}
+  <OnTriggeredVFX>k__BackingField: {fileID: 0}
+  <OnExitVFX>k__BackingField: {fileID: 0}
   _statusEffect:
     mode: 1
     unityReference: {fileID: 0}
     rawReference:
-      rid: 3144097899053318234
+      rid: 4802146096175906964
   references:
     version: 2
     RefIds:
-    - rid: 3144097899053318234
+    - rid: 4802146096175906964
       type: {class: StatusEffectCurse, ns: , asm: Assembly-CSharp}
       data:
         <MaxStack>k__BackingField: 3
-        <CurrentStack>k__BackingField: 1
+        <CurrentStack>k__BackingField: 0
+        <ShowStack>k__BackingField: 1
         _stun: {fileID: 11400000, guid: 8da24cdf89c17de4ab3d2ae33af41b0c, type: 2}

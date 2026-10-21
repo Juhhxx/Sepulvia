@@ -766,7 +766,7 @@ PrefabInstance:
     - target: {fileID: 4742336046542537727, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
       propertyPath: _enemySpawner
       value: 
-      objectReference: {fileID: 4913214925670747386}
+      objectReference: {fileID: 0}
     - target: {fileID: 4742336046542537727, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
       propertyPath: _navMeshSurface
       value: 
@@ -947,6 +947,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DungeonGenerator
   _uniqueID: 65f61f59-6168-4810-8b83-2a0d5c2e8ee8
   _seed: 0
+  _usePreMadeDungeon: 1
+  _preMadeDungeon: {fileID: 11400000, guid: d94bc3132c0baed43afe9896cbdc7a23, type: 2}
   _roomDataBase: {fileID: 11400000, guid: 2ca0f434ce93da247bab932d7cfb8d83, type: 2}
   _roomTypeSettings: {fileID: 11400000, guid: 87d26c1965b54e949bffc34bebd26b21, type: 2}
   _maxDungeonSize: 3
@@ -1278,17 +1280,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2eaf346e1edfa74db0413887b651354, type: 3}
---- !u!114 &4913214925670747386 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5537838058545173140, guid: d2eaf346e1edfa74db0413887b651354, type: 3}
-  m_PrefabInstance: {fileID: 4913214925670747385}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be9d8e733c338a543bf25ecfcfa04c5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnManager
 --- !u!1001 &5642791099470548366
 PrefabInstance:
   m_ObjectHideFlags: 0

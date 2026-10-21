@@ -254,7 +254,8 @@ public class BattleManager : MonoBehaviour
         _timelineManager.OnTurnEnd += () =>
         {
             _activeSoulBurn.PassTurn();
-            _activeSoulBurn.CheckSoulBurn();
+
+            if (!_hasWinner && !_doRun) _activeSoulBurn.CheckSoulBurn();
         };
 
         // Count Turns in Modifiers (CHANGED TO  UPDATE INDIVIDUALLY DURING BATTLE)

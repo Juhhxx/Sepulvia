@@ -15,6 +15,7 @@ public class CheatManager : MonoBehaviour
     }
 
     [SerializeField, ReorderableList] private List<CheatCode> _cheatCodes;
+    [SerializeField] private StatusEffectInfo _curse;
 
     private void Update()
     {
@@ -32,5 +33,15 @@ public class CheatManager : MonoBehaviour
         Debug.Log("Infinite Stance Activated");
         var player = FindAnyObjectByType<PlayerController>().PlayerCharacter;
         player.CurrentStance = player.MaxStance;
+    }
+
+    public void GiveCurse()
+    {
+        BattleManager bm = FindAnyObjectByType<BattleManager>();
+
+        if (bm.Player != null && _curse != null)
+        {
+            bm.GetBattlerController(bm.Player).StatusEffectManager.AddStatusEffect(_curse.Instantiate());
+        }
     }
 }

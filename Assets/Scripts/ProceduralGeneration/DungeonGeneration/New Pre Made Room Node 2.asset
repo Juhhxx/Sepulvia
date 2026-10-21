@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47d66a1fd0abb3e4b9c04830f9949514, type: 3}
   m_Name: New Pre Made Room Node 2
   m_EditorClassIdentifier: Assembly-CSharp::PreMadeRoomNode
-  RoomData: {fileID: 0}
-  Connections: []
+  RoomData: {fileID: 11400000, guid: 0e17b6826ad03fa40a40f44a7fd8888d, type: 2}
+  Connections:
+  - DoorId: -1
+    TargetRoom: {fileID: 11400000}
+    TargetDoorId: 1

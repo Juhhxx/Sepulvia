@@ -51,8 +51,7 @@ public class StatusEffect
         OnTriggeredVFX = info.OnTriggeredVFX;
         OnExitVFX = info.OnExitVFX;
 
-        _statusEffect = info.StatusEffectLogic;
-        _statusEffect.Value = _statusEffect.Value.Instantiate();
+        _statusEffect = new SerializableInterface<IStatusEffect>(info.StatusEffectLogic.Value.Instantiate());
     }
 
     [field: Header("Base Status Effect Parameters")]
