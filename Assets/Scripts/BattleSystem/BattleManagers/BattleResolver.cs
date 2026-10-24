@@ -302,7 +302,7 @@ public class BattleResolver : RandomBehaviour
                 items.Add(possibleRewards[rnd]);
             }
         }
-        
+
         return (items, essence);
     }
 

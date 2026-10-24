@@ -11,6 +11,7 @@ public class EnemyInfo : CharacterInfo
 
     [field: Header("Character Defeat Rewards")]
     [field: Space(5)]
+    [field : SerializeField] public bool CanRun{ get; private set; }
     [field : SerializeField] public int DifficultyLevel { get; private set; }
     [field : SerializeField] public List<ItemInfo> PossibleRewards { get; private set; }
 
