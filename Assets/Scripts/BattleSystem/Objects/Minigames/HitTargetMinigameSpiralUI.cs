@@ -18,7 +18,7 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
 
     private void DoSpiralMovement(float position)
     {
-        float maxAngle = _turns * 360f;
+        float maxAngle = _turns * (2 * Mathf.PI);
         
         float currentAngle  = Mathf.Lerp(0, maxAngle, position); // position is between 0-1
         float currentRadius = Mathf.Lerp(_spiralRadius, 0, position); // position is between 0-1
