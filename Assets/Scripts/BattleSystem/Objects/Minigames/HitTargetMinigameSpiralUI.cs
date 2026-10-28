@@ -6,6 +6,7 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
 {
     [SerializeField] private Transform _centerPivot;
     [SerializeField] private Transform _circleIndicator;
+    [SerializeField] private Transform _hitIndicator;
     [SerializeField] private float _spiralRadius;
     [SerializeField] private float _turns; // nubmer of turns in the spiral
 
@@ -14,11 +15,13 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
     private void Awake()
     {
         _minigameController = GetComponent<HitTargetMinigame>();
+
+        _minigameController.OnMinigameStart += (a) => SetUpHitIndicator(_minigameController.SuccessRange);
     }
 
-    private void DoSpiralMovement(float position)
+    private void DoSpiralMovement(float position, Transform indicator)
     {
-        float maxAngle = _turns * (2 * Mathf.PI);
+        float maxAngle = _turns * (2 * Mathf.PI); // 360 in radians
         
         float currentAngle  = Mathf.Lerp(0, maxAngle, position); // position is between 0-1
         float currentRadius = Mathf.Lerp(_spiralRadius, 0, position); // position is between 0-1
@@ -28,14 +31,19 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
 
         Vector3 finalPos = _centerPivot.position + new Vector3(posX, posY, 0f);
 
-        Debug.Log($"FINAL INDICATOR POSITION: {finalPos}, {posX}, {posY}, {position}");
+        indicator.position = finalPos;
+    }
 
-        _circleIndicator.position = finalPos;
+    private void SetUpHitIndicator(Vector2 successRange)
+    {
+        float hitPoint = (successRange.x + successRange.y) / 2;
+
+        DoSpiralMovement(hitPoint, _hitIndicator);
     }
 
     private void Update()
     {
-        DoSpiralMovement(_minigameController.CurrentPoint);
+        DoSpiralMovement(_minigameController.CurrentPoint, _circleIndicator);
     }
 
     private void OnDrawGizmos()
