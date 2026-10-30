@@ -1,13 +1,14 @@
 using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class HitTargetMinigameUI : MonoBehaviour
 {
-    [SerializeField] private Slider _slider;
-    [SerializeField] private Image _hitZoneIndicator;
-    [SerializeField] private Image _graceZoneIndicator;
+    [SerializeField] private Transform _sliderParent;
+    [SerializeField] private HitTargetSliderUI _sliderPrefab;
+    private List<HitTargetSliderUI> _sliders = new List<HitTargetSliderUI>();
+
     [SerializeField] private Image _roundIndicatorImagePrefab;
     [SerializeField] private Transform _roundIndicatorParent;
     private List<Image> _roundIndicatorList = new List<Image>();
@@ -19,26 +20,54 @@ public class HitTargetMinigameUI : MonoBehaviour
         _minigameController = GetComponent<HitTargetMinigame>();
         
         _minigameController.OnMinigameStart += SpawnRoundIndicators;
-        _minigameController.OnMinigameStart += (a) => SetUpHitZoneIndicator(_minigameController.SuccessRange, _minigameController.GraceRange);
         _minigameController.OnMinigameRoundEnd += UpdateRoundIndicator;
+
+        _minigameController.OnMinigameStart += SetUpSliders;
     }
 
-    private void SetUpHitZoneIndicator(Vector2 successRange, Vector2 graceRange)
+    private void SetUpSliders(int rounds)
     {
-        RectTransform sliderRT = _slider.GetComponent<RectTransform>();
-        RectTransform indicatorRT = _hitZoneIndicator.GetComponent<RectTransform>();
-        RectTransform graceIndicatorRT = _graceZoneIndicator.GetComponent<RectTransform>();
+        var takenPositions = new float[rounds];
+        var takenRotations = new float[rounds];
 
-        float sliderWidth = sliderRT.rect.width;
-        float indicatorWidth = sliderWidth * (successRange.y - successRange.x);
-        float indicatorPosX = sliderWidth * (successRange.x + ((successRange.y - successRange.x) / 2));
-        float graceIndicatorWidth = sliderWidth * (graceRange.y - graceRange.x);
+        for (int i = 0; i < rounds; i++)
+        {
+            HitTargetSliderUI slider = Instantiate(_sliderPrefab, _sliderParent);
 
-        indicatorRT.sizeDelta = new Vector2(indicatorWidth, indicatorRT.sizeDelta.y);
-        indicatorRT.anchoredPosition = new Vector2(indicatorPosX, indicatorRT.anchoredPosition.y);
+            _sliders.Add(slider);
+            slider.SetUpHitZoneIndicator(_minigameController.SuccessRange[i],
+                                        _minigameController.GraceRange[i]);
 
-        graceIndicatorRT.sizeDelta = new Vector2(graceIndicatorWidth, graceIndicatorRT.sizeDelta.y);
-        graceIndicatorRT.anchoredPosition = new Vector2(indicatorPosX, graceIndicatorRT.anchoredPosition.y);
+            float posOffset = PositionSlider(takenPositions);
+            float rot = RotateSlider(takenRotations);
+
+            takenPositions[i] = posOffset;
+            takenRotations[i] = rot;
+            
+            slider.UpdatePositionRotation(posOffset, rot);
+        }
+    }
+
+    private float PositionSlider(float[] taken)
+    {
+        float posOffset = Random.Range(-200, 201);
+
+        if (taken.Contains(posOffset) || !taken.Any(p => Mathf.Abs(p - posOffset) < 20))
+        {
+            return PositionSlider(taken);
+        }
+        else return posOffset;
+    }
+
+    private float RotateSlider(float[] taken)
+    {
+        float rot = Random.Range(0, 180);
+        
+        if (taken.Contains(rot) || taken.Any(r => Mathf.Abs(Mathf.DeltaAngle(r, rot)) < 25))
+        {
+            return RotateSlider(taken);
+        }
+        else return rot;
     }
 
     private void SpawnRoundIndicators(int rounds)
@@ -64,7 +93,10 @@ public class HitTargetMinigameUI : MonoBehaviour
 
     private void Update()
     {
-        _slider.value = _minigameController.CurrentPoint;
+        for (int i = 0; i < _sliders.Count; i++)
+        {
+            _sliders[i].UpdateSlider(_minigameController.CurrentPoint[i]);
+        }
     }
 
 }

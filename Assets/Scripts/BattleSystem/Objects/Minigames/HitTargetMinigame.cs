@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
+using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 {
@@ -10,14 +10,25 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
     [SerializeField] private float[] _movingSpeedPerRound = new float[1] { 1 };
     [SerializeField] private bool _intermitentMovement;
 
-    [SerializeField, MinMaxSlider(0,1)] private Vector2 _successRange;
-    [SerializeField, MinMaxSlider(0,1)] private Vector2 _easierSuccessRange;
-    public Vector2 SuccessRange => _successRange;
+    [SerializeField] private bool _doRandomHitRange = false;
 
+    // For random hit point
+    [ShowIf(nameof(_doRandomHitRange))]
+    [SerializeField, MinMaxSlider(0,1)] private Vector2 _successHitRange;
+
+    [ShowIf(nameof(_doRandomHitRange))]
+    [SerializeField] private float _successRadius;
+
+    // For predefined hitpoint
+    [HideIf(nameof(_doRandomHitRange))]
+    [SerializeField, MinMaxSlider(0,1)] private Vector2[] _successRange;
+    
+    public Vector2[] SuccessRange => _successRange;
+
+    // Grace
     [SerializeField] private float _graceRadius;
-    [SerializeField] private float _easierGraceRadius;
-    private Vector2 _graceRange;
-    public Vector2 GraceRange
+    private Vector2[] _graceRange;
+    public Vector2[] GraceRange
     {
         get
         {
@@ -26,34 +37,83 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         }
     }
 
-    [SerializeField, ReadOnly] private float _currentPoint;
-    public float CurrentPoint => _currentPoint;
+    // Make easy
+    [SerializeField] private float _easySpeedReduction = 0.5f;
 
-    private void Awake()
-    {
-        _graceRange = new Vector2(_successRange.x - _graceRadius,
-                                            _successRange.y + _graceRadius);
-    }
+    [SerializeField, ReadOnly] private float[] _currentPoint;
+    public float[] CurrentPoint => _currentPoint;
+
+    [SerializeField] private bool _waitForRounds = true;
+
+    [HideIf(nameof(_waitForRounds))]
+    [SerializeField] private float _roundDelay = 1f;
 
     public event Action<int> OnMinigameStart;
     public event Action<int, float> OnMinigameRoundEnd;
     public event Action<float> OnMinigameEnd;
     public void StartMinigame(int rounds)
     {
+        _graceRange = new Vector2[rounds];
+        _currentPoint = new float[rounds];
+
+        SetRanges(rounds);
+
         OnMinigameStart?.Invoke(rounds);
 
         StopAllCoroutines();
         StartCoroutine(MinigameCR(rounds));
     }
 
+    private void SetRanges(int rounds)
+    {
+        SetSuccessRange(rounds);
+
+        for (int i = 0; i < rounds; i++)
+        {
+            _graceRange[i] = new Vector2(_successRange[i].x - _graceRadius, 
+                                        _successRange[i].y + _graceRadius);
+
+            Debug.Log($"ROUND {i}: SUCCESS {_successRange[i]} GRACE {_graceRange[i]}");
+        }
+    }
+
+    private void SetSuccessRange(int rounds)
+    {
+        if (_doRandomHitRange)
+        {
+            _successRange = new Vector2[rounds];
+
+            for (int i = 0; i < rounds; i++)
+            {
+                var point = UnityEngine.Random.Range(_successHitRange.x, _successHitRange.y);
+
+                _successRange[i] = new Vector2(point - _successRadius, point + _successRadius);
+            }
+        }
+        else
+        {
+            if (_successRange.Length < rounds)
+            {
+                var tmp = _successRange[0];
+
+                _successRange = new Vector2[rounds];
+
+                for (int i = 0; i < rounds; i++)
+                {
+                    _successRange[i] = tmp;
+                }
+            }
+        }
+    }
+
     public event Action OnMakeEasier;
     [Button]
     public void MakeEasier()
     {
-        _graceRange = new Vector2(_easierSuccessRange.x - _easierGraceRadius,
-                                            _easierSuccessRange.y + _easierGraceRadius);
-
-        _successRange = _easierSuccessRange;
+        for (int i = 0; i < _movingSpeedPerRound.Length; i++)
+        {
+            _movingSpeedPerRound[i] *= _easySpeedReduction;
+        }
 
         OnMakeEasier?.Invoke();
     }
@@ -86,7 +146,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
                 yield return MinigameOneShot(round);
             }
 
-            float result = CheckIfInRange();
+            float result = CheckIfInRange(round);
 
             if (!_hitKey) result = 0;
 
@@ -127,7 +187,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 
             float t = Mathf.Abs(Mathf.Sin(time));
 
-            MovePoint(t);
+            MovePoint(t, round);
 
             yield return null;
         }
@@ -147,7 +207,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
             
             time += _movingSpeedPerRound[speedIdx] * Time.deltaTime;;
 
-            MovePoint(time);
+            MovePoint(time, round);
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -159,22 +219,22 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         }
     }
 
-    private float CheckIfInRange()
+    private float CheckIfInRange(int round)
     {
-        if (SuccessRange.x <= _currentPoint && _currentPoint <= SuccessRange.y)
+        if (SuccessRange[round].x <= _currentPoint[round] && _currentPoint[round] <= SuccessRange[round].y)
         {
             return 1; // full point
         }
-        else if (GraceRange.x <= _currentPoint && _currentPoint <= GraceRange.y)
+        else if (GraceRange[round].x <= _currentPoint[round] && _currentPoint[round] <= GraceRange[round].y)
         {
             return 0.5f; // half point
         }
         else return 0; // zero points
     }
 
-    private void MovePoint(float time)
+    private void MovePoint(float time, int round)
     {
-        _currentPoint = _movementCurve.Evaluate(time);
+        _currentPoint[round] = _movementCurve.Evaluate(time);
     }
 
 }
