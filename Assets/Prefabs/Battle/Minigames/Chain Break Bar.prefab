@@ -2290,6 +2290,7 @@ GameObject:
   - component: {fileID: 3234051693868759493}
   - component: {fileID: 2030609801705139992}
   - component: {fileID: 3774306816525962366}
+  - component: {fileID: 1022163042712055113}
   m_Layer: 0
   m_Name: Chain Break Bar
   m_TagString: Untagged
@@ -2352,6 +2353,18 @@ MonoBehaviour:
   _chainRight: {fileID: 3246783145361917632}
   _rotation: 0
   _position: 0.5
+--- !u!225 &1022163042712055113
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2555299834374543733}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2724008954315092339
 GameObject:
   m_ObjectHideFlags: 0
@@ -5718,6 +5731,7 @@ GameObject:
   - component: {fileID: 3962047344865440685}
   - component: {fileID: 8269911828068651831}
   - component: {fileID: 8353886711431959342}
+  - component: {fileID: 102329647429275159}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -5761,7 +5775,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7286430465927346707}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -5797,6 +5811,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Mask
   m_ShowMaskGraphic: 1
+--- !u!225 &102329647429275159
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7286430465927346707}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7309752242185200931
 GameObject:
   m_ObjectHideFlags: 0
