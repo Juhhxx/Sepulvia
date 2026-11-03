@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System;
 using System.Collections;
 using UnityEngine.Events;
-using Unity.VisualScripting;
 
 public class PullingManager : RandomBehaviour
 {
@@ -31,7 +30,11 @@ public class PullingManager : RandomBehaviour
         if (section.ConnectLeft != null) section.ConnectLeft.ConnectRight = section.ConnectRight;
         if (section.ConnectRight != null) section.ConnectRight.ConnectLeft = section.ConnectLeft;
 
-        if (!burn) section.DestroySection();
+        if (!burn)
+        {
+            section.DestroySection();
+            OnChainShatter?.Invoke();
+        }
         else section.BurnSection();
 
         if (section.HasHeart)
@@ -112,6 +115,7 @@ public class PullingManager : RandomBehaviour
     }
 
     public UnityEvent OnSoulMove;
+    public UnityEvent OnChainShatter;
 
     // Set Up
     public void SetUp(Party enemyParty)

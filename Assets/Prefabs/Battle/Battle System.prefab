@@ -14692,6 +14692,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnChainShatter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6563780784937785499}
+        m_TargetAssemblyTypeName: PlaySound, Assembly-CSharp
+        m_MethodName: SoundPlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &3973522412443716898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21191,6 +21206,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5373545500913430535}
+  - {fileID: 6368745663287372581}
   - {fileID: 7156031975133919440}
   - {fileID: 5698066479161386464}
   m_Father: {fileID: 7548431789735229943}
@@ -62828,6 +62844,63 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &8386921871185314208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6368745663287372581}
+  - component: {fileID: 6563780784937785499}
+  m_Layer: 0
+  m_Name: Chain Shatter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6368745663287372581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8386921871185314208}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2501218392195271439}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6563780784937785499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8386921871185314208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 355cd986942c7c745beb7d94e657a9e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaySound
+  _soudsToPlay:
+  - {fileID: 8300000, guid: 471eb94da27e0e3439a1f2bd3c9acc1e, type: 3}
+  - {fileID: 8300000, guid: 16a6b660499cef646ba770296b53b9d8, type: 3}
+  - {fileID: 8300000, guid: be587bdff14861c4d8835f38a422696b, type: 3}
+  _group: 3
+  _volume: 0.25
+  _changePitch: 1
+  _pitch: 1
+  _pitchRange: {x: 1, y: 1}
+  _playOnStart: 0
+  _loop: 0
+  _waitForFinish: 0
+  _isMusic: 0
 --- !u!1 &8392794331233679923
 GameObject:
   m_ObjectHideFlags: 0
@@ -65493,7 +65566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6eeda5c3b76c0147955617543d08cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleResolver
-  _uniqueID: 06577b93-dcaa-477c-8e42-373c7883e12c
+  _uniqueID: 21f6f167-1a54-4a17-9fde-8230df82d91b
   _seed: 0
   _battleManager: {fileID: 8620377705130297943}
   _pullManager: {fileID: 8062390843115854640}
