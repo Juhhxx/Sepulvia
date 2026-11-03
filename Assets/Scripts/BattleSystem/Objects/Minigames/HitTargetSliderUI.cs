@@ -3,7 +3,9 @@ using UnityEngine.UI;
 
 public class HitTargetSliderUI : MonoBehaviour
 {
+    [SerializeField] private CanvasGroup _canvasGroup;
     [SerializeField] private Slider _slider;
+    [SerializeField] private Image _sliderHandle;
     [SerializeField] private Image _hitZoneIndicator;
     [SerializeField] private Image _graceZoneIndicator;
     [SerializeField] private ChainUIController _chainUI;
@@ -34,6 +36,13 @@ public class HitTargetSliderUI : MonoBehaviour
     {
         _chainUI.UpdateRotation(rotation);
         GetComponent<RectTransform>().anchoredPosition = new Vector2(pos, 0);
+    }
+
+    public void ToggleActivated(bool on)
+    {
+        _canvasGroup.alpha = on ? 1f : 0.5f;
+        _sliderHandle.enabled = on;
+        if (on) transform.SetAsLastSibling();
     }
 
     public void UpdateSlider(float value)

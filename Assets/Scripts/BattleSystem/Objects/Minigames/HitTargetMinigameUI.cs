@@ -20,11 +20,13 @@ public class HitTargetMinigameUI : MonoBehaviour
         _minigameController = GetComponent<HitTargetMinigame>();
         
         _minigameController.OnMinigameStart += SpawnRoundIndicators;
+        _minigameController.OnMinigameRoundStart += UpdateSliderActivated;
         _minigameController.OnMinigameRoundEnd += UpdateRoundIndicator;
 
         _minigameController.OnMinigameStart += SetUpSliders;
     }
 
+    // Slider set up
     private void SetUpSliders(int rounds)
     {
         var takenPositions = new float[rounds];
@@ -70,6 +72,24 @@ public class HitTargetMinigameUI : MonoBehaviour
         else return rot;
     }
 
+    // Slider methods
+    private void UpdateSliderActivated(int round)
+    {
+        for (int i = 0; i < _sliders.Count; i++)
+        {
+            _sliders[i].ToggleActivated(i == round);
+        }
+    }
+
+    private void Update()
+    {
+        for (int i = 0; i < _sliders.Count; i++)
+        {
+            _sliders[i].UpdateSlider(_minigameController.CurrentPoint[i]);
+        }
+    }
+
+    // Round Indicators
     private void SpawnRoundIndicators(int rounds)
     {
         for (int i = 0; i < rounds; i++)
@@ -89,14 +109,6 @@ public class HitTargetMinigameUI : MonoBehaviour
         else color = Color.red;
 
         _roundIndicatorList[round].color = color;
-    }
-
-    private void Update()
-    {
-        for (int i = 0; i < _sliders.Count; i++)
-        {
-            _sliders[i].UpdateSlider(_minigameController.CurrentPoint[i]);
-        }
     }
 
 }

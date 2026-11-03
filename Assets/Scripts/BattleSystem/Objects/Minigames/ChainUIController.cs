@@ -29,7 +29,7 @@ public class ChainUIController : MonoBehaviour
 
     public void UpdateRotation(float rotation)
     {
-        _chainRotationPivot.rotation = Quaternion.Euler(0f, 0f, rotation);
+        _chainRotationPivot.localRotation = Quaternion.Euler(0f, 0f, rotation);
     }
 
     public void UpdateHitPosition(float posHit)

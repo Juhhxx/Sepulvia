@@ -235,7 +235,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
     {
         float time = 0;
 
-        while (!Input.GetMouseButtonDown(0) && !GetFinishedLastRound(round))
+        while (!Input.GetMouseButtonDown(0) || !GetFinishedLastRound(round))
         {
             int speedIdx = round;
 
