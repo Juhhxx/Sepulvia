@@ -3,11 +3,14 @@ using UnityEngine.UI;
 
 public class HitTargetSpiralUI : MonoBehaviour
 {
-    [SerializeField] private Transform _centerPivot;
-    [SerializeField] private Transform _circleIndicator;
+    [SerializeField] private RectTransform _centerPivot;
+    [SerializeField] private RectTransform _circleIndicator;
     [SerializeField] private Image _hitIndicator;
     [SerializeField] private float _spiralRadius;
     [SerializeField] private float _turns; // nubmer of turns in the spiral
+    [SerializeField] private bool _showPossibleHits;
+
+    [SerializeField] private Vector2 _successRange;
 
 
     private void Start()
@@ -15,7 +18,7 @@ public class HitTargetSpiralUI : MonoBehaviour
         _hitIndicator.rectTransform.anchoredPosition = Vector2.zero;
     }
 
-    private void DoSpiralMovement(float position, Transform indicator)
+    private void DoSpiralMovement(float position, RectTransform indicator)
     {
         float maxAngle = _turns * (2 * Mathf.PI); // 360 in radians
         
@@ -25,16 +28,28 @@ public class HitTargetSpiralUI : MonoBehaviour
         float posX = Mathf.Cos(currentAngle) * currentRadius;
         float posY = Mathf.Sin(currentAngle) * currentRadius;
 
-        Vector3 finalPos = _centerPivot.position + new Vector3(posX, posY, 0f);
+        Vector2 finalPos = _centerPivot.anchoredPosition + new Vector2(posX, posY);
 
-        indicator.position = finalPos;
+        indicator.anchoredPosition = finalPos;
+
+        if (_successRange.x <= position && position <= _successRange.y && _showPossibleHits)
+        {
+            Image i = Instantiate(_circleIndicator, _centerPivot).GetComponent<Image>();
+            i.color = Color.green;
+        }
     }
 
     public void SetUpHitIndicator(Vector2 successRange)
     {
-        float range = successRange.magnitude;
+        _successRange = new Vector2(successRange.x, successRange.y);
 
-       _hitIndicator.rectTransform.sizeDelta = new Vector2(range * _spiralRadius, range * _spiralRadius);
+        Debug.LogWarning($"Success Range: {successRange}, {_successRange}");
+
+        float range = Mathf.Abs(successRange.x - successRange.y);
+
+        float diameter = (range * _centerPivot.sizeDelta.x) + _circleIndicator.sizeDelta.x;
+
+       _hitIndicator.rectTransform.sizeDelta = new Vector2(diameter, diameter);
     }
 
     public void UpdateSpiral(float value)
@@ -42,10 +57,4 @@ public class HitTargetSpiralUI : MonoBehaviour
         DoSpiralMovement(value, _circleIndicator);
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-
-        Gizmos.DrawWireSphere(_centerPivot.position, _spiralRadius);
-    }
 }

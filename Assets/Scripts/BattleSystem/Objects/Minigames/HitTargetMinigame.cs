@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
@@ -32,7 +33,6 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
     {
         get
         {
-            Debug.Log($"{_graceRange}");
             return _graceRange;
         }
     }
@@ -49,6 +49,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
     [SerializeField] private float _roundDelay = 1f;
 
     public event Action<int> OnMinigameStart;
+    public event Action<int> OnMinigameRoundStart;
     public event Action<int, float> OnMinigameRoundEnd;
     public event Action<float> OnMinigameEnd;
     public void StartMinigame(int rounds)
@@ -61,7 +62,15 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         OnMinigameStart?.Invoke(rounds);
 
         StopAllCoroutines();
-        StartCoroutine(MinigameCR(rounds));
+        
+        if (_waitForRounds)
+        {
+            StartCoroutine(MinigameCR(rounds));
+        }
+        else
+        {
+            StartCoroutine(MinigameDelayCR(rounds));
+        }
     }
 
     private void SetRanges(int rounds)
@@ -125,45 +134,23 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         StartMinigame(_testRounds);
     }
 
-    private bool _hitKey = false;
+    private bool[] _hitKey;
+    private bool[] _finishedRound;
+    private bool GetFinishedLastRound(int round)
+    {
+        if (round == 0) return true;
+        else return _finishedRound[round - 1];
+    }
 
     private IEnumerator MinigameCR(int rounds)
     {
         float points = 0;
+        _hitKey = new bool[rounds];
+        _finishedRound = new bool[rounds];
 
         for (int round = 0; round < rounds; round++)
         {
-            yield return new WaitForSeconds(1);
-
-            _hitKey = false;
-            
-            if (_intermitentMovement)
-            {
-                yield return MinigameBackAndForth(round);
-            }
-            else
-            {
-                yield return MinigameOneShot(round);
-            }
-
-            float result = CheckIfInRange(round);
-
-            if (!_hitKey) result = 0;
-
-            OnMinigameRoundEnd?.Invoke(round, result);
-
-            if (result > 0)
-            {
-                points += result;
-                Debug.Log($"WON ROUND  {round}", this);
-            }
-            else
-            {
-                Debug.Log($"LOST ROUND  {round}", this);
-            }
-
-            yield return new WaitForSeconds(0.1f);
-
+            yield return MinigameRoundCR(round, (result) => { points += result; });
         }
 
         Debug.Log($"SUCCESS RATE : {points / rounds}", this);
@@ -173,11 +160,82 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         OnMinigameEnd?.Invoke(points / rounds);
     }
 
+    private Coroutine[] _roundsCR;
+    private IEnumerator MinigameDelayCR(int rounds)
+    {
+        float points = 0;
+        _hitKey = new bool[rounds];
+        _finishedRound = new bool[rounds];
+        _roundsCR = new Coroutine[rounds];
+
+        for (int round = 0; round < rounds; round++)
+        {
+            int roundIdx = round;
+
+            _roundsCR[round] = StartCoroutine(MinigameRoundCR(round, (result) =>
+            {
+                points += result;
+                _roundsCR[roundIdx] = null;
+            }));
+
+            yield return new WaitForSeconds(_roundDelay);
+        }
+
+        yield return new WaitUntil(() => _roundsCR.All(r => r == null));
+
+        Debug.Log($"SUCCESS RATE : {points / rounds}", this);
+
+        yield return new WaitForSeconds(1);
+
+        OnMinigameEnd?.Invoke(points / rounds);
+    }
+
+    private IEnumerator MinigameRoundCR(int round, Action<float> onRoundEnd)
+    {
+        OnMinigameRoundStart?.Invoke(round);
+
+        yield return new WaitForSeconds(1f); // delay before starting round
+
+        _hitKey[round] = false;
+        _finishedRound[round] = false;
+        
+        if (_intermitentMovement)
+        {
+            yield return MinigameBackAndForth(round);
+        }
+        else
+        {
+            yield return MinigameOneShot(round);
+        }
+
+        float result = CheckIfInRange(round);
+
+        if (!_hitKey[round]) result = 0;
+
+        onRoundEnd?.Invoke(result);
+        OnMinigameRoundEnd?.Invoke(round, result);
+
+        if (result > 0)
+        {
+            Debug.Log($"WON ROUND  {round}", this);
+        }
+        else
+        {
+            Debug.Log($"LOST ROUND  {round}", this);
+        }
+
+        yield return new WaitUntil(() => Input.GetMouseButtonUp(0));
+        
+        _finishedRound[round] = true;
+
+        yield return new WaitForSeconds(0.1f); // delay after ending round
+    }
+
     private IEnumerator MinigameBackAndForth(int round)
     {
         float time = 0;
 
-        while (!Input.GetMouseButtonDown(0))
+        while (!Input.GetMouseButtonDown(0) && !GetFinishedLastRound(round))
         {
             int speedIdx = round;
 
@@ -192,7 +250,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
             yield return null;
         }
 
-        _hitKey = true;
+        _hitKey[round] = true;
     }
 
     private IEnumerator MinigameOneShot(int round)
@@ -201,6 +259,8 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 
         while (time < 1)
         {
+            Debug.Log($"FINISHED ROUNDS : {string.Join(", ", _finishedRound.Select(r => r ? "true" : "false"))}");
+
             int speedIdx = round;
 
             if (round >= _movingSpeedPerRound.Length) speedIdx = _movingSpeedPerRound.Length - 1;
@@ -209,9 +269,9 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 
             MovePoint(time, round);
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && GetFinishedLastRound(round))
             {
-                _hitKey = true;
+                _hitKey[round] = true;
                 yield break;
             }
 

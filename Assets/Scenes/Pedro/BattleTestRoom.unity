@@ -893,6 +893,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 174828424561995268, guid: 34cd20a6a5fe217469c36366dad1565d, type: 3}
+      propertyPath: _testRounds
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 174828424561995268, guid: 34cd20a6a5fe217469c36366dad1565d, type: 3}
+      propertyPath: _waitForRounds
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 174828424561995268, guid: 34cd20a6a5fe217469c36366dad1565d, type: 3}
+      propertyPath: '_movingSpeedPerRound.Array.data[0]'
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1858963588990914832, guid: 34cd20a6a5fe217469c36366dad1565d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.52441
@@ -933,9 +945,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2837463291813300802, guid: 34cd20a6a5fe217469c36366dad1565d, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -400
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837463291813300802, guid: 34cd20a6a5fe217469c36366dad1565d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5991109022257300005, guid: 34cd20a6a5fe217469c36366dad1565d, type: 3}
       propertyPath: m_Name
       value: MS_HitTargetMinigameSpiral
+      objectReference: {fileID: 0}
+    - target: {fileID: 7138462716588396607, guid: 34cd20a6a5fe217469c36366dad1565d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
