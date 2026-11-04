@@ -97,4 +97,9 @@ public class PlaySound : MonoBehaviour
                 AudioManager.Instance.SoundPlayer.PlayClipExisting(_audioSource, clip, _group, _volume, pitch);
         }
     }
+
+    public void Stop()
+    {
+        _audioSource?.Stop();
+    }
 }
