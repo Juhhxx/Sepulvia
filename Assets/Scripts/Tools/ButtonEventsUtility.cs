@@ -84,6 +84,16 @@ public class ButtonEventsUtility : MonoBehaviour, IPointerEnterHandler, IPointer
 
     private void OnDisable()
     {
+        if (IsHovered)
+        {
+            OnButtonExit?.Invoke();
+        }
+
+        if (IsHeld)
+        {
+            OnButtonUp?.Invoke();
+        }
+
         IsHeld = false;
         IsHovered = false;
     }

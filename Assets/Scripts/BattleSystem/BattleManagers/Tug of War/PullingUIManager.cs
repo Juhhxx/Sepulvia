@@ -68,7 +68,6 @@ public class PullingUIManager : MonoBehaviour
     }
 
     private BarSection _lastBar = null;
-    
     public void SpawnBarSections(int sectionsNumber)
     {
         if (_canvas == null || _pullBarPrefab == null) return;
@@ -150,7 +149,7 @@ public class PullingUIManager : MonoBehaviour
     public void DoHeartMoveAnim(Vector3 position, Action action)
     {
         _heartTrans.DOAnchorPosX(position.x, _pullHeartAnimSpeed).SetEase(_pullHeartAnimEase);
-        CameraEffectsUtility.DoCameraShake(0.5f, 0.5f, delay: _pullHeartAnimSpeed / 2, action: action);
+        CameraEffectsUtility.DoCameraShake(0.5f, 0.5f, action: action);
     }
     public void DoHeartDefaultAnim()
     {
