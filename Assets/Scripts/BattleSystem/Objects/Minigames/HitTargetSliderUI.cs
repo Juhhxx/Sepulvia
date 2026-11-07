@@ -6,6 +6,9 @@ public class HitTargetSliderUI : MonoBehaviour
     [SerializeField] private CanvasGroup _canvasGroup;
     [SerializeField] private Slider _slider;
     [SerializeField] private Image _sliderHandle;
+    [SerializeField] private Sprite _sliderNormalSpr;
+    [SerializeField] private Sprite _sliderGraceSpr;
+    [SerializeField] private Sprite _sliderHitSpr;
     [SerializeField] private Image _hitZoneIndicator;
     [SerializeField] private Image _graceZoneIndicator;
     [SerializeField] private ChainUIController _chainUI;
@@ -30,6 +33,22 @@ public class HitTargetSliderUI : MonoBehaviour
 
         // Update Visual Representation in Chains
         _chainUI.UpdateHitPosition((successRange.x + successRange.y)/2f);
+    }
+
+    public void UpdateSliderSprite(float pos, Vector2 successRange, Vector2 graceRange)
+    {
+        if (pos >= successRange.x && pos <= successRange.y)
+        {
+            _sliderHandle.sprite = _sliderHitSpr;
+        }
+        else if (pos >= graceRange.x && pos <= graceRange.y)
+        {
+            _sliderHandle.sprite = _sliderGraceSpr;
+        }
+        else
+        {
+            _sliderHandle.sprite = _sliderNormalSpr;
+        }
     }
 
     public void UpdatePositionRotation(float pos, float rotation)
