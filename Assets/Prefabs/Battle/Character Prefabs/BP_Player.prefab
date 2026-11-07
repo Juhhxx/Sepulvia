@@ -59,7 +59,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -210,11 +210,21 @@ MonoBehaviour:
     _statModifiers: []
     <MoveSet>k__BackingField: []
     <StanceMoveSet>k__BackingField: []
+    <PassiveEffects>k__BackingField: []
     <Inventory>k__BackingField:
       <MaxInventorySpaces>k__BackingField: 0
+      <CombatEquipmentAmount>k__BackingField: 0
+      <UtilityEquipmentAmount>k__BackingField: 0
+      <AltMoveEquipmentAmount>k__BackingField: 0
       <ItemSlots>k__BackingField: []
       <MaxEquipmentSpaces>k__BackingField: 0
+      <MaxCombatEquipmentAmount>k__BackingField: 0
+      <MaxUtilityEquipmentAmount>k__BackingField: 0
+      <MaxAltMoveEquipmentAmount>k__BackingField: 0
       <EquipmentSlots>k__BackingField: []
+      <CombatEquipmentSlots>k__BackingField: []
+      <UtilityEquipmentSlots>k__BackingField: []
+      <AltMoveEquipmentSlots>k__BackingField: []
   _battleItemCooldown: 7
   _enemyBattleAI: {fileID: 0}
   _statusEffectManager: {fileID: 1497577000219287179}
