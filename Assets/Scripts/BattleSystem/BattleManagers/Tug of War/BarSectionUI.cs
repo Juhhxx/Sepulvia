@@ -11,6 +11,8 @@ public class BarSectionUI : MonoBehaviour
     [SerializeField] private Image _sectionDivisorLeft;
     [SerializeField] private Image[] _sectionChains;
 
+    [SerializeField] private PlaySound _hoverSound;
+
     [SerializeField] private Color _normalColor;
     [SerializeField] private Color _hasHeartColor;
     [SerializeField] private Color _isSelectedColor;
@@ -29,7 +31,7 @@ public class BarSectionUI : MonoBehaviour
     private int _activeChains = 3;
     private BarSection _barSection;
     private PointerButtonEvents _pointerEvents;
-    private GameObject _modifierPrefab;
+    private BarModifierController _modifierController;
 
 
     private void Awake()
@@ -69,6 +71,8 @@ public class BarSectionUI : MonoBehaviour
         if (isSelected && !_barSection.Button.enabled) return;
 
         var color = isSelected ? _isSelectedColor : _currentColor;
+
+        if (isSelected) _hoverSound.SoundPlay();
 
         ChangeImagesColor(color);
     }
@@ -111,25 +115,23 @@ public class BarSectionUI : MonoBehaviour
 
     private void SpawnModifierPrefab(BarModifier barModifier)
     {
-        _modifierPrefab = Instantiate(barModifier.BarEffectPrefab, GetComponentInParent<Canvas>().transform);
+        _modifierController = Instantiate(barModifier.BarEffectPrefab, GetComponentInParent<Canvas>().transform).GetComponent<BarModifierController>();
 
-        var pos = _barSection.HeartPosition;
-        pos.y  = Mathf.Lerp(pos.y - 25f, pos.y, (_activeChains / 3f));
-
-        _modifierPrefab.GetComponent<RectTransform>().anchoredPosition = pos;
-        _modifierPrefab.GetComponent<RectTransform>().localScale = Vector3.one * Mathf.Lerp(0.6f, 1f, (_activeChains / 3f));
+        _modifierController.AdjustSizePosition(_activeChains, _barSection.HeartPosition);
     }
 
     private void RemoveModifierPrefab()
     {
-        _modifierPrefab.GetComponent<Animator>().SetTrigger("Destroy");
+        _modifierController.DoAnimationTriger("Destroy");
+        _modifierController.PlayBreakSound();
+        _modifierController.StopLoopSound();
 
-        StartCoroutine(DestroyModifierCR(_modifierPrefab));
+        StartCoroutine(DestroyModifierCR(_modifierController.gameObject));
     }
 
     private void OnDestroy()
     {
-        Destroy(_modifierPrefab);
+        Destroy(_modifierController);
     }
 
     private IEnumerator DestroyModifierCR(GameObject modifier)

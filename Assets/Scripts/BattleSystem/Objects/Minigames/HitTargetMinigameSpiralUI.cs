@@ -50,7 +50,7 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
     {
         foreach (var s in _spiralTransforms)
         {
-            if (spiral != s && s.rect.Overlaps(spiral.rect))
+            if (spiral != s && Vector2.Distance(spiral.anchoredPosition, s.anchoredPosition) < spiral.rect.size.x)
             {
                 return true;
             }

@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
@@ -11,6 +13,7 @@ public class ThresholdBarManager : MonoBehaviour
     [SerializeField] private Image _barFillImage;
     [SerializeField] private GameObject _barDivisorPrefab;
     [SerializeField] private Transform _barDivisorsParent;
+    [SerializeField] private List<PlaySound> _barDivisorSFX;
 
     [SerializeField] private float _updateSpeed = 0.5f;
 
@@ -63,6 +66,21 @@ public class ThresholdBarManager : MonoBehaviour
 
             if (i < reachedDivisors)
             {
+
+                // maybe change this to only trigger if the divisor turn on (check if it was on already)
+                if (!divisorImage.gameObject.activeInHierarchy)
+                {
+                    if (i < _barDivisorSFX.Count)
+                    {
+                        _barDivisorSFX[i].SoundPlay();
+                    }
+                    else
+                    {
+                        _barDivisorSFX.Last().SoundPlay();
+                    }
+                }
+                
+
                 divisorImage.gameObject.SetActive(true);
             }
             else

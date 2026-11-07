@@ -659,6 +659,65 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &200685888470180828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4680681592868882321}
+  - component: {fileID: 4968353976612127967}
+  m_Layer: 0
+  m_Name: First Threshold
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4680681592868882321
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200685888470180828}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6950932783879038159}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4968353976612127967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200685888470180828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 355cd986942c7c745beb7d94e657a9e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaySound
+  _soudsToPlay:
+  - {fileID: 8300000, guid: 76fdc205a6f7e214fac039e798706b5d, type: 3}
+  _group: 3
+  _volume: 0.8
+  _changePitch: 0
+  _pitch: 1
+  _pitchRange: {x: 0, y: 0}
+  _playOnStart: 0
+  _loop: 0
+  _waitForFinish: 1
+  _isMusic: 0
 --- !u!1 &230013615468709005
 GameObject:
   m_ObjectHideFlags: 0
@@ -1091,7 +1150,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: cfc485d841e8438448284e52e19c41b1, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -7832,7 +7891,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: 7b2c762d78e57db41a03bc94e795099c, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -9642,6 +9701,10 @@ MonoBehaviour:
   _barFillImage: {fileID: 215592171532223054}
   _barDivisorPrefab: {fileID: 4246912022625221169, guid: ece26056d2066124a840231d42a44b09, type: 3}
   _barDivisorsParent: {fileID: 8798108739752120055}
+  _barDivisorSFX:
+  - {fileID: 4968353976612127967}
+  - {fileID: 8298597368709949453}
+  - {fileID: 5983897721114771683}
   _updateSpeed: 2
 --- !u!1 &1022407177039795845
 GameObject:
@@ -9867,7 +9930,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: 4fbbc90759b715e4fb5f9d4fb2c5cb2f, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -20399,7 +20462,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: fd2eb4a677f93ba43adce1645cb0cad9, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -29142,7 +29205,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: 4fbbc90759b715e4fb5f9d4fb2c5cb2f, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -36591,6 +36654,65 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceb49f27b1236ef4baf0d32dd43272c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OnEnableActivateButton
+--- !u!1 &3330551525539553518
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3808235068213199014}
+  - component: {fileID: 8298597368709949453}
+  m_Layer: 0
+  m_Name: Second Threshold
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3808235068213199014
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3330551525539553518}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6950932783879038159}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8298597368709949453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3330551525539553518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 355cd986942c7c745beb7d94e657a9e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaySound
+  _soudsToPlay:
+  - {fileID: 8300000, guid: 6647b0e52b0d9b04dba87ea94ce3ed28, type: 3}
+  _group: 3
+  _volume: 0.8
+  _changePitch: 0
+  _pitch: 1
+  _pitchRange: {x: 0, y: 0}
+  _playOnStart: 0
+  _loop: 0
+  _waitForFinish: 1
+  _isMusic: 0
 --- !u!1 &3331180065023699527
 GameObject:
   m_ObjectHideFlags: 0
@@ -38941,7 +39063,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: 5f0fc4bc984819d428013a2360963c13, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -40441,7 +40563,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: e6780f900d0251c4bb96557015c03bbc, type: 3}
   _group: 1
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -40770,7 +40892,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: fd2eb4a677f93ba43adce1645cb0cad9, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -40953,12 +41075,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 41715624832a06f4e8b0e9a11221bf51, type: 3}
   - {fileID: 8300000, guid: 9ca6866a58818b54894b21c32553143c, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
   _playOnStart: 0
-  _loop: 1
+  _loop: 0
   _waitForFinish: 1
   _isMusic: 0
 --- !u!1 &4288802711707547209
@@ -41958,6 +42080,44 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4505179233999944881
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6950932783879038159}
+  m_Layer: 0
+  m_Name: Stance Bar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6950932783879038159
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4505179233999944881}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4680681592868882321}
+  - {fileID: 3808235068213199014}
+  - {fileID: 4780412932757850811}
+  m_Father: {fileID: 431166948275996595}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4505818737800688631
 GameObject:
   m_ObjectHideFlags: 0
@@ -42566,6 +42726,65 @@ Transform:
   - {fileID: 4722003259220808790}
   m_Father: {fileID: 6562849556516993963}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4602542535121317601
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4780412932757850811}
+  - component: {fileID: 5983897721114771683}
+  m_Layer: 0
+  m_Name: Third Threshold
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4780412932757850811
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4602542535121317601}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6950932783879038159}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5983897721114771683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4602542535121317601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 355cd986942c7c745beb7d94e657a9e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaySound
+  _soudsToPlay:
+  - {fileID: 8300000, guid: cf6cae88504b100499a9e75c2d151303, type: 3}
+  _group: 3
+  _volume: 0.8
+  _changePitch: 0
+  _pitch: 1
+  _pitchRange: {x: 0, y: 0}
+  _playOnStart: 0
+  _loop: 0
+  _waitForFinish: 1
+  _isMusic: 0
 --- !u!1 &4617104971447752527
 GameObject:
   m_ObjectHideFlags: 0
@@ -44259,7 +44478,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: 4fbbc90759b715e4fb5f9d4fb2c5cb2f, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -46302,12 +46521,12 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: a5a080637ededfe409eb04ef24567251, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
   _playOnStart: 0
-  _loop: 1
+  _loop: 0
   _waitForFinish: 1
   _isMusic: 0
 --- !u!1 &5280939586123234335
@@ -50494,6 +50713,7 @@ RectTransform:
   - {fileID: 2563105388774633094}
   - {fileID: 1862272548625980336}
   - {fileID: 4603467869282838969}
+  - {fileID: 6950932783879038159}
   m_Father: {fileID: 8296676651751710180}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -51492,12 +51712,12 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: 0368dd4caa8ec0f4cb9dcf8d220e599c, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
   _playOnStart: 0
-  _loop: 1
+  _loop: 0
   _waitForFinish: 1
   _isMusic: 0
 --- !u!1 &6285039274491152567
@@ -57665,7 +57885,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: fd2eb4a677f93ba43adce1645cb0cad9, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -58826,7 +59046,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: fd2eb4a677f93ba43adce1645cb0cad9, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -61764,7 +61984,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: d68ced68ce41a594e8eff16060054dc1, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -62529,7 +62749,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 47a47eb72e0aa6548aed5b6618e60aa7, type: 3}
   - {fileID: 8300000, guid: ac8f198b32cb30b46aee9031b9118343, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -64191,7 +64411,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: 4fbbc90759b715e4fb5f9d4fb2c5cb2f, type: 3}
   _group: 3
-  _volume: 1
+  _volume: 0.8
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -66774,7 +66994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6eeda5c3b76c0147955617543d08cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleResolver
-  _uniqueID: e6882413-e439-4270-82ca-3a2d749c535f
+  _uniqueID: e4d9fdd5-c278-4d73-a211-08a97b9d0970
   _seed: 0
   _battleManager: {fileID: 8620377705130297943}
   _pullManager: {fileID: 8062390843115854640}
