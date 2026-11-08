@@ -2,11 +2,17 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class HitTargetMinigameSpiralUI : MonoBehaviour
 {
     [SerializeField] private HitTargetSpiralUI _spiralPrefab;
     [SerializeField] private RectTransform _spawningArea;
+    [SerializeField] private RawImage _vignetteImage;
+    [SerializeField] private Image _backgroundImage;
+    [SerializeField] float _vignetteTransitionDuration = 1f;
+    [SerializeField] private float _backgroundTargetOpacity = .8f;
+    private Material _vignetteMaterial;
     private HitTargetMinigame _minigameController;
     private List<HitTargetSpiralUI> _spirals = new List<HitTargetSpiralUI>();
     private List<RectTransform> _spiralTransforms = new List<RectTransform>();
@@ -16,6 +22,8 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
         _minigameController = GetComponent<HitTargetMinigame>();
 
         _minigameController.OnMinigameRoundStart += (round) => SetUpSpiral(round);
+
+        _vignetteMaterial = new Material(_vignetteImage.material);
     }
 
     private void SetUpSpiral(int round)
@@ -64,5 +72,24 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
         {
             _spirals[i].UpdateSpiral(_minigameController.CurrentPoint[i]);
         }
+    }
+
+    [Button]
+    private void DoInitiateMaelStorm1Effect()
+    {
+        _vignetteMaterial.DOFloat(0.65f, "_Vignette_Size", _vignetteTransitionDuration).SetEase(Ease.Linear);
+        _vignetteImage.material = _vignetteMaterial;
+
+        _backgroundImage.DOFade(_backgroundTargetOpacity, _vignetteTransitionDuration).SetEase(Ease.Linear);
+    }
+
+    [Button]
+    private void DoKillMaelstorm1Effect()
+    {
+        _vignetteMaterial.DOFloat(1.5f, "_Vignette_Size", _vignetteTransitionDuration).SetEase(Ease.Linear);
+        _vignetteImage.material = _vignetteMaterial;
+
+        _backgroundImage.DOFade(0f, _vignetteTransitionDuration).SetEase(Ease.Linear);
+
     }
 }

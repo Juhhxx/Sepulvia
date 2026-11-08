@@ -13,6 +13,9 @@ public class HitTargetSliderUI : MonoBehaviour
     [SerializeField] private Image _graceZoneIndicator;
     [SerializeField] private ChainUIController _chainUI;
 
+    [SerializeField] private GameObject _leftChain;
+    [SerializeField] private GameObject _rightChain;
+
     public void SetUpHitZoneIndicator(Vector2 successRange, Vector2 graceRange)
     {
         // Update color representation (hiddden in game for debug purposes only)
@@ -59,7 +62,18 @@ public class HitTargetSliderUI : MonoBehaviour
 
     public void ToggleActivated(bool on)
     {
-        _canvasGroup.alpha = on ? 1f : 0.5f;
+        foreach (Image child in _leftChain.GetComponentsInChildren<Image>())
+        {
+            child.color = on ? Color.white : Color.gray;
+            //child.SetActive(on);
+        }
+        foreach (Image child in _rightChain.GetComponentsInChildren<Image>())
+        {
+            child.color = on ? Color.white : Color.gray;
+            //child.SetActive(on);
+        }
+        
+        //_canvasGroup.alpha = on ? 1f : 0.5f;
         _sliderHandle.enabled = on;
         if (on) transform.SetAsLastSibling();
     }
