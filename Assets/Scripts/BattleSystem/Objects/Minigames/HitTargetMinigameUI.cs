@@ -86,6 +86,10 @@ public class HitTargetMinigameUI : MonoBehaviour
         for (int i = 0; i < _sliders.Count; i++)
         {
             _sliders[i].UpdateSlider(_minigameController.CurrentPoint[i]);
+            
+            _sliders[i].UpdateSliderSprite(_minigameController.CurrentPoint[i],
+                                            _minigameController.SuccessRange[i],
+                                            _minigameController.GraceRange[i]);
         }
     }
 
