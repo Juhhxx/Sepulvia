@@ -15,6 +15,13 @@ public class HitTargetSliderUI : MonoBehaviour
 
     [SerializeField] private GameObject _leftChain;
     [SerializeField] private GameObject _rightChain;
+    [SerializeField] private Image _chain;
+    private Material chainMaterial;
+    
+    void Start()
+    {
+        SetupJiggle();
+    }
 
     public void SetUpHitZoneIndicator(Vector2 successRange, Vector2 graceRange)
     {
@@ -76,6 +83,22 @@ public class HitTargetSliderUI : MonoBehaviour
         //_canvasGroup.alpha = on ? 1f : 0.5f;
         _sliderHandle.enabled = on;
         if (on) transform.SetAsLastSibling();
+    }
+
+    private void SetupJiggle()
+    {
+        foreach (Image child in _leftChain.GetComponentsInChildren<Image>())
+        {
+            chainMaterial = new Material(_chain.material);
+            chainMaterial.SetFloat("_Offset", Random.Range(0f,1f));
+            child.material = chainMaterial;
+        }
+        foreach (Image child in _rightChain.GetComponentsInChildren<Image>())
+        {
+            chainMaterial = new Material(_chain.material);
+            chainMaterial.SetFloat("_Offset", Random.Range(0f,1f));
+            child.material = chainMaterial;
+        }
     }
 
     public void UpdateSlider(float value)

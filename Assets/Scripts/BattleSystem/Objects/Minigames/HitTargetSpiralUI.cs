@@ -17,8 +17,10 @@ public class HitTargetSpiralUI : MonoBehaviour
     [SerializeField] private Image _hitIndicatorImage;
     [SerializeField] private float _circleIndicatorTransitionDuration = .3f;
     [SerializeField] private float _hitIndicatorTransitionDuration = .3f;
+    [SerializeField] private Material _hitIndicatorMaterialOG;
     private Material _circleBackgroundMaterial;
     private Material _hitIndicatorMaterial;
+    private bool _enteredSuccess;
 
 
 
@@ -28,7 +30,8 @@ public class HitTargetSpiralUI : MonoBehaviour
 
         _circleBackgroundMaterial = new Material(_circleIndicatorImage.material);
 
-        _hitIndicatorMaterial = new Material(_hitIndicatorImage.material);
+        _hitIndicatorImage.material = _hitIndicatorMaterial = new Material(_hitIndicatorImage.material);
+
     }
 
     [Button]
@@ -87,6 +90,19 @@ public class HitTargetSpiralUI : MonoBehaviour
     public void UpdateSpiral(float value)
     {
         DoSpiralMovement(value, _circleIndicator);
+
+        if (value >= _successRange.x  && !_enteredSuccess)
+        {
+            _hitIndicatorMaterial.DOFloat(.08f, "_Thickness", _hitIndicatorTransitionDuration).SetEase(Ease.OutBack);
+            _hitIndicatorMaterial.DOColor(new Color(191f, 36f,0f,1f) * 1f, "_Main_Color", _hitIndicatorTransitionDuration).SetEase(Ease.OutBack);
+            _hitIndicatorMaterial.DOColor(new Color(191f, 65f,0f,1f) * 2f, "_Outline_Color", _hitIndicatorTransitionDuration).SetEase(Ease.OutBack);
+        
+            _enteredSuccess = true;
+        }
+        else
+        {
+            //_hitIndicatorMaterial = _hitIndicatorMaterialOG;
+        }
     }
 
 }
