@@ -22,13 +22,12 @@ public class TooltipManager : MonoBehaviourSingleton<TooltipManager>
 
     public void Show(TooltipInfo info, List<TooltipInfo> additionalInfos = null)
     {
-        _tooltip.SetText(info.Content, info.Header, additionalInfos);
-        _tooltip.gameObject.SetActive(true);
+        _tooltip.ToggleTooltip(true, info, additionalInfos);
     }
 
     public void Hide()
     {
-        _tooltip.gameObject.SetActive(false);
+        _tooltip.ToggleTooltip(false);
     }
 
     public void PositionTooltip(Vector2 position)

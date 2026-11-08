@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -17,16 +18,31 @@ public class Tooltip : MonoBehaviour
     private RectTransform _rectTrans;
     public RectTransform RectTransform => _rectTrans;
 
-    private List<GameObject> _additionalTooltips = new List<GameObject>();
+    [SerializeField] private List<GameObject> _additionalTooltips = new List<GameObject>();
 
     private void Awake()
     {
         _rectTrans = GetComponent<RectTransform>();
     }
 
-    public void SetText(string context, string header = "", List<TooltipInfo> addInfos = null)
+    public void ToggleTooltip(bool show, TooltipInfo info = null, List<TooltipInfo> addInfos = null)
     {
-        if (string.IsNullOrEmpty(header))
+        if (!show)
+        {
+            ClearAdditionalTooltips();
+            gameObject.SetActive(show);
+        }
+        else
+        {
+            gameObject.SetActive(show);
+            SetText(info, addInfos);
+        }
+
+    }
+
+    private void SetText(TooltipInfo info, List<TooltipInfo> addInfos = null)
+    {
+        if (string.IsNullOrEmpty(info.Header))
         {
             _headerTMP.gameObject.SetActive(false);
         }
@@ -35,8 +51,8 @@ public class Tooltip : MonoBehaviour
             _headerTMP.gameObject.SetActive(true);
         }
 
-        _headerTMP.text = header;
-        _contentTMP.text = context;
+        _headerTMP.text     = info.Header;
+        _contentTMP.text    = info.Content;
 
         int headerLength    = _headerTMP.text.Length;
         int contentLength   = _contentTMP.text.Length;
@@ -48,15 +64,12 @@ public class Tooltip : MonoBehaviour
 
     private void ShowAdditionalTooltips(List<TooltipInfo> infos)
     {
-        ClearAdditionalTooltips();
-
         if (infos == null) return;
 
         foreach (TooltipInfo info in infos)
         {
             var tt = Instantiate(_additionalPrefab, _additionalParent);
-
-            tt.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            Debug.Log($"Instantiated additional tooltip: {tt.name}");
 
             _additionalTooltips.Add(tt);
             
@@ -65,16 +78,31 @@ public class Tooltip : MonoBehaviour
             tmp.text = info.Content;
         }
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(_additionalParent.GetComponent<RectTransform>());
+        Canvas.ForceUpdateCanvases();
+
+        // Rebuild the vertical layout first.
+        RectTransform additionalRect = _additionalParent.GetComponent<RectTransform>();
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(additionalRect);
+
+        // Then rebuild the horizontal layout containing the main tooltip.
+        LayoutRebuilder.ForceRebuildLayoutImmediate(
+            _rectTrans
+        );
+
     }
 
     private void ClearAdditionalTooltips()
     {
         foreach (GameObject tt in _additionalTooltips)
         {
-            Destroy(tt);
+            if (tt != null)
+            {
+                Destroy(tt);
+                Debug.Log($"Destroyed additional tooltip: {tt.name}");
+            }
+            
         }
-
         _additionalTooltips.Clear();
     }
 
