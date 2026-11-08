@@ -11,6 +11,10 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
     [SerializeField] private float[] _movingSpeedPerRound = new float[1] { 1 };
     [SerializeField] private bool _intermitentMovement;
 
+    [ShowIf(nameof(_intermitentMovement))]
+    [SerializeField] private float _additionalTime = 0.3f;
+
+
     [SerializeField] private bool _doRandomHitRange = false;
 
     // For random hit point
@@ -257,7 +261,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
     {
         float time = 0;
 
-        while (time < 1)
+        while (time < 1 + _additionalTime)
         {
             Debug.Log($"FINISHED ROUNDS : {string.Join(", ", _finishedRound.Select(r => r ? "true" : "false"))}");
 
