@@ -35,6 +35,13 @@ public class CheatManager : MonoBehaviour
         player.CurrentStance = player.MaxStance;
     }
 
+    public void ResetPlayerCooldowns()
+    {
+        Debug.Log("Resetting Player Cooldowns");
+        var player = FindAnyObjectByType<PlayerController>().PlayerCharacter;
+        player.ResetMoveCooldowns();
+    }
+
     public void GiveCurse()
     {
         BattleManager bm = FindAnyObjectByType<BattleManager>();
