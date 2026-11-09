@@ -21,7 +21,7 @@ public class MoveHoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _uiManager.ToggleMoveInfo(true, _move);
+        // _uiManager.ToggleMoveInfo(true, _move);
 
         // If the move is not on cooldown and isn't instant
         if(!_move.CheckIfCooldown() && _move.RecoveryCost > 0)
@@ -37,6 +37,6 @@ public class MoveHoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         // Remove preview timeline indicators
         _timelineUIManager.RemoveAllPlayerPreviewIndicators();
 
-        _uiManager.ToggleMoveInfo(false);
+        // _uiManager.ToggleMoveInfo(false);
     }
 }

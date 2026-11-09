@@ -2,8 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
-public class MoveButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class MoveButtonUI : MonoBehaviour, ITooltipable, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image _iconImage;
     [SerializeField] private Image _iconImageBW;
@@ -72,5 +73,33 @@ public class MoveButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerExit(PointerEventData eventData)
     {
         _frameSelectImage.enabled = false;
+    }
+
+    public TooltipInfo GetTooltipInfo()
+    {
+        Move move = _moveButton.Move;
+
+        string header = $"{move.Name}";
+
+        if (move.CheckIfCooldown()) header += $" (in cooldown)";
+
+        string content = ""; 
+        
+        content += $"Recovery Cost: {move.RecoveryCost}";
+        content += $"\nCooldown: {move.Cooldown}";
+
+        if (move.Type == MoveTypes.Stance) content += $"\nStance Cost: {move.StanceCost} stance";
+
+        content += $"\n\n{move.Description}";
+
+        List<TooltipInfo> additional = new List<TooltipInfo>();
+
+        foreach (IDescriptable d in move.AdditionalDescriptions)
+        {
+            additional.Add(new TooltipInfo(d.GetName(),
+                                        d.GetDescription()));
+        }
+
+        return new TooltipInfo(header, content, additional.ToArray());
     }
 }

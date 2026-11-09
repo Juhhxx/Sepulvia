@@ -118,6 +118,7 @@ public class BarSectionUI : MonoBehaviour
         _modifierController = Instantiate(barModifier.BarEffectPrefab, GetComponentInParent<Canvas>().transform).GetComponent<BarModifierController>();
 
         _modifierController.AdjustSizePosition(_activeChains, _barSection.HeartPosition);
+        _modifierController.SetModifier(barModifier);
     }
 
     private void RemoveModifierPrefab()

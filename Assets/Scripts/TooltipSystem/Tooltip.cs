@@ -10,7 +10,7 @@ public class Tooltip : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _headerTMP;
     [SerializeField] private TextMeshProUGUI _contentTMP;
     [SerializeField] private LayoutElement _layoutElement;
-    [SerializeField] private int _characterWrapLimit;
+    [SerializeField] private float _characterWrapLimit;
 
     [SerializeField] private Transform _additionalParent;
     [SerializeField] private GameObject _additionalPrefab;
@@ -25,7 +25,7 @@ public class Tooltip : MonoBehaviour
         _rectTrans = GetComponent<RectTransform>();
     }
 
-    public void ToggleTooltip(bool show, TooltipInfo info = null, List<TooltipInfo> addInfos = null)
+    public void ToggleTooltip(bool show, TooltipInfo info = null)
     {
         if (!show)
         {
@@ -35,12 +35,12 @@ public class Tooltip : MonoBehaviour
         else
         {
             gameObject.SetActive(show);
-            SetText(info, addInfos);
+            SetText(info);
         }
 
     }
 
-    private void SetText(TooltipInfo info, List<TooltipInfo> addInfos = null)
+    private void SetText(TooltipInfo info)
     {
         if (string.IsNullOrEmpty(info.Header))
         {
@@ -54,17 +54,17 @@ public class Tooltip : MonoBehaviour
         _headerTMP.text     = info.Header;
         _contentTMP.text    = info.Content;
 
-        int headerLength    = _headerTMP.text.Length;
-        int contentLength   = _contentTMP.text.Length;
+        float headerLength    = _headerTMP.preferredWidth;
+        float contentLength   = _contentTMP.preferredWidth;
 
         _layoutElement.enabled = (headerLength > _characterWrapLimit || contentLength > _characterWrapLimit);
 
-        ShowAdditionalTooltips(addInfos);
+        ShowAdditionalTooltips(info.AdditionalInfo);
     }
 
-    private void ShowAdditionalTooltips(List<TooltipInfo> infos)
+    private void ShowAdditionalTooltips(TooltipInfo[] infos)
     {
-        if (infos == null) return;
+        if (infos.Length <= 0) return;
 
         foreach (TooltipInfo info in infos)
         {
@@ -73,9 +73,9 @@ public class Tooltip : MonoBehaviour
 
             _additionalTooltips.Add(tt);
             
-            TextMeshProUGUI tmp = tt.GetComponentInChildren<TextMeshProUGUI>();
+            Tooltip tooltip = tt.GetComponent<Tooltip>();
 
-            tmp.text = info.Content;
+            tooltip.SetText(info);
         }
 
         Canvas.ForceUpdateCanvases();
@@ -86,10 +86,7 @@ public class Tooltip : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(additionalRect);
 
         // Then rebuild the horizontal layout containing the main tooltip.
-        LayoutRebuilder.ForceRebuildLayoutImmediate(
-            _rectTrans
-        );
-
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_rectTrans);
     }
 
     private void ClearAdditionalTooltips()
@@ -110,8 +107,8 @@ public class Tooltip : MonoBehaviour
     {
         if (Application.isEditor)
         {
-            int headerLength    = _headerTMP.text.Length;
-            int contentLength   = _contentTMP.text.Length;
+            float headerLength    = _headerTMP.preferredWidth;
+            float contentLength   = _contentTMP.preferredWidth;
 
             _layoutElement.enabled = (headerLength > _characterWrapLimit || contentLength > _characterWrapLimit);
         }

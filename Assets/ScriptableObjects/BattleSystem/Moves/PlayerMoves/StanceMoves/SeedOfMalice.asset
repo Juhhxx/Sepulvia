@@ -14,13 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
   <Name>k__BackingField: Seed of Malice
   <Icon>k__BackingField: {fileID: 21300000, guid: 4f4e731188e132d40853177bba8f5c5f, type: 3}
-  <Description>k__BackingField: 'Place a Malicious Knot on an available space of
-    the Soul Chain.
-
-    Malicious Knots stun whoever pushes the Heart onto them
-    for 2 turns.
-
-    They last 10 turns or until triggered.'
+  <Description>k__BackingField: Place a Malicious Knot on an available space of the
+    Soul Chain.
   <Level>k__BackingField: 1
   <AnimationTriggerUser>k__BackingField: Knot
   <AnimationTriggerTarget>k__BackingField: None
@@ -37,9 +32,16 @@ MonoBehaviour:
     unityReference: {fileID: 0}
     rawReference:
       rid: 3144097833895329895
+  _additionalDescriptions:
+  - mode: 0
+    unityReference: {fileID: 11400000, guid: 662dc6e710a0c464abfc247034beae19, type: 2}
+    rawReference:
+      rid: -2
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 3144097833895329895
       type: {class: MoveApplyBarModifier, ns: , asm: Assembly-CSharp}
       data:

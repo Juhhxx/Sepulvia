@@ -169,6 +169,7 @@ GameObject:
   - component: {fileID: 6649263371902549339}
   - component: {fileID: 1738297578259586041}
   - component: {fileID: 8425250767206670576}
+  - component: {fileID: 8216870330708003285}
   m_Layer: 5
   m_Name: BM_BASE
   m_TagString: Untagged
@@ -218,7 +219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 0.21568628, g: 0.8, b: 0.8352941, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -271,6 +272,26 @@ MonoBehaviour:
   _placeSound: {fileID: 6544346355387079550}
   _loopSound: {fileID: 8153251461902281974}
   _breakSound: {fileID: 6016342355740955243}
+--- !u!114 &8216870330708003285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4202190986578470864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965706bcef915eb4a90ec677cf800046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  header: 
+  content: 
+  additional: []
+  _useDefaultValues: 0
+  _useRelativePosition: 1
+  _tooltipOffset: {x: 200, y: 0}
+  _tooltipPosition: {x: 0, y: 0}
+  _tooltipAlignment: 3
 --- !u!1 &6163916656878454955
 GameObject:
   m_ObjectHideFlags: 0

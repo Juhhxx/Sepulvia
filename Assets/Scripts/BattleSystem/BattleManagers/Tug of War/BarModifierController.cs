@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class BarModifierController : MonoBehaviour
+public class BarModifierController : MonoBehaviour, ITooltipable
 {
     [SerializeField] private PlaySound _placeSound;
     [SerializeField] private PlaySound _loopSound;
@@ -29,11 +30,17 @@ public class BarModifierController : MonoBehaviour
     public RectTransform RectTransform => _rectTrans;
 
     private Animator _anim;
+    private BarModifier _modifier;
 
     private void Awake()
     {
         _rectTrans = GetComponent<RectTransform>();
         _anim = GetComponent<Animator>();
+    }
+
+    public void SetModifier(BarModifier modifier)
+    {
+        _modifier = modifier;
     }
 
     public void AdjustSizePosition(int activeChains, Vector2 defaultPos)
@@ -48,5 +55,21 @@ public class BarModifierController : MonoBehaviour
     public void DoAnimationTriger(string trigger)
     {
         _anim.SetTrigger(trigger);
+    }
+
+    public TooltipInfo GetTooltipInfo()
+    {
+        string header = _modifier.Name;
+        string content = _modifier.Description;
+
+        List<TooltipInfo> additional = new List<TooltipInfo>();
+
+        foreach (IDescriptable d in _modifier.AdditionalDescriptions)
+        {
+            additional.Add(new TooltipInfo(d.GetName(),
+                                        d.GetDescription()));
+        }
+
+        return new TooltipInfo(header, content, additional.ToArray());
     }
 }

@@ -16,10 +16,10 @@ MonoBehaviour:
   <Icon>k__BackingField: {fileID: 0}
   <TimelineIndicator>k__BackingField: {fileID: 21300000, guid: 2b35952d8ed0bb9498a758df04af8ef1, type: 3}
   <BarEffectPrefab>k__BackingField: {fileID: 1998958455989482443, guid: 44c8be78f0afca14d90ed91ad9f8b8fb, type: 3}
-  <Description>k__BackingField: 'Cursed Knots inflict 1 stack of Curse on whoever
-    pushes the Heart onto them.
+  <Description>k__BackingField: 'Inflicts 1 stack of Curse on whoever pushes the
+    Heart onto it.
 
-    They last 5 turns and break when triggered.'
+    Lasts 5 turns and breaks when triggered.'
   <Trigger>k__BackingField: 1
   <TurnDuration>k__BackingField: 5
   <DestroyOnUse>k__BackingField: 1
@@ -28,9 +28,16 @@ MonoBehaviour:
     unityReference: {fileID: 0}
     rawReference:
       rid: 9062265491848167533
+  _additionalDescriptions:
+  - mode: 0
+    unityReference: {fileID: 11400000, guid: 33f415e0a0999674a8718178e231c875, type: 2}
+    rawReference:
+      rid: -2
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 9062265491848167533
       type: {class: BarModifierCursed, ns: , asm: Assembly-CSharp}
       data:

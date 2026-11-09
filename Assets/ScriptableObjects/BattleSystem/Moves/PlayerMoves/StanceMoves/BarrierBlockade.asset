@@ -14,13 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
   <Name>k__BackingField: Barrier
   <Icon>k__BackingField: {fileID: 21300000, guid: f32b864ea9e56a34da15acb504f9339c, type: 3}
-  <Description>k__BackingField: 'Place a Barrier Knot on an available space of the
+  <Description>k__BackingField: Place a Barrier Knot on an available space of the
     Soul Chain.
-
-    Barrier Knots prevent the Heart from moving past it.
-
-    They
-    last 10 turns or until triggered.'
   <Level>k__BackingField: 1
   <AnimationTriggerUser>k__BackingField: Knot
   <AnimationTriggerTarget>k__BackingField: None
@@ -37,9 +32,16 @@ MonoBehaviour:
     unityReference: {fileID: 0}
     rawReference:
       rid: 3144097833895329895
+  _additionalDescriptions:
+  - mode: 0
+    unityReference: {fileID: 11400000, guid: 724e4994f8fb9fc4abbb2bbf6b8879c1, type: 2}
+    rawReference:
+      rid: -2
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 3144097833895329895
       type: {class: MoveApplyBarModifier, ns: , asm: Assembly-CSharp}
       data:

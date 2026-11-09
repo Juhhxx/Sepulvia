@@ -6,8 +6,9 @@ using UnityEngine.UI;
 using Unity.Collections;
 using System.Collections;
 using DG.Tweening;
+using System.Collections.Generic;
 
-public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class StatusEffectShowcase : MonoBehaviour, ITooltipable
 {
     [SerializeField] private Image _iconImage;
     [SerializeField] private GameObject _turnIndicator;
@@ -15,7 +16,6 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
     [SerializeField] private GameObject _stackIndicator;
     [SerializeField] private TextMeshProUGUI _stackTMP;
 
-    public event Action<bool,StatusEffect> OnShowcaseSelected;
     private StatusEffect _statusEffect;
 
     private void Start()
@@ -24,7 +24,7 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
             //puxa a corotina aqui para iniciar o efeito de dissolve
     }
 
-    public void SetUpShowcase(StatusEffect se, StatusEffectInfoPanel infoPanel)
+    public void SetUpShowcase(StatusEffect se)
     {
         _iconImage.sprite = se.Icon;
         _durationTMP.text = se.TurnDuration.ToString();
@@ -44,8 +44,6 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
         }
 
         _statusEffect = se;
-
-        OnShowcaseSelected += infoPanel.UpdatePanel;
     }
 
     private void UpdateDuration(int duration)
@@ -85,24 +83,29 @@ public class StatusEffectShowcase : MonoBehaviour, IPointerEnterHandler, IPointe
         )
         .OnComplete(() =>
         {   
-            OnShowcaseSelected?.Invoke(false, null);
             Destroy(gameObject);
         });
         
     }
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        OnShowcaseSelected?.Invoke(false, null);
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        OnShowcaseSelected?.Invoke(true, _statusEffect);
-    }
-
     private IEnumerator StartFade()
     {
         yield return null;
+    }
+
+    public TooltipInfo GetTooltipInfo()
+    {
+        string header = _statusEffect.Name;
+        string content = _statusEffect.Description;
+
+        List<TooltipInfo> additional = new List<TooltipInfo>();
+
+        foreach (IDescriptable d in _statusEffect.AdditionalDescriptions)
+        {
+            additional.Add(new TooltipInfo(d.GetName(),
+                                        d.GetDescription()));
+        }
+
+        return new TooltipInfo(header, content, additional.ToArray());
     }
 }

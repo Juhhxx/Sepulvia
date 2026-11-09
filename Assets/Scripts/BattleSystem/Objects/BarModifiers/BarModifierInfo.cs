@@ -2,9 +2,10 @@ using TNRD;
 using UnityEngine;
 using NaughtyAttributes;
 using System;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "BarModifier", menuName = "Battle System/New Bar Modifier")]
-public class BarModifierInfo : ScriptableObject
+public class BarModifierInfo : ScriptableObject, IDescriptable
 {
     [field: Header("Base Bar Modifier Parameters")]
     [field: Space(5)]
@@ -31,6 +32,22 @@ public class BarModifierInfo : ScriptableObject
     {
         return new BarModifier(this);
     }
+
+    public string GetName()
+    {
+        return Name;
+    }
+
+    public string GetDescription()
+    {
+        return Description;
+    }
+
+    [SerializeField] private SerializableInterface<IDescriptable>[] _additionalDescriptions;
+    public IDescriptable[] GetAdditionalDescriptions()
+    {
+        return _additionalDescriptions.Select(i => i.Value).ToArray();
+    }
 }
 
 
@@ -43,6 +60,7 @@ public class BarModifier
         TimelineIndicator = info.TimelineIndicator;
         BarEffectPrefab = info.BarEffectPrefab;
         Description = info.Description;
+        AdditionalDescriptions = info.GetAdditionalDescriptions();
 
         Trigger = info.Trigger;
         TurnDuration = info.TurnDuration;
@@ -58,6 +76,7 @@ public class BarModifier
     [field: SerializeField] public Sprite TimelineIndicator { get; private set; }
     [field: SerializeField, ReadOnly] public GameObject BarEffectPrefab { get; private set; }
     [field: SerializeField, TextArea, ReadOnly] public string Description { get; private set; }
+    public IDescriptable[] AdditionalDescriptions { get; private set; }
 
 
     [field: SerializeField, ReadOnly] public BarModifierTrigger Trigger { get; private set; }

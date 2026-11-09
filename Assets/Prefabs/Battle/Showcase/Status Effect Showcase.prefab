@@ -547,6 +547,7 @@ GameObject:
   - component: {fileID: 5286781478323785983}
   - component: {fileID: 6497488410273374260}
   - component: {fileID: 591781625030449873}
+  - component: {fileID: 391372496292241804}
   m_Layer: 0
   m_Name: Status Effect Showcase
   m_TagString: Untagged
@@ -601,6 +602,26 @@ MonoBehaviour:
   _durationTMP: {fileID: 8366137043567473475}
   _stackIndicator: {fileID: 4758033557183340770}
   _stackTMP: {fileID: 5968215166047965740}
+--- !u!114 &391372496292241804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8623028322228328489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965706bcef915eb4a90ec677cf800046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  header: 
+  content: 
+  additional: []
+  _useDefaultValues: 0
+  _useRelativePosition: 1
+  _tooltipOffset: {x: 50, y: 0}
+  _tooltipPosition: {x: 0, y: 0}
+  _tooltipAlignment: 0
 --- !u!1 &9027155012867705432
 GameObject:
   m_ObjectHideFlags: 0

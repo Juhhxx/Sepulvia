@@ -5,7 +5,6 @@ public class StatusEffectShowcaseManager : MonoBehaviour
 {
     [SerializeField] private StatusEffectShowcase _showcasePrefab;
     [SerializeField] private Transform _showcaseParent;
-    [SerializeField] private StatusEffectInfoPanel _infoPanel;
     [SerializeField] private bool _isEnemyShowcase;
     [SerializeField, ShowIf("_isEnemyShowcase")] private StatusEffectManager _statusEffectManager;
 
@@ -44,7 +43,7 @@ public class StatusEffectShowcaseManager : MonoBehaviour
         if (se.Icon == null) return;
         
         var showcase = Instantiate(_showcasePrefab, _showcaseParent);
-        showcase.SetUpShowcase(se, _infoPanel);
+        showcase.SetUpShowcase(se);
     }
 
 }

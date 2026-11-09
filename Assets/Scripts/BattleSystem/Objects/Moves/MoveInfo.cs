@@ -2,9 +2,10 @@ using NaughtyAttributes;
 using UnityEngine;
 using System;
 using TNRD;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "Move", menuName = "Battle System/New Move")]
-public class MoveInfo : ScriptableObject
+public class MoveInfo : ScriptableObject, IDescriptable
 {
     [field: Header("Base Move Parameters")]
     [field: Space(5)]
@@ -69,6 +70,22 @@ public class MoveInfo : ScriptableObject
     {
         return new Move(this);
     }
+
+    public string GetName()
+    {
+        return Name;
+    }
+
+    public string GetDescription()
+    {
+        return Description;
+    }
+
+    [SerializeField] private SerializableInterface<IDescriptable>[] _additionalDescriptions;
+    public IDescriptable[] GetAdditionalDescriptions()
+    {
+        return _additionalDescriptions.Select(i => i.Value).ToArray();
+    }
 }
 
 [Serializable]
@@ -79,6 +96,7 @@ public class Move
         Name = info.Name;
         Icon = info.Icon;
         Description = info.Description;
+        AdditionalDescriptions = info.GetAdditionalDescriptions();
         Level = info.Level;
 
         AnimationTriggerUser = info.AnimationTriggerUser;
@@ -101,6 +119,7 @@ public class Move
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField, ReadOnly] public Sprite Icon { get; private set; }
     [field: SerializeField, ResizableTextArea, ReadOnly] public string Description { get; private set; }
+    public IDescriptable[] AdditionalDescriptions { get; private set; }
     [field: SerializeField, ReadOnly] public int Level { get; private set; }
 
     [field: SerializeField] public string AnimationTriggerUser { get; private set; }

@@ -2,9 +2,10 @@ using TNRD;
 using UnityEngine;
 using NaughtyAttributes;
 using System;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "StatusEffect", menuName = "Battle System/New Status Effect")]
-public class StatusEffectInfo : ScriptableObject
+public class StatusEffectInfo : ScriptableObject, IDescriptable
 {
     [field: Header("Base Status Effect Parameters")]
     [field: Space(5)]
@@ -34,6 +35,22 @@ public class StatusEffectInfo : ScriptableObject
     {
         return new StatusEffect(this);
     }
+
+    public string GetName()
+    {
+        return Name;
+    }
+
+    public string GetDescription()
+    {
+        return Description;
+    }
+
+    [SerializeField] private SerializableInterface<IDescriptable>[] _additionalDescriptions;
+    public IDescriptable[] GetAdditionalDescriptions()
+    {
+        return _additionalDescriptions.Select(i => i.Value).ToArray();
+    }
 }
 
 [Serializable]
@@ -44,6 +61,7 @@ public class StatusEffect
         Name = info.Name;
         Icon = info.Icon;
         Description = info.Description;
+        AdditionalDescriptions = info.GetAdditionalDescriptions();
 
         TurnDuration = info.TurnDuration;
 
@@ -59,6 +77,7 @@ public class StatusEffect
     [field: SerializeField, ReadOnly] public string Name { get; private set; }
     [field: SerializeField, ReadOnly] public Sprite Icon { get; private set; }
     [field: SerializeField, TextArea, ReadOnly] public string Description { get; private set; }
+    public IDescriptable[] AdditionalDescriptions { get; private set; }
 
     [field: SerializeField, ReadOnly] public int TurnDuration { get; private set; }
     [SerializeField, ReadOnly] private int _turnsPassed = 0;
