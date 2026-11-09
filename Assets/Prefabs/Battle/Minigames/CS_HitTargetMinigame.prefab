@@ -75,6 +75,7 @@ MonoBehaviour:
   - 1
   - 1.5
   _intermitentMovement: 1
+  _additionalTime: 0.3
   _doRandomHitRange: 1
   _successHitRange: {x: 0.2, y: 0.8}
   _successRadius: 0.1
@@ -319,7 +320,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6260208547623678681}
   - {fileID: 9031174144800366815}
   - {fileID: 6041177052502480465}
   - {fileID: 8837122870566677809}
@@ -476,6 +476,7 @@ RectTransform:
   - {fileID: 1576202142937052114}
   - {fileID: 5461602107625794521}
   - {fileID: 3342829478096892877}
+  - {fileID: 6260208547623678681}
   m_Father: {fileID: 1111282900622736269}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1169,7 +1170,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3342829478096892877}
+  m_Father: {fileID: 8014167104737722579}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

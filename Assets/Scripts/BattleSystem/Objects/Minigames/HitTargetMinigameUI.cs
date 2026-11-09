@@ -108,6 +108,7 @@ public class HitTargetMinigameUI : MonoBehaviour
     {
         Color color;
 
+        //Add VFX play for miss, whiff and success here
         if (result == 1f) color = Color.green;
         else if (result == 0.5f) color = Color.yellow;
         else color = Color.red;
