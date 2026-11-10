@@ -41,33 +41,43 @@ public class HitTargetMinigameUI : MonoBehaviour
                                         _minigameController.GraceRange[i]);
 
             float posOffset = PositionSlider(takenPositions);
-            float rot = RotateSlider(takenRotations);
+            float rot = RotateSlider(takenRotations, rounds);
 
             takenPositions[i] = posOffset;
             takenRotations[i] = rot;
             
             slider.UpdatePositionRotation(posOffset, rot);
+
+            slider.GetComponent<ChainUIController>().DoSpawnComeIn();
         }
+        CameraEffectsUtility.DoCameraShake(.7f, .2f, 1f); //Shake at the end of all 3 chains instanced
     }
 
-    private float PositionSlider(float[] taken)
+    private float PositionSlider(float[] taken, int iteration = 0)
     {
-        float posOffset = Random.Range(-200, 201);
+        float directionOffset = Random.Range(0f, 1f);
+        float posOffset = Random.Range(20, 301);
+        
+        if (directionOffset < 0.5f) posOffset = -posOffset;
 
-        if (taken.Contains(posOffset) || !taken.Any(p => Mathf.Abs(p - posOffset) < 20))
+        if (taken.Contains(posOffset) || taken.Any(p => Mathf.Abs(p - posOffset) < 35) && iteration < 20)
         {
-            return PositionSlider(taken);
+            return PositionSlider(taken, iteration + 1);
         }
         else return posOffset;
     }
 
-    private float RotateSlider(float[] taken)
+    private float RotateSlider(float[] taken, int rounds, int iteration = 0)
     {
-        float rot = Random.Range(0, 180);
+        float directionOffset = Random.Range(0f, 1f);
+        float rot = Random.Range(0, 15 * rounds);
         
-        if (taken.Contains(rot) || taken.Any(r => Mathf.Abs(Mathf.DeltaAngle(r, rot)) < 25))
+        if (directionOffset < 0.5f) rot = -rot;
+
+        if (taken.Contains(rot) || taken.Any(r => Mathf.Abs(Mathf.DeltaAngle(r, rot)) < 10) && iteration < 20)
         {
-            return RotateSlider(taken);
+            return RotateSlider(taken, rounds,iteration + 1);
+
         }
         else return rot;
     }

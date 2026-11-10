@@ -9,6 +9,8 @@ public class ChainUIController : MonoBehaviour
     [SerializeField] private RectTransform _chainMovePivot;
     [SerializeField] private RectTransform _chainLeft;
     [SerializeField] private RectTransform _chainRight;
+    [SerializeField] private Image _sliderHandle;
+
 
     [OnValueChanged(nameof(UpdateEditor))]
     [SerializeField, Range(0,360)] private float _rotation;
@@ -18,7 +20,9 @@ public class ChainUIController : MonoBehaviour
 
     [SerializeField] private float _separateDistance = 50f;
     [SerializeField] private float _separateDuration = .5f;
-
+    [SerializeField] private float _comeInDistance = 8000f;
+    [SerializeField] private float _comeInDuration = 2f;
+    [SerializeField] private Ease _comeInEase = Ease.OutExpo;
 
     private void UpdateEditor()
     {
@@ -48,10 +52,38 @@ public class ChainUIController : MonoBehaviour
 
     //Animations
     [Button]
-    private void DoSeparate()
+    public void DoSeparate()
     {
         _chainLeft.DOAnchorPosX(_chainLeft.anchoredPosition.x - _separateDistance, _separateDuration).SetEase(Ease.OutExpo);
         _chainRight.DOAnchorPosX(_chainRight.anchoredPosition.x + _separateDistance, _separateDuration).SetEase(Ease.OutExpo);
         //CameraEffectsUtility.DoCameraShake(.5f, 2f);
+    }
+
+    [Button]
+    public void DoSpawnJoinUp()
+    {
+        _chainLeft.DOAnchorPosX(_chainLeft.anchoredPosition.x + _separateDistance, _separateDuration).SetEase(Ease.OutExpo);
+        _chainRight.DOAnchorPosX(_chainRight.anchoredPosition.x - _separateDistance, _separateDuration).SetEase(Ease.OutExpo);
+    }
+    [Button]
+    public void DoSpawnComeIn()
+    {
+        Color disabledSider = new Color(_sliderHandle.color.r, _sliderHandle.color.g, _sliderHandle.color.b, 0f);
+        _sliderHandle.color = disabledSider;
+
+        RectTransform chainTransform = _chainRotationPivot;
+
+        Vector2 rotationVector = new Vector2(Mathf.Cos(Mathf.Deg2Rad * _chainRotationPivot.rotation.eulerAngles.z), Mathf.Sin(Mathf.Deg2Rad * _chainRotationPivot.rotation.eulerAngles.z));
+        Vector2 moveVector = rotationVector.normalized * _comeInDistance;
+
+        _chainRotationPivot.anchoredPosition = _chainRotationPivot.anchoredPosition + - moveVector;
+        //find the rotation angle vector
+        
+        _chainRotationPivot.DOAnchorPos(_chainRotationPivot.anchoredPosition + moveVector, _comeInDuration).SetEase(_comeInEase).OnComplete(() => {
+            Color enabledSider = new Color(_sliderHandle.color.r, _sliderHandle.color.g, _sliderHandle.color.b, 1f);
+            _sliderHandle.color = enabledSider;
+        });
+        CameraEffectsUtility.DoCameraShake(.1f, 2f);
+
     }
 }
