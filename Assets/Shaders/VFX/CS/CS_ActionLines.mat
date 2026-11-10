@@ -31,6 +31,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 5db7ffc06888ca147a77992a8b3a5e07, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_c4ced5f7e7f9412eae6f8f9903c97b52_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: c3fcf5786f3210c43933fc9d912bf8ec, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_e5889d14db3c4d23af16ac6138bab4ff_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: b44105337422bb54bb63d29606c4c3dd, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -51,8 +55,9 @@ Material:
     m_Floats:
     - _Background_Intensity: 4
     - _ColorMask: 15
-    - _Intensity: 0.674
-    - _Speed: 0.3
+    - _Intensity: 0.696
+    - _Pixelization: 215
+    - _Speed: 3
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -63,9 +68,10 @@ Material:
     - _UIMaskSoftnessY: 1
     m_Colors:
     - _Back_Color: {r: 0.56078434, g: 0, b: 0.089928634, a: 1}
-    - _Back_Noise_Color: {r: 2.7939754, g: 0, b: 3.9999995, a: 1}
+    - _Back_Noise_Color: {r: 0.66518617, g: 0, b: 1.1385951, a: 1}
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
     - _Intensity: {r: 0.25, g: 0.86, b: 0, a: 0}
-    - _Speed_Lines_Color: {r: 3.9999995, g: 0, b: 1.1247634, a: 1}
+    - _Speed_Lines_Color: {r: 3.9999995, g: 0, b: 0.98572916, a: 1}
+    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
