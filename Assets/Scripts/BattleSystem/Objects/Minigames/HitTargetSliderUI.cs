@@ -16,6 +16,7 @@ public class HitTargetSliderUI : MonoBehaviour
     [SerializeField] private GameObject _leftChain;
     [SerializeField] private GameObject _rightChain;
     [SerializeField] private Image _chain;
+    [SerializeField] private Color _backgroundChainColor = new Color(0.5f, 0.5f, 0.5f, 1f);
     private Material chainMaterial;
     
     void Start()
@@ -71,12 +72,12 @@ public class HitTargetSliderUI : MonoBehaviour
     {
         foreach (Image child in _leftChain.GetComponentsInChildren<Image>())
         {
-            child.color = on ? Color.white : Color.gray;
+            child.color = on ? Color.white : _backgroundChainColor;
             //child.SetActive(on);
         }
         foreach (Image child in _rightChain.GetComponentsInChildren<Image>())
         {
-            child.color = on ? Color.white : Color.gray;
+            child.color = on ? Color.white : _backgroundChainColor;
             //child.SetActive(on);
         }
         

@@ -22,7 +22,9 @@ public class ChainUIController : MonoBehaviour
     [SerializeField] private float _separateDuration = .5f;
     [SerializeField] private float _comeInDistance = 8000f;
     [SerializeField] private float _comeInDuration = 2f;
+    [SerializeField] private float _comeOutDuration = 1.5f;
     [SerializeField] private Ease _comeInEase = Ease.OutExpo;
+    [SerializeField] private Ease _comeOutEase = Ease.InOutBack;
 
     private void UpdateEditor()
     {
@@ -76,7 +78,7 @@ public class ChainUIController : MonoBehaviour
         Vector2 rotationVector = new Vector2(Mathf.Cos(Mathf.Deg2Rad * _chainRotationPivot.rotation.eulerAngles.z), Mathf.Sin(Mathf.Deg2Rad * _chainRotationPivot.rotation.eulerAngles.z));
         Vector2 moveVector = rotationVector.normalized * _comeInDistance;
 
-        _chainRotationPivot.anchoredPosition = _chainRotationPivot.anchoredPosition + - moveVector;
+        _chainRotationPivot.anchoredPosition = _chainRotationPivot.anchoredPosition + - moveVector; //Get it off screen
         //find the rotation angle vector
         
         _chainRotationPivot.DOAnchorPos(_chainRotationPivot.anchoredPosition + moveVector, _comeInDuration).SetEase(_comeInEase).OnComplete(() => {
@@ -85,5 +87,20 @@ public class ChainUIController : MonoBehaviour
         });
         CameraEffectsUtility.DoCameraShake(.1f, 2f);
 
+    }
+
+    [Button]
+    public void DoDispawn()
+    {
+        Color disabledSider = new Color(_sliderHandle.color.r, _sliderHandle.color.g, _sliderHandle.color.b, 0f);
+        _sliderHandle.color = disabledSider;
+
+        RectTransform chainTransform = _chainRotationPivot;
+
+        Vector2 rotationVector = new Vector2(Mathf.Cos(Mathf.Deg2Rad * _chainRotationPivot.rotation.eulerAngles.z), Mathf.Sin(Mathf.Deg2Rad * _chainRotationPivot.rotation.eulerAngles.z));
+        Vector2 moveVector = rotationVector.normalized * _comeInDistance;
+
+        _chainRotationPivot.DOAnchorPos(_chainRotationPivot.anchoredPosition - moveVector, _comeOutDuration).SetEase(_comeOutEase);
+        CameraEffectsUtility.DoCameraShake(.1f, 2f);
     }
 }
