@@ -75,7 +75,7 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
     }
 
     [Button]
-    private void DoInitiateMaelStorm1Effect()
+    public void DoInitiateMaelStorm1Effect()
     {
         _vignetteMaterial.DOFloat(0.65f, "_Vignette_Size", _vignetteTransitionDuration).SetEase(Ease.Linear);
         _vignetteImage.material = _vignetteMaterial;
@@ -84,7 +84,7 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
     }
 
     [Button]
-    private void DoKillMaelstorm1Effect()
+    public void DoKillMaelstorm1Effect()
     {
         _vignetteMaterial.DOFloat(1.5f, "_Vignette_Size", _vignetteTransitionDuration).SetEase(Ease.Linear);
         _vignetteImage.material = _vignetteMaterial;

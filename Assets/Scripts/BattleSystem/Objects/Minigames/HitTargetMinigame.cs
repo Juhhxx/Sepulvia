@@ -247,7 +247,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
             
             time += _movingSpeedPerRound[speedIdx] * Time.deltaTime;
 
-            float t = Mathf.Abs(Mathf.Sin(time));
+            float t = Mathf.PingPong(time, 1);
 
             MovePoint(t, round);
 
