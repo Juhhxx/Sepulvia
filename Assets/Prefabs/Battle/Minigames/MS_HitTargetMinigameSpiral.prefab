@@ -750,8 +750,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _movingSpeedPerRound:
-  - 0.5
+  - 1
   _intermitentMovement: 0
+  _additionalTime: 0.1
   _doRandomHitRange: 0
   _successHitRange: {x: 0, y: 0}
   _successRadius: 0
@@ -762,6 +763,10 @@ MonoBehaviour:
   _currentPoint: []
   _waitForRounds: 0
   _roundDelay: 1
+  _waitBeforeRound: 0.5
+  _waitAfterRound: 0.1
+  _waitBeforeMinigame: 1
+  _waitAfterMinigame: 1
   _testRounds: 3
 --- !u!114 &2452140723958601327
 MonoBehaviour:
