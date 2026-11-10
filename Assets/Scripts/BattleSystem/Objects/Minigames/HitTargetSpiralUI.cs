@@ -12,7 +12,7 @@ public class HitTargetSpiralUI : MonoBehaviour
     [SerializeField] private float _turns; // nubmer of turns in the spiral
     [SerializeField] private bool _showPossibleHits;
 
-    [SerializeField] private Vector2 _successRange;
+    private Vector2 _successRange;
     [SerializeField] private Image _circleIndicatorImage;
     [SerializeField] private Image _hitIndicatorImage;
     [SerializeField] private float _circleIndicatorTransitionDuration = .3f;
@@ -22,7 +22,7 @@ public class HitTargetSpiralUI : MonoBehaviour
     private Material _hitIndicatorMaterial;
     private bool _enteredSuccess;
 
-
+    private Animator _indicatorAnim;
 
     private void Start()
     {
@@ -32,10 +32,11 @@ public class HitTargetSpiralUI : MonoBehaviour
 
         _hitIndicatorImage.material = _hitIndicatorMaterial = new Material(_hitIndicatorImage.material);
 
+        _indicatorAnim = _circleIndicator.GetComponent<Animator>();
     }
 
     [Button]
-    private void DoSpawnCircleIndicator()
+    public void DoSpawnSpiral()
     {
         _circleIndicatorImage.material = _circleBackgroundMaterial;
         _circleBackgroundMaterial.DOFloat(1f, "_Effect_Intensity", _circleIndicatorTransitionDuration).SetEase(Ease.Linear);
@@ -43,14 +44,20 @@ public class HitTargetSpiralUI : MonoBehaviour
         _hitIndicatorImage.material = _hitIndicatorMaterial;
         _hitIndicatorMaterial.DOFloat(1f, "_Radius", _hitIndicatorTransitionDuration).SetEase(Ease.InOutBack);
     }
+
     [Button]
-    private void DoKillCircleIndicator()
+    public void DoKillSpiral()
     {
         _circleIndicatorImage.material = _circleBackgroundMaterial;
         _circleBackgroundMaterial.DOFloat(0f, "_Effect_Intensity", _circleIndicatorTransitionDuration).SetEase(Ease.Linear);
 
         _hitIndicatorImage.material = _hitIndicatorMaterial;
         _hitIndicatorMaterial.DOFloat(10f, "_Radius", _hitIndicatorTransitionDuration).SetEase(Ease.InOutExpo);
+    }
+
+    public void DoIndicatorAnimTrigger(string trigger)
+    {
+        _indicatorAnim.SetTrigger(trigger);
     }
 
     private void DoSpiralMovement(float position, RectTransform indicator)

@@ -37,6 +37,7 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
         PositionSpiral(rectT);
 
         _spiralPrefab.SetUpHitIndicator(_minigameController.SuccessRange[round]);
+        _spiralPrefab.DoSpawnSpiral();
     }
 
     private int maxPosInterations = 20;
