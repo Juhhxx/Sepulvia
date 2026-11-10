@@ -12,9 +12,10 @@ public class HitTargetSpiralUI : MonoBehaviour
     [SerializeField] private float _turns; // nubmer of turns in the spiral
     [SerializeField] private bool _showPossibleHits;
 
-    private Vector2 _successRange;
-    [SerializeField] private Image _circleIndicatorImage;
+    [SerializeField] private Vector2 _successRange;
+    [SerializeField] private Image _circleBackgroundImage;
     [SerializeField] private Image _hitIndicatorImage;
+    [SerializeField] private Image _clickPromptImage;
     [SerializeField] private float _circleIndicatorTransitionDuration = .3f;
     [SerializeField] private float _hitIndicatorTransitionDuration = .3f;
     [SerializeField] private Material _hitIndicatorMaterialOG;
@@ -24,35 +25,45 @@ public class HitTargetSpiralUI : MonoBehaviour
 
     private Animator _indicatorAnim;
 
-    private void Start()
+    private void Awake()
     {
         _hitIndicator.rectTransform.anchoredPosition = Vector2.zero;
 
-        _circleBackgroundMaterial = new Material(_circleIndicatorImage.material);
-
-        _hitIndicatorImage.material = _hitIndicatorMaterial = new Material(_hitIndicatorImage.material);
-
         _indicatorAnim = _circleIndicator.GetComponent<Animator>();
+
+        _circleBackgroundMaterial = new Material(_circleBackgroundImage.material);
+        _hitIndicatorMaterial = new Material(_hitIndicatorImage.material);
+    }
+
+    private void Start()
+    {
+        DoSpawnSpiral();
     }
 
     [Button]
     public void DoSpawnSpiral()
     {
-        _circleIndicatorImage.material = _circleBackgroundMaterial;
+        _circleBackgroundImage.material = _circleBackgroundMaterial;
+        _circleBackgroundMaterial.SetFloat("_Effect_Intensity", 0f);
+        
         _circleBackgroundMaterial.DOFloat(1f, "_Effect_Intensity", _circleIndicatorTransitionDuration).SetEase(Ease.Linear);
 
         _hitIndicatorImage.material = _hitIndicatorMaterial;
-        _hitIndicatorMaterial.DOFloat(1f, "_Radius", _hitIndicatorTransitionDuration).SetEase(Ease.InOutBack);
+        _hitIndicatorMaterial.SetFloat("_Radius", 10f);
+
+        _hitIndicatorMaterial.DOFloat(0.55f, "_Radius", _hitIndicatorTransitionDuration).SetEase(Ease.InOutBack);
     }
 
     [Button]
     public void DoKillSpiral()
     {
-        _circleIndicatorImage.material = _circleBackgroundMaterial;
-        _circleBackgroundMaterial.DOFloat(0f, "_Effect_Intensity", _circleIndicatorTransitionDuration).SetEase(Ease.Linear);
+        _clickPromptImage.DOFade(0f, _circleIndicatorTransitionDuration).SetEase(Ease.Linear).OnComplete(() => _clickPromptImage.gameObject.SetActive(false));
+
+        _circleBackgroundImage.material = _circleBackgroundMaterial;
+        _circleBackgroundMaterial.DOFloat(0f, "_Effect_Intensity", _circleIndicatorTransitionDuration).SetEase(Ease.Linear).OnComplete(() => _circleBackgroundImage.gameObject.SetActive(false));
 
         _hitIndicatorImage.material = _hitIndicatorMaterial;
-        _hitIndicatorMaterial.DOFloat(10f, "_Radius", _hitIndicatorTransitionDuration).SetEase(Ease.InOutExpo);
+        _hitIndicatorMaterial.DOFloat(10f, "_Radius", _hitIndicatorTransitionDuration).SetEase(Ease.InOutExpo).OnComplete(() => _hitIndicatorImage.gameObject.SetActive(false));
     }
 
     public void DoIndicatorAnimTrigger(string trigger)
@@ -98,7 +109,7 @@ public class HitTargetSpiralUI : MonoBehaviour
     {
         DoSpiralMovement(value, _circleIndicator);
 
-        if (value >= _successRange.x  && !_enteredSuccess)
+        if (value >= _successRange.x && !_enteredSuccess)
         {
             _hitIndicatorMaterial.DOFloat(.08f, "_Thickness", _hitIndicatorTransitionDuration).SetEase(Ease.OutBack);
             _hitIndicatorMaterial.DOColor(new Color(191f, 36f,0f,1f) * 1f, "_Main_Color", _hitIndicatorTransitionDuration).SetEase(Ease.OutBack);

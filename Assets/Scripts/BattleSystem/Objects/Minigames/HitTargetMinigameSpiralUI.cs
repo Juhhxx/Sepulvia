@@ -21,7 +21,12 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
     {
         _minigameController = GetComponent<HitTargetMinigame>();
 
-        _minigameController.OnMinigameRoundStart += (round) => SetUpSpiral(round);
+        _minigameController.OnMinigameStart += (r) => DoInitiateMaelStorm1Effect();
+        _minigameController.OnMinigameEndRounds += DoKillMaelStorm1Effect;
+
+
+        _minigameController.OnMinigameRoundStart += SetUpSpiral;
+        _minigameController.OnMinigameRoundEnd += PlayResultAnimations;
 
         _vignetteMaterial = new Material(_vignetteImage.material);
     }
@@ -36,8 +41,7 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
 
         PositionSpiral(rectT);
 
-        _spiralPrefab.SetUpHitIndicator(_minigameController.SuccessRange[round]);
-        _spiralPrefab.DoSpawnSpiral();
+        spiral.SetUpHitIndicator(_minigameController.SuccessRange[round]);
     }
 
     private int maxPosInterations = 20;
@@ -67,6 +71,21 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
         return false;
     }
 
+
+    private void PlayResultAnimations(int round, float success)
+    {
+        if (success >= 0.5f) // Same Animation for grance and perfect hit
+        {
+            _spirals[round].DoIndicatorAnimTrigger("Hit");
+            _spirals[round].DoKillSpiral();
+        }
+        else
+        {
+            _spirals[round].DoIndicatorAnimTrigger("Miss");
+            _spirals[round].DoKillSpiral();
+        }
+    }
+
     private void Update()
     {
         for (int i = 0; i < _spirals.Count; i++)
@@ -78,6 +97,8 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
     [Button]
     public void DoInitiateMaelStorm1Effect()
     {
+        _vignetteMaterial.SetFloat("_Vignette_Size", 1.5f);
+ 
         _vignetteMaterial.DOFloat(0.65f, "_Vignette_Size", _vignetteTransitionDuration).SetEase(Ease.Linear);
         _vignetteImage.material = _vignetteMaterial;
 
@@ -85,7 +106,7 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
     }
 
     [Button]
-    public void DoKillMaelstorm1Effect()
+    public void DoKillMaelStorm1Effect()
     {
         _vignetteMaterial.DOFloat(1.5f, "_Vignette_Size", _vignetteTransitionDuration).SetEase(Ease.Linear);
         _vignetteImage.material = _vignetteMaterial;

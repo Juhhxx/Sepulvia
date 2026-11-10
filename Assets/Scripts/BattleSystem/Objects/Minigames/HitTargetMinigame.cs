@@ -7,11 +7,12 @@ using UnityEngine;
 
 public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 {
+    [Header("Minigame Settings")]
     [SerializeField] private AnimationCurve _movementCurve;
     [SerializeField] private float[] _movingSpeedPerRound = new float[1] { 1 };
     [SerializeField] private bool _intermitentMovement;
 
-    [ShowIf(nameof(_intermitentMovement))]
+    [HideIf(nameof(_intermitentMovement))]
     [SerializeField] private float _additionalTime = 0.3f;
 
 
@@ -42,19 +43,30 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
     }
 
     // Make easy
+    [Header("Easy Mode Settings")]
     [SerializeField] private float _easySpeedReduction = 0.5f;
 
+    [Header("Current Position of Minigame")]
     [SerializeField, ReadOnly] private float[] _currentPoint;
     public float[] CurrentPoint => _currentPoint;
 
     [SerializeField] private bool _waitForRounds = true;
 
     [HideIf(nameof(_waitForRounds))]
+    [Header("Delay Between Rounds")]
     [SerializeField] private float _roundDelay = 1f;
+
+    // Wait times
+    [Header("Wait Times")]
+    [SerializeField] private float _waitBeforeRound = 1f;
+    [SerializeField] private float _waitAfterRound = 0.1f;
+    [SerializeField] private float _waitBeforeMinigame = 1f;
+    [SerializeField] private float _waitAfterMinigame = 1f;
 
     public event Action<int> OnMinigameStart;
     public event Action<int> OnMinigameRoundStart;
     public event Action<int, float> OnMinigameRoundEnd;
+    public event Action OnMinigameEndRounds; // Used to play animations after all rounds are finished, but before the minigame ends
     public event Action<float> OnMinigameEnd;
     public void StartMinigame(int rounds)
     {
@@ -131,6 +143,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         OnMakeEasier?.Invoke();
     }
 
+    [Header("Testing Settings")]
     [SerializeField] private int _testRounds = 3;
     [Button]
     private void Test()
@@ -152,6 +165,8 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         _hitKey = new bool[rounds];
         _finishedRound = new bool[rounds];
 
+        yield return new WaitForSeconds(_waitBeforeMinigame); // delay before starting minigame
+
         for (int round = 0; round < rounds; round++)
         {
             yield return MinigameRoundCR(round, (result) => { points += result; });
@@ -159,7 +174,9 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 
         Debug.Log($"SUCCESS RATE : {points / rounds}", this);
 
-        yield return new WaitForSeconds(1);
+        OnMinigameEndRounds?.Invoke(); // Used to play animations after all rounds are finished, but before the minigame ends
+
+        yield return new WaitForSeconds(_waitAfterMinigame); // delay after ending minigame
 
         OnMinigameEnd?.Invoke(points / rounds);
     }
@@ -171,6 +188,8 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         _hitKey = new bool[rounds];
         _finishedRound = new bool[rounds];
         _roundsCR = new Coroutine[rounds];
+
+        yield return new WaitForSeconds(_waitBeforeMinigame); // delay before starting minigame
 
         for (int round = 0; round < rounds; round++)
         {
@@ -189,7 +208,9 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 
         Debug.Log($"SUCCESS RATE : {points / rounds}", this);
 
-        yield return new WaitForSeconds(1);
+        OnMinigameEndRounds?.Invoke(); // Used to play animations after all rounds are finished, but before the minigame ends
+
+        yield return new WaitForSeconds(_waitAfterMinigame); // delay after ending minigame
 
         OnMinigameEnd?.Invoke(points / rounds);
     }
@@ -198,7 +219,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
     {
         OnMinigameRoundStart?.Invoke(round);
 
-        yield return new WaitForSeconds(1f); // delay before starting round
+        yield return new WaitForSeconds(_waitBeforeRound); // delay before starting round
 
         _hitKey[round] = false;
         _finishedRound[round] = false;
@@ -232,7 +253,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         
         _finishedRound[round] = true;
 
-        yield return new WaitForSeconds(0.1f); // delay after ending round
+        yield return new WaitForSeconds(_waitAfterRound); // delay after ending round
     }
 
     private IEnumerator MinigameBackAndForth(int round)
@@ -263,8 +284,6 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 
         while (time < 1 + _additionalTime)
         {
-            Debug.Log($"FINISHED ROUNDS : {string.Join(", ", _finishedRound.Select(r => r ? "true" : "false"))}");
-
             int speedIdx = round;
 
             if (round >= _movingSpeedPerRound.Length) speedIdx = _movingSpeedPerRound.Length - 1;
