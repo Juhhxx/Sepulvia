@@ -80,12 +80,21 @@ MonoBehaviour:
   _successHitRange: {x: 0.2, y: 0.8}
   _successRadius: 0.1
   _successRange:
-  - {x: 0.5, y: 1}
+  - {x: 0.11281223, y: 0.31281224}
+  - {x: 0.10732121, y: 0.30732122}
+  - {x: 0.3019103, y: 0.5019103}
   _graceRadius: 0.15
   _easySpeedReduction: 0.5
-  _currentPoint: []
+  _currentPoint:
+  - 0
+  - 0
+  - 0
   _waitForRounds: 1
   _roundDelay: 1
+  _waitBeforeRound: 1
+  _waitAfterRound: 0.1
+  _waitBeforeMinigame: 1
+  _waitAfterMinigame: 1
   _testRounds: 3
 --- !u!114 &5886781778594044794
 MonoBehaviour:
@@ -195,7 +204,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6041177052502480465
 RectTransform:
   m_ObjectHideFlags: 0

@@ -18,6 +18,11 @@ public class HitTargetSliderUI : MonoBehaviour
     [SerializeField] private Image _chain;
     [SerializeField] private Color _backgroundChainColor = new Color(0.5f, 0.5f, 0.5f, 1f);
     private Material chainMaterial;
+
+    [SerializeField] private RectTransform _particleParent;
+    [SerializeField] private ParticleSystem _hitPerfectVFX;
+    [SerializeField] private ParticleSystem _hitOkVFX;
+    [SerializeField] private ParticleSystem _hitMissVFX;
     
     void Start()
     {
@@ -105,5 +110,21 @@ public class HitTargetSliderUI : MonoBehaviour
     public void UpdateSlider(float value)
     {
         _slider.value = value;
+    }
+
+    public void DoSpawnParticles(float successRate)
+    {
+        if (successRate == 1f)
+        {
+            if (_hitPerfectVFX != null) Instantiate(_hitPerfectVFX, _particleParent);
+        }
+        else if (successRate == 0.5f)
+        {
+            if (_hitOkVFX != null) Instantiate(_hitOkVFX, _particleParent);
+        }
+        else
+        {
+            if (_hitMissVFX != null) Instantiate(_hitMissVFX, _particleParent);
+        }
     }
 }

@@ -7,14 +7,11 @@ public class HitTargetMinigameUI : MonoBehaviour
 {
     [SerializeField] private Transform _sliderParent;
     [SerializeField] private HitTargetSliderUI _sliderPrefab;
-    [SerializeField] private Canvas _minigameCanvas;
     private List<HitTargetSliderUI> _sliders = new List<HitTargetSliderUI>();
 
     [SerializeField] private Image _roundIndicatorImagePrefab;
     [SerializeField] private Transform _roundIndicatorParent;
-    [SerializeField] private ParticleSystem _hitPerfectVFX;
-    [SerializeField] private ParticleSystem _hitOkVFX;
-    [SerializeField] private ParticleSystem _hitMissVFX;
+    
     private List<Image> _roundIndicatorList = new List<Image>();
 
     private HitTargetMinigame _minigameController;
@@ -23,11 +20,13 @@ public class HitTargetMinigameUI : MonoBehaviour
     {
         _minigameController = GetComponent<HitTargetMinigame>();
         
-        _minigameController.OnMinigameStart += SpawnRoundIndicators;
-        _minigameController.OnMinigameRoundStart += UpdateSliderActivated;
-        _minigameController.OnMinigameRoundEnd += UpdateRoundIndicator;
+        _minigameController.OnMinigameStart         += SetUpSliders;
+        _minigameController.OnMinigameRoundStart    += UpdateSliderActivated;
+        _minigameController.OnMinigameRoundEnd      += SpawnResultParticles;
 
-        _minigameController.OnMinigameStart += SetUpSliders;
+        // _minigameController.OnMinigameStart += SpawnRoundIndicators;
+        // _minigameController.OnMinigameRoundEnd += UpdateRoundIndicator;
+
     }
 
     // Slider set up
@@ -107,6 +106,12 @@ public class HitTargetMinigameUI : MonoBehaviour
         }
     }
 
+    // Particle Effects
+    private void SpawnResultParticles(int round, float successRate)
+    {
+        _sliders[round].DoSpawnParticles(successRate);
+    }
+
     // Round Indicators
     private void SpawnRoundIndicators(int rounds)
     {
@@ -121,26 +126,18 @@ public class HitTargetMinigameUI : MonoBehaviour
     private void UpdateRoundIndicator(int round, float result)
     {
         Color color;
-        ParticleSystem ps;
-        Vector3 sliderPosition = _sliderParent.position;
-        //Add VFX play for miss, whiff and success here
+        
         if (result == 1f)
         {
            color = Color.green; 
-           ps = Instantiate(_hitPerfectVFX, _minigameCanvas.transform.position, Quaternion.identity); 
-           ps.transform.parent = _minigameCanvas.transform;
         }
         else if (result == 0.5f) 
         {
             color = Color.yellow;
-            ps = Instantiate(_hitOkVFX, _sliderParent.position, Quaternion.identity); 
-            ps.transform.parent = _minigameCanvas.transform;
         }
         else
         {
             color = Color.red; 
-            ps = Instantiate(_hitMissVFX, _sliderParent.position, Quaternion.identity);
-            ps.transform.parent = _minigameCanvas.transform;
         } 
 
         _roundIndicatorList[round].color = color;

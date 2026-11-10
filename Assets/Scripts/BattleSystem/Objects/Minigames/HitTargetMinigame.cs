@@ -63,11 +63,12 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
     [SerializeField] private float _waitBeforeMinigame = 1f;
     [SerializeField] private float _waitAfterMinigame = 1f;
 
-    public event Action<int> OnMinigameStart;
-    public event Action<int> OnMinigameRoundStart;
-    public event Action<int, float> OnMinigameRoundEnd;
+    public event Action<int> OnMinigameStart; // On minigame start, theres a delay for the rounds to begin so animations can play
+    public event Action<int> OnMinigameRoundStart; // when a round starts
+    public event Action<int, float> OnMinigameRoundEnd; // when a round ends
     public event Action OnMinigameEndRounds; // Used to play animations after all rounds are finished, but before the minigame ends
     public event Action<float> OnMinigameEnd;
+
     public void StartMinigame(int rounds)
     {
         _graceRange = new Vector2[rounds];
