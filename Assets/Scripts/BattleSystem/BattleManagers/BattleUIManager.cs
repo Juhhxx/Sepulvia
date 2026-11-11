@@ -207,8 +207,11 @@ public class BattleUIManager : MonoBehaviour
         _decisionBattleScreen.SetActive(true);
         _rewardsBattleScreen.SetActive(false);
 
+        //METER AQUI A ANIMAÇÃO DA BEAD A REVELAR-SSE
+        DoBeadSpawnIn();
+
         // Dissolve transition out
-        yield return DissolveEndTransition(_battleWinTransitionScreen, 1f, -1f, 1f)
+        yield return DissolveEndTransition(_battleWinTransitionScreen, 1f, -1f, .5f)
             .WaitForCompletion();
 
         yield return null;
@@ -217,7 +220,7 @@ public class BattleUIManager : MonoBehaviour
     public IEnumerator ShowLossScreen()
     {   
         // Dissolve transition in
-        yield return DissolveEndTransition(_battleLossTransitionScreen, -1f, 1f, 1f)
+        yield return DissolveEndTransition(_battleLossTransitionScreen, -1f, 1f, .5f)
             .WaitForCompletion();
 
         // Activate the menu
@@ -348,7 +351,7 @@ public class BattleUIManager : MonoBehaviour
         _moveTween = _decisionScreenHeart.DOAnchorPosX(_decisionHearthDefaultPos.x, 0.5f).SetEase(Ease.OutFlash);
     }
 
-    public void DoDecisionHeartSpareAnim(Action action)
+    public void DoDecisionHeartSpareAnim(Action action) //MUDAR ESTA ANIMAÇÃO PARA O QUE QUERO QUE ELE FAÇA QUANDO CLICO SPARE
     {
         _decisionScreenHeart.DOKill();
 
@@ -359,7 +362,7 @@ public class BattleUIManager : MonoBehaviour
     }
 
     private float _assimilationScale = 100f;
-    public void DoDecisionHeartAssimilateAnim(Action action)
+    public void DoDecisionHeartAssimilateAnim(Action action) //MUDAR ESTA ANIMAÇÃO PARA O QUE QUERO QUE ELE FAÇA QUANDO CLICO ASSIMILATE
     {
         _decisionScreenHeart.DOKill();
         _decisionScreenHeart.DOShakeAnchorPos(10f, 50f);
@@ -375,6 +378,110 @@ public class BattleUIManager : MonoBehaviour
     {
         _rewardsBattleScreen.transform.localScale = Vector3.zero;
         _rewardsBattleScreen.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
+    }
+
+
+    [SerializeField] private Transform _beadTransform;
+    [SerializeField] private float _rotationSpeed = 1f;
+    [SerializeField] private float _spawnSpeed = 1f;
+    [SerializeField] private GameObject _decisionButtons;
+    [SerializeField] private GameObject _beadRenderObject;
+    private bool _wasAlreadyHoveringRight = false;
+    private bool _wasAlreadyHoveringLeft = false;
+    private bool _isBeadRevealed = false;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public void DoBeadSpawnIn()
+    {
+        _beadRenderObject.SetActive(true);
+        foreach(Transform child in _decisionButtons.transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+
+        _beadTransform.localScale = Vector3.zero;
+
+        Sequence mySequence = DOTween.Sequence();
+        mySequence.Append(_beadTransform.DOScale(Vector3.one, _spawnSpeed).SetEase(Ease.OutBack));
+        mySequence.OnComplete(() =>
+        {
+            //DoBeadAwakening();
+            DoButtonSpawnIn();
+        });
+
+        mySequence.Play();
+        //_beadTransform.localScale = Vector3.zero;
+        //_beadTransform.DOScale(Vector3.one, _spawnSpeed).SetEase(Ease.OutBack);
+    }
+    public void DoButtonSpawnIn()
+    {
+        foreach(Transform child in _decisionButtons.transform)
+        {
+            child.gameObject.SetActive(true);
+            Vector3 scale = child.localScale;
+            child.localScale = Vector3.zero;
+            child.DOScale(scale, _spawnSpeed).SetEase(Ease.OutBack);
+        }
+    }
+    public void DoBeadAwakening()
+    {
+        _beadTransform.rotation = Quaternion.Euler(0, 0, 0);
+        Quaternion targetRotation = Quaternion.Euler(180,0,0);
+        //_beadTransform.DORotateQuaternion(targetRotation, 1f).SetEase(Ease.InOutBack);
+        _beadTransform.DORotate(new Vector3(180, 0, 0), _rotationSpeed).SetEase(Ease.InOutBack);
+
+        foreach(Transform child in _decisionButtons.transform)
+        {
+            child.gameObject.SetActive(true);
+        }
+    }
+    public void DoNormalRotationRight()
+    {
+        if (!_isBeadRevealed)
+        {
+            DoBeadAwakening();
+            _isBeadRevealed = true;
+            return;
+        }
+
+        if (_wasAlreadyHoveringRight)
+        {
+            return;
+        }
+        Quaternion targetRotation = Quaternion.Euler(180,0,0);
+        //_beadTransform.DORotateQuaternion(targetRotation, 1f).SetEase(Ease.InOutBack);
+        _beadTransform.DORotate(new Vector3(540, 0, 0), _rotationSpeed, RotateMode.FastBeyond360).SetEase(Ease.InOutBack);
+        _wasAlreadyHoveringRight = true;
+        _wasAlreadyHoveringLeft = false;
+    }
+    public void DoNormalRotationLeft()
+    {
+        if (!_isBeadRevealed)
+        {
+            DoBeadAwakening();
+            _isBeadRevealed = true;
+            return;
+        }
+        if (_wasAlreadyHoveringLeft)
+        {
+            return;
+        }
+        Quaternion targetRotation = Quaternion.Euler(180,0,0);
+        //_beadTransform.DORotateQuaternion(targetRotation, 1f).SetEase(Ease.InOutBack);
+        _beadTransform.DORotate(new Vector3(-540, 0, 0), _rotationSpeed, RotateMode.FastBeyond360).SetEase(Ease.InOutBack);
+        _wasAlreadyHoveringLeft = true;
+        _wasAlreadyHoveringRight = false;
+    }
+
+    public void DoBeadSpawnOut()
+    {
+        _beadTransform.localScale = Vector3.one;
+        _beadTransform.DOScale(Vector3.zero, _spawnSpeed).SetEase(Ease.InBack);
+    }
+
+    private IEnumerator DoBeadSpawnInCoroutine()
+    {
+        DoBeadSpawnIn();
+        yield return null;
     }
 
 }

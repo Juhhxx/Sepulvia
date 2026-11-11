@@ -431,7 +431,7 @@ public class BattleManager : MonoBehaviour
             foreach (ItemInfo i in items) Player.Inventory.AddItem(i);
         }
 
-        _uiManager.DoDecisionHeartAssimilateAnim(() =>
+        _uiManager.DoDecisionHeartAssimilateAnim(() => //Mudaar esta animaçáo para o que quero que ele se mexa
         {
             _uiManager.ShowRewards(items, essence);
             _uiManager.ShowRewardsScreen();

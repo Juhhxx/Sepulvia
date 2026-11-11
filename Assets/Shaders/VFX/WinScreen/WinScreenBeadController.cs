@@ -7,16 +7,6 @@ public class WinScreenBeadController : MonoBehaviour
     [SerializeField] private float _rotationSpeed = 1f;
     [SerializeField] private float _spawnSpeed = 1f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     [Button]
     public void DoBeadSpawnIn()
     {
@@ -39,7 +29,7 @@ public class WinScreenBeadController : MonoBehaviour
         _beadTransform.DORotate(new Vector3(540, 0, 0), _rotationSpeed, RotateMode.FastBeyond360).SetEase(Ease.InOutBack);
     }
     [Button]
-    public void DoNormalRotationleft()
+    public void DoNormalRotationLeft()
     {
         Quaternion targetRotation = Quaternion.Euler(180,0,0);
         //_beadTransform.DORotateQuaternion(targetRotation, 1f).SetEase(Ease.InOutBack);
