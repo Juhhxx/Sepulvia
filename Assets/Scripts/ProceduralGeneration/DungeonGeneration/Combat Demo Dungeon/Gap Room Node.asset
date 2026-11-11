@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47d66a1fd0abb3e4b9c04830f9949514, type: 3}
+  m_Name: Gap Room Node
+  m_EditorClassIdentifier: Assembly-CSharp::PreMadeRoomNode
+  RoomData: {fileID: 11400000, guid: 10031f7056134434197afa0c5074f358, type: 2}
+  Connections:
+  - DoorId: 4
+    TargetRoom: {fileID: 11400000, guid: 9ca5ac7858ad2394185f84b64b7ed178, type: 2}
+    TargetDoorId: 2
+  - DoorId: 7
+    TargetRoom: {fileID: 11400000, guid: 9a403e084fd9d524cbc48db0133f57d0, type: 2}
+    TargetDoorId: 4

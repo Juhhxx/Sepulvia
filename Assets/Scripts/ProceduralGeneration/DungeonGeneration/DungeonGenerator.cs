@@ -142,6 +142,7 @@ public class DungeonGenerator : RandomBehaviour
         Debug.Log($"Dungeon Created :");
         Debug.Log($"|    {firstNode.RoomData.RoomName} - Start");
 
+        /*
         RoomNode node = firstNode.Connections.Find(c => c.DoorId == RoomSide.North).TargetRoom;
         while (node != null)
         {
@@ -150,6 +151,7 @@ public class DungeonGenerator : RandomBehaviour
 
             node = node.Connections.Find(c => c.DoorId == RoomSide.North)?.TargetRoom;
         }
+        */
 
     }
 }
