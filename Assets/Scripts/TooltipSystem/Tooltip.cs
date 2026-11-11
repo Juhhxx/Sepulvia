@@ -7,10 +7,16 @@ using UnityEngine.UI;
 [ExecuteInEditMode()]
 public class Tooltip : MonoBehaviour
 {
+    [Header("Tooltip Layout Settings")]
     [SerializeField] private TextMeshProUGUI _headerTMP;
     [SerializeField] private TextMeshProUGUI _contentTMP;
     [SerializeField] private LayoutElement _layoutElement;
     [SerializeField] private float _characterWrapLimit;
+
+    [Header("Tooltip Pivot Settings")]
+    [SerializeField] private List<RectTransform> _tooltipPivots = new List<RectTransform>();
+
+    [Header("Tooltip Additional Info Settings")]
 
     [SerializeField] private Transform _additionalParent;
     [SerializeField] private GameObject _additionalPrefab;
@@ -25,6 +31,8 @@ public class Tooltip : MonoBehaviour
         _rectTrans = GetComponent<RectTransform>();
     }
 
+
+    // Main Tooltip
     public void ToggleTooltip(bool show, TooltipInfo info = null)
     {
         if (!show)
@@ -62,6 +70,7 @@ public class Tooltip : MonoBehaviour
         ShowAdditionalTooltips(info.AdditionalInfo);
     }
 
+    // Additional Tooltips
     private void ShowAdditionalTooltips(TooltipInfo[] infos)
     {
         if (infos.Length <= 0) return;
@@ -103,6 +112,31 @@ public class Tooltip : MonoBehaviour
         _additionalTooltips.Clear();
     }
 
+    // Position Tooltip
+    public void PositionTooltip(Vector2 position, TooltipPosition alignment)
+    {
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_rectTrans);
+
+        var offset = GetAlignmentOffset(alignment);
+
+        Vector2 pos = position - offset;
+
+        _rectTrans.anchoredPosition = pos;
+    }
+
+    private Vector2 GetAlignmentOffset(TooltipPosition alignment)
+    {
+        // Get the distance between the pivot of the tooltip and the pivot of the selected alignment.
+        Transform targetPivot = _tooltipPivots[(int)alignment];
+
+        Vector3 worldOffset = targetPivot.position - _rectTrans.position;
+
+        Vector3 localOffset = _rectTrans.parent.InverseTransformVector(worldOffset);
+
+        return localOffset;
+    }
+
     private void Update()
     {
         if (Application.isEditor)
@@ -113,4 +147,16 @@ public class Tooltip : MonoBehaviour
             _layoutElement.enabled = (headerLength > _characterWrapLimit || contentLength > _characterWrapLimit);
         }
     }
+}
+
+public enum TooltipPosition
+{
+    TopLeft,
+    TopCenter,
+    TopRight,
+    MiddleLeft,
+    MiddleRight,
+    BottomLeft,
+    BottomCenter,
+    BottomRight
 }

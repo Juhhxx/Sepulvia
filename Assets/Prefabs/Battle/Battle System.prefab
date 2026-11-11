@@ -8615,7 +8615,8 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras: []
+  m_Cameras:
+  - {fileID: 0}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -36291,7 +36292,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatusEffectShowcaseManager
   _showcasePrefab: {fileID: 591781625030449873, guid: 9f9defe1774a8e542a2a9e9578057a75, type: 3}
   _showcaseParent: {fileID: 8173514019380964096}
-  _infoPanel: {fileID: 6171670218480702087}
   _isEnemyShowcase: 0
   _statusEffectManager: {fileID: 0}
 --- !u!1 &3285966449931289928
@@ -66994,7 +66994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6eeda5c3b76c0147955617543d08cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleResolver
-  _uniqueID: e4d9fdd5-c278-4d73-a211-08a97b9d0970
+  _uniqueID: dc269f7c-c6b7-45fc-8e8f-2badc7d87f97
   _seed: 0
   _battleManager: {fileID: 8620377705130297943}
   _pullManager: {fileID: 8062390843115854640}
@@ -69219,13 +69219,41 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6215023305749045889}
   m_SourcePrefab: {fileID: 100100000, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
 --- !u!224 &3332334074995100322 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3774612561399789025, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
   m_PrefabInstance: {fileID: 1899615311770255171}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7285827111858122150 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+  m_PrefabInstance: {fileID: 1899615311770255171}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6215023305749045889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7285827111858122150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965706bcef915eb4a90ec677cf800046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  header: 
+  content: 
+  additional: []
+  _useDefaultValues: 0
+  _useRelativePosition: 1
+  _tooltipOffset: {x: 120, y: 0}
+  _tooltipPosition: {x: 0, y: 0}
+  _tooltipAlignment: 3
 --- !u!1001 &2025475104938268157
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -69337,13 +69365,41 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2941911885042353994}
   m_SourcePrefab: {fileID: 100100000, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
 --- !u!224 &2916626942562672668 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3774612561399789025, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
   m_PrefabInstance: {fileID: 2025475104938268157}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7159405951433164568 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+  m_PrefabInstance: {fileID: 2025475104938268157}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2941911885042353994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7159405951433164568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965706bcef915eb4a90ec677cf800046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  header: 
+  content: 
+  additional: []
+  _useDefaultValues: 0
+  _useRelativePosition: 1
+  _tooltipOffset: {x: 120, y: 0}
+  _tooltipPosition: {x: 0, y: 0}
+  _tooltipAlignment: 3
 --- !u!1001 &2255924249561779434
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -69455,13 +69511,41 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1401423304884753879}
   m_SourcePrefab: {fileID: 100100000, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
 --- !u!224 &3111064883289389323 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3774612561399789025, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
   m_PrefabInstance: {fileID: 2255924249561779434}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6921496068640349711 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+  m_PrefabInstance: {fileID: 2255924249561779434}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1401423304884753879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6921496068640349711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965706bcef915eb4a90ec677cf800046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  header: 
+  content: 
+  additional: []
+  _useDefaultValues: 0
+  _useRelativePosition: 1
+  _tooltipOffset: {x: 120, y: 0}
+  _tooltipPosition: {x: 0, y: 0}
+  _tooltipAlignment: 3
 --- !u!1001 &3187358760929300716
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -69709,13 +69793,41 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5098539276793092865}
   m_SourcePrefab: {fileID: 100100000, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
 --- !u!224 &1754675181510305037 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3774612561399789025, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
   m_PrefabInstance: {fileID: 3187358760929300716}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6015536694049653257 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+  m_PrefabInstance: {fileID: 3187358760929300716}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5098539276793092865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6015536694049653257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965706bcef915eb4a90ec677cf800046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  header: 
+  content: 
+  additional: []
+  _useDefaultValues: 0
+  _useRelativePosition: 1
+  _tooltipOffset: {x: 120, y: 0}
+  _tooltipPosition: {x: 0, y: 0}
+  _tooltipAlignment: 3
 --- !u!1001 &3292517334124282428
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -69827,13 +69939,41 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1528009581782924190}
   m_SourcePrefab: {fileID: 100100000, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
 --- !u!224 &1860902754369501149 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3774612561399789025, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
   m_PrefabInstance: {fileID: 3292517334124282428}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5976804701411774681 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+  m_PrefabInstance: {fileID: 3292517334124282428}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1528009581782924190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5976804701411774681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965706bcef915eb4a90ec677cf800046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  header: 
+  content: 
+  additional: []
+  _useDefaultValues: 0
+  _useRelativePosition: 1
+  _tooltipOffset: {x: 120, y: 0}
+  _tooltipPosition: {x: 0, y: 0}
+  _tooltipAlignment: 3
 --- !u!1001 &5547958714125531793
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -69945,8 +70085,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3301985206411856299}
   m_SourcePrefab: {fileID: 100100000, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+--- !u!1 &3728681604239845492 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+  m_PrefabInstance: {fileID: 5547958714125531793}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3301985206411856299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3728681604239845492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965706bcef915eb4a90ec677cf800046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  header: 
+  content: 
+  additional: []
+  _useDefaultValues: 0
+  _useRelativePosition: 1
+  _tooltipOffset: {x: 120, y: 0}
+  _tooltipPosition: {x: 0, y: 0}
+  _tooltipAlignment: 3
 --- !u!224 &8690910640690827120 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3774612561399789025, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
@@ -70063,8 +70231,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1244406942953514874}
   m_SourcePrefab: {fileID: 100100000, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+--- !u!1 &3336441205175792844 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+  m_PrefabInstance: {fileID: 5840558208216294953}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1244406942953514874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3336441205175792844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965706bcef915eb4a90ec677cf800046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  header: 
+  content: 
+  additional: []
+  _useDefaultValues: 0
+  _useRelativePosition: 1
+  _tooltipOffset: {x: 120, y: 0}
+  _tooltipPosition: {x: 0, y: 0}
+  _tooltipAlignment: 3
 --- !u!224 &7309283503895434184 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3774612561399789025, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
@@ -70181,8 +70377,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7273855566655691669}
   m_SourcePrefab: {fileID: 100100000, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+--- !u!1 &2743656035567970455 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+  m_PrefabInstance: {fileID: 6436720869269142130}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7273855566655691669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2743656035567970455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965706bcef915eb4a90ec677cf800046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  header: 
+  content: 
+  additional: []
+  _useDefaultValues: 0
+  _useRelativePosition: 1
+  _tooltipOffset: {x: 120, y: 0}
+  _tooltipPosition: {x: 0, y: 0}
+  _tooltipAlignment: 3
 --- !u!224 &7868296142039502739 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3774612561399789025, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
@@ -70311,8 +70535,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4622931804822176907}
   m_SourcePrefab: {fileID: 100100000, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+--- !u!1 &1845177000848740813 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9169539018684355301, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}
+  m_PrefabInstance: {fileID: 7411761237237465896}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4622931804822176907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845177000848740813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965706bcef915eb4a90ec677cf800046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  header: 
+  content: 
+  additional: []
+  _useDefaultValues: 0
+  _useRelativePosition: 1
+  _tooltipOffset: {x: 120, y: 0}
+  _tooltipPosition: {x: 0, y: 0}
+  _tooltipAlignment: 3
 --- !u!224 &5961010756701566665 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3774612561399789025, guid: 5c7b049ca11ef3b418a0e7d6549be8ee, type: 3}

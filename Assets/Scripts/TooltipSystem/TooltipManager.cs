@@ -8,14 +8,12 @@ public class TooltipManager : MonoBehaviourSingleton<TooltipManager>
     [SerializeField] private Tooltip _tooltip;
 
     private Canvas _canvas;
-    private HorizontalLayoutGroup _layoutGroup;
 
     private void Awake()
     {
         base.SingletonCheck(this, false, true);
 
         _canvas = GetComponentInChildren<Canvas>();
-        _layoutGroup = _tooltip.GetComponent<HorizontalLayoutGroup>();
     }
 
     private void Start()
@@ -33,16 +31,12 @@ public class TooltipManager : MonoBehaviourSingleton<TooltipManager>
         _tooltip?.ToggleTooltip(false);
     }
 
-    public void PositionTooltip(Vector2 position, TextAnchor alignment)
+    public void PositionTooltip(Vector2 position, TooltipPosition alignment)
     {
-        Vector2 pos = position;
-
-        _tooltip.RectTransform.anchoredPosition = pos;
-
-        _layoutGroup.childAlignment = alignment;
+        _tooltip.PositionTooltip(position, alignment);
     }
 
-    public void PositionTooltip(RectTransform rectTrans, Vector2 offset, TextAnchor alignment)
+    public void PositionTooltip(RectTransform rectTrans, Vector2 offset, TooltipPosition alignment)
     {
         Vector3 worldPosition = rectTrans.TransformPoint(offset);
 
@@ -58,9 +52,7 @@ public class TooltipManager : MonoBehaviourSingleton<TooltipManager>
             out Vector2 localPosition
         );
 
-        _tooltip.RectTransform.anchoredPosition = localPosition;
-
-        _layoutGroup.childAlignment = alignment;
+        _tooltip.PositionTooltip(localPosition, alignment);
     }
 }
 

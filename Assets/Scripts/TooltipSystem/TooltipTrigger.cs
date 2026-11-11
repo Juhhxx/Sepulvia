@@ -14,7 +14,7 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField] private bool _useRelativePosition = true;
     [SerializeField, ShowIf(nameof(_useRelativePosition))] private Vector2 _tooltipOffset;
     [SerializeField, HideIf(nameof(_useRelativePosition))] private Vector2 _tooltipPosition;
-    [SerializeField] private TextAnchor _tooltipAlignment = TextAnchor.UpperLeft;
+    [SerializeField] private TooltipPosition _tooltipAlignment = TooltipPosition.TopLeft;
 
     private RectTransform _rectTrans;
     private ITooltipable _tooltipObject;
