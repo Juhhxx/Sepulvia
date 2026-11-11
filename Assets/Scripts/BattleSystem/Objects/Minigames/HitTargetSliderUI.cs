@@ -95,13 +95,13 @@ public class HitTargetSliderUI : MonoBehaviour
     {
         foreach (Image child in _leftChain.GetComponentsInChildren<Image>())
         {
-            chainMaterial = new Material(_chain.material);
+            chainMaterial = new Material(child.material);
             chainMaterial.SetFloat("_Offset", Random.Range(0f,1f));
             child.material = chainMaterial;
         }
         foreach (Image child in _rightChain.GetComponentsInChildren<Image>())
         {
-            chainMaterial = new Material(_chain.material);
+            chainMaterial = new Material(child.material);
             chainMaterial.SetFloat("_Offset", Random.Range(0f,1f));
             child.material = chainMaterial;
         }
