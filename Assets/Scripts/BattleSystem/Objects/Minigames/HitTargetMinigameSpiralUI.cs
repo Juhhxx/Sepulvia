@@ -36,6 +36,8 @@ public class HitTargetMinigameSpiralUI : MonoBehaviour
         var spiral = Instantiate(_spiralPrefab, _spawningArea);
         var rectT = spiral.GetComponent<RectTransform>();
 
+        spiral.transform.SetAsFirstSibling();
+
         _spirals.Add(spiral);
         _spiralTransforms.Add(rectT);
 

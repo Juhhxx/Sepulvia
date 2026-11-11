@@ -39,6 +39,8 @@ public class HitTargetMinigameUI : MonoBehaviour
         {
             HitTargetSliderUI slider = Instantiate(_sliderPrefab, _sliderParent);
 
+            slider.transform.SetAsFirstSibling();
+
             _sliders.Add(slider);
             slider.SetUpHitZoneIndicator(_minigameController.SuccessRange[i],
                                         _minigameController.GraceRange[i]);
