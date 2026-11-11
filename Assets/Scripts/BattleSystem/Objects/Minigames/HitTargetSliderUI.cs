@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +18,12 @@ public class HitTargetSliderUI : MonoBehaviour
     [SerializeField] private GameObject _rightChain;
     [SerializeField] private Image _chain;
     [SerializeField] private Color _backgroundChainColor = new Color(0.5f, 0.5f, 0.5f, 1f);
-    private Material chainMaterial;
+
+    [SerializeField] private Material chainMaterial;
+    [SerializeField] private Material outlinedChainMaterial;
+
+    [SerializeField] private Image leftSegmentToBreak;
+    [SerializeField] private Image rightSegmentToBreak;
 
     [SerializeField] private RectTransform _particleParent;
     [SerializeField] private ParticleSystem _hitPerfectVFX;
@@ -74,36 +80,66 @@ public class HitTargetSliderUI : MonoBehaviour
     }
 
     public void ToggleActivated(bool on)
-    {
-        foreach (Image child in _leftChain.GetComponentsInChildren<Image>())
-        {
-            child.color = on ? Color.white : _backgroundChainColor;
-            //child.SetActive(on);
-        }
-        foreach (Image child in _rightChain.GetComponentsInChildren<Image>())
-        {
-            child.color = on ? Color.white : _backgroundChainColor;
-            //child.SetActive(on);
-        }
+    {   
+        // Get the left and right chain sections
+        Image[] leftChain = _leftChain.GetComponentsInChildren<Image>();
+        Image[] rightChain = _rightChain.GetComponentsInChildren<Image>();
+
+        // Change the chain colors, depending on the active state
+        ChangeChainSectionColor(leftChain, on);
+        ChangeChainSectionColor(rightChain, on);
+
+        // Change the materials of the chain segment to break, depending on the active state
+        ChangeChainMaterial(leftSegmentToBreak, on);
+        ChangeChainMaterial(rightSegmentToBreak, on);
         
         //_canvasGroup.alpha = on ? 1f : 0.5f;
         _sliderHandle.enabled = on;
         if (on) transform.SetAsLastSibling();
     }
 
-    private void SetupJiggle()
-    {
-        foreach (Image child in _leftChain.GetComponentsInChildren<Image>())
+    private void ChangeChainSectionColor(Image[] chainSection, bool isActive)
+    {   
+        // For each segment in the chain section
+        for(int i = 0; i < chainSection.Length; i++)
+        {   
+            Image child = chainSection[i];
+
+            // Change color of the current segment depending on isActive
+            child.color = isActive ? Color.white : _backgroundChainColor;
+        } 
+    }
+
+    private void ChangeChainMaterial(Image chainImage, bool isOutline)
+    {   
+        Material newChainMaterial;
+
+        if(isOutline)
+        {   
+            // Create a copy of the outline material and assign it to the chain
+            newChainMaterial = new Material(outlinedChainMaterial);
+            chainImage.material = newChainMaterial;
+        }
+        else
         {
-            chainMaterial = new Material(child.material);
-            chainMaterial.SetFloat("_Offset", Random.Range(0f,1f));
-            child.material = chainMaterial;
+            // Create a copy of the default chain material, initialize it and assign it to the chain
+            newChainMaterial = new Material(chainMaterial);
+            newChainMaterial.SetFloat("_Offset", Random.Range(0f,1f));
+            chainImage.material = newChainMaterial;            
+        }
+    }
+
+    private void SetupJiggle()
+    {   
+        foreach (Image child in _leftChain.GetComponentsInChildren<Image>())
+        {   
+            // Initialize chain material as a default (false)
+            ChangeChainMaterial(child, false);
         }
         foreach (Image child in _rightChain.GetComponentsInChildren<Image>())
         {
-            chainMaterial = new Material(child.material);
-            chainMaterial.SetFloat("_Offset", Random.Range(0f,1f));
-            child.material = chainMaterial;
+            // Initialize chain material as a default (false)
+            ChangeChainMaterial(child, false);
         }
     }
 
