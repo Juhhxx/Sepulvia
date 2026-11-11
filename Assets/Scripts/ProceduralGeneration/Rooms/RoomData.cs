@@ -13,11 +13,16 @@ public class RoomData : DataAsset
 
 public enum RoomSide
 {
-    North = 1,
-    East = 2,
-    South = -1,
-    West = -2,
-    None = 0
+    North,
+    East,
+    South,
+    West,
+    NorthEast,
+    NorthWest,
+    SouthEast,
+    SouthWest,
+    None,
+
 }
 
 public enum RoomType
