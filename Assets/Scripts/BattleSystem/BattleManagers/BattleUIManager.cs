@@ -412,7 +412,7 @@ public class BattleUIManager : MonoBehaviour
         _beadTransform.localScale = Vector3.zero;
 
         Sequence mySequence = DOTween.Sequence();
-        mySequence.Append(_beadTransform.DOScale(Vector3.one, _spawnSpeed).SetEase(Ease.Linear));
+        mySequence.Append(_beadTransform.DOScale(Vector3.one, _spawnSpeed).SetEase(Ease.OutBack));
         mySequence.OnComplete(() =>
         {
             //DoBeadAwakening();
