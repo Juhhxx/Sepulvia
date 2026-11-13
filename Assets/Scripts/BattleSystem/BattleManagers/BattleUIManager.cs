@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using TMPro;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -355,10 +356,15 @@ public class BattleUIManager : MonoBehaviour
     {
         _decisionScreenHeart.DOKill();
 
-        _decisionScreenHeart.DOAnchorPos(_decisionHearthDefaultPos, 0.2f).SetEase(Ease.OutFlash).OnComplete(() =>
+        _beadTransform.DOKill();
+        DoBeadSpawnOut();
+        DoButtonSpawnOut();
+
+        //OLD STUFF
+        // _decisionScreenHeart.DOAnchorPos(_decisionHearthDefaultPos, 0.2f).SetEase(Ease.OutFlash).OnComplete(() =>
         
-            _decisionScreenHeart.DOAnchorPosY(_decisionHearthDefaultPos.y + 1000f, 2f).SetEase(Ease.InExpo).OnComplete(() => action())
-        );
+        //     _decisionScreenHeart.DOAnchorPosY(_decisionHearthDefaultPos.y + 1000f, 2f).SetEase(Ease.InExpo).OnComplete(() => action())
+        // );
     }
 
     private float _assimilationScale = 100f;
@@ -367,11 +373,16 @@ public class BattleUIManager : MonoBehaviour
         _decisionScreenHeart.DOKill();
         _decisionScreenHeart.DOShakeAnchorPos(10f, 50f);
 
+        _beadTransform.DOKill();
+        DoBeadSpawnOut();
+        DoButtonSpawnOut();
+
+        //OLD STUFF
         _decisionScreenHeart.DOAnchorPos(_decisionHearthDefaultPos, 0.2f).SetEase(Ease.OutFlash).OnComplete(() =>
 
             _decisionScreenHeart.DOScale(Vector3.one * _assimilationScale, 2f).SetEase(Ease.InExpo).OnComplete(() => action())
+
         );
-        
     }
 
     public void DoRewardsShowAnim()
@@ -401,7 +412,7 @@ public class BattleUIManager : MonoBehaviour
         _beadTransform.localScale = Vector3.zero;
 
         Sequence mySequence = DOTween.Sequence();
-        mySequence.Append(_beadTransform.DOScale(Vector3.one, _spawnSpeed).SetEase(Ease.OutBack));
+        mySequence.Append(_beadTransform.DOScale(Vector3.one, _spawnSpeed).SetEase(Ease.Linear));
         mySequence.OnComplete(() =>
         {
             //DoBeadAwakening();
@@ -412,6 +423,11 @@ public class BattleUIManager : MonoBehaviour
         //_beadTransform.localScale = Vector3.zero;
         //_beadTransform.DOScale(Vector3.one, _spawnSpeed).SetEase(Ease.OutBack);
     }
+    public void DoBeadSpawnOut()
+    {
+        _beadTransform.localScale = Vector3.one;
+        _beadTransform.DOScale(Vector3.zero, _spawnSpeed).SetEase(Ease.InBack);
+    }
     public void DoButtonSpawnIn()
     {
         foreach(Transform child in _decisionButtons.transform)
@@ -420,6 +436,24 @@ public class BattleUIManager : MonoBehaviour
             Vector3 scale = child.localScale;
             child.localScale = Vector3.zero;
             child.DOScale(scale, _spawnSpeed).SetEase(Ease.OutBack);
+        }
+    }
+
+    public void DoButtonSpawnOut()
+    {
+        foreach(Transform child in _decisionButtons.transform)
+        {
+            child.DOKill();
+            child.gameObject.SetActive(true);
+            Vector3 scale = child.localScale;   
+            child.DOScale(Vector3.zero, _spawnSpeed).SetEase(Ease.InBack);
+        }
+    }
+    public void DoButtonHoverExpandLeft()
+    {
+        if(!_wasAlreadyHoveringLeft)
+        {
+            
         }
     }
     public void DoBeadAwakening()
@@ -447,8 +481,8 @@ public class BattleUIManager : MonoBehaviour
         {
             return;
         }
-        Quaternion targetRotation = Quaternion.Euler(180,0,0);
-        //_beadTransform.DORotateQuaternion(targetRotation, 1f).SetEase(Ease.InOutBack);
+        _beadTransform.DOKill();
+        
         _beadTransform.DORotate(new Vector3(540, 0, 0), _rotationSpeed, RotateMode.FastBeyond360).SetEase(Ease.InOutBack);
         _wasAlreadyHoveringRight = true;
         _wasAlreadyHoveringLeft = false;
@@ -465,17 +499,11 @@ public class BattleUIManager : MonoBehaviour
         {
             return;
         }
-        Quaternion targetRotation = Quaternion.Euler(180,0,0);
-        //_beadTransform.DORotateQuaternion(targetRotation, 1f).SetEase(Ease.InOutBack);
+        _beadTransform.DOKill();
+        
         _beadTransform.DORotate(new Vector3(-540, 0, 0), _rotationSpeed, RotateMode.FastBeyond360).SetEase(Ease.InOutBack);
         _wasAlreadyHoveringLeft = true;
         _wasAlreadyHoveringRight = false;
-    }
-
-    public void DoBeadSpawnOut()
-    {
-        _beadTransform.localScale = Vector3.one;
-        _beadTransform.DOScale(Vector3.zero, _spawnSpeed).SetEase(Ease.InBack);
     }
 
     private IEnumerator DoBeadSpawnInCoroutine()

@@ -24,7 +24,15 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Fresnel_Noise:
+        m_Texture: {fileID: 2800000, guid: 57b6bb794b28609478775b671738ecc8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainNoise:
+        m_Texture: {fileID: 2800000, guid: b44105337422bb54bb63d29606c4c3dd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Sec_Noise:
         m_Texture: {fileID: 2800000, guid: b44105337422bb54bb63d29606c4c3dd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -42,10 +50,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Fresnel_Power: 2.35
+    - _Noise_Scroll_Speed: 0.1
+    - _Pixelization: 117
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _MainColor: {r: 0.6754716, g: 0, b: 0, a: 1}
+    - _Fresnel_Color: {r: 2, g: 0, b: 0.3825874, a: 1}
+    - _MainColor: {r: 1, g: 0, b: 0.8089566, a: 1}
+    - _Sec_Noise_Color: {r: 1.9999999, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &3037635973840944270
