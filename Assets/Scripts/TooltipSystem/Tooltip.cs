@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,8 +9,10 @@ using UnityEngine.UI;
 public class Tooltip : MonoBehaviour
 {
     [Header("Tooltip Layout Settings")]
+    [SerializeField] private RectTransform _mainTooltipRectTrans;
     [SerializeField] private TextMeshProUGUI _headerTMP;
     [SerializeField] private TextMeshProUGUI _contentTMP;
+    [SerializeField] private CanvasGroup _canvasGroup;
     [SerializeField] private LayoutElement _layoutElement;
     [SerializeField] private float _characterWrapLimit;
 
@@ -17,20 +20,24 @@ public class Tooltip : MonoBehaviour
     [SerializeField] private List<RectTransform> _tooltipPivots = new List<RectTransform>();
 
     [Header("Tooltip Additional Info Settings")]
-
     [SerializeField] private Transform _additionalParent;
     [SerializeField] private GameObject _additionalPrefab;
 
+    [Header("Tooltip Animation Settings")]
+    [SerializeField] private float _showTooltipDuration = 0.25f;
+
+
     private RectTransform _rectTrans;
     public RectTransform RectTransform => _rectTrans;
+    private RectTransform _canvasRectTrans;
 
     [SerializeField] private List<GameObject> _additionalTooltips = new List<GameObject>();
 
     private void Awake()
     {
         _rectTrans = GetComponent<RectTransform>();
+        _canvasRectTrans = GetComponentInParent<Canvas>().GetComponent<RectTransform>();
     }
-
 
     // Main Tooltip
     public void ToggleTooltip(bool show, TooltipInfo info = null)
@@ -44,6 +51,7 @@ public class Tooltip : MonoBehaviour
         {
             gameObject.SetActive(show);
             SetText(info);
+            // DoShowTooltipAnim(); Animation looks funky
         }
 
     }
@@ -122,6 +130,39 @@ public class Tooltip : MonoBehaviour
 
         Vector2 pos = position - offset;
 
+        var tooltipSize = _mainTooltipRectTrans.sizeDelta;
+
+        // if (_additionalTooltips.Count > 0)
+        // {
+        //     var additionalSize = _additionalParent.GetComponent<RectTransform>().sizeDelta;
+        //     tooltipSize.x += additionalSize.x;
+        // }
+
+        if (pos.x + tooltipSize.x > _canvasRectTrans.rect.width)
+        {
+            // tooltip going off on the right
+            Debug.Log($"Tooltip going off on the right. Tooltip size: {tooltipSize.x}, Canvas size: {_canvasRectTrans.rect.width}");
+            pos.x = _canvasRectTrans.sizeDelta.x - tooltipSize.x - GetAlignmentOffset(alignment).x;
+        }
+        else if (pos.x < 0)
+        {
+            // tooltip going off on the left
+            Debug.Log($"Tooltip going off on the left. Tooltip size: {tooltipSize.x}, Canvas size: {_canvasRectTrans.rect.width}");
+            pos.x = -(_canvasRectTrans.sizeDelta.x/2) + GetAlignmentOffset(alignment).x;
+        }
+        else if (pos.y + tooltipSize.y > _canvasRectTrans.rect.height)
+        {
+            // tooltip going off on the top
+            Debug.Log($"Tooltip going off on the top. Tooltip size: {tooltipSize.y}, Canvas size: {_canvasRectTrans.rect.height}");
+            pos.y = _canvasRectTrans.sizeDelta.y - tooltipSize.y - GetAlignmentOffset(alignment).y;
+        }
+        else if (pos.y < 0)
+        {
+            // tooltip going off on the bottom
+            Debug.Log($"Tooltip going off on the bottom. Tooltip size: {tooltipSize.y}, Canvas size: {_canvasRectTrans.rect.height}");
+            pos.y = -(_canvasRectTrans.sizeDelta.y/2) + GetAlignmentOffset(alignment).y;
+        }
+
         _rectTrans.anchoredPosition = pos;
     }
 
@@ -135,6 +176,13 @@ public class Tooltip : MonoBehaviour
         Vector3 localOffset = _rectTrans.parent.InverseTransformVector(worldOffset);
 
         return localOffset;
+    }
+
+    // Animations 
+    private void DoShowTooltipAnim()
+    {
+        _canvasGroup.alpha = 0;
+        _canvasGroup.DOFade(1f, _showTooltipDuration);
     }
 
     private void Update()

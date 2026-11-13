@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,7 +33,7 @@ public class TooltipManager : MonoBehaviourSingleton<TooltipManager>
 
     public void PositionTooltip(Vector2 position, TooltipPosition alignment)
     {
-        _tooltip.PositionTooltip(position, alignment);
+        _tooltip?.PositionTooltip(position, alignment);
     }
 
     public void PositionTooltip(RectTransform rectTrans, Vector2 offset, TooltipPosition alignment)
@@ -52,7 +52,7 @@ public class TooltipManager : MonoBehaviourSingleton<TooltipManager>
             out Vector2 localPosition
         );
 
-        _tooltip.PositionTooltip(localPosition, alignment);
+        _tooltip?.PositionTooltip(localPosition, alignment);
     }
 }
 
