@@ -50,10 +50,10 @@ public class StatusEffectManager : MonoBehaviour
 
         se.StatusEffectLogic.OnEnterEffect(_battlerController, se);
 
-        _battlerController.AnimationController.DoBattlerVFX(se.OnEnterVFX);
+        _battlerController.AnimationController.DoBattlerVFX(se.OnEnterVFX, EffectVFXTrigger.OnEnter);
 
         se.StatusEffectLogic.OnEffectTriggered += () => 
-        _battlerController.AnimationController.DoBattlerVFX(se.OnTriggeredVFX);
+        _battlerController.AnimationController.DoBattlerVFX(se.OnTriggeredVFX, EffectVFXTrigger.OnTriggered);
     }
 
     public void RemoveStatusEffect(StatusEffect se)
@@ -66,7 +66,7 @@ public class StatusEffectManager : MonoBehaviour
 
         se.StatusEffectLogic.OnExitEffect();
 
-        _battlerController.AnimationController.DoBattlerVFX(se.OnExitVFX);
+        _battlerController.AnimationController.DoBattlerVFX(se.OnExitVFX, EffectVFXTrigger.OnExit);
     }
 
     public void UpdateStatusEffects()

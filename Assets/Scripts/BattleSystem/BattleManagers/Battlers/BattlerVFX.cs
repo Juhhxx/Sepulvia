@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class BattlerVFX : MonoBehaviour
 {
+    [SerializeField] private bool _continuos;
     private ParticleSystem _particleSystem;
     private Timer _destroyTimer;
     private bool _isPlaying = true;
@@ -11,7 +12,7 @@ public class BattlerVFX : MonoBehaviour
     {
         _particleSystem = GetComponent<ParticleSystem>();
 
-        if (_particleSystem != null)
+        if (_particleSystem != null && !_continuos)
         {
             _destroyTimer = new Timer(_particleSystem.main.duration + 1f);
             _destroyTimer.OnTimerDone += DestroyVFX;
@@ -32,5 +33,13 @@ public class BattlerVFX : MonoBehaviour
     {
         Destroy(gameObject);
         _isPlaying = false;
+    }
+
+    public void UpdateVFX(EffectVFXTrigger trigger)
+    {
+        if (trigger == EffectVFXTrigger.OnExit)
+        {
+            DestroyVFX();
+        }
     }
 }

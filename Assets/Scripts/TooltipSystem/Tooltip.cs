@@ -156,11 +156,11 @@ public class Tooltip : MonoBehaviour
         Debug.Log($"Tooltip size: {tooltipSize}, Canvas size: {_canvasRectTrans.rect.size}, Tooltip position: {pos}");
         Debug.Log($"Aligment points: MR {GetAlignmentPoint(TooltipPosition.MiddleRight)}, ML {GetAlignmentPoint(TooltipPosition.MiddleLeft)}, TC {GetAlignmentPoint(TooltipPosition.TopCenter)}, BC {GetAlignmentPoint(TooltipPosition.BottomCenter)}");
 
-        var rightPivot = _additionalTooltips.Count > 0 ?
+        var rightPivot = _additionalTooltips.Count > 0 && !_tooltipsLayoutGroup.reverseArrangement ?
                         GetAlignmentPoint(_additionalRightPivot) :
                         GetAlignmentPoint(TooltipPosition.MiddleRight);
 
-        var leftPivot = _additionalTooltips.Count > 0 ?
+        var leftPivot = _additionalTooltips.Count > 0 && _tooltipsLayoutGroup.reverseArrangement ?
                         GetAlignmentPoint(_additionalLeftPivot) :
                         GetAlignmentPoint(TooltipPosition.MiddleLeft);
 
