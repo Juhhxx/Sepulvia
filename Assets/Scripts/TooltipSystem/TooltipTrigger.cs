@@ -26,13 +26,39 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [Header("Tooltip Visual Settings")]
     [SerializeField] private float _tooltipDelay = 0.25f;
 
+    [Header("Tooltip Debug Settings")]
+    [SerializeField] private bool _showAlways = false;
+
     private RectTransform _rectTrans;
     private ITooltipable _tooltipObject;
+
+    private bool _show = false;
+    public bool Show
+    {
+        get => _show;
+        set
+        {
+            if (_show != value)
+            {
+                if (value)
+                {
+                    ShowTooltip();
+                }
+                else
+                {
+                    HideTooltip();
+                }
+            }
+            
+            _show = value;
+        }
+    }
 
     private void Awake()
     {
         _rectTrans = GetComponent<RectTransform>();
         _tooltipObject = GetComponent<ITooltipable>();
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -42,24 +68,12 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (_showTooltip != null)
-        {
-            StopCoroutine(_showTooltip);
-            _showTooltip = null;
-        }
-
-        TooltipManager.Instance?.Hide();
+        Show = false;
     }
 
     public void OnDisable()
     {
-        if (_showTooltip != null)
-        {
-            StopCoroutine(_showTooltip);
-            _showTooltip = null;
-        }
-
-        TooltipManager.Instance?.Hide();
+        Show = false;
     }
 
     private Coroutine _showTooltip = null;
@@ -67,7 +81,7 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         yield return new WaitForSeconds(delay);
 
-        ShowTooltip();
+        Show = true;
     }
 
     private void ShowTooltip()
@@ -84,5 +98,24 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         if (!_useRelativePosition) TooltipManager.Instance?.PositionTooltip(pos, _tooltipAlignment);
         else TooltipManager.Instance?.PositionTooltip(_rectTrans, _tooltipOffset, _tooltipAlignment);
+    }
+
+    private void HideTooltip()
+    {
+        if (_showTooltip != null)
+        {
+            StopCoroutine(_showTooltip);
+            _showTooltip = null;
+        }
+
+        TooltipManager.Instance?.Hide();
+    }
+
+    private void Update()
+    {
+        if (_showAlways)
+        {
+            ShowTooltip();
+        }
     }
 }

@@ -12,11 +12,16 @@ public class Tooltip : MonoBehaviour
     [SerializeField] private RectTransform _mainTooltipRectTrans;
     [SerializeField] private TextMeshProUGUI _headerTMP;
     [SerializeField] private TextMeshProUGUI _contentTMP;
+    [SerializeField] private HorizontalLayoutGroup _tooltipsLayoutGroup;
+
     [SerializeField] private CanvasGroup _canvasGroup;
+
     [SerializeField] private LayoutElement _layoutElement;
     [SerializeField] private float _characterWrapLimit;
 
     [Header("Tooltip Pivot Settings")]
+    [SerializeField] private RectTransform _additionalLeftPivot;
+    [SerializeField] private RectTransform _additionalRightPivot;
     [SerializeField] private List<RectTransform> _tooltipPivots = new List<RectTransform>();
 
     [Header("Tooltip Additional Info Settings")]
@@ -82,6 +87,7 @@ public class Tooltip : MonoBehaviour
     private void ShowAdditionalTooltips(TooltipInfo[] infos)
     {
         if (infos.Length <= 0) return;
+        if (_additionalTooltips.Count > 0) ClearAdditionalTooltips();
 
         foreach (TooltipInfo info in infos)
         {
@@ -120,6 +126,14 @@ public class Tooltip : MonoBehaviour
         _additionalTooltips.Clear();
     }
 
+    private void FlipAdditionalTooltips(TooltipPosition alignment)
+    {
+        bool condition =    alignment == TooltipPosition.TopRight ||
+                            alignment == TooltipPosition.MiddleRight ||
+                            alignment == TooltipPosition.BottomRight;
+        
+        _tooltipsLayoutGroup.reverseArrangement = condition;
+    }
     // Position Tooltip
     public void PositionTooltip(Vector2 position, TooltipPosition alignment)
     {
@@ -130,40 +144,55 @@ public class Tooltip : MonoBehaviour
 
         Vector2 pos = position - offset;
 
-        var tooltipSize = _mainTooltipRectTrans.sizeDelta;
-
-        // if (_additionalTooltips.Count > 0)
-        // {
-        //     var additionalSize = _additionalParent.GetComponent<RectTransform>().sizeDelta;
-        //     tooltipSize.x += additionalSize.x;
-        // }
-
-        if (pos.x + tooltipSize.x > _canvasRectTrans.rect.width)
-        {
-            // tooltip going off on the right
-            Debug.Log($"Tooltip going off on the right. Tooltip size: {tooltipSize.x}, Canvas size: {_canvasRectTrans.rect.width}");
-            pos.x = _canvasRectTrans.sizeDelta.x - tooltipSize.x - GetAlignmentOffset(alignment).x;
-        }
-        else if (pos.x < 0)
-        {
-            // tooltip going off on the left
-            Debug.Log($"Tooltip going off on the left. Tooltip size: {tooltipSize.x}, Canvas size: {_canvasRectTrans.rect.width}");
-            pos.x = -(_canvasRectTrans.sizeDelta.x/2) + GetAlignmentOffset(alignment).x;
-        }
-        else if (pos.y + tooltipSize.y > _canvasRectTrans.rect.height)
-        {
-            // tooltip going off on the top
-            Debug.Log($"Tooltip going off on the top. Tooltip size: {tooltipSize.y}, Canvas size: {_canvasRectTrans.rect.height}");
-            pos.y = _canvasRectTrans.sizeDelta.y - tooltipSize.y - GetAlignmentOffset(alignment).y;
-        }
-        else if (pos.y < 0)
-        {
-            // tooltip going off on the bottom
-            Debug.Log($"Tooltip going off on the bottom. Tooltip size: {tooltipSize.y}, Canvas size: {_canvasRectTrans.rect.height}");
-            pos.y = -(_canvasRectTrans.sizeDelta.y/2) + GetAlignmentOffset(alignment).y;
-        }
-
         _rectTrans.anchoredPosition = pos;
+
+        FlipAdditionalTooltips(alignment);
+        DoEdgeDetection(pos, alignment);
+    }
+
+    private void DoEdgeDetection(Vector2 pos, TooltipPosition alignment)
+    {
+        var tooltipSize = _mainTooltipRectTrans.sizeDelta;
+        Debug.Log($"Tooltip size: {tooltipSize}, Canvas size: {_canvasRectTrans.rect.size}, Tooltip position: {pos}");
+        Debug.Log($"Aligment points: MR {GetAlignmentPoint(TooltipPosition.MiddleRight)}, ML {GetAlignmentPoint(TooltipPosition.MiddleLeft)}, TC {GetAlignmentPoint(TooltipPosition.TopCenter)}, BC {GetAlignmentPoint(TooltipPosition.BottomCenter)}");
+
+        var rightPivot = _additionalTooltips.Count > 0 ?
+                        GetAlignmentPoint(_additionalRightPivot) :
+                        GetAlignmentPoint(TooltipPosition.MiddleRight);
+
+        var leftPivot = _additionalTooltips.Count > 0 ?
+                        GetAlignmentPoint(_additionalLeftPivot) :
+                        GetAlignmentPoint(TooltipPosition.MiddleLeft);
+
+        if (rightPivot.x > _canvasRectTrans.rect.width/2)
+        {
+            Debug.Log($"Tooltip going off on the right.");
+
+            pos.x -= rightPivot.x - _canvasRectTrans.rect.width/2;
+            
+            _rectTrans.anchoredPosition = pos;
+        }
+        else if (leftPivot.x < -_canvasRectTrans.rect.width/2)
+        {
+            Debug.Log($"Tooltip going off on the left.");
+
+            pos.x += -_canvasRectTrans.rect.width/2 - leftPivot.x;
+            _rectTrans.anchoredPosition = pos;
+        }
+        else if (GetAlignmentPoint(TooltipPosition.TopCenter).y > _canvasRectTrans.rect.height/2)
+        {
+            Debug.Log($"Tooltip going off on the top.");
+
+            pos.y -= GetAlignmentPoint(TooltipPosition.TopCenter).y - _canvasRectTrans.rect.height/2;
+            _rectTrans.anchoredPosition = pos;
+        }
+        else if (GetAlignmentPoint(TooltipPosition.BottomCenter).y < -_canvasRectTrans.rect.height/2)
+        {
+            Debug.Log($"Tooltip going off on the bottom.");
+
+            pos.y += -_canvasRectTrans.rect.height/2 - GetAlignmentPoint(TooltipPosition.BottomCenter).y;
+            _rectTrans.anchoredPosition = pos;
+        }
     }
 
     private Vector2 GetAlignmentOffset(TooltipPosition alignment)
@@ -176,6 +205,25 @@ public class Tooltip : MonoBehaviour
         Vector3 localOffset = _rectTrans.parent.InverseTransformVector(worldOffset);
 
         return localOffset;
+    }
+
+    private Vector2 GetAlignmentPoint(TooltipPosition alignment)
+    {
+        Transform targetPivot = _tooltipPivots[(int)alignment];
+
+        Vector3 worldPoint = targetPivot.position;
+
+        Vector3 localPoint = _rectTrans.parent.InverseTransformPoint(worldPoint);
+
+        return localPoint;
+    }
+    private Vector2 GetAlignmentPoint(RectTransform alignmentPivot)
+    {
+        Vector3 worldPoint = alignmentPivot.position;
+
+        Vector3 localPoint = _rectTrans.parent.InverseTransformPoint(worldPoint);
+
+        return localPoint;
     }
 
     // Animations 
