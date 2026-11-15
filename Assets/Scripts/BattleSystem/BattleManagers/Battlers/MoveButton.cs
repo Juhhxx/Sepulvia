@@ -12,6 +12,8 @@ public class MoveButton : MonoBehaviour
 
     private BattleManager _battleManager;
     private Character _player;
+    private BattlerController _playerController;
+    public BattlerController PlayerController => _playerController;
 
     public Action<Move> OnMoveSetUp;
     public Action<Move> OnMoveCooldown;
@@ -37,6 +39,7 @@ public class MoveButton : MonoBehaviour
         if (_battleManager != null)
         {
             _player = _battleManager.Player;
+            _playerController = _battleManager.GetBattlerController(_player);
 
             var moveList = _buttonType == MoveTypes.Normal ? _player.MoveSet : _player.StanceMoveSet;
 

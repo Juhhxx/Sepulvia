@@ -77,22 +77,58 @@ public class MoveButtonUI : MonoBehaviour, ITooltipable, IPointerEnterHandler, I
 
     public TooltipInfo GetTooltipInfo()
     {
+        // Get move
         Move move = _moveButton.Move;
 
+        // Apply header info
         string header = $"{move.Name}";
 
-        if (move.CheckIfCooldown()) header += $" (in cooldown)";
+        // if (move.CheckIfCooldown()) header += $" (in cooldown)";
 
+        // Apply content info (RC, CD, SC and Description)
         string content = ""; 
         
         content += $"Recovery Cost: {move.RecoveryCost}";
         content += $"\nCooldown: {move.Cooldown}";
 
-        if (move.Type == MoveTypes.Stance) content += $"\nStance Cost: {move.StanceCost} stance";
+        if (move.Type == MoveTypes.Stance) content += $"\nStance Cost: {move.StanceCost}";
 
-        content += $"\n\n{move.Description}";
+        var description = move.Description;
 
+        // Get the values for the pull bonus
+        string playerPullStr = "";
+        int strBonus = _moveButton.PlayerController?.Character.PullStrenghtBonus ?? 0;
+
+        if (_moveButton.PlayerController != null && strBonus != 0)
+        {
+            if (strBonus > 0) playerPullStr = "(+" + strBonus + ")";
+            else playerPullStr =  "(" + strBonus + ")";
+        }
+
+        description = description.Replace("(pull_str)", $"{playerPullStr}");
+
+        content += $"\n\n{description}";
+
+        // Get additional tooltips info
         List<TooltipInfo> additional = new List<TooltipInfo>();
+
+        if (_moveButton.PlayerController != null && strBonus != 0)
+        {
+            foreach (StatusEffect se in _moveButton.PlayerController.StatusEffectManager.ActiveStatusEffects)
+            {
+                if (se.StatusEffectLogic is StatusEffectPullStrenghtBoost sb)
+                {
+                    string h = sb.Boost > 0 ? "<color=orange>STRENGHT BUFF</color>" :
+                                            "<color=red>STRENGHT NERF</color>";
+                    
+                    string sign = sb.Boost > 0 ? "+" : "";
+                    
+                    string c = $"{sign}{sb.Boost} Pull Strenght from {se.Name}";
+
+                    additional.Add(new TooltipInfo(h, c));
+                }
+            }
+        }
 
         foreach (IDescriptable d in move.AdditionalDescriptions)
         {

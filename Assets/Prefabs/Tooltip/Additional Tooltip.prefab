@@ -325,17 +325,24 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3158107468291663408}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 644abb8caa42ee343b9b4220e6ecd692, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tooltip
+  _mainTooltipRectTrans: {fileID: 0}
   _headerTMP: {fileID: 5816350613941849440}
   _contentTMP: {fileID: 7393777368987589873}
+  _tooltipsLayoutGroup: {fileID: 0}
+  _canvasGroup: {fileID: 0}
   _layoutElement: {fileID: 1521965814334782317}
   _characterWrapLimit: 250
+  _additionalLeftPivot: {fileID: 0}
+  _additionalRightPivot: {fileID: 0}
+  _tooltipPivots: []
   _additionalParent: {fileID: 0}
   _additionalPrefab: {fileID: 0}
+  _showTooltipDuration: 0.25
   _additionalTooltips: []
 --- !u!1 &5712566370000071502
 GameObject:
@@ -644,8 +651,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278225407
-  m_fontColor: {r: 1, g: 0.53610075, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

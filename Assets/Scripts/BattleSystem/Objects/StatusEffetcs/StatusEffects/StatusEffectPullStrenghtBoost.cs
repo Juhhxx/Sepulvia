@@ -4,6 +4,7 @@ using System;
 public class StatusEffectPullStrenghtBoost : IStatusEffect
 {
     [SerializeField] private int _boostAmount;
+    public int Boost => _boostAmount;
     private StatModifier _modifier;
     private BattlerController _target;
     public event Action OnEffectTriggered;
