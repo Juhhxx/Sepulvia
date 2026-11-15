@@ -86,9 +86,17 @@ public class MoveButtonUI : MonoBehaviour, ITooltipable, IPointerEnterHandler, I
         // if (move.CheckIfCooldown()) header += $" (in cooldown)";
 
         // Apply content info (RC, CD, SC and Description)
-        string content = ""; 
+        string content = "";
+
+        // Get the values for the recovery cost
+        int recoveryCost = move.RecoveryCost;
+
+        if (move.MoveLogic is MoveCombo mc)
+        {
+            recoveryCost = mc.GetTotalRecoveryCost();
+        }
         
-        content += $"Recovery Cost: {move.RecoveryCost}";
+        content += $"Recovery Cost: {recoveryCost}";
         content += $"\nCooldown: {move.Cooldown}";
 
         if (move.Type == MoveTypes.Stance) content += $"\nStance Cost: {move.StanceCost}";

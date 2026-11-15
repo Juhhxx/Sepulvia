@@ -54,6 +54,8 @@ public class Tooltip : MonoBehaviour
         }
         else
         {
+            if (info == null) return;
+
             gameObject.SetActive(show);
             SetText(info);
             // DoShowTooltipAnim(); Animation looks funky
@@ -79,6 +81,9 @@ public class Tooltip : MonoBehaviour
         float contentLength   = _contentTMP.preferredWidth;
 
         _layoutElement.enabled = (headerLength > _characterWrapLimit || contentLength > _characterWrapLimit);
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_rectTrans);
 
         ShowAdditionalTooltips(info.AdditionalInfo);
     }

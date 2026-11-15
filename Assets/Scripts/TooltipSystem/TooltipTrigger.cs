@@ -90,6 +90,8 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         var info = _useDefaultValues ? new TooltipInfo(header, content, additional)
                                         : _tooltipObject.GetTooltipInfo();
 
+        if (info == null) return;
+
         TooltipManager.Instance?.Show(info);
 
         // Positioning the tooltip based on the settings
@@ -105,8 +107,9 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (_showTooltip != null)
         {
             StopCoroutine(_showTooltip);
-            _showTooltip = null;
         }
+
+        _showTooltip = null;
 
         TooltipManager.Instance?.Hide();
     }

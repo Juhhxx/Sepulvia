@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemHoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ItemHoverInfo : MonoBehaviour
 {
     private ItemInfo _item;
     private bool _active = false;
@@ -21,20 +21,5 @@ public class ItemHoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         OnItemHover = toggle;
         _active = false;
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (!_active)
-        {
-            OnItemHover?.Invoke(false, null);
-            return;
-        }
-        
-        OnItemHover?.Invoke(true, _item);
-    }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        OnItemHover?.Invoke(false, null);
     }
 }

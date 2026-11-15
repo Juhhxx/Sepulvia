@@ -12,4 +12,14 @@ public class MoveCombo : IMove
             user.QueueAction(new BattleAction(user, targets, mi.Instantiate()));
         }
     }
+
+    public int GetTotalRecoveryCost()
+    {
+        int totalCost = 0;
+        foreach (MoveInfo mi in _movesToCombo)
+        {
+            totalCost += mi.RecoveryCost;
+        }
+        return totalCost;
+    }
 }

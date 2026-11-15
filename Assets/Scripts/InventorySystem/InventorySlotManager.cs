@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class InventorySlotManager : MonoBehaviour
+public class InventorySlotManager : MonoBehaviour, ITooltipable
 {
     [SerializeField] private Image _itemImage;
     [SerializeField] private Image _frameImage;
@@ -14,7 +14,7 @@ public class InventorySlotManager : MonoBehaviour
     [SerializeField] private Material _utilityMaterial;
     [SerializeField] private Material _altMoveMaterial;
 
-
+    private ItemInfo _item;
 
     private void OnDisable()
     {
@@ -23,6 +23,8 @@ public class InventorySlotManager : MonoBehaviour
 
     public void UpdateSlot(ItemStack stack)
     {
+        _item = stack.Item;
+
         _itemImage.sprite = stack.Item.Sprite;
         _itemImage.color = Color.white;
 
@@ -86,6 +88,13 @@ public class InventorySlotManager : MonoBehaviour
     public void SetDisabled()
     {
         if (_itemImage != null) _itemImage.color = new Color(1f, 1f, 1f, 0.35f);
+    }
+
+    public TooltipInfo GetTooltipInfo()
+    {
+        if (_item == null) return default;
+        
+        return new TooltipInfo(_item.Name, _item.Description);
     }
 
     // Animations
