@@ -112,7 +112,7 @@ public class MoveButtonUI : MonoBehaviour, ITooltipable, IPointerEnterHandler, I
         // Get additional tooltips info
         List<TooltipInfo> additional = new List<TooltipInfo>();
 
-        if (_moveButton.PlayerController != null && strBonus != 0)
+        if (_moveButton.PlayerController != null && strBonus != 0 && move.MoveLogic is MovePull)
         {
             foreach (StatusEffect se in _moveButton.PlayerController.StatusEffectManager.ActiveStatusEffects)
             {

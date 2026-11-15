@@ -188,7 +188,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatusEffectShowcaseManager
   _showcasePrefab: {fileID: 5204586727324921500, guid: e9e5f55d8d812f942b2dc0a2e2663de5, type: 3}
   _showcaseParent: {fileID: 1783963919626961502}
-  _infoPanel: {fileID: 474702766466068257}
   _isEnemyShowcase: 1
   _statusEffectManager: {fileID: 7423282691897128255}
 --- !u!1 &4222164336702921261
@@ -668,15 +667,15 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8627583581916292968}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7221082915820946126}
   - {fileID: 5494249576219187918}
   m_Father: {fileID: 6434966855388019970}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 5}
@@ -944,6 +943,10 @@ PrefabInstance:
       propertyPath: _enemyBattleAI
       value: 
       objectReference: {fileID: -6524192022518945501}
+    - target: {fileID: 5889781329858984861, guid: e383d3e911664434c9040d1f580fdf0e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7787615381113580607, guid: e383d3e911664434c9040d1f580fdf0e, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
