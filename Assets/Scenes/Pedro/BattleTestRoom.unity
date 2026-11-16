@@ -407,6 +407,24 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 4040891401757506885, guid: b73eded718488c54abbb56df165aacf5, type: 3}
   m_PrefabInstance: {fileID: 599015328}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &330331741 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1070195067736204311, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
+  m_PrefabInstance: {fileID: 466036712}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &330331744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330331741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a942754cd826964f8e716dcf8fe2728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScreenWipeTrigger
+  _wipe: Vortex Wipe
 --- !u!1001 &466036712
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -421,15 +439,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2856377646141156432, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.38166
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2856377646141156432, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -15.71135
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2856377646141156432, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 29.50054
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2856377646141156432, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
       propertyPath: m_LocalRotation.w
@@ -476,6 +494,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3249903681292839407}
     - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
+      propertyPath: _gameScenes.Array.data[0].<WipeTransition>k__BackingField
+      value: 
+      objectReference: {fileID: 330331744}
+    - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
+      propertyPath: _gameScenes.Array.data[1].<WipeTransition>k__BackingField
+      value: 
+      objectReference: {fileID: 330331744}
+    - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
       propertyPath: _gameScenes.Array.data[0].<SceneBackground>k__BackingField
       value: 
       objectReference: {fileID: 1735618205}
@@ -494,7 +520,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1070195067736204311, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 330331744}
   m_SourcePrefab: {fileID: 100100000, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
 --- !u!1001 &583562348
 PrefabInstance:
@@ -2182,9 +2211,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 208529193543505648, guid: e8a38b58a0182b14688edc485ad0e044, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 320345967}
+    - target: {fileID: 208529193543505648, guid: e8a38b58a0182b14688edc485ad0e044, type: 3}
+      propertyPath: m_PlaneDistance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6288414473844716655, guid: e8a38b58a0182b14688edc485ad0e044, type: 3}
       propertyPath: m_Name
       value: Screen Wipe Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7493359496110913661, guid: e8a38b58a0182b14688edc485ad0e044, type: 3}
+      propertyPath: _wipeDuration
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8530832695115991846, guid: e8a38b58a0182b14688edc485ad0e044, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2225,6 +2266,10 @@ PrefabInstance:
     - target: {fileID: 8530832695115991846, guid: e8a38b58a0182b14688edc485ad0e044, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9161576811827067011, guid: e8a38b58a0182b14688edc485ad0e044, type: 3}
+      propertyPath: _wipeDuration
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2352,6 +2397,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5771795660325550046, guid: 9a0bcac72dc2e1a46acc105f4b6b85d9, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 320345967}
+    - target: {fileID: 5771795660325550046, guid: 9a0bcac72dc2e1a46acc105f4b6b85d9, type: 3}
       propertyPath: m_SortingOrder
       value: 30000
       objectReference: {fileID: 0}
@@ -2392,6 +2441,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2097746850718562496, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartEndBattle
+      objectReference: {fileID: 0}
     - target: {fileID: 6799708064702914601, guid: c06c2e0c5a315c2499b8004fdde7d9fd, type: 3}
       propertyPath: 'm_Cameras.Array.data[0]'
       value: 

@@ -31,10 +31,10 @@ public class StatusEffectShowcaseManager : MonoBehaviour
 
         if (_statusEffectManager == null)
         {
-            _statusEffectManager = _battleManager.GetBattlerController(_battleManager.Player)
+            _statusEffectManager = _battleManager.GetBattlerController(_battleManager.Player)?
                                             .GetComponent<StatusEffectManager>();
                                             
-            _statusEffectManager.OnAddStatusEffect += AddStatusEffectShowcase;
+            if (_statusEffectManager != null) _statusEffectManager.OnAddStatusEffect += AddStatusEffectShowcase;
         }
     }
 

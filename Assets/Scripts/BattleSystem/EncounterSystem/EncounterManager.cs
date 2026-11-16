@@ -43,11 +43,12 @@ public class EncounterManager : RandomBehaviour
 
         Debug.Log($"[Encounter Manager] Doing encounter with {party.PartyName}", this);
 
-        entity?.gameObject.SetActive(false);
-
-        GameSceneManager.Instance.CurrentGameScene = GameSceneManager.GameSceneTypes.Battle;
-
-        _battleManager.StartBattle(_player.PlayerParty, party);
+        GameSceneManager.Instance.ChangeScene(GameSceneManager.GameSceneTypes.Battle,
+        () => 
+        {
+            entity?.gameObject.SetActive(false);
+            _battleManager.StartBattle(_player.PlayerParty, party);
+        });
 
         _player.InBattle = true;
     }
@@ -63,7 +64,7 @@ public class EncounterManager : RandomBehaviour
     {
         Debug.Log($"[Encounter Manager] Ended Encounter", this);
 
-        GameSceneManager.Instance.CurrentGameScene = GameSceneManager.GameSceneTypes.Overworld;
+        GameSceneManager.Instance.ChangeScene(GameSceneManager.GameSceneTypes.Overworld, () => _battleManager.EndBattle());
 
         _player.InBattle = false;
     }
