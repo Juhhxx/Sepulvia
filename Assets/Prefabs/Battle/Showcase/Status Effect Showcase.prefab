@@ -548,6 +548,7 @@ GameObject:
   - component: {fileID: 6497488410273374260}
   - component: {fileID: 591781625030449873}
   - component: {fileID: 391372496292241804}
+  - component: {fileID: 7038677296892533599}
   m_Layer: 0
   m_Name: Status Effect Showcase
   m_TagString: Untagged
@@ -624,6 +625,23 @@ MonoBehaviour:
   _tooltipAlignment: 0
   _tooltipDelay: 0.25
   _showAlways: 0
+--- !u!114 &7038677296892533599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8623028322228328489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c013e2f86c695f54490ace1b6c835c12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlineManager
+  _outlineType: 2
+  _outline: {fileID: 2100000, guid: 227e8d0e7dbb3d34389caacb5f7c7b41, type: 2}
+  _meshRenderer: {fileID: 0}
+  _spriteRenderer: {fileID: 0}
+  _graphicRenderer: {fileID: 3427330255462911021}
 --- !u!1 &9027155012867705432
 GameObject:
   m_ObjectHideFlags: 0

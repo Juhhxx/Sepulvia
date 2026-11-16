@@ -7,16 +7,7 @@ using UnityEngine.UI;
 
 public class SceneChanger : MonoBehaviour
 {
-    private Animator _anim;
-    private RawImage _image;
-
-    private void Start()
-    {
-        _anim = GetComponent<Animator>();
-        _image = GetComponentInChildren<RawImage>();
-        
-        _image.raycastTarget = false;
-    }
+    [SerializeField] private ScreenWipeTrigger _fadeTrigger;
 
     public void ChangeScene(string scene, Action onLoad, bool doFade = true)
     {
@@ -25,42 +16,26 @@ public class SceneChanger : MonoBehaviour
 
     private IEnumerator ChangeSceneCR(string scene, Action onLoad, bool doFade)
     {
-        _image.raycastTarget = true;
-
-        if (doFade) _anim.SetTrigger("FadeOut");
+        if (doFade) _fadeTrigger.TriggerWipe(true);
 
         yield return new WaitForEndOfFrame();
-        if (doFade) yield return new WaitUntil(() => !AnimatorIsPlaying(_anim));
+        if (doFade) yield return new WaitUntil(() => !_fadeTrigger.CurrentWipe.IsPlaying);
 
         SceneManager.LoadScene(scene);
 
         onLoad?.Invoke();
 
-        if (doFade) _anim.SetTrigger("FadeIn");
-
-        yield return new WaitUntil(() => !AnimatorIsPlaying(_anim));
-
-        _image.raycastTarget = false;
-    }
-
-    private bool AnimatorIsPlaying(Animator animator)
-    {
-        return animator.GetCurrentAnimatorStateInfo(0).length >
-                animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        if (doFade) _fadeTrigger.TriggerWipe(false);
     }
 
     public async Task ChangeSceneAsync(string scene, Action onLoad, bool doFade = true)
     {
-        _image.raycastTarget = true;
-
-        if (doFade) _anim.SetTrigger("FadeOut");
+        if (doFade) _fadeTrigger.TriggerWipe(true);
 
         await SceneManager.LoadSceneAsync(scene);
 
         onLoad?.Invoke();
 
-        if (doFade) _anim.SetTrigger("FadeIn");
-
-        _image.raycastTarget = false;
+        if (doFade) _fadeTrigger.TriggerWipe(false);
     }
 }

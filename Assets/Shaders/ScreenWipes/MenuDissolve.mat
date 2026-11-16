@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MenuDissolve
-  m_Shader: {fileID: -6465566751694194690, guid: 05aaa8d91c32898428abb0f92dee6073, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: c61b26fdf9c4e624fa91de8e8a25945f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -43,8 +43,8 @@ Material:
     m_Floats:
     - _AlphaClip: 0.5
     - _ColorMask: 15
-    - _Dissolve_Amount: 1
-    - _Edge_Amount: 0.161
+    - _Dissolve_Amount: 0.97
+    - _Edge_Amount: 0
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -52,6 +52,7 @@ Material:
     - _StencilWriteMask: 255
     - _UIMaskSoftnessX: 1
     - _UIMaskSoftnessY: 1
+    - _WipeProgress: 0
     - _clamp: 1
     m_Colors:
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}

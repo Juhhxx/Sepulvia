@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class MoveHoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private Move _move;
-    private BattleUIManager _uiManager;
     private TimelineUIManager _timelineUIManager;
 
     private void Awake()
@@ -15,7 +14,6 @@ public class MoveHoverInfo : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void SetUp(Move move)
     {
         _move = move;
-        _uiManager = FindAnyObjectByType<BattleUIManager>();
         _timelineUIManager = FindAnyObjectByType<TimelineUIManager>();
     }
 

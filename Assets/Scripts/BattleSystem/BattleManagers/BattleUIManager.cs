@@ -45,8 +45,7 @@ public class BattleUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _panelTitle;
     [SerializeField] private TextMeshProUGUI _panelDescription;
 
-    [SerializeField] private GameObject _battleWinTransitionScreen;
-    [SerializeField] private GameObject _battleLossTransitionScreen;
+    [SerializeField] private ScreenWipeTrigger _battleEndTransitionScreen;
     [SerializeField] private GameObject _winBattleScreen;
     [SerializeField] private GameObject _decisionBattleScreen;
     [SerializeField] private GameObject _rewardsBattleScreen;
@@ -70,11 +69,6 @@ public class BattleUIManager : MonoBehaviour
         _decisionHearthDefaultScale = _decisionScreenHeart.localScale;
 
         _battleManager.Player.OnStanceChange += (_,_,_) => UpdateStanceBar(_battleManager.Player);
-    }
-
-    public void setBattleLossTransitionScreen(GameObject screen)
-    {
-        _battleLossTransitionScreen = screen;
     }
 
     public void ClearCreatedObjects()
@@ -136,7 +130,6 @@ public class BattleUIManager : MonoBehaviour
         ToggleStanceMoveButtons(state == BattleUIState.StanceMove);
         ToggleTargetButtons(state == BattleUIState.Target);
         ToggleSelectBar(state == BattleUIState.SelectBar);
-        ToggleMoveInfo(false); //Always toggle move info panel off when changing states
 
         // if (state == BattleUIState.None) ToggleActionButtonsDeactivated();
     }
@@ -159,45 +152,12 @@ public class BattleUIManager : MonoBehaviour
     private void ToggleStanceMoveButtons(bool onOff) => _stanceMoveButtons.SetActive(onOff);
     private void ToggleTargetButtons(bool onOff) => _targetButtons.SetActive(onOff);
     public void ToggleSelectBar(bool onOff) => _selectBarCanvas.SetActive(onOff);
-    public void ToggleMoveInfo(bool onOff, Move move = null)
-    {
-        if (onOff)
-        {
-            _panelTitle.text = $"{move.Name}";
-
-            _panelDescription.text = $"Recovery Cost: {move.RecoveryCost}";
-            //_panelDescription.text += move.RecoveryCost == 1 ? " turn" : " turns";
-
-            /*
-            if (move.CheckIfCooldown())
-            {
-                int turnsLeft = move.Cooldown - move.TurnsPassed;
-                _panelDescription.text += $"\nCooldown: {turnsLeft}/{move.Cooldown}";
-            }
-            else _panelDescription.text += $"\nCooldown: {move.Cooldown}";
-            _panelDescription.text += move.Cooldown == 1 ? " turn" : " turns";
-            */
-
-            _panelDescription.text += $"\nCooldown: {move.Cooldown}";
-
-            if (move.Type == MoveTypes.Stance) _panelDescription.text += $"\nStance Cost: {move.StanceCost} stance";
-
-            _panelDescription.text += $"\n\n{move.Description}";
-
-            if (move.CheckIfCooldown()) _panelTitle.text += $" (cooldown)";
-
-            Debug.Log(_panelTitle.text);
-            Debug.Log(_panelDescription.text);
-        }
-        
-        _moveInfoPanel.SetActive(onOff);
-    }
 
     public IEnumerator ShowWinScreen()
     {
         // Dissolve transition in
-        yield return DissolveEndTransition(_battleWinTransitionScreen, -1f, 1f, 1f)
-            .WaitForCompletion();     
+        _battleEndTransitionScreen.TriggerWipe(true);
+        yield return new WaitUntil(() => !_battleEndTransitionScreen.CurrentWipe.IsPlaying);   
 
         // Activate the menu
         _decisionScreenHeart.anchoredPosition = _decisionHearthDefaultPos;
@@ -212,8 +172,8 @@ public class BattleUIManager : MonoBehaviour
         DoBeadSpawnIn();
 
         // Dissolve transition out
-        yield return DissolveEndTransition(_battleWinTransitionScreen, 1f, -1f, .5f)
-            .WaitForCompletion();
+        _battleEndTransitionScreen.TriggerWipe(false);
+        yield return new WaitUntil(() => !_battleEndTransitionScreen.CurrentWipe.IsPlaying);
 
         yield return null;
     }
@@ -221,15 +181,15 @@ public class BattleUIManager : MonoBehaviour
     public IEnumerator ShowLossScreen()
     {   
         // Dissolve transition in
-        yield return DissolveEndTransition(_battleLossTransitionScreen, -1f, 1f, .5f)
-            .WaitForCompletion();
+        _battleEndTransitionScreen.TriggerWipe(true);
+        yield return new WaitUntil(() => !_battleEndTransitionScreen.CurrentWipe.IsPlaying);
 
         // Activate the menu
         MenuManager.Instance.ToggleGameOverMenu(true);
 
         // Dissolve transition out
-        yield return DissolveEndTransition(_battleLossTransitionScreen, 1f, -1f, 1f)
-            .WaitForCompletion();
+        _battleEndTransitionScreen.TriggerWipe(false);
+        yield return new WaitUntil(() => !_battleEndTransitionScreen.CurrentWipe.IsPlaying);
     }
 
     private Tween DissolveEndTransition(GameObject battleEndTransitionScreen, float startDissolveValue, float endDissolveValue, float dissolveDuration)
