@@ -371,6 +371,12 @@ public class BattleManager : MonoBehaviour
 
     // End Battle logic, Assimilation and Sparing
     [Button(enabledMode: EButtonEnableMode.Playmode)]
+    public void StartEndBattle()
+    {
+        OnBattleEnd?.Invoke();
+        
+    }
+
     public void EndBattle()
     {
         Debug.Log("ENDING BATTLE");
@@ -388,8 +394,6 @@ public class BattleManager : MonoBehaviour
         _timelineManager.OnTurnBegin -= StartTurn;
 
         ClearBattlerControllers();
-
-        OnBattleEnd?.Invoke();
     }
 
     private void ShowEnd()
@@ -453,7 +457,7 @@ public class BattleManager : MonoBehaviour
         if (_doRun)
         {
             _timelineManager.ToggleTurnCounting(false);
-            EndBattle();
+            StartEndBattle();
             return;
         }
 

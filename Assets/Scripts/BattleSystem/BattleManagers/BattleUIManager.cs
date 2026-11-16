@@ -317,7 +317,7 @@ public class BattleUIManager : MonoBehaviour
         _decisionScreenHeart.DOKill();
 
         _beadTransform.DOKill();
-        DoBeadSpawnOut();
+        DoBeadSpawnOut(action);
         DoButtonSpawnOut();
 
         //OLD STUFF
@@ -334,15 +334,15 @@ public class BattleUIManager : MonoBehaviour
         _decisionScreenHeart.DOShakeAnchorPos(10f, 50f);
 
         _beadTransform.DOKill();
-        DoBeadSpawnOut();
+        DoBeadSpawnOut(action);
         DoButtonSpawnOut();
 
         //OLD STUFF
-        _decisionScreenHeart.DOAnchorPos(_decisionHearthDefaultPos, 0.2f).SetEase(Ease.OutFlash).OnComplete(() =>
+        // _decisionScreenHeart.DOAnchorPos(_decisionHearthDefaultPos, 0.2f).SetEase(Ease.OutFlash).OnComplete(() =>
 
-            _decisionScreenHeart.DOScale(Vector3.one * _assimilationScale, 2f).SetEase(Ease.InExpo).OnComplete(() => action())
+        //     _decisionScreenHeart.DOScale(Vector3.one * _assimilationScale, 2f).SetEase(Ease.InExpo).OnComplete(() => action())
 
-        );
+        // );
     }
 
     public void DoRewardsShowAnim()
@@ -383,10 +383,10 @@ public class BattleUIManager : MonoBehaviour
         //_beadTransform.localScale = Vector3.zero;
         //_beadTransform.DOScale(Vector3.one, _spawnSpeed).SetEase(Ease.OutBack);
     }
-    public void DoBeadSpawnOut()
+    public void DoBeadSpawnOut(Action onDone)
     {
         _beadTransform.localScale = Vector3.one;
-        _beadTransform.DOScale(Vector3.zero, _spawnSpeed).SetEase(Ease.InBack);
+        _beadTransform.DOScale(Vector3.zero, _spawnSpeed).SetEase(Ease.InBack).OnComplete(() => onDone?.Invoke());
     }
     public void DoButtonSpawnIn()
     {
