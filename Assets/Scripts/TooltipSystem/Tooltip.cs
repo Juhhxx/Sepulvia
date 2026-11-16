@@ -138,12 +138,14 @@ public class Tooltip : MonoBehaviour
                             alignment == TooltipPosition.BottomRight;
         
         _tooltipsLayoutGroup.reverseArrangement = condition;
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_rectTrans);
     }
     // Position Tooltip
     public void PositionTooltip(Vector2 position, TooltipPosition alignment)
     {
-        Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(_rectTrans);
+        FlipAdditionalTooltips(alignment);
 
         var offset = GetAlignmentOffset(alignment);
 
@@ -151,7 +153,6 @@ public class Tooltip : MonoBehaviour
 
         _rectTrans.anchoredPosition = pos;
 
-        FlipAdditionalTooltips(alignment);
         DoEdgeDetection(pos, alignment);
     }
 
