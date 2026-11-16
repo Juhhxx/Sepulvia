@@ -61,6 +61,12 @@ public class BattleUIManager : MonoBehaviour
     private void Awake()
     {
         _battleManager = FindAnyObjectByType<BattleManager>();
+
+        foreach(Transform child in _decisionButtons.transform)
+        {
+            //child.gameObject.SetActive(true);
+            _decisionButtonScale = child.localScale;
+        }
     }
 
     private void Start()
@@ -360,6 +366,7 @@ public class BattleUIManager : MonoBehaviour
     private bool _wasAlreadyHoveringRight = false;
     private bool _wasAlreadyHoveringLeft = false;
     private bool _isBeadRevealed = false;
+    private Vector3 _decisionButtonScale;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void DoBeadSpawnIn()
     {
@@ -390,12 +397,21 @@ public class BattleUIManager : MonoBehaviour
     }
     public void DoButtonSpawnIn()
     {
+        float counter = 0;
         foreach(Transform child in _decisionButtons.transform)
         {
             child.gameObject.SetActive(true);
-            Vector3 scale = child.localScale;
+            //Vector3 scale = child.localScale;
             child.localScale = Vector3.zero;
-            child.DOScale(scale, _spawnSpeed).SetEase(Ease.OutBack);
+            if(counter == 0) //OMG OMGO MOM OM OMGOMWNGNERONGOIGNIPO CHANGE THIS HARDCODED MESS PLS I WA SOOOO LAZYYYYYY IT JUST has a counter bcs the scale ont he buttons is different and I dont  feel like drawing the flipped version so it has to accomodate for the different scales defined int he one variable in the hbeggining by counting the buttons. IT WILL BREAK WITH MORE BUTTONS.
+            {
+                child.DOScale( new Vector3(-_decisionButtonScale.x, _decisionButtonScale.y, _decisionButtonScale.z), _spawnSpeed).SetEase(Ease.OutBack);
+            }
+            else
+            {
+                child.DOScale(_decisionButtonScale, _spawnSpeed).SetEase(Ease.OutBack);
+            }
+            counter = counter +1;
         }
     }
 
