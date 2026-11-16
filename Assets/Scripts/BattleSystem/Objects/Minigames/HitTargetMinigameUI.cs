@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using DG.Tweening;
 
 public class HitTargetMinigameUI : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class HitTargetMinigameUI : MonoBehaviour
 
     [SerializeField] private Image _roundIndicatorImagePrefab;
     [SerializeField] private Transform _roundIndicatorParent;
+    [SerializeField] private GameObject _actionLinesOBJ;
+    private Material _actionLinesMaterial;
     
     private List<Image> _roundIndicatorList = new List<Image>();
 
@@ -27,6 +30,8 @@ public class HitTargetMinigameUI : MonoBehaviour
         // _minigameController.OnMinigameStart += SpawnRoundIndicators;
         // _minigameController.OnMinigameRoundEnd += UpdateRoundIndicator;
 
+        _actionLinesMaterial = _actionLinesOBJ.GetComponent<Image>().material;
+
     }
 
     // Slider set up
@@ -34,6 +39,9 @@ public class HitTargetMinigameUI : MonoBehaviour
     {
         var takenPositions = new float[rounds];
         var takenRotations = new float[rounds];
+
+        //DO the vignette Action lines come in here
+        DoActionLinesIn();
 
         for (int i = 0; i < rounds; i++)
         {
@@ -56,6 +64,8 @@ public class HitTargetMinigameUI : MonoBehaviour
             slider.GetComponent<ChainUIController>().DoSpawnComeIn();
         }
         CameraEffectsUtility.DoCameraShake(.7f, .2f, 1f); //Shake at the end of all 3 chains instanced
+
+        
     }
 
     private float PositionSlider(float[] taken, int iteration = 0)
@@ -143,6 +153,19 @@ public class HitTargetMinigameUI : MonoBehaviour
         } 
 
         _roundIndicatorList[round].color = color;
+    }
+
+    private void DoActionLinesIn()
+    {
+        _actionLinesMaterial.DOKill();
+        _actionLinesMaterial.SetFloat( "_Intensity", 0f);
+        _actionLinesMaterial.DOFloat(.7f,"_Intensity",.3f).SetEase(Ease.OutBack);
+    }
+    private void DoActionLinesOut()
+    {
+        _actionLinesMaterial.DOKill();
+        _actionLinesMaterial.SetFloat( "_Intensity", .7f);
+        _actionLinesMaterial.DOFloat(0f,"_Intensity",.3f).SetEase(Ease.InBack);
     }
 
 }
