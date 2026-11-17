@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using DG.Tweening;
+using Unity.VisualScripting;
+using NUnit.Framework.Interfaces;
 
 public class HitTargetMinigameUI : MonoBehaviour
 {
@@ -26,6 +28,7 @@ public class HitTargetMinigameUI : MonoBehaviour
         _minigameController.OnMinigameStart         += SetUpSliders;
         _minigameController.OnMinigameRoundStart    += UpdateSliderActivated;
         _minigameController.OnMinigameRoundEnd      += SpawnResultParticles;
+        _minigameController.OnMinigameEndRounds     += DispawnMinigameUI;
 
         // _minigameController.OnMinigameStart += SpawnRoundIndicators;
         // _minigameController.OnMinigameRoundEnd += UpdateRoundIndicator;
@@ -64,8 +67,15 @@ public class HitTargetMinigameUI : MonoBehaviour
             slider.GetComponent<ChainUIController>().DoSpawnComeIn();
         }
         CameraEffectsUtility.DoCameraShake(.7f, .2f, 1f); //Shake at the end of all 3 chains instanced
+    }
 
-        
+    private void DispawnMinigameUI()
+    {
+        foreach(HitTargetSliderUI child in _sliders)
+        {
+            child.GetComponent<ChainUIController>().DoDispawn();
+        }
+        DoActionLinesOut();
     }
 
     private float PositionSlider(float[] taken, int iteration = 0)
@@ -122,6 +132,10 @@ public class HitTargetMinigameUI : MonoBehaviour
     private void SpawnResultParticles(int round, float successRate)
     {
         _sliders[round].DoSpawnParticles(successRate);
+        if(successRate == 1)
+        {
+            _sliders[round].GetComponent<ChainUIController>().DoSeparate();
+        }
     }
 
     // Round Indicators
