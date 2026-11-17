@@ -216,6 +216,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
         OnMinigameEnd?.Invoke(points / rounds);
     }
 
+    
     private IEnumerator MinigameRoundCR(int round, Action<float> onRoundEnd)
     {
         OnMinigameRoundStart?.Invoke(round);
@@ -243,7 +244,7 @@ public class HitTargetMinigame : MonoBehaviour, IMoveMinigame
 
         if (result > 0)
         {
-            Debug.Log($"WON ROUND  {round}", this);
+            Debug.Log($"WON ROUND  {round}", this); //METE AQUI AS ANIMAÇÕES
         }
         else
         {
