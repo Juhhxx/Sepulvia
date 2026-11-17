@@ -10,7 +10,7 @@ public class MoveCard : MonoBehaviour
     {
         int recoveryCost = move.RecoveryCost;
 
-        if (move.MoveLogic is MoveCombo mc)
+        if (move.MoveLogic is MoveComboEnemy mc)
         {
             recoveryCost = mc.GetTotalRecoveryCost();
         }

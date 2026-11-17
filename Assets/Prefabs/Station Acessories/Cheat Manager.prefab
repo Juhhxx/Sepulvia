@@ -120,7 +120,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-          m_MethodName: WinCheat
+          m_MethodName: LoseCheat
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -135,9 +135,9 @@ MonoBehaviour:
     Cheat:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-          m_MethodName: WinCheat
+        - m_Target: {fileID: 1455640184061612057}
+          m_TargetAssemblyTypeName: CheatManager, Assembly-CSharp
+          m_MethodName: ResetPlayerCooldowns
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -147,4 +147,4 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  _curse: {fileID: 0}
+  _curse: {fileID: 11400000, guid: 33f415e0a0999674a8718178e231c875, type: 2}

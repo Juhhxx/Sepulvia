@@ -39,18 +39,6 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         get => _show;
         set
         {
-            if (_show != value)
-            {
-                if (value)
-                {
-                    ShowTooltip();
-                }
-                else 
-                {
-                    HideTooltip();
-                }
-            }
-            
             _show = value;
         }
     }
@@ -69,12 +57,17 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        HideTooltip();
         Show = false;
     }
 
     public void OnDisable()
     {
-        if (Show) Show = false;
+        if (Show)
+        {
+            HideTooltip();
+            Show = false;
+        }
     }
 
     private Coroutine _showTooltip = null;
@@ -82,6 +75,7 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         yield return new WaitForSeconds(delay);
 
+        ShowTooltip();
         Show = true;
     }
 
