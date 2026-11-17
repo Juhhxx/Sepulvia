@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Collections.Generic;
 
 public class InventorySlotManager : MonoBehaviour, ITooltipable
 {
@@ -93,8 +94,19 @@ public class InventorySlotManager : MonoBehaviour, ITooltipable
     public TooltipInfo GetTooltipInfo()
     {
         if (_item == null) return default;
+
+        string header = _item.Name;
+        string content = _item.Description;
+
+        List<TooltipInfo> additional = new List<TooltipInfo>();
         
-        return new TooltipInfo(_item.Name, _item.Description);
+        foreach (IDescriptable d in _item.AdditionalDescriptions)
+        {
+            additional.Add(new TooltipInfo(d.GetName(),
+                                        d.GetDescription()));
+        }
+
+        return new TooltipInfo(header, content, additional.ToArray());
     }
 
     // Animations

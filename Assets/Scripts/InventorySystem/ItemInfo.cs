@@ -1,9 +1,10 @@
 using UnityEngine;
 using NaughtyAttributes;
 using TNRD;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "ItemInfo", menuName = "Inventory/New Item")]
-public class ItemInfo : DataAsset
+public class ItemInfo : DataAsset, IDescriptable
 {
     [field: Header(" Base Item Parameters")]
     [field: Space(5)]
@@ -36,6 +37,23 @@ public class ItemInfo : DataAsset
     [field: Space(5)]
     [field: ShowIf(EConditionOperator.Or, "CanBeBought", "CanBeSold")]
     [field: SerializeField] public int Value { get; private set; }
+
+    public string GetName()
+    {
+        return Name;
+    }
+
+    public string GetDescription()
+    {
+        return Description;
+    }
+
+    [SerializeField] private SerializableInterface<IDescriptable>[] _additionalDescriptions;
+    public IDescriptable[] AdditionalDescriptions => GetAdditionalDescriptions();
+    public IDescriptable[] GetAdditionalDescriptions()
+    {
+        return _additionalDescriptions.Select(i => i.Value).ToArray();
+    }
 }
 
 public interface IConsumable
