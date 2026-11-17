@@ -17,10 +17,12 @@ public class TimelineManager : MonoBehaviour
     {
         _currentTurn = turn;
         _timer.ResetTimer();
+        Debug.Log($"RESET TIMELINE TIMER: {_timer.CurrentTime} {_timer.Done}", this);
     }
 
     public void ToggleTurnCounting(bool onOff)
     {
+        Debug.Log($"CHANGE TIMELINE COUNTING: {_countTurn}", this);
         _countTurn = onOff;
     }
 
@@ -30,17 +32,24 @@ public class TimelineManager : MonoBehaviour
 
         _timer.OnTimerBegin += () => {
             OnTurnBegin?.Invoke();
+            Debug.Log("TURN BEGAN", this);
         };
 
         _timer.OnTimerDone += () => {
             _currentTurn++;
             OnTurnEnd?.Invoke();
-            Debug.Log("TURN PASSED", this);
+            Debug.Log("TURN ENDED", this);
         };
     }
 
     private void Update()
     {
-        if (_countTurn) _timer.CountTimer();
+        // Debug.Log($"TIMELINE COUNTING: {_countTurn}", this);
+
+        if (_countTurn)
+        {
+            Debug.Log($"TIMELINE TIMER: {_timer.CurrentTime} {_timer.Done}", this);
+            _timer.CountTimer();
+        }
     }
 }

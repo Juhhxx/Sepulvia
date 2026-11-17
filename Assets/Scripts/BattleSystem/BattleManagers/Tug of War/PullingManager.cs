@@ -99,8 +99,6 @@ public class PullingManager : RandomBehaviour
         {
             int index = i;
 
-            Debug.Log($"SET UP ABR BUTTON {i}", this);
-
             _barSectionList[i].Button.onClick.AddListener(() => SetSelectedIndex(index));
         }
     }

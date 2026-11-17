@@ -29,12 +29,12 @@ public class Timer
         }
         else if (_time <= 0)
         {
-            if (_timerReset == TimerReset.Automatic) ResetTimer();
             if (!_done)
             {   
                 _done = true;
                 OnTimerDone?.Invoke();
             }          
+            if (_timerReset == TimerReset.Automatic) ResetTimer();
         }
         
     }

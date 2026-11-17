@@ -182,6 +182,7 @@ public class BattleManager : MonoBehaviour
     private bool _playerWon = false;
     private bool _hasWinner = false;
     private bool _doRun = false;
+    private bool _isSecondPhase = false;
 
     private void Start()
     {
@@ -193,6 +194,9 @@ public class BattleManager : MonoBehaviour
     private WaitForDialogueEnd _wfd;
     public void StartBattle(PlayerParty playerParty, EnemyParty enemyParty, bool firstPhase = true)
     {
+        // TEMPORARY FIX
+        _isSecondPhase = !firstPhase;
+
         _playerParty = playerParty;
         _enemyParty = enemyParty;
 
@@ -204,6 +208,16 @@ public class BattleManager : MonoBehaviour
         if (firstPhase)
         {
             foreach (Character c in _battlersList)
+            {
+                c.ResetMoveCooldowns();
+                c.CurrentStance = 0;
+                c.RecoveryTime = 0;
+                c.StartPassiveEffects();
+            }
+        }
+        else
+        {
+            foreach (Character c in _enemyParty.PartyMembers)
             {
                 c.ResetMoveCooldowns();
                 c.CurrentStance = 0;
@@ -430,6 +444,7 @@ public class BattleManager : MonoBehaviour
     private void ShowEnd()
     {
         Debug.Log("END BATTLE NOW");
+
         _uiManager.SetUIState(BattleUIManager.BattleUIState.None);
         _dialogueManager.HideDialogue();
         _inventoryUIManager.HideInventory();
@@ -503,12 +518,13 @@ public class BattleManager : MonoBehaviour
 
         if (!_hasWinner)
         {
-            if (_timelineManager.CurrentTurn == 0)
+            if (_timelineManager.CurrentTurn == 0 || (_isSecondPhase && _timelineManager.CurrentTurn <= 1))
             {
                 foreach (Character c in _battlersList)
                 {
                     foreach(PassiveEffect pe in c.ActivePassiveEffects)
                     {
+                        Debug.Log($"BEGIN BATTLE PASSIVE EFFECT {pe.Name} for {c.Name}");
                         pe.PassiveEffectLogic.OnEnterBattleEffect(GetBattlerController(c), this, pe);
                     }
                 }
