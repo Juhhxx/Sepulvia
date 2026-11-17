@@ -86,10 +86,21 @@ public class BattleManager : MonoBehaviour
         if (!_battlerControllers.ContainsKey(character))
             _battlerControllers.Add(character, controller);
     }
-    private void ClearBattlerControllers()
+    private void ClearBattlerControllers(bool clearPlayer = true)
     {
-        if (_battlerControllers != null)
-            _battlerControllers.Clear();
+        int lenght = _battlerControllers.Count;
+        var tempList = _battlerControllers.Keys.ToList();
+
+        for (int i = 0; i < lenght; i++)
+        {
+            var character = tempList.ToList()[i];
+
+            if (character == Player && !clearPlayer) continue;
+
+            _battlerControllers.Remove(character);
+        }
+
+        tempList.Clear();
     }
     
     public event Action<BattleAction> OnActionExecuted;
@@ -180,7 +191,7 @@ public class BattleManager : MonoBehaviour
     }
 
     private WaitForDialogueEnd _wfd;
-    public void StartBattle(PlayerParty playerParty, EnemyParty enemyParty)
+    public void StartBattle(PlayerParty playerParty, EnemyParty enemyParty, bool firstPhase = true)
     {
         _playerParty = playerParty;
         _enemyParty = enemyParty;
@@ -190,37 +201,56 @@ public class BattleManager : MonoBehaviour
         _battlersList.Add(Player);
         _battlersList.AddRange(enemyParty.PartyMembers);
 
-        foreach (Character c in _battlersList)
+        if (firstPhase)
         {
-            c.ResetMoveCooldowns();
-            c.CurrentStance = 0;
-            c.RecoveryTime = 0;
-            c.StartPassiveEffects();
+            foreach (Character c in _battlersList)
+            {
+                c.ResetMoveCooldowns();
+                c.CurrentStance = 0;
+                c.RecoveryTime = 0;
+                c.StartPassiveEffects();
+            }
         }
-
+            
         _hasWinner = false;
         _doRun = false;
 
-        _uiManager.InstantiateBattlePrefabs(_playerParty, _enemyParty);
-        _dialogueManager.SetUpDialogueManager();
+        if (firstPhase)
+        {
+            _uiManager.InstantiateBattlePrefabs(_playerParty, _enemyParty);
+            _dialogueManager.SetUpDialogueManager();
 
-        CurrentState = BattleState.SetUp;
+            CurrentState = BattleState.SetUp;
 
-        _pullManager.TogglePullUI(true);
-        _pullManager.SetUp(enemyParty);
+            _pullManager.TogglePullUI(true);
+            _pullManager.SetUp(enemyParty);
 
-        // Pull Bar Events
-        _pullManager.OnHeartEnd += Win;
+            // Pull Bar Events
+            _pullManager.OnHeartEnd += Win;
 
-        // Instantiate Variables
-        _wfd = new WaitForDialogueEnd(_dialogueManager);
+            // Instantiate Variables
+            _wfd = new WaitForDialogueEnd(_dialogueManager);
 
-        // Set UI
-        _uiManager.SetUIState(BattleUIManager.BattleUIState.None);
-        _uiManager.SetUpStanceBars(Player);
-        _dialogueManager.HideDialogue();
-        _inventoryUIManager.HideInventory();
-        _inventoryUIManager.ResetInventory();
+            // Set UI
+            _uiManager.SetUIState(BattleUIManager.BattleUIState.None);
+            _uiManager.SetUpStanceBars(Player);
+            _dialogueManager.HideDialogue();
+            _inventoryUIManager.HideInventory();
+            _inventoryUIManager.ResetInventory();
+        }
+        else
+        {
+            _pullManager.ResetEvents();
+            ClearBattlerControllers(false);
+
+            _uiManager.InstantiateBattlePrefabs(_enemyParty);
+
+            CurrentState = BattleState.SetUp;
+
+            _pullManager.TogglePullUI(true);
+            _pullManager.SetUp(enemyParty);
+            _uiManager.SetUIState(BattleUIManager.BattleUIState.None);
+        }
 
         // Temporary
         _timelineUIManager.ClearIndicators();
@@ -374,7 +404,6 @@ public class BattleManager : MonoBehaviour
     public void StartEndBattle()
     {
         OnBattleEnd?.Invoke();
-        
     }
 
     public void EndBattle()
@@ -403,6 +432,15 @@ public class BattleManager : MonoBehaviour
         _dialogueManager.HideDialogue();
         _inventoryUIManager.HideInventory();
         _pullManager.TogglePullUI(false);
+
+        foreach (Character c in _enemyParty.PartyMembers)
+        {
+            if ((c is Enemy e) && e.NextPhase != null)
+            {
+                StartBattle(_playerParty, e.NextPhase as EnemyParty, false);
+                return;
+            }
+        }
 
         if (_playerWon)
         {

@@ -11,6 +11,7 @@ public class ScreenWipe : MonoBehaviour
     [SerializeField] private Graphic _wipeGraphic;
 
     [SerializeField] private float _wipeDuration = 1f;
+    [SerializeField] private float _wipeDelay = 1f;
     [SerializeField] private Ease _wipeEase = Ease.Linear;
 
     private Material _wipeMaterial;
@@ -39,6 +40,7 @@ public class ScreenWipe : MonoBehaviour
 
         _wipeTween = _wipeMaterial
             .DOFloat(targetProgress, "_WipeProgress", _wipeDuration)
+            .SetDelay(targetProgress == 0 ? _wipeDelay : 0f) // if wiping out apply delay to tween
             .SetEase(_wipeEase)
             .OnComplete(() =>
             {

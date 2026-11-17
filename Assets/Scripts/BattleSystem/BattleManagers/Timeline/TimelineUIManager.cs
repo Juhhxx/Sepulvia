@@ -154,7 +154,7 @@ public class TimelineUIManager : MonoBehaviour
             Character c = party.PartyMembers[i];
             string name = c.Name + "/" + c.Speed + "/" + i;
 
-            AddTimelineIndicator(name, 0, c.TimelineIndicator, position);
+            AddTimelineIndicator(name, c.RecoveryTime, c.TimelineIndicator, position);
 
             c.OnRecoveryTimeChange += (newT, oldT) =>
             {
@@ -377,6 +377,7 @@ public class TimelineUIManager : MonoBehaviour
             }
             else
             {
+                indicator.anchoredPosition = pos;
                 indicator.gameObject.SetActive(false);
             }
         }

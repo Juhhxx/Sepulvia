@@ -114,6 +114,32 @@ public class BattleUIManager : MonoBehaviour
         }
     }
 
+    public void InstantiateBattlePrefabs(EnemyParty enemyParty)
+    {
+        int oldModelsLenght = _characterModels.Count;
+
+        //  Remove old enemy models (index 0 is player so dont remove it, start at index 1)
+        for (int i = 1; i < oldModelsLenght; i++)
+        {
+            var model = _characterModels[i];
+            _characterModels.Remove(model);
+            Destroy(model);
+        }
+
+        List<Vector3> positions = GetEnemySpawnPoints(enemyParty.PartySize);
+
+        for (int i = 0; i < enemyParty.PartySize; i++)
+        {
+            Character c = enemyParty.PartyMembers[i];
+
+            GameObject enemyGO = Instantiate(c.BattlePrefab, positions[i], Quaternion.identity);
+
+            _characterModels.Add(enemyGO);
+            _battleManager.RegisterBattlerController(c, enemyGO.GetComponent<BattlerController>());
+            Debug.Log($"Instantiated enemy prefab for {c.Name}", this);
+        }
+    }
+
     public List<Vector3> GetEnemySpawnPoints(int count)
     {
         foreach (PivotFormation pf in _enemyPivotFormations)
@@ -196,38 +222,6 @@ public class BattleUIManager : MonoBehaviour
         // Dissolve transition out
         _battleEndTransitionScreen.TriggerWipe(false);
         yield return new WaitUntil(() => !_battleEndTransitionScreen.CurrentWipe.IsPlaying);
-    }
-
-    private Tween DissolveEndTransition(GameObject battleEndTransitionScreen, float startDissolveValue, float endDissolveValue, float dissolveDuration)
-    {   
-        // Get the object's image component
-        Image img = battleEndTransitionScreen.GetComponent<Image>();
-
-        // Clone the image's material and apply it, so it doesn't interact with any other object's material
-        Material dissolveMaterial = new Material (img.material);
-        img.material = dissolveMaterial;
-        
-        // Set the starting dissolve value
-        dissolveMaterial.SetFloat("_Dissolve_Amount", startDissolveValue);
-
-        // Determine whether screen is fading in our out
-        bool fadingIn = startDissolveValue < endDissolveValue;
-
-        // If fading in, activate the screen
-        if (fadingIn) battleEndTransitionScreen.SetActive(true);
-
-        // Dissolve the image
-        return DOTween.To(
-            () => dissolveMaterial.GetFloat("_Dissolve_Amount"),
-            value => dissolveMaterial.SetFloat("_Dissolve_Amount", value),
-            endDissolveValue,
-            dissolveDuration
-        )
-        .OnComplete(() =>
-        {   
-            // If fading out, disable the screen
-            if(!fadingIn) battleEndTransitionScreen.SetActive(false);
-        });
     }
 
     public void ShowRewardsScreen()

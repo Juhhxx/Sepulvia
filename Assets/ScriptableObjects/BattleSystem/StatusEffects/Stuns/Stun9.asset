@@ -18,15 +18,17 @@ MonoBehaviour:
   <TurnDuration>k__BackingField: 9
   <OnEnterVFX>k__BackingField: {fileID: 493016931580949961, guid: 487672a65fd0760469059ede4c2d64d2, type: 3}
   <OnTriggeredVFX>k__BackingField: {fileID: 0}
-  <OnExitVFX>k__BackingField: {fileID: 0}
+  <OnExitVFX>k__BackingField: {fileID: 493016931580949961, guid: 487672a65fd0760469059ede4c2d64d2, type: 3}
   _statusEffect:
     mode: 1
     unityReference: {fileID: 0}
     rawReference:
       rid: 3144098014362337368
+  _additionalDescriptions: []
   references:
     version: 2
     RefIds:
     - rid: 3144098014362337368
       type: {class: StatusEffectStunned, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+        <ShowStack>k__BackingField: 0
