@@ -8,6 +8,7 @@ using System.Collections;
 public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Tooltip Settings")]
+    [SerializeField] private bool _constantUpdate = false;
     [ShowIf(nameof(_useDefaultValues))]
     [SerializeField] private string header;
     [ShowIf(nameof(_useDefaultValues))]
@@ -44,7 +45,7 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
                 {
                     ShowTooltip();
                 }
-                else
+                else 
                 {
                     HideTooltip();
                 }
@@ -73,7 +74,7 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnDisable()
     {
-        Show = false;
+        if (Show) Show = false;
     }
 
     private Coroutine _showTooltip = null;
@@ -116,7 +117,7 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private void Update()
     {
-        if (_showAlways)
+        if ((Show && _constantUpdate) || _showAlways)
         {
             ShowTooltip();
         }
