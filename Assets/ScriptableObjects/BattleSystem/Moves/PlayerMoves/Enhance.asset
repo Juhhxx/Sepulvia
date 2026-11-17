@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
   <Name>k__BackingField: Enhance Strength
   <Icon>k__BackingField: {fileID: 21300000, guid: cdeff04dba6b81a4fa2bed85b2eb56db, type: 3}
-  <Description>k__BackingField: Gain +2 PULL STRENGTH for 9 turns.
+  <Description>k__BackingField: Gain <color=green>+2</color> <color=yellow>PULL STRENGTH</color>
+    for 9 turns.
   <Level>k__BackingField: 1
   <AnimationTriggerUser>k__BackingField: Buff
   <AnimationTriggerTarget>k__BackingField: 
@@ -31,9 +32,16 @@ MonoBehaviour:
     unityReference: {fileID: 0}
     rawReference:
       rid: 3144097642165305448
+  _additionalDescriptions:
+  - mode: 0
+    unityReference: {fileID: 11400000, guid: 1d8f72511f8ccde4ca4180f39aeaf43b, type: 2}
+    rawReference:
+      rid: -2
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 3144097642165305448
       type: {class: MoveApplyStatusEffect, ns: , asm: Assembly-CSharp}
       data:

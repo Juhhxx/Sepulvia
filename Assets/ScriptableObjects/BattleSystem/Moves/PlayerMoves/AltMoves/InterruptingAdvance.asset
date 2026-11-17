@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
   <Name>k__BackingField: Interupting Advance
   <Icon>k__BackingField: {fileID: 21300000, guid: 5a83c3a2adda8524fa52c8631fbc65c8, type: 3}
-  <Description>k__BackingField: 'Interrupt your target''s Recovery Time, restarting
-    it.
+  <Description>k__BackingField: '<color=orange>Interrupt</color> your target''s Recovery
+    Time, restarting it.
 
-    Your next move generates additional Stance.'
+    Your next move generates additional <color=#42ff9e>Stance</color>.'
   <Level>k__BackingField: 1
   <AnimationTriggerUser>k__BackingField: None
   <AnimationTriggerTarget>k__BackingField: None
@@ -28,14 +28,22 @@ MonoBehaviour:
   <StanceRewardRange>k__BackingField: {x: 0, y: 0}
   <Type>k__BackingField: 1
   <Targeting>k__BackingField: 1
+  <CanBeBlocked>k__BackingField: 0
   _moveLogic:
     mode: 1
     unityReference: {fileID: 0}
     rawReference:
       rid: 9062265499754954842
+  _additionalDescriptions:
+  - mode: 0
+    unityReference: {fileID: 11400000, guid: 475ec4970cc0f5f4eb00a246f88adab7, type: 2}
+    rawReference:
+      rid: -2
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 9062265499754954842
       type: {class: MoveCombo, ns: , asm: Assembly-CSharp}
       data:

@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: FlipPhone
   m_EditorClassIdentifier: Assembly-CSharp::ItemInfo
   _id: 25
-  <Name>k__BackingField: FlipPhone
+  <Name>k__BackingField: <color=#ff00ffff>Flip Phone</color>
   <Sprite>k__BackingField: {fileID: 0}
-  <Description>k__BackingField: Saves the game.
+  <Description>k__BackingField: <color=#ff00ffff>Consumable</color>. Saves the game.
   <StackMaximum>k__BackingField: 1
   <CanBeUsedInBattle>k__BackingField: 0
+  <CanBeUsedOutsideBattle>k__BackingField: 0
   <CanBeBought>k__BackingField: 0
   <CanBeSold>k__BackingField: 0
   <Type>k__BackingField: 2
@@ -31,8 +32,14 @@ MonoBehaviour:
     unityReference: {fileID: 0}
     rawReference:
       rid: -2
+  <equippableType>k__BackingField: 0
   <Level>k__BackingField: 0
   <Value>k__BackingField: 0
+  _additionalDescriptions:
+  - mode: 0
+    unityReference: {fileID: 11400000, guid: 51eefb069958b6244b0eb8d94a71821e, type: 2}
+    rawReference:
+      rid: -2
   references:
     version: 2
     RefIds:

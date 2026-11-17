@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: MakeupPowder
   m_EditorClassIdentifier: Assembly-CSharp::ItemInfo
   _id: 24
-  <Name>k__BackingField: Makeup Powder
+  <Name>k__BackingField: <color=#ff00ffff>Makeup Powder</color>
   <Sprite>k__BackingField: {fileID: 21300000, guid: 229c97711926a1243acaf3bc33718579, type: 3}
-  <Description>k__BackingField: Guarantees the success of the next Run attempt (outside
-    of boss encounters).
+  <Description>k__BackingField: <color=#ff00ffff>Consumable</color>. Guarantees the
+    success of the next <color=yellow>Run</color> attempt (outside of boss encounters).
   <StackMaximum>k__BackingField: 5
   <CanBeUsedInBattle>k__BackingField: 1
+  <CanBeUsedOutsideBattle>k__BackingField: 0
   <CanBeBought>k__BackingField: 1
   <CanBeSold>k__BackingField: 0
   <Type>k__BackingField: 0
@@ -32,8 +33,14 @@ MonoBehaviour:
     unityReference: {fileID: 0}
     rawReference:
       rid: -2
+  <equippableType>k__BackingField: 0
   <Level>k__BackingField: 5
   <Value>k__BackingField: 100
+  _additionalDescriptions:
+  - mode: 0
+    unityReference: {fileID: 11400000, guid: 51eefb069958b6244b0eb8d94a71821e, type: 2}
+    rawReference:
+      rid: -2
   references:
     version: 2
     RefIds:

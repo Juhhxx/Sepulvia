@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: VitaminGummies
   m_EditorClassIdentifier: Assembly-CSharp::ItemInfo
   _id: 20
-  <Name>k__BackingField: Vitamin Gummies
+  <Name>k__BackingField: <color=#ff00ffff>Vitamin Gummies</color>
   <Sprite>k__BackingField: {fileID: 21300000, guid: c40005b2ae195f8469ff6689e25743f3, type: 3}
-  <Description>k__BackingField: Gain +2 PULL STRENGTH for the next 5 turns.
+  <Description>k__BackingField: <color=#ff00ffff>Consumable</color>. Gain <color=green>+2</color>
+    <color=yellow>PULL STRENGTH</color> for the next 5 turns.
   <StackMaximum>k__BackingField: 5
   <CanBeUsedInBattle>k__BackingField: 1
   <CanBeUsedOutsideBattle>k__BackingField: 0
@@ -32,8 +33,18 @@ MonoBehaviour:
     unityReference: {fileID: 0}
     rawReference:
       rid: -2
+  <equippableType>k__BackingField: 0
   <Level>k__BackingField: 5
   <Value>k__BackingField: 100
+  _additionalDescriptions:
+  - mode: 0
+    unityReference: {fileID: 11400000, guid: 51eefb069958b6244b0eb8d94a71821e, type: 2}
+    rawReference:
+      rid: -2
+  - mode: 0
+    unityReference: {fileID: 11400000, guid: 1d8f72511f8ccde4ca4180f39aeaf43b, type: 2}
+    rawReference:
+      rid: -2
   references:
     version: 2
     RefIds:
