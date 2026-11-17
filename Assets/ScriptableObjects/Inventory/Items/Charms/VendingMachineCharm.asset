@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: VendingMachineCharm
   m_EditorClassIdentifier: Assembly-CSharp::ItemInfo
   _id: 29
-  <Name>k__BackingField: Lucky Coin Charm
+  <Name>k__BackingField: <color=red>Lucky Coin Charm</color>
   <Sprite>k__BackingField: {fileID: 21300000, guid: 9909792a34a87cb408c3a1e91f30c8bb, type: 3}
-  <Description>k__BackingField: Adds a chance to not use a consumable.
+  <Description>k__BackingField: <color=red>Combat Charm</color>. Adds a chance to
+    not use a consumable.
   <StackMaximum>k__BackingField: 1
   <CanBeUsedInBattle>k__BackingField: 0
   <CanBeUsedOutsideBattle>k__BackingField: 1
@@ -35,6 +36,11 @@ MonoBehaviour:
   <equippableType>k__BackingField: 0
   <Level>k__BackingField: 0
   <Value>k__BackingField: 0
+  _additionalDescriptions:
+  - mode: 0
+    unityReference: {fileID: 11400000, guid: 597c51f8a32643e4aab3f3c2fd28205e, type: 2}
+    rawReference:
+      rid: -2
   references:
     version: 2
     RefIds:

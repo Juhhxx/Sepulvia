@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveInfo
   <Name>k__BackingField: Maelstrom Unbound
   <Icon>k__BackingField: {fileID: 0}
-  <Description>k__BackingField: Inflicts 5 Curse stacks on target, reduced by pressing
-    LEFT CLICK at the right time.
+  <Description>k__BackingField: <color=#ff4dd5>Active Time</color>. Inflict 5 <color=#db1456>Curse</color>
+    on target, reduced by pressing LEFT CLICK at the right time.
   <Level>k__BackingField: 1
   <AnimationTriggerUser>k__BackingField: BigMove
   <AnimationTriggerTarget>k__BackingField: Hurt
@@ -32,7 +32,11 @@ MonoBehaviour:
     unityReference: {fileID: 0}
     rawReference:
       rid: 3144097978290798710
-  _additionalDescriptions: []
+  _additionalDescriptions:
+  - mode: 0
+    unityReference: {fileID: 11400000, guid: d56add8b909ffaf4c9961863db043fa7, type: 2}
+    rawReference:
+      rid: -2
   references:
     version: 2
     RefIds:

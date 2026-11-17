@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: RapierPendant
   m_EditorClassIdentifier: Assembly-CSharp::ItemInfo
   _id: 28
-  <Name>k__BackingField: Rapier Pendant
+  <Name>k__BackingField: <color=red>Rapier Pendant</color>
   <Sprite>k__BackingField: {fileID: 21300000, guid: c03fba0c9da475e4f8c14b351f28d379, type: 3}
-  <Description>k__BackingField: 'Triggering a Block grants +1 PULL STRENGTH for 10
-    turns. '
+  <Description>k__BackingField: '<color=red>Combat Charm</color>. Triggering a Block
+    grants <color=green>+1</color> <color=yellow>PULL STRENGTH</color> for 10 turns. '
   <StackMaximum>k__BackingField: 1
   <CanBeUsedInBattle>k__BackingField: 0
   <CanBeUsedOutsideBattle>k__BackingField: 1
@@ -33,8 +33,14 @@ MonoBehaviour:
     unityReference: {fileID: 0}
     rawReference:
       rid: 3144098014362337399
+  <equippableType>k__BackingField: 0
   <Level>k__BackingField: 0
   <Value>k__BackingField: 0
+  _additionalDescriptions:
+  - mode: 0
+    unityReference: {fileID: 11400000, guid: 597c51f8a32643e4aab3f3c2fd28205e, type: 2}
+    rawReference:
+      rid: -2
   references:
     version: 2
     RefIds:

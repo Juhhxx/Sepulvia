@@ -126,12 +126,12 @@ public class MoveButtonUI : MonoBehaviour, ITooltipable, IPointerEnterHandler, I
             {
                 if (se.StatusEffectLogic is StatusEffectPullStrenghtBoost sb)
                 {
-                    string h = sb.Boost > 0 ? "<color=orange>STRENGHT BUFF</color>" :
-                                            "<color=red>STRENGHT NERF</color>";
+                    string h = sb.Boost > 0 ? "<color=orange>STRENGTH BUFF</color>" :
+                                            "<color=red>STRENGTH NERF</color>";
                     
                     string sign = sb.Boost > 0 ? "+" : "";
                     
-                    string c = $"{sign}{sb.Boost} Pull Strenght from {se.Name}";
+                    string c = $"{sign}{sb.Boost} Pull Strength from {se.Name}";
 
                     additional.Add(new TooltipInfo(h, c));
                 }
