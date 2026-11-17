@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2856377646141156432}
   - component: {fileID: 5901781904693945250}
+  - component: {fileID: 6066978234568226255}
   m_Layer: 0
   m_Name: Scene Manager
   m_TagString: Untagged
@@ -48,17 +49,34 @@ MonoBehaviour:
   _gameScenes:
   - <SceneType>k__BackingField: 0
     <SceneCamera>k__BackingField: {fileID: 0}
+    <SceneBackground>k__BackingField: {fileID: 0}
+    <WipeTransition>k__BackingField: {fileID: 6066978234568226255}
     <SceneGameObject>k__BackingField: {fileID: 0}
     <Fog>k__BackingField: 1
     <FogColor>k__BackingField: {r: 0.21960784, g: 0.023529412, b: 0.23921569, a: 1}
     <FogMode>k__BackingField: 2
-    <FogDensity>k__BackingField: 0.12
+    <FogDensity>k__BackingField: 0.065
     <HaloStrenght>k__BackingField: 0.4
   - <SceneType>k__BackingField: 1
     <SceneCamera>k__BackingField: {fileID: 0}
+    <SceneBackground>k__BackingField: {fileID: 0}
+    <WipeTransition>k__BackingField: {fileID: 6066978234568226255}
     <SceneGameObject>k__BackingField: {fileID: 0}
     <Fog>k__BackingField: 1
     <FogColor>k__BackingField: {r: 0, g: 0, b: 0, a: 1}
     <FogMode>k__BackingField: 3
     <FogDensity>k__BackingField: 0.054
     <HaloStrenght>k__BackingField: 0.379
+--- !u!114 &6066978234568226255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070195067736204311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a942754cd826964f8e716dcf8fe2728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScreenWipeTrigger
+  _wipe: Vortex Wipe

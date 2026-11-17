@@ -10,18 +10,17 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
     [SerializeField] private NavMeshSurface _navMeshSurface;
 
     private RoomInstance _currentRoom;
-    private Animator _fadeAnimator;
     private PlayerController _playerController;
 
     private List<RoomNode> _loadedRooms = new List<RoomNode>();
     private List<RoomInstance> _instantiatedRooms = new List<RoomInstance>();
 
+    public event Action OnBeginRoomLoad;
     public event Action OnRoomLoaded;
 
     private void Awake()
     {
         base.SingletonCheck(this, false);
-        _fadeAnimator = GetComponentInChildren<Animator>();
         _playerController = FindAnyObjectByType<PlayerController>();
     }
 
@@ -91,7 +90,7 @@ public class RoomManager : MonoBehaviourSingleton<RoomManager>
 
     private IEnumerator LoadRoomCR(RoomNode roomNode, RoomSide targetId)
     {
-        _fadeAnimator.SetTrigger("Fade");
+        OnBeginRoomLoad?.Invoke();
 
         yield return new WaitForSeconds(1f);
 

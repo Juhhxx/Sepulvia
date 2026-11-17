@@ -286,7 +286,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 95826115271185890, guid: 34cd20a6a5fe217469c36366dad1565d, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1858963588990914832, guid: 34cd20a6a5fe217469c36366dad1565d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -407,24 +407,6 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 4040891401757506885, guid: b73eded718488c54abbb56df165aacf5, type: 3}
   m_PrefabInstance: {fileID: 599015328}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &330331741 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1070195067736204311, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
-  m_PrefabInstance: {fileID: 466036712}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &330331744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330331741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a942754cd826964f8e716dcf8fe2728, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ScreenWipeTrigger
-  _wipe: Vortex Wipe
 --- !u!1001 &466036712
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -478,14 +460,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
-      propertyPath: _currentGameScene
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
-      propertyPath: _gameScenes.Array.data[0].<FogDensity>k__BackingField
-      value: 0.065
-      objectReference: {fileID: 0}
-    - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
       propertyPath: _gameScenes.Array.data[0].<SceneCamera>k__BackingField
       value: 
       objectReference: {fileID: 1062794269}
@@ -493,14 +467,6 @@ PrefabInstance:
       propertyPath: _gameScenes.Array.data[1].<SceneCamera>k__BackingField
       value: 
       objectReference: {fileID: 3249903681292839407}
-    - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
-      propertyPath: _gameScenes.Array.data[0].<WipeTransition>k__BackingField
-      value: 
-      objectReference: {fileID: 330331744}
-    - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
-      propertyPath: _gameScenes.Array.data[1].<WipeTransition>k__BackingField
-      value: 
-      objectReference: {fileID: 330331744}
     - target: {fileID: 5901781904693945250, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
       propertyPath: _gameScenes.Array.data[0].<SceneBackground>k__BackingField
       value: 
@@ -520,10 +486,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1070195067736204311, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 330331744}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 762d1d23c753ccd47b0e111130116791, type: 3}
 --- !u!1001 &583562348
 PrefabInstance:
@@ -1557,26 +1520,6 @@ PrefabInstance:
     - target: {fileID: 494834887942439619, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3351051720530936997, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
-      propertyPath: _volume
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4630415672510567131, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
-      propertyPath: m_Color.b
-      value: 0.8679245
-      objectReference: {fileID: 0}
-    - target: {fileID: 4630415672510567131, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
-      propertyPath: m_Color.g
-      value: 0.6755073
-      objectReference: {fileID: 0}
-    - target: {fileID: 4630415672510567131, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
-      propertyPath: m_Color.r
-      value: 0.8349387
-      objectReference: {fileID: 0}
-    - target: {fileID: 4630415672510567131, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
-      propertyPath: m_Intensity
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4742336046542537727, guid: 18e1a6ed4961850438e84a0af0534142, type: 3}
       propertyPath: _enemySpawner
