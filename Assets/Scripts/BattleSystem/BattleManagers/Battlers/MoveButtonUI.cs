@@ -109,8 +109,8 @@ public class MoveButtonUI : MonoBehaviour, ITooltipable, IPointerEnterHandler, I
 
         if (_moveButton.PlayerController != null && strBonus != 0)
         {
-            if (strBonus > 0) playerPullStr = "(+" + strBonus + ")";
-            else playerPullStr =  "(" + strBonus + ")";
+            if (strBonus > 0) playerPullStr = "<color=green>(+" + strBonus + ")</color>";
+            else playerPullStr =  "<color=red>(" + strBonus + ")</color>";
         }
 
         description = description.Replace("(pull_str)", $"{playerPullStr}");
@@ -126,12 +126,12 @@ public class MoveButtonUI : MonoBehaviour, ITooltipable, IPointerEnterHandler, I
             {
                 if (se.StatusEffectLogic is StatusEffectPullStrenghtBoost sb)
                 {
-                    string h = sb.Boost > 0 ? "<color=orange>STRENGHT BUFF</color>" :
-                                            "<color=red>STRENGHT NERF</color>";
+                    string h = sb.Boost > 0 ? "<color=green>STRENGTH BUFF</color>" :
+                                            "<color=red>STRENGTH NERF</color>";
                     
                     string sign = sb.Boost > 0 ? "+" : "";
                     
-                    string c = $"{sign}{sb.Boost} Pull Strenght from {se.Name}";
+                    string c = $"{sign}{sb.Boost} Pull Strength from {se.Name}";
 
                     additional.Add(new TooltipInfo(h, c));
                 }

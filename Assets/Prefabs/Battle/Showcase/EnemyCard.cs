@@ -33,7 +33,7 @@ public class EnemyCard : MonoBehaviour
         foreach (var move in enemy.MoveSet)
         {
             var moveCard = Instantiate(_moveCardPrefab, _enemyMoveCardsParent);
-            moveCard.Setup(move);
+            moveCard.Setup(move, enemy);
         }
     }
 }
