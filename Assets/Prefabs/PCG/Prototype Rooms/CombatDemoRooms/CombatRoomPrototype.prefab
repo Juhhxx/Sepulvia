@@ -1232,14 +1232,24 @@ MonoBehaviour:
   _uniqueID: 00e53c77-58c1-46d8-8e1b-4e68babaaffd
   _seed: 0
   <RoomNode>k__BackingField:
-    RoomName: 
-    RoomData: {fileID: 0}
-    Connections: []
+    RoomName: Combat Room
+    RoomData: {fileID: 11400000, guid: 8c37825ec7d99ef4caba319a967bad24, type: 2}
+    Connections:
+    - DoorId: 7
+      TargetRoom:
+        rid: -2
+      TargetDoorId: 4
+    - DoorId: 4
+      TargetRoom:
+        rid: -2
+      TargetDoorId: 7
   <Spawnposition>k__BackingField: {fileID: 4957696281976028186}
   <EnemyParent>k__BackingField: {fileID: 0}
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &4849856119433308799
 GameObject:
   m_ObjectHideFlags: 0

@@ -193,7 +193,7 @@ public class PlayerOverworldUI : MonoBehaviour
     {
         while (true)
         {
-            AddScrollText("This is a combat demo, the enemies are ordered by difficulty level from left to right! Good luck!");
+            AddScrollText(_testText);
             yield return new WaitForSeconds(15f);
         }
     }
