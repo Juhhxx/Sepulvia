@@ -148,7 +148,7 @@ MonoBehaviour:
   _soudsToPlay:
   - {fileID: 8300000, guid: 086e468545cb4d44c8899de46150f65d, type: 3}
   _group: 3
-  _volume: 0.5
+  _volume: 0
   _changePitch: 0
   _pitch: 1
   _pitchRange: {x: 0, y: 0}
@@ -284,6 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 965706bcef915eb4a90ec677cf800046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  _constantUpdate: 0
   header: 
   content: 
   additional: []
@@ -292,6 +293,8 @@ MonoBehaviour:
   _tooltipOffset: {x: 0, y: 100}
   _tooltipPosition: {x: 0, y: 0}
   _tooltipAlignment: 6
+  _tooltipDelay: 0.25
+  _showAlways: 0
 --- !u!1 &6163916656878454955
 GameObject:
   m_ObjectHideFlags: 0

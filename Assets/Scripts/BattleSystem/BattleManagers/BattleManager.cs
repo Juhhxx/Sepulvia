@@ -249,6 +249,8 @@ public class BattleManager : MonoBehaviour
 
             _pullManager.TogglePullUI(true);
             _pullManager.SetUp(enemyParty);
+            // Pull Bar Events
+            _pullManager.OnHeartEnd += Win;
             _uiManager.SetUIState(BattleUIManager.BattleUIState.None);
         }
 

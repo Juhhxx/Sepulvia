@@ -132,14 +132,14 @@ public class BarSectionUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        Destroy(_modifierController);
+        Destroy(_modifierController?.gameObject);
     }
 
     private IEnumerator DestroyModifierCR(GameObject modifier)
     {
         yield return new WaitForSeconds(2);
 
-        Destroy(modifier);
+        if (modifier != null) Destroy(modifier);
     }
 
     // Animations

@@ -16,7 +16,7 @@ public class PullingManager : RandomBehaviour
     // Pulling Variables
     [SerializeField] private float _pullSpeed = 0.2f;
 
-    [SerializeField, ReadOnly] private List<BarSection> _barSectionList;
+    [SerializeField, ReadOnly] private List<BarSection> _barSectionList = new List<BarSection>();
     public List<BarSection> BarSections => _barSectionList;
     private int _sectionsNumber;
 
@@ -133,6 +133,12 @@ public class PullingManager : RandomBehaviour
         _sectionsNumber = (enemyParty as EnemyParty).EncounterBarSections;
 
         if (_sectionsNumber % 2 == 0) _sectionsNumber--; // Make sure the number of sections is odd
+
+        foreach (BarSection bs in _barSectionList)
+        {
+            Destroy(bs.gameObject);
+        }
+        _barSectionList.Clear();
 
         _pullingUIManager.SpawnHeart();
         _pullingUIManager.SpawnBarSections(_sectionsNumber);
