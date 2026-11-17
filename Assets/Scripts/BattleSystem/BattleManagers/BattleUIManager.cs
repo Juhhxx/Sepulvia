@@ -67,6 +67,8 @@ public class BattleUIManager : MonoBehaviour
             //child.gameObject.SetActive(true);
             _decisionButtonScale = child.localScale;
         }
+
+        _beadInitialRotation = _beadTransform.rotation;
     }
 
     private void Start()
@@ -361,6 +363,7 @@ public class BattleUIManager : MonoBehaviour
     private bool _wasAlreadyHoveringLeft = false;
     private bool _isBeadRevealed = false;
     private Vector3 _decisionButtonScale;
+    private Quaternion _beadInitialRotation;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void DoBeadSpawnIn()
     {
@@ -371,7 +374,7 @@ public class BattleUIManager : MonoBehaviour
         }
 
         _beadTransform.localScale = Vector3.zero;
-
+        _beadTransform.rotation = _beadInitialRotation;
         Sequence mySequence = DOTween.Sequence();
         mySequence.Append(_beadTransform.DOScale(Vector3.one, _spawnSpeed).SetEase(Ease.OutBack));
         mySequence.OnComplete(() =>
