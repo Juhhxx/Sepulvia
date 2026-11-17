@@ -33060,14 +33060,20 @@ MonoBehaviour:
   _uniqueID: bcda6d0e-0106-4f11-8d79-434760288f44
   _seed: 0
   <RoomNode>k__BackingField:
-    RoomName: 
-    RoomData: {fileID: 0}
-    Connections: []
+    RoomName: Demo Boss Room
+    RoomData: {fileID: 11400000, guid: 96578315d5879b040a168c7015c43b08, type: 2}
+    Connections:
+    - DoorId: 2
+      TargetRoom:
+        rid: -2
+      TargetDoorId: 4
   <Spawnposition>k__BackingField: {fileID: 6151410230906470824}
   <EnemyParent>k__BackingField: {fileID: 0}
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &8132828837803760211
 GameObject:
   m_ObjectHideFlags: 0
@@ -34145,6 +34151,18 @@ PrefabInstance:
     - target: {fileID: 4456220506889243831, guid: faf6042b52992c145a056f2b57670b29, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6739920143849716244, guid: faf6042b52992c145a056f2b57670b29, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7400584616195717837, guid: faf6042b52992c145a056f2b57670b29, type: 3}
+      propertyPath: m_Height
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7400584616195717837, guid: faf6042b52992c145a056f2b57670b29, type: 3}
+      propertyPath: m_Radius
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

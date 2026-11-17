@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47d66a1fd0abb3e4b9c04830f9949514, type: 3}
-  m_Name: Demo Boss Room Node
+  m_Name: Room3_Node
   m_EditorClassIdentifier: Assembly-CSharp::PreMadeRoomNode
-  RoomData: {fileID: 11400000, guid: 96578315d5879b040a168c7015c43b08, type: 2}
+  RoomData: {fileID: 11400000, guid: 1f5c97a052b8b064fa2287a2ae33566c, type: 2}
   Connections:
-  - DoorId: 2
-    TargetRoom: {fileID: 11400000, guid: 38ac904c9dd68c24db47cd2e5ea206e8, type: 2}
+  - DoorId: 7
+    TargetRoom: {fileID: 11400000, guid: 6af0b96999b41bd45be71df799dc0d7b, type: 2}
     TargetDoorId: 4
+  - DoorId: 4
+    TargetRoom: {fileID: 11400000, guid: 19430eb5335169147835e1e8b6b5c7a0, type: 2}
+    TargetDoorId: 7
