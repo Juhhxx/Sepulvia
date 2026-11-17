@@ -6004,14 +6004,24 @@ MonoBehaviour:
   _uniqueID: 5b4f72e9-92ea-4c05-8fe6-131a0759c82c
   _seed: 0
   <RoomNode>k__BackingField:
-    RoomName: 
-    RoomData: {fileID: 0}
-    Connections: []
+    RoomName: Corridor Room
+    RoomData: {fileID: 11400000, guid: 9c9d821c37a1f154ea7e3326a1b06626, type: 2}
+    Connections:
+    - DoorId: 7
+      TargetRoom:
+        rid: -2
+      TargetDoorId: 4
+    - DoorId: 4
+      TargetRoom:
+        rid: -2
+      TargetDoorId: 7
   <Spawnposition>k__BackingField: {fileID: 7485679656524600684}
   <EnemyParent>k__BackingField: {fileID: 0}
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &4849856119433308799
 GameObject:
   m_ObjectHideFlags: 0
@@ -11385,8 +11395,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0579714c4367fc143a4e2a0d91d7dceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PillarMovement
-  _shiftingRange: {x: 2, y: 5}
-  _shiftingtVelocity: {x: 0.5, y: 2.5}
+  _shiftingRange: {x: 0, y: 1.5746908}
+  _shiftingtVelocity: {x: 1, y: 2}
   _isMoving: 1
 --- !u!1 &7258472193607913316
 GameObject:
@@ -12112,8 +12122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0579714c4367fc143a4e2a0d91d7dceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PillarMovement
-  _shiftingRange: {x: 2, y: 5}
-  _shiftingtVelocity: {x: 0.5, y: 3}
+  _shiftingRange: {x: 0, y: 1.5746908}
+  _shiftingtVelocity: {x: 1, y: 2}
   _isMoving: 1
 --- !u!4 &7599896642153560197 stripped
 Transform:
@@ -12253,6 +12263,10 @@ PrefabInstance:
     - target: {fileID: 5785902998877688497, guid: b3dc3d14e3ad37443be37381c8e52107, type: 3}
       propertyPath: _uniqueID
       value: da8452f3-e582-44cb-b516-d7eb31873de4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785902998877688497, guid: b3dc3d14e3ad37443be37381c8e52107, type: 3}
+      propertyPath: _alwaysActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8167189248110956023, guid: b3dc3d14e3ad37443be37381c8e52107, type: 3}
       propertyPath: m_IsActive
@@ -12720,8 +12734,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0579714c4367fc143a4e2a0d91d7dceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PillarMovement
-  _shiftingRange: {x: 2, y: 5}
-  _shiftingtVelocity: {x: 0.5, y: 3}
+  _shiftingRange: {x: 0, y: 1.5746908}
+  _shiftingtVelocity: {x: 1, y: 2}
   _isMoving: 1
 --- !u!1001 &4886100282570742275
 PrefabInstance:
@@ -12887,8 +12901,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0579714c4367fc143a4e2a0d91d7dceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PillarMovement
-  _shiftingRange: {x: 2, y: 5}
-  _shiftingtVelocity: {x: 0.5, y: 3}
+  _shiftingRange: {x: 0, y: 1.5746908}
+  _shiftingtVelocity: {x: 1, y: 2}
   _isMoving: 1
 --- !u!1001 &5067057795247343108
 PrefabInstance:
@@ -13236,6 +13250,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2635182455929051208, guid: 8ba0e8ad958109942a557e34ffdd2473, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13261,8 +13279,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0579714c4367fc143a4e2a0d91d7dceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PillarMovement
-  _shiftingRange: {x: 2, y: 5}
-  _shiftingtVelocity: {x: 0.5, y: 3}
+  _shiftingRange: {x: 0, y: 1.5746908}
+  _shiftingtVelocity: {x: 1, y: 2}
   _isMoving: 1
 --- !u!4 &6885158219940487178 stripped
 Transform:
@@ -13403,6 +13421,10 @@ PrefabInstance:
       propertyPath: _uniqueID
       value: c0eb07e9-f8b5-42d6-a9b5-97d4131f6d26
       objectReference: {fileID: 0}
+    - target: {fileID: 5785902998877688497, guid: b3dc3d14e3ad37443be37381c8e52107, type: 3}
+      propertyPath: _alwaysActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8167189248110956023, guid: b3dc3d14e3ad37443be37381c8e52107, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -13488,6 +13510,10 @@ PrefabInstance:
     - target: {fileID: 5785902998877688497, guid: b3dc3d14e3ad37443be37381c8e52107, type: 3}
       propertyPath: _uniqueID
       value: b2803422-77dc-4696-a531-01fc22757f52
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785902998877688497, guid: b3dc3d14e3ad37443be37381c8e52107, type: 3}
+      propertyPath: _alwaysActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8167189248110956023, guid: b3dc3d14e3ad37443be37381c8e52107, type: 3}
       propertyPath: m_IsActive
@@ -13620,6 +13646,10 @@ PrefabInstance:
     - target: {fileID: 6739920143849716244, guid: 282880a39df4b41438c6ada32e9b7283, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7400584616195717837, guid: 282880a39df4b41438c6ada32e9b7283, type: 3}
+      propertyPath: m_Radius
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

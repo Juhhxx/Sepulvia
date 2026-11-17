@@ -15,7 +15,7 @@ public class TrainSpawner : MonoBehaviour
     [SerializeField] private float speed = 5f;
     [SerializeField] private float lifetime = 2f;
 
-    private void Start()
+    private void OnEnable()
     {
         StartCoroutine(SpawnRoutine());
     }
