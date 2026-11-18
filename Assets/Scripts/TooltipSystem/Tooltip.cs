@@ -73,6 +73,15 @@ public class Tooltip : MonoBehaviour
         {
             _headerTMP.gameObject.SetActive(true);
         }
+        if (string.IsNullOrEmpty(info.Content))
+        {
+            _contentTMP.gameObject.SetActive(false);
+        }
+        else
+        {
+            _contentTMP.gameObject.SetActive(true);
+        }
+
 
         _headerTMP.text     = info.Header;
         _contentTMP.text    = info.Content;

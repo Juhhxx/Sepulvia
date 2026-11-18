@@ -2,9 +2,11 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class SoulBurnProfile : ICloneable
+public class SoulBurnProfile : ICloneable, IDescriptable
 {
     [SerializeField] public Sprite Icon;
+    [SerializeField] public string Name;
+    [SerializeField] public string Description;
     [SerializeField] private int _waitTimeTurns;
     public int WaitTimeTurns => _waitTimeTurns;
 
@@ -69,5 +71,20 @@ public class SoulBurnProfile : ICloneable
     public object Clone()
     {
         return MemberwiseClone();
+    }
+
+    public string GetName()
+    {
+        return Name;
+    }
+
+    public string GetDescription()
+    {
+        return Description;
+    }
+
+    public IDescriptable[] GetAdditionalDescriptions()
+    {
+        return null;
     }
 }

@@ -183,7 +183,7 @@ public class TimelineUIManager : MonoBehaviour
     {
         string name = "Soul Burn";
 
-        AddTimelineIndicator(name, soulBurn.TurnsUntil, soulBurn.Icon, TimelinePosition.Middle);
+        AddTimelineIndicator(name, soulBurn.TurnsUntil, soulBurn.Icon, TimelinePosition.Middle, soulBurn);
 
         soulBurn.OnTurnPassed += (newT, oldT) =>
         {
@@ -205,7 +205,7 @@ public class TimelineUIManager : MonoBehaviour
         RemoveAllTimelineIndicatorsWithName(name);
     }
 
-    public void AddTimelineIndicator(string name, int turn, Sprite sprite, TimelinePosition position)
+    public void AddTimelineIndicator(string name, int turn, Sprite sprite, TimelinePosition position, IDescriptable descriptable = null)
     {
         if (_timelineIndicators.Any(i => i.Name == name)) return;
 
@@ -229,9 +229,11 @@ public class TimelineUIManager : MonoBehaviour
                 break;
         }
 
-        Image image = indicator.GetComponentInChildren<Image>();
+        var image = indicator.GetComponentInChildren<Image>();
+        var indicatorUI = indicator.GetComponentInChildren<TimelineIndicatorUI>();
 
         image.sprite = sprite;
+        indicatorUI.SetInfo(descriptable);
         indicator.gameObject.name = name;
 
         _timelineIndicators.Add(new TimelineIndicator(name, turn, indicator, image, position));
