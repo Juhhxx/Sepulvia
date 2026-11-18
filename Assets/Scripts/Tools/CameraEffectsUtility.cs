@@ -9,6 +9,7 @@ public static class CameraEffectsUtility
     {
         Transform cameraTrans = camera == null ? GameSceneManager.Instance.CurrentCamera.transform : camera.transform;
 
+        cameraTrans.DOKill();
         cameraTrans.DOShakePosition(duration, new Vector3(force, force, 0));
         action?.Invoke();
     }
@@ -17,6 +18,7 @@ public static class CameraEffectsUtility
     {
         Transform cameraTrans = camera == null ? GameSceneManager.Instance.CurrentCamera.transform : camera.transform;
 
+        cameraTrans.DOKill();
         cameraTrans.DOShakePosition(duration, new Vector3(force, force, 0)).SetDelay(delay).OnComplete(() => action?.Invoke());
     }
 }

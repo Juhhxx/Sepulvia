@@ -87,8 +87,8 @@ public class BarSectionUI : MonoBehaviour
 
     private void ToggleSectionDivisors(bool right, bool left)
     {
-        _sectionDivisorRight.enabled = right;
-        _sectionDivisorLeft.enabled = left;
+        _sectionDivisorRight.color = right ? Color.white : new Color(1f, 1f, 1f, 0f);
+        _sectionDivisorLeft.color = left ? Color.white : new Color(1f, 1f, 1f, 0f);
     }
 
     private void AdjustChains()

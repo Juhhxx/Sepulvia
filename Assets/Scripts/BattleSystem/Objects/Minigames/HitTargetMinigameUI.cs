@@ -66,7 +66,7 @@ public class HitTargetMinigameUI : MonoBehaviour
 
             slider.GetComponent<ChainUIController>().DoSpawnComeIn();
         }
-        CameraEffectsUtility.DoCameraShake(.7f, .2f, 1f); //Shake at the end of all 3 chains instanced
+        CameraEffectsUtility.DoCameraShake(.7f, 2f); //Shake at the end of all 3 chains instanced
     }
 
     private void DispawnMinigameUI()
@@ -75,6 +75,7 @@ public class HitTargetMinigameUI : MonoBehaviour
         {
             child.GetComponent<ChainUIController>().DoDispawn();
         }
+        CameraEffectsUtility.DoCameraShake(.7f, 2f); //Shake at the end of all 3 chains gone
         DoActionLinesOut();
     }
 

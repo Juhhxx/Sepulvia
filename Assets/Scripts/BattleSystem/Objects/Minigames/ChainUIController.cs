@@ -85,7 +85,7 @@ public class ChainUIController : MonoBehaviour
             Color enabledSider = new Color(_sliderHandle.color.r, _sliderHandle.color.g, _sliderHandle.color.b, 1f);
             _sliderHandle.color = enabledSider;
         });
-        CameraEffectsUtility.DoCameraShake(.1f, 2f);
+        // CameraEffectsUtility.DoCameraShake(.1f, 2f);
 
     }
 
@@ -101,6 +101,6 @@ public class ChainUIController : MonoBehaviour
         Vector2 moveVector = rotationVector.normalized * _comeInDistance;
 
         _chainRotationPivot.DOAnchorPos(_chainRotationPivot.anchoredPosition - moveVector, _comeOutDuration).SetEase(_comeOutEase);
-        CameraEffectsUtility.DoCameraShake(.1f, 2f);
+        // CameraEffectsUtility.DoCameraShake(.1f, 2f);
     }
 }
