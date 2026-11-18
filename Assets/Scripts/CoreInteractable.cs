@@ -24,10 +24,11 @@ public class CoreInteractable : RandomBehaviour, IInteractable
     {
         _player.PlayerCharacter.Inventory.AddItem(_itemDB.GetRandomItemOfType(_random, ItemTypes.Fuel));
         _dungeonManager.SetCoreTaken();
-        Destroy(gameObject);
 
         // Ends the game
         GameObject.FindAnyObjectByType<MenuManager>().LoadScene("MainMenu");
+
+        Destroy(gameObject);
     }
 
     public void ToggleSelected(bool onOff)
