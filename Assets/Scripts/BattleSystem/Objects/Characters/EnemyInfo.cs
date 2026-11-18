@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using NaughtyAttributes;
-using UnityEditor.Splines;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Character", menuName = "Battle System/New Enemy Character")]
