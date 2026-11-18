@@ -36,7 +36,7 @@ public class MoveCard : MonoBehaviour
 
         if (move.CheckIfCooldown())
         {
-            _moveDescriptionText.text += $"\nIn Cooldown: {move.Cooldown - move.TurnsPassed}";
+            description += $"\nIn Cooldown: {move.Cooldown - move.TurnsPassed}";
         }
 
         _moveNameText.text = header;

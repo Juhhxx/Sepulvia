@@ -56,7 +56,7 @@ public class SoulBurnProfile : ICloneable
 
     public void OnTurnReached()
     {
-        _turnsUntil = Mathf.FloorToInt(_waitTimeTurns * _waitTimeChangeRate);
+        _turnsUntil = Mathf.FloorToInt(_turnsUntil * _waitTimeChangeRate);
         _turnsUntil = Mathf.Max(_turnsUntil, _waitTimeMinimum);
         _turnsPassed = 0;
 
