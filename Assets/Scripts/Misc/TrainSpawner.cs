@@ -32,17 +32,18 @@ public class TrainSpawner : MonoBehaviour
     }
 
     private void SpawnObject()
-{
-    GameObject obj = Instantiate(
-        prefab,
-        spawnPoint.position,
-        spawnPoint.rotation
-    );
+    {
+        GameObject obj = Instantiate(
+            prefab,
+            spawnPoint.position,
+            spawnPoint.rotation,
+            spawnPoint
+        );
 
-    MovingTrain train = obj.GetComponent<MovingTrain>();
-    if (train != null)
-        train.speed = speed;
+        MovingTrain train = obj.GetComponent<MovingTrain>();
+        if (train != null)
+            train.speed = speed;
 
-    Destroy(obj, lifetime);
-}
+        Destroy(obj, lifetime);
+    }
 }
