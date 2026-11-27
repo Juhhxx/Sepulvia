@@ -55,6 +55,7 @@ public class Tooltip : MonoBehaviour
         else
         {
             if (info == null) return;
+            if (string.IsNullOrEmpty(info.Header) && string.IsNullOrEmpty(info.Content)) return;
 
             gameObject.SetActive(show);
             SetText(info);
@@ -73,6 +74,7 @@ public class Tooltip : MonoBehaviour
         {
             _headerTMP.gameObject.SetActive(true);
         }
+
         if (string.IsNullOrEmpty(info.Content))
         {
             _contentTMP.gameObject.SetActive(false);
