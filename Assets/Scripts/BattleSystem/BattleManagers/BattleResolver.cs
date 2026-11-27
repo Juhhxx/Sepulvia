@@ -55,13 +55,13 @@ public class BattleResolver : RandomBehaviour
 
         move.UsedMove();
 
-        if (CheckInterrupt(user))
-        {
-            DialogueManager.Instance.AddDialogue(
-                $"{user.Character.Name} was interrupted.");
+        // if (CheckInterrupt(user))
+        // {
+        //     DialogueManager.Instance.AddDialogue(
+        //         $"{user.Character.Name} was interrupted.");
             
-            return;
-        }
+        //     return;
+        // }
         
         if (move.CanBeBlocked)
         {
