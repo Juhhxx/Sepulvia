@@ -69,16 +69,7 @@ public class HitTargetMinigameUI : MonoBehaviour
         CameraEffectsUtility.DoCameraShake(.7f, 2f); //Shake at the end of all 3 chains instanced
     }
 
-    private void DispawnMinigameUI()
-    {
-        foreach(HitTargetSliderUI child in _sliders)
-        {
-            child.GetComponent<ChainUIController>().DoDispawn();
-        }
-        CameraEffectsUtility.DoCameraShake(.7f, 2f); //Shake at the end of all 3 chains gone
-        DoActionLinesOut();
-    }
-
+    
     private float PositionSlider(float[] taken, int iteration = 0)
     {
         float directionOffset = Random.Range(0f, 1f);
@@ -129,14 +120,27 @@ public class HitTargetMinigameUI : MonoBehaviour
         }
     }
 
-    // Particle Effects
+    // End Round
     private void SpawnResultParticles(int round, float successRate)
     {
         _sliders[round].DoSpawnParticles(successRate);
-        if(successRate == 1)
+
+        if(successRate > 0f)
         {
             _sliders[round].GetComponent<ChainUIController>().DoSeparate();
         }
+    }
+
+    // End Minigame
+    private void DispawnMinigameUI()
+    {
+        foreach(HitTargetSliderUI child in _sliders)
+        {
+            child.GetComponent<ChainUIController>().DoDispawn();
+        }
+        
+        CameraEffectsUtility.DoCameraShake(.7f, 2f); //Shake at the end of all 3 chains gone
+        DoActionLinesOut();
     }
 
     // Round Indicators
@@ -170,6 +174,7 @@ public class HitTargetMinigameUI : MonoBehaviour
         _roundIndicatorList[round].color = color;
     }
 
+    // Animations
     private void DoActionLinesIn()
     {
         _actionLinesMaterial.DOKill();

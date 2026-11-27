@@ -26,6 +26,8 @@ public class ChainUIController : MonoBehaviour
     [SerializeField] private Ease _comeInEase = Ease.OutExpo;
     [SerializeField] private Ease _comeOutEase = Ease.InOutBack;
 
+    private bool _wasBroken = false;
+
     private void UpdateEditor()
     {
         UpdateChainPosition(_rotation, _position);
@@ -56,6 +58,8 @@ public class ChainUIController : MonoBehaviour
     [Button]
     public void DoSeparate()
     {
+        _wasBroken = true;
+
         _chainLeft.DOAnchorPosX(_chainLeft.anchoredPosition.x - _separateDistance, _separateDuration).SetEase(Ease.OutExpo);
         _chainRight.DOAnchorPosX(_chainRight.anchoredPosition.x + _separateDistance, _separateDuration).SetEase(Ease.OutExpo);
         //CameraEffectsUtility.DoCameraShake(.5f, 2f);
@@ -67,6 +71,7 @@ public class ChainUIController : MonoBehaviour
         _chainLeft.DOAnchorPosX(_chainLeft.anchoredPosition.x + _separateDistance, _separateDuration).SetEase(Ease.OutExpo);
         _chainRight.DOAnchorPosX(_chainRight.anchoredPosition.x - _separateDistance, _separateDuration).SetEase(Ease.OutExpo);
     }
+
     [Button]
     public void DoSpawnComeIn()
     {
@@ -94,6 +99,8 @@ public class ChainUIController : MonoBehaviour
     {
         Color disabledSider = new Color(_sliderHandle.color.r, _sliderHandle.color.g, _sliderHandle.color.b, 0f);
         _sliderHandle.color = disabledSider;
+
+        if (_wasBroken) return; // Do not perform leaving animation if was broken
 
         RectTransform chainTransform = _chainRotationPivot;
 
