@@ -15,7 +15,7 @@ public class InventorySlotManager : MonoBehaviour, ITooltipable
     [SerializeField] private Material _utilityMaterial;
     [SerializeField] private Material _altMoveMaterial;
 
-    private ItemInfo _item;
+    [SerializeField] private ItemInfo _item;
 
     private void OnDisable()
     {
@@ -67,9 +67,11 @@ public class InventorySlotManager : MonoBehaviour, ITooltipable
 
 
     // For equipments!
-    public void UpdateSlot(Sprite sprite)
+    public void UpdateSlot(ItemInfo item)
     {
-        _itemImage.sprite = sprite;
+        _item = item;
+        
+        _itemImage.sprite = item.Sprite;
         _itemImage.color = Color.white;
     }
 

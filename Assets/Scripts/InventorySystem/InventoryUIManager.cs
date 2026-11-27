@@ -200,7 +200,7 @@ public class InventoryUIManager : MonoBehaviour
 
             slot = _CombatEquipmentSlots[i].GetComponent<InventorySlotManager>();
 
-            if (item != null) slot.UpdateSlot(item.Sprite);
+            if (item != null) slot.UpdateSlot(item);
             else slot.UpdateSlot();            
         }
     }
@@ -215,7 +215,7 @@ public class InventoryUIManager : MonoBehaviour
 
             slot = _UtilityEquipmentSlots[i].GetComponent<InventorySlotManager>();
 
-            if (item != null) slot.UpdateSlot(item.Sprite);
+            if (item != null) slot.UpdateSlot(item);
             else slot.UpdateSlot();            
         }
     }
@@ -230,7 +230,7 @@ public class InventoryUIManager : MonoBehaviour
 
             slot = _AltMoveEquipmentSlots[i].GetComponent<InventorySlotManager>();
 
-            if (item != null) slot.UpdateSlot(item.Sprite);
+            if (item != null) slot.UpdateSlot(item);
             else slot.UpdateSlot();            
         }
     }    
